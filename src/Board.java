@@ -1,8 +1,22 @@
 
+/**
+ * The Class Board.
+ * 
+ * 
+ */
 public class Board {
-//test
+
+	
+	
+	/** The Points. */
 	public static Point[] Points;
 	
+	
+	
+	
+	/**
+	 * Instantiates a new board.
+	 */
 	public Board(){
 		//Creating 26 points
 		Points = new Point[26];
@@ -14,6 +28,12 @@ public class Board {
 		setStartPosition();
 	}
 	
+	
+	
+	
+	/**
+	 * Sets the start position.
+	 */
 	public void setStartPosition(){
 		//Resetting all to 0
 		for(int x =0; x<Points.length;x++){
@@ -34,6 +54,13 @@ public class Board {
 		Points[24].setBlackCount(2);
 	}
 	
+	
+	
+	/**
+	 * Prints the board list.
+	 * 
+	 * Just a list of values
+	 */
 	public void printBoardList(){
 		
 		for(int x = 0; x<Points.length;x++){
@@ -41,6 +68,14 @@ public class Board {
 
 		}
 	}
+	
+	
+	
+	/**
+	 * Prints the board.
+	 * 
+	 * An actual Board resembling a BackGammon board and not just a list of values
+	 */
 	public void printBoard(){
 		System.out.println("|---------------------------------------|");
 		System.out.println("|  Black 0 = "+ Points[0].getBlackCount()+"        |"  + "  Beared: 0      |");

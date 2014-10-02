@@ -1,13 +1,26 @@
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Game.
+ */
 public class Game {
 	
+	/** The Player2. */
 	Player PlayerAI,Player2;
+	
+	/** The board. */
 	Board board;
+	
+	/** The AI turn. */
 	boolean AITurn = false;
 	
 	//initial rolls
+	/** The p2 roll. */
 	int aiRoll = 0, p2Roll = 0;
 	
+	/**
+	 * Instantiates a new game.
+	 */
 	Game(){
 		
 		board = new Board();
@@ -36,6 +49,9 @@ public class Game {
 		//presume here there needs to be a loop going to a turn() method on each player with a global boolean that ends it when the game is complete
 	}
 	
+	/**
+	 * Initial roll.
+	 */
 	public void initialRoll(){
 		
 		aiRoll = PlayerAI.Die1.RollDie();

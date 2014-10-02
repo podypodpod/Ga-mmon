@@ -1,8 +1,21 @@
+/**
+ * The Class Player.
+ * 
+ * 2 will be made, AI and you
+ */
 public class Player {
 
+	/** The side boolean. */
 	Boolean black;
+	
+	/** The Dice. */
 	Die Die1, Die2;
 	
+	/**
+	 * Instantiates a new player.
+	 *
+	 * @param b the b
+	 */
 	public Player(boolean b){
 		
 		black = b;
@@ -12,6 +25,12 @@ public class Player {
 	
 	}
 	
+	/**
+	 * Move peice.
+	 *
+	 * @param from the from
+	 * @param to the to
+	 */
 	public void MovePeice(int from, int to){
 		if(black = true){
 			Board.Points[from].removeBlackPeice();
