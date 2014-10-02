@@ -24,7 +24,7 @@ public class Board {
 		for(int x = 0; x<Points.length;x++){
 			Points[x] = new Point();
 		}
-		//ressetting all to 0
+		//Resetting all to 0
 		setStartPosition();
 	}
 	
