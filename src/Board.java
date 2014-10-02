@@ -1,6 +1,6 @@
 
 public class Board {
-
+//test
 	public static Point[] Points;
 	
 	public Board(){
