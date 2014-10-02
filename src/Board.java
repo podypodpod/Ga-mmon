@@ -26,6 +26,8 @@ public class Board {
 		}
 		//Resetting all to 0
 		setStartPosition();
+		
+		printBoardGUI();
 	}
 	
 	
@@ -53,23 +55,6 @@ public class Board {
 		Points[13].setBlackCount(5);
 		Points[24].setBlackCount(2);
 	}
-	
-	
-	
-	/**
-	 * Prints the board list.
-	 * 
-	 * Just a list of values
-	 */
-	public void printBoardList(){
-		
-		for(int x = 0; x<Points.length;x++){
-			System.out.println("Point "+x+" || "+ Points[x].getRedCount()+"r-"+Points[x].getBlackCount()+"b");
-
-		}
-	}
-	
-	
 	
 	/**
 	 * Prints the board.
@@ -107,4 +92,31 @@ public class Board {
 		System.out.println("|  Red 0 = "+ Points[25].getRedCount()+"          |"+ "  Beared: 0      |");
 		System.out.println("|---------------------------------------|");
 	}
+	
+	public void printBoardGUI(){
+		
+		// need to call the GUI.printCheckers method 26 times.		
+		
+		for(int x = 0; x<25;x++){
+			
+			//no checkers on the point
+			if(Points[x].getBlackCount()==Points[x].getRedCount()){
+				Main.bp.printCheckers(x, 0, true);
+				
+			//red checkers
+			}else if(Points[x].getBlackCount()<Points[x].getRedCount()){
+				Main.bp.printCheckers(x, Points[x].getRedCount(), false);
+			//black checkers
+			}else{
+				Main.bp.printCheckers(x, Points[x].getBlackCount(), true);
+			}
+			
+			
+			
+		}
+		
+	}
+	
+	
+	
 }

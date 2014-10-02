@@ -19,6 +19,5 @@ public class Die {
 		//using Die1
 		return (int)(Math.random()*6)+1;
 	}
-
 	
 }

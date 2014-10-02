@@ -6,7 +6,7 @@ import javax.swing.JFrame;
  * 
  */
 public class Main {
-
+public static BoardPanel bp;
 	/**
 	 * The main method.
 	 *
@@ -14,12 +14,13 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("GAMMON");
-		GUI GUI = new GUI();
-		frame.add(GUI);
+		bp = new BoardPanel();
+		frame.add(bp);
 		frame.setSize(1169,637);
 		frame.setVisible(true);
 		
-		//Game game = new Game();
+		@SuppressWarnings("unused")
+		Game game = new Game();
 	}
 
 }

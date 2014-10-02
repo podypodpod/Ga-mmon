@@ -31,8 +31,6 @@ public class Game {
 		
 		System.out.println("     Welcome! New game, you are RED");
 		
-		board.printBoard();
-		
 		System.out.println("     Initial dice throw commencing..");
 
 		initialRoll();
