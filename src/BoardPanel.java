@@ -18,11 +18,20 @@ public class BoardPanel extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	public BoardPanel(){
+		for(int i=0;i<redCheckers.length;i++){
+			redCheckers[i] = new Ellipse2D.Float(0,0,0,0);
+		}
+		for(int i=0;i<blackCheckers.length;i++){
+			blackCheckers[i] = new Ellipse2D.Float(0,0,0,0);
+		}
+	}
+	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		this.setBackground(Color.WHITE);
 		Graphics2D g2 = (Graphics2D) g;
-		
+
 		//Drawing background
 		Image imgBG = Toolkit.getDefaultToolkit().getImage("images/Backgammon blank board2.png");
 	    g2.drawImage(imgBG, 0, 0, this);
@@ -41,21 +50,18 @@ public class BoardPanel extends JPanel{
 	}
 	
 	public void printCheckers(int point, int amount, boolean color){
-		
-		/**
-
+/**
 		//if its one of the 0 points
 		if(point==0||point==25){
-			g2.drawOval(500, 300, 10, 10);
+			
 		//if its the top half of the board
 		}else if(point<25&&point>0){
-			g2.drawOval(500, 300, 100, 100);
+			
 		//if its the bottom half
 		}else{
-			g2.drawOval(500, 300, 100, 100);
+			
 		}
-		 */
-
+*/
 	}
 	
 	
