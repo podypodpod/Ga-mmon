@@ -1,2 +1,7 @@
-/GUI.class
+/Board.class
 /BoardPanel.class
+/Die.class
+/Game.class
+/Main.class
+/Player.class
+/Point.class
