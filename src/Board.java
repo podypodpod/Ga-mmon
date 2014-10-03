@@ -1,4 +1,3 @@
-
 /**
  * The Class Board.
  * 
@@ -6,7 +5,7 @@
  */
 public class Board {
 
-	
+	int redBore, blackBore;
 	
 	/** The Points. */
 	public static Point[] Points;
@@ -27,7 +26,13 @@ public class Board {
 		//Resetting all to 0
 		setStartPosition();
 		
+		//setting the bore chips to 0
+		redBore = 0;
+		blackBore = 0;
+		
 		printBoardGUI();
+		
+		Main.bp.repaint();
 	}
 	
 	
@@ -45,6 +50,7 @@ public class Board {
 
 		//completing the starting position of the checkers
 		//Red Checkers
+		
 		Points[1].setRedCount(2);
 		Points[12].setRedCount(5);
 		Points[17].setRedCount(3);
@@ -94,29 +100,8 @@ public class Board {
 	}
 	
 	public void printBoardGUI(){
-		
-		// need to call the GUI.printCheckers method 26 times.		
-		
-		for(int x = 0; x<25;x++){
-			
-			//no checkers on the point
-			if(Points[x].getBlackCount()==Points[x].getRedCount()){
-				Main.bp.printCheckers(x, 0, true);
-				
-			//red checkers
-			}else if(Points[x].getBlackCount()<Points[x].getRedCount()){
-				Main.bp.printCheckers(x, Points[x].getRedCount(), false);
-			//black checkers
-			}else{
-				Main.bp.printCheckers(x, Points[x].getBlackCount(), true);
-			}
-			
-			
-			
-		}
-		
+		Main.bp.printCheckers(Points, redBore, blackBore);
 	}
-	
 	
 	
 }

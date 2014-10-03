@@ -83,4 +83,32 @@ public class Point {
 	public int getRedCount(){
 		return redCount;
 	}
+	
+	/**
+	 * Checks if is empty.
+	 *
+	 * @return true, if is empty
+	 */
+	public boolean isEmpty(){
+		if(blackCount ==0 && redCount ==0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	/**
+	 * Num of either value.
+	 *
+	 * @return the int
+	 */
+	public int numEither(){
+		if(blackCount>redCount){
+			return blackCount;
+		}else{
+			return redCount;
+		}
+	}
+	
+	
 }
