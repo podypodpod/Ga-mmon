@@ -11,6 +11,8 @@ public class Player {
 	/** The Dice. */
 	Die Die1, Die2;
 	
+	int currentRoll1, currentRoll2;
+	
 	/**
 	 * Instantiates a new player.
 	 *
@@ -26,12 +28,27 @@ public class Player {
 	}
 	
 	/**
+	 * Turn.
+	 */
+	public void turn(){
+		currentRoll1 = Die1.RollDie();
+		currentRoll2 = Die2.RollDie();
+		
+		System.out.println("a "+currentRoll1+" and a "+ currentRoll2+" have been rolled");
+		
+		//carry on here
+	}
+	
+	
+	
+	/**
 	 * Move peice.
 	 *
 	 * @param from the from
 	 * @param to the to
 	 */
 	public void MovePeice(int from, int to){
+		/** V1.0
 		if(black = true){
 			Board.Points[from].removeBlackPeice();
 			Board.Points[to].addBlackPeice();
@@ -39,5 +56,10 @@ public class Player {
 			Board.Points[from].removeRedPeice();
 			Board.Points[to].addRedPeice();
 		}
+		*/
+		
+		
+		
+		
 	}
 }

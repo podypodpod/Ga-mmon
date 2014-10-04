@@ -14,6 +14,9 @@ public class Game {
 	/** The AI turn. */
 	boolean AITurn = false;
 	
+	/** The active game boolean, if the game is active. */
+	boolean gameActive;
+	
 	//initial rolls
 	/** The p2 roll. */
 	int aiRoll = 0, p2Roll = 0;
@@ -24,6 +27,9 @@ public class Game {
 	Game(){
 		
 		board = new Board();
+		
+		//game active
+		gameActive = true;
 		
 		PlayerAI = new Player(true);
 		Player2 = new Player(false);
@@ -40,11 +46,18 @@ public class Game {
 			System.out.println("   AI wins! wait for youre turn...");
 			AITurn = true;
 		}else{
-			System.out.println("   You win! what would you like to do?");
+			System.out.println("   You win!....");
 			AITurn = false;
 		}
 
 		//presume here there needs to be a loop going to a turn() method on each player with a global boolean that ends it when the game is complete
+		while(gameActive){
+			if(AITurn){
+				
+			}else{
+				Player2.turn();
+			}
+		}
 	}
 	
 	/**

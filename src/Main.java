@@ -13,6 +13,7 @@ public static BoardPanel bp;
 	 * @param args the arguments
 	 */
 	public static void main(String[] args) {
+		
 		JFrame frame = new JFrame("GAMMON");
 		bp = new BoardPanel();
 		frame.add(bp);
