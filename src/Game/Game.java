@@ -1,3 +1,4 @@
+package Game;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -46,10 +47,12 @@ public class Game {
 			System.out.println("   AI wins! wait for youre turn...");
 			AITurn = true;
 		}else{
-			System.out.println("   You win!....");
+			System.out.println("   You win the roll!....");
 			AITurn = false;
 		}
 
+		
+		/*
 		//presume here there needs to be a loop going to a turn() method on each player with a global boolean that ends it when the game is complete
 		while(gameActive){
 			if(AITurn){
@@ -58,6 +61,8 @@ public class Game {
 				Player2.turn();
 			}
 		}
+		*/
+		
 	}
 	
 	/**

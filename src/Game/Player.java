@@ -1,3 +1,4 @@
+package Game;
 /**
  * The Class Player.
  * 
@@ -48,7 +49,8 @@ public class Player {
 	 * @param to the to
 	 */
 	public void MovePeice(int from, int to){
-		/** V1.0
+		
+		
 		if(black = true){
 			Board.Points[from].removeBlackPeice();
 			Board.Points[to].addBlackPeice();
@@ -56,10 +58,7 @@ public class Player {
 			Board.Points[from].removeRedPeice();
 			Board.Points[to].addRedPeice();
 		}
-		*/
-		
-		
-		
+
 		
 	}
 }

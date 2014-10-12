@@ -1,3 +1,4 @@
+package Game;
 /**
  * The Class Die.
  */
