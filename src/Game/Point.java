@@ -111,5 +111,13 @@ public class Point {
 		}
 	}
 	
+	public boolean getCol(){
+		if(blackCount>redCount){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	
 }

@@ -52,16 +52,15 @@ public class Game {
 		}
 
 		
-		/*
 		//presume here there needs to be a loop going to a turn() method on each player with a global boolean that ends it when the game is complete
 		while(gameActive){
 			if(AITurn){
+				PlayerAI.turn();
 				
 			}else{
 				Player2.turn();
 			}
 		}
-		*/
 		
 	}
 	

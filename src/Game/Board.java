@@ -104,5 +104,28 @@ public class Board {
 		Main.bp.printCheckers(Points, redBore, blackBore);
 	}
 	
+	/**
+	 * Checks if is there zero.
+	 *
+	 * @param black the black
+	 * @return true, if is there zero
+	 */
+	public boolean isthereZero(boolean black){
+		
+		if(black){
+			if(Points[0].getBlackCount()>0){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			if(Points[25].getRedCount()>0){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
+	}
 	
 }
