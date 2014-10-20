@@ -15,7 +15,7 @@ public static BoardPanel bp;
 	 */
 	public static void main(String[] args) {
 		
-		JFrame frame = new JFrame("GAMMON");
+		JFrame frame = new JFrame("GAMMON BACK");
 		bp = new BoardPanel();
 		frame.add(bp);
 		frame.setSize(1169,637);
