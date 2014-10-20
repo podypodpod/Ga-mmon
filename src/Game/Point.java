@@ -118,6 +118,23 @@ public class Point {
 			return false;
 		}
 	}
+
+	public void removePiece(Boolean black) {
+		if(black){
+			removeBlackPeice();
+		}else{
+			removeRedPeice();
+		}
+		
+	}
+
+	public void addPiece(Boolean black) {
+		if(black){
+			addBlackPeice();
+		}else{
+			addRedPeice();
+		}
+	}
 	
 	
 }

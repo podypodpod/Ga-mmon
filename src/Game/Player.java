@@ -11,9 +11,7 @@ import java.util.Scanner;
  */
 public class Player {
 	
-	int numMovesLeft = 0;
-	
-	static List<Integer> movesLeft = new ArrayList<Integer>();
+	static List<Integer> movesLeft;
 	
 	/** The side boolean. */
 	Boolean black;
@@ -21,7 +19,7 @@ public class Player {
 	/** The Dice. */
 	Die Die1, Die2;
 	
-	int currentRoll1 = 0, currentRoll2 = 0, currentRoll3 = 0, currentRoll4 = 0;
+	int currentRoll1 = 0, currentRoll2 = 0;
 	
 	/**
 	 * Instantiates a new player.
@@ -44,9 +42,7 @@ public class Player {
 		
 		System.out.println("------------Your Turn!-----------------");
 		
-		
-		currentRoll3 = 0;
-		currentRoll4 = 0;	
+		movesLeft = new ArrayList<Integer>();
 		
 		//roll dice
 		currentRoll1 = Die1.RollDie();
@@ -59,22 +55,18 @@ public class Player {
 		//if you roll a double
 		if(currentRoll1 == currentRoll2){
 			
-			currentRoll3 = currentRoll1;
-			currentRoll4 = currentRoll1;
+			movesLeft.add(currentRoll1);
+			movesLeft.add(currentRoll1);
 			
-			movesLeft.add(currentRoll3);
-			movesLeft.add(currentRoll4);
-			
-			numMovesLeft = 4;
 			
 			System.out.println("Two rolls of "+currentRoll1+" have been made, you have 4 moves of "+currentRoll1);
+			
 		}else{
 			System.out.println("A "+currentRoll1+" and a "+ currentRoll2+" have been rolled");
 			
-			numMovesLeft = 2;
 		}
 		
-		System.out.println("What do you want to do?, "+numMovesLeft+" moves left");
+		System.out.println("What do you want to do?, "+movesLeft.size()+" moves left");
 		
 		System.out.println("1) Move a peice");
 		System.out.println("2) Skip go");
@@ -94,25 +86,59 @@ public class Player {
 	 */
 	public boolean MovePeice(int from, int to){
 		
-		//FROM
+		//FROM PEICE
 		
 		//checking there is at least 1 chip at the starting position and it is their chip
 		if( (Board.Points[from].numEither()>0) && (Board.Points[from].getCol()==black) ){
 			
-			//NOT...if your going from anything but a zero peice
+			//making sure if you have a peice at 0 then you have to move that first
 			if(!((from!=0 || from!=25) &&
-					//and your zero peices does have a pecie on it, deny
+					//and your zero pieces does have a piece on it, deny
 					(black && Board.Points[0].numEither()!=0) || (!black && Board.Points[25].numEither()!=0))) {
 				
-				//TO...check the distance is the same as one of the rolls and NOT 0
-				if((distanceBetween(from, to)!=0)  &&  (distanceBetween(from, to)==currentRoll1 || distanceBetween(from, to) == currentRoll2 || distanceBetween(from, to) == currentRoll3 || distanceBetween(from, to) == currentRoll4)){
-					
-					//check that move is availble to use
-					if(numMovesLeft==0){
-						//if the move completes
-						numMovesLeft--;	
-					}
-				}
+				//TO PEICE
+				
+				//looping through the moves Left array to check against what they have asked for
+				boolean validLength = false;
+				 for(int x: movesLeft){
+					 if( x == distanceBetween(from,to)){
+						 validLength = true;
+					 }
+				 }
+				 if(validLength){
+					 
+					 //need to check the desination point has only 1 enemy chip or less or empty or one of yours
+					 if((Board.Points[to].getCol()==black) || (Board.Points[to].getCol()!=black && Board.Points[to].numEither()<=1)){
+						 
+						 //DONE CHECKING
+						 
+						 //actually moving the piece
+						 
+						 //if there is an opposing piece there
+						 if(Board.Points[to].getCol()!=black && Board.Points[to].numEither()==1){
+							 
+							 Board.Points[from].removePiece(black);
+							 Board.Points[to].removePiece(!black);
+							 Board.Points[to].addPiece(black);
+							 if(black){
+								 Board.Points[0].addBlackPeice();
+							 }else{
+								 Board.Points[25].addRedPeice();
+							 }
+							 
+						 //if its empty
+						 }else{
+							 
+							 Board.Points[from].removePiece(black);
+							 Board.Points[to].addPiece(black);
+							 
+						 }
+						 
+						 
+					 }
+					 
+					 
+				 }
 			}
 		}
 		//else the move is not possible
