@@ -39,16 +39,12 @@ public class AIPlayer extends Player{
 	}
 	
 	private void genPosMoves(){
-		
-		if(movesLeft.size()>2){
-			//double
 			
-		}else{
-			//single
-			
-		}
-		
-		
+			for(int y = 0; y<Board.Points.length;y++){
+				for(int x: movesLeft){
+					
+				}
+			}
 	}
 
 }

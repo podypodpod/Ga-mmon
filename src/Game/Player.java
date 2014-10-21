@@ -84,7 +84,7 @@ public class Player {
 	 * @param from the from
 	 * @param to the to
 	 */
-	public boolean MovePeice(int from, int to){
+	public boolean MovePeicePoss(int from, int to){
 		
 		//FROM PEICE
 		
@@ -111,39 +111,38 @@ public class Player {
 					 if((Board.Points[to].getCol()==black) || (Board.Points[to].getCol()!=black && Board.Points[to].numEither()<=1)){
 						 
 						 //DONE CHECKING
-						 
-						 //actually moving the piece
-						 
-						 //if there is an opposing piece there
-						 if(Board.Points[to].getCol()!=black && Board.Points[to].numEither()==1){
-							 
-							 Board.Points[from].removePiece(black);
-							 Board.Points[to].removePiece(!black);
-							 Board.Points[to].addPiece(black);
-							 if(black){
-								 Board.Points[0].addBlackPeice();
-							 }else{
-								 Board.Points[25].addRedPeice();
-							 }
-							 
-						 //if its empty
-						 }else{
-							 
-							 Board.Points[from].removePiece(black);
-							 Board.Points[to].addPiece(black);
-							 
+						 //possible to move the peice
+						 return true;
 						 }
-						 
-						 
 					 }
-					 
-					 
 				 }
 			}
-		}
 		//else the move is not possible
 		return false;
 
+	}
+	
+	public void movePeice(int from, int to){
+		 //actually moving the piece
+		 
+		 //if there is an opposing piece there
+		 if(Board.Points[to].getCol()!=black && Board.Points[to].numEither()==1){
+			 
+			 Board.Points[from].removePiece(black);
+			 Board.Points[to].removePiece(!black);
+			 Board.Points[to].addPiece(black);
+			 if(black){
+				 Board.Points[0].addBlackPeice();
+			 }else{
+				 Board.Points[25].addRedPeice();
+			 }
+			 
+		 //if its empty
+		 }else{
+			 
+			 Board.Points[from].removePiece(black);
+			 Board.Points[to].addPiece(black);
+		 }
 	}
 	
 	private int distanceBetween(int a, int b){
