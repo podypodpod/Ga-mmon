@@ -1,4 +1,5 @@
 package Game;
+// TODO: Auto-generated Javadoc
 /**
  * The Class Board.
  * 
@@ -6,6 +7,7 @@ package Game;
  */
 public class Board {
 
+	/** The black bore. */
 	int redBore, blackBore;
 	
 	/** The Points. */
@@ -37,6 +39,17 @@ public class Board {
 	}
 	
 	
+	
+	/**
+	 * Instantiates a new board, cloning the one passed in
+	 *
+	 * @param copy the copy board
+	 */
+	public Board(Board copy){
+		this.Points = copy.Points;
+		this.redBore = copy.redBore;
+		this.blackBore = copy.blackBore;
+	}
 	
 	
 	/**
@@ -100,6 +113,9 @@ public class Board {
 		System.out.println("|---------------------------------------|");
 	}
 	
+	/**
+	 * Prints the board gui.
+	 */
 	public void printBoardGUI(){
 		Main.bp.printCheckers(Points, redBore, blackBore);
 	}

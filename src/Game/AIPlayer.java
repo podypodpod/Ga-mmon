@@ -40,11 +40,7 @@ public class AIPlayer extends Player{
 	
 	private void genPosMoves(){
 			
-			for(int y = 0; y<Board.Points.length;y++){
-				for(int x: movesLeft){
-					
-				}
-			}
+		
 	}
 
 }
