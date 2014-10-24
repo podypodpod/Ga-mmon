@@ -4,13 +4,16 @@ import java.util.ArrayList;
 
 public class AIPlayer extends Player{
 
+	MoveGenerator moveGen;
+	
 	public AIPlayer(boolean b) {
 		super(b);
 		
+		moveGen = new MoveGenerator();
 		
 	}
 	
-	public void turn(){
+	public void turn(Board currentBoard){
 		
 		movesLeft = new ArrayList<Integer>();
 		
@@ -34,13 +37,8 @@ public class AIPlayer extends Player{
 			System.out.println("a "+currentRoll1+" and a "+ currentRoll2+" have been rolled");
 		}
 		
-		genPosMoves();
+		moveGen.generateMoves(currentBoard);
 		
 	}
 	
-	private void genPosMoves(){
-			
-		
-	}
-
 }

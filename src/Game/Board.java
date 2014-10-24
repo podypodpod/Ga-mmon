@@ -11,7 +11,7 @@ public class Board {
 	int redBore, blackBore;
 	
 	/** The Points. */
-	public static Point[] Points;
+	public Point[] Points;
 	
 	
 	

@@ -1,5 +1,6 @@
 package Game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // TODO: Auto-generated Javadoc
@@ -9,43 +10,22 @@ import java.util.List;
 public class BoardList {
 	
 	/** The all pos moves. */
-	static List<Board> allPosMoves;
-	
-	/** The current board. */
-	Board currentBoard;
-	
+	List<Board> allPosBoards;
+
 	/**
 	 * Instantiates a new board list.
 	 */
 	public BoardList(){
 		
+		allPosBoards = new ArrayList<Board>();
+		
 	}
 	
-	/**
-	 * Sets the current board.
-	 *
-	 * @param cb the new current board
-	 */
-	public void setCurrentBoard(Board cb){
-		currentBoard = cb;
+	public void addBoard(Board b){
+		allPosBoards.add(b);
+		
 	}
+	
 
-	
-	
-	/**
-	 * New board.
-	 * 
-	 * method literally just moves a peice from x to y, as the validity of the move has already been checked
-	 * it then creates a new board and adds in the the list of allPosMoves
-	 *
-	 * @param x the x peice
-	 * @param y the y peice
-	 */
-	public void newBoard(int x, int y){
-		Board nb = new Board(currentBoard);
-		nb.Points[x].removeBlackPeice();
-		nb.Points[y].addRedPeice();
-		allPosMoves.add(nb);
-	}
 
 }

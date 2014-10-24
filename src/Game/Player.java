@@ -38,7 +38,7 @@ public class Player {
 	/**
 	 * Turn.
 	 */
-	public void turn(){
+	public void turn(Board liveBoard){
 		
 		System.out.println("------------Your Turn!-----------------");
 		
@@ -84,17 +84,18 @@ public class Player {
 	 * @param from the from
 	 * @param to the to
 	 */
-	public boolean MovePeicePoss(int from, int to){
+	public boolean MovePeicePoss(int from, int to, Board liveBoard){
 		
 		//FROM PEICE
 		
 		//checking there is at least 1 chip at the starting position and it is their chip
-		if( (Board.Points[from].numEither()>0) && (Board.Points[from].getCol()==black) ){
+		if( (liveBoard.Points[from].numEither()>0) && (liveBoard.Points[from].getCol()==black) ){
+	
 			
 			//making sure if you have a peice at 0 then you have to move that first
 			if(!((from!=0 || from!=25) &&
 					//and your zero pieces does have a piece on it, deny
-					(black && Board.Points[0].numEither()!=0) || (!black && Board.Points[25].numEither()!=0))) {
+					(black && liveBoard.Points[0].numEither()!=0) || (!black && liveBoard.Points[25].numEither()!=0))) {
 				
 				//TO PEICE
 				
@@ -108,7 +109,7 @@ public class Player {
 				 if(validLength){
 					 
 					 //need to check the desination point has only 1 enemy chip or less or empty or one of yours
-					 if((Board.Points[to].getCol()==black) || (Board.Points[to].getCol()!=black && Board.Points[to].numEither()<=1)){
+					 if((liveBoard.Points[to].getCol()==black) || (liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()<=1)){
 						 
 						 //DONE CHECKING
 						 //possible to move the peice
@@ -122,26 +123,26 @@ public class Player {
 
 	}
 	
-	public void movePeice(int from, int to){
+	public void movePeice(int from, int to, Board liveBoard){
 		 //actually moving the piece
 		 
 		 //if there is an opposing piece there
-		 if(Board.Points[to].getCol()!=black && Board.Points[to].numEither()==1){
+		 if(liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()==1){
 			 
-			 Board.Points[from].removePiece(black);
-			 Board.Points[to].removePiece(!black);
-			 Board.Points[to].addPiece(black);
+			 liveBoard.Points[from].removePiece(black);
+			 liveBoard.Points[to].removePiece(!black);
+			 liveBoard.Points[to].addPiece(black);
 			 if(black){
-				 Board.Points[0].addBlackPeice();
+				 liveBoard.Points[0].addBlackPeice();
 			 }else{
-				 Board.Points[25].addRedPeice();
+				 liveBoard.Points[25].addRedPeice();
 			 }
 			 
 		 //if its empty
 		 }else{
 			 
-			 Board.Points[from].removePiece(black);
-			 Board.Points[to].addPiece(black);
+			 liveBoard.Points[from].removePiece(black);
+			 liveBoard.Points[to].addPiece(black);
 		 }
 	}
 	

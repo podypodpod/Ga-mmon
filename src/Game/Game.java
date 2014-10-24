@@ -10,7 +10,7 @@ public class Game {
 	Player PlayerAI,Player2;
 	
 	/** The board. */
-	Board board;
+	Board liveBoard;
 	
 	/** The AI turn. */
 	boolean AITurn = false;
@@ -27,7 +27,7 @@ public class Game {
 	 */
 	Game(){
 		
-		board = new Board();
+		liveBoard = new Board();
 		
 		//game active
 		gameActive = true;
@@ -55,10 +55,10 @@ public class Game {
 		//presume here there needs to be a loop going to a turn() method on each player with a global boolean that ends it when the game is complete
 		while(gameActive){
 			if(AITurn){
-				PlayerAI.turn();
+				PlayerAI.turn(liveBoard);
 				
 			}else{
-				Player2.turn();
+				Player2.turn(liveBoard);
 			}
 		}
 		
