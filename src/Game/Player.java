@@ -21,6 +21,9 @@ public class Player {
 	
 	int currentRoll1 = 0, currentRoll2 = 0;
 	
+	
+	boolean turnOver;
+	
 	/**
 	 * Instantiates a new player.
 	 *
@@ -39,6 +42,8 @@ public class Player {
 	 * Turn.
 	 */
 	public void turn(Board liveBoard){
+		
+		turnOver = false;
 		
 		System.out.println("------------Your Turn!-----------------");
 		
@@ -66,26 +71,37 @@ public class Player {
 			
 		}
 		
-		System.out.println("What do you want to do?, "+movesLeft.size()+" moves left");
-		
-		System.out.println("1) Move a peice");
-		System.out.println("2) Skip go");
-		System.out.println("3) Concede");
-		
-		Scanner Scanner = new Scanner(System.in);
-		
-		int option = Scanner.nextInt();
-
-		if(option == 1){
-			System.out.println("from which point: ");
-			int from = Scanner.nextInt();
-			System.out.println("to which point");
-			int to = Scanner.nextInt();
+		while(!turnOver){
+			System.out.println("What do you want to do?, "+movesLeft.size()+" moves left");
 			
-			if(movePeicePoss(from, to, liveBoard)){
+			System.out.println("1) Move a peice");
+			System.out.println("2) Skip go");
+			System.out.println("3) Concede");
+			
+			Scanner Scanner = new Scanner(System.in);
+			
+			int option = Scanner.nextInt();
+
+			//MOVE A PEICE
+			if(option == 1){
+				System.out.println("from which point: ");
+				int from = Scanner.nextInt();
+				System.out.println("to which point");
+				int to = Scanner.nextInt();
 				
-				movePeice(from, to, liveBoard);
-				
+				if(movePeicePoss(from, to, liveBoard)){
+					
+					movePeice(from, to, liveBoard);
+					turnOver = true;
+				}else{
+					System.out.println("invalid move");
+				}
+			//SKIP GO
+			}else if(option == 2){
+				turnOver = true;
+			//CONCEEDING
+			}else if(option == 3){
+				turnOver = true;
 				
 			}
 		}

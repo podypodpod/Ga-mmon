@@ -15,6 +15,8 @@ public class AIPlayer extends Player{
 	
 	public void turn(Board currentBoard){
 		
+		System.out.println("hheyeheyey");
+		
 		movesLeft = new ArrayList<Integer>();
 		
 		//roll dice

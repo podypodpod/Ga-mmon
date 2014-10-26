@@ -95,18 +95,18 @@ public class BoardPanel extends JPanel{
 		    	//print bottom left half checkers
 		    	}else if(i>12 && i<19){
 		    		
-		    		g2.fillOval(500-((i-12)*70), 430, 50, 50);
+		    		g2.fillOval(20+((i-12)*70), 430, 50, 50);
 		    		g2.setColor(Color.WHITE);
-		    		g2.drawOval(500-((i-12)*70), 430, 50, 50);
-		    		g2.drawString(allPoints[i].numEither()+"", 520-((i-12)*70), 460);
+		    		g2.drawOval(20+((i-12)*70), 430, 50, 50);
+		    		g2.drawString(allPoints[i].numEither()+"", 40+((i-12)*70), 460);
 
 		    	//print bottom right half checkers
 		    	}else if(i>18 && i<25){
 		    		
-		    		g2.fillOval(990-((i-18)*70), 430, 50, 50);
+		    		g2.fillOval(500+((i-18)*70), 430, 50, 50);
 		    		g2.setColor(Color.WHITE);
-		    		g2.drawOval(990-((i-18)*70), 430, 50, 50);
-		    		g2.drawString(allPoints[i].numEither()+"", 1010-((i-18)*70), 460);
+		    		g2.drawOval(500+((i-18)*70), 430, 50, 50);
+		    		g2.drawString(allPoints[i].numEither()+"", (520+(i-18)*70), 460);
 		    	}
 		    }
 	    }

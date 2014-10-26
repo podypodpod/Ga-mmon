@@ -24,5 +24,6 @@ public static BoardPanel bp;
 		@SuppressWarnings("unused")
 		Game game = new Game();
 	}
+	
 
 }

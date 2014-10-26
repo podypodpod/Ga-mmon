@@ -7,10 +7,10 @@ package Game;
 public class Point {
 
 	/** The black count. */
-	int blackCount;
+	private int blackCount;
 	
 	/** The red count. */
-	int redCount;
+	private int redCount;
 	
 	/**
 	 * Instantiates a new point.
@@ -113,9 +113,9 @@ public class Point {
 	
 	public boolean getCol(){
 		if(blackCount>redCount){
-			return true;
-		}else{
 			return false;
+		}else{
+			return true;
 		}
 	}
 

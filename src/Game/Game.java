@@ -32,7 +32,7 @@ public class Game {
 		//game active
 		gameActive = true;
 		
-		PlayerAI = new Player(true);
+		PlayerAI = new AIPlayer(true);
 		Player2 = new Player(false);
 		
 		
