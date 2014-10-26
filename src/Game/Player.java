@@ -73,7 +73,22 @@ public class Player {
 		System.out.println("3) Concede");
 		
 		Scanner Scanner = new Scanner(System.in);
+		
 		int option = Scanner.nextInt();
+
+		if(option == 1){
+			System.out.println("from which point: ");
+			int from = Scanner.nextInt();
+			System.out.println("to which point");
+			int to = Scanner.nextInt();
+			
+			if(movePeicePoss(from, to, liveBoard)){
+				
+				movePeice(from, to, liveBoard);
+				
+				
+			}
+		}
 	}
 	
 	
@@ -84,7 +99,7 @@ public class Player {
 	 * @param from the from
 	 * @param to the to
 	 */
-	public boolean MovePeicePoss(int from, int to, Board liveBoard){
+	public boolean movePeicePoss(int from, int to, Board liveBoard){
 		
 		//FROM PEICE
 		

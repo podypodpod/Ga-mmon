@@ -37,7 +37,7 @@ public class AIPlayer extends Player{
 			System.out.println("a "+currentRoll1+" and a "+ currentRoll2+" have been rolled");
 		}
 		
-		moveGen.generateMoves(currentBoard);
+		moveGen.generateMoves(currentBoard, movesLeft, this);
 		
 	}
 	
