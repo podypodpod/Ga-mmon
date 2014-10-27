@@ -1,5 +1,7 @@
 package Game;
 
+import javax.swing.JFrame;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class Game.
@@ -15,6 +17,10 @@ public class Game {
 	/** The AI turn. */
 	boolean AITurn = false;
 	
+	//GUI stuff
+	public static BoardPanel bp;
+	JFrame frame;
+
 	/** The active game boolean, if the game is active. */
 	boolean gameActive;
 	
@@ -26,6 +32,14 @@ public class Game {
 	 * Instantiates a new game.
 	 */
 	Game(){
+		
+		//GUI
+		frame = new JFrame("GAMMON BACK");
+		bp = new BoardPanel();
+		frame.add(bp);
+		frame.setSize(1169,637);
+		frame.setVisible(true);
+
 		
 		liveBoard = new Board();
 		

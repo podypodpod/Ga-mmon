@@ -74,7 +74,7 @@ public class Player {
 		while(!turnOver){
 			System.out.println("What do you want to do?, "+movesLeft.size()+" moves left");
 			
-			System.out.println("1) Move a peice");
+			System.out.println("1) Move a piece");
 			System.out.println("2) Skip go");
 			System.out.println("3) Concede");
 			
@@ -82,16 +82,16 @@ public class Player {
 			
 			int option = Scanner.nextInt();
 
-			//MOVE A PEICE
+			//MOVE A piece
 			if(option == 1){
 				System.out.println("from which point: ");
 				int from = Scanner.nextInt();
 				System.out.println("to which point");
 				int to = Scanner.nextInt();
 				
-				if(movePeicePoss(from, to, liveBoard)){
+				if(movepiecePoss(from, to, liveBoard)){
 					
-					movePeice(from, to, liveBoard);
+					movepiece(from, to, liveBoard);
 					turnOver = true;
 				}else{
 					System.out.println("invalid move");
@@ -110,25 +110,25 @@ public class Player {
 	
 	
 	/**
-	 * Move peice.
+	 * Move piece.
 	 *
 	 * @param from the from
 	 * @param to the to
 	 */
-	public boolean movePeicePoss(int from, int to, Board liveBoard){
+	public boolean movepiecePoss(int from, int to, Board liveBoard){
 		
-		//FROM PEICE
+		//FROM piece
 		
 		//checking there is at least 1 chip at the starting position and it is their chip
 		if( (liveBoard.Points[from].numEither()>0) && (liveBoard.Points[from].getCol()==black) ){
 	
 			
-			//making sure if you have a peice at 0 then you have to move that first
+			//making sure if you have a piece at 0 then you have to move that first
 			if(!((from!=0 || from!=25) &&
 					//and your zero pieces does have a piece on it, deny
 					(black && liveBoard.Points[0].numEither()!=0) || (!black && liveBoard.Points[25].numEither()!=0))) {
 				
-				//TO PEICE
+				//TO piece
 				
 				//looping through the moves Left array to check against what they have asked for
 				boolean validLength = false;
@@ -143,7 +143,7 @@ public class Player {
 					 if((liveBoard.Points[to].getCol()==black) || (liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()<=1)){
 						 
 						 //DONE CHECKING
-						 //possible to move the peice
+						 //possible to move the piece
 						 return true;
 						 }
 					 }
@@ -154,7 +154,7 @@ public class Player {
 
 	}
 	
-	public void movePeice(int from, int to, Board liveBoard){
+	public void movepiece(int from, int to, Board liveBoard){
 		 //actually moving the piece
 		 
 		 //if there is an opposing piece there
@@ -164,9 +164,9 @@ public class Player {
 			 liveBoard.Points[to].removePiece(!black);
 			 liveBoard.Points[to].addPiece(black);
 			 if(black){
-				 liveBoard.Points[0].addBlackPeice();
+				 liveBoard.Points[0].addBlackPiece();
 			 }else{
-				 liveBoard.Points[25].addRedPeice();
+				 liveBoard.Points[25].addRedPiece();
 			 }
 			 
 		 //if its empty
@@ -177,7 +177,7 @@ public class Player {
 		 }
 	}
 	
-	private int distanceBetween(int a, int b){
+	public int distanceBetween(int a, int b){
 		if(a>b){
 			return (a-b);
 		}else{

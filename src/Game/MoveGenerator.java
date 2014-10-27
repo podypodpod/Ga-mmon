@@ -19,7 +19,7 @@ public class MoveGenerator {
 		
 		for(int currentMove: movesLeft){
 			for(int point = 0; point < cb.Points.length; point++){
-				if(p.movePeicePoss(point, point+currentMove, cb)){
+				if(p.movepiecePoss(point, point+currentMove, cb)){
 					System.out.println("new Board!! " + point + " to " + currentMove);
 				}
 			}

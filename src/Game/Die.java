@@ -4,6 +4,8 @@ package Game;
  */
 public class Die {
 	
+	private int value;
+	
 	/**
 	 * Instantiates a new die.
 	 */
@@ -18,7 +20,17 @@ public class Die {
 	 */
 	public int RollDie(){
 		//using Die1
-		return (int)(Math.random()*6)+1;
+		value = (int)(Math.random()*6)+1;
+		return value;
+	}
+	
+	
+	public int getDieValue(){
+		return value;
+	}
+	
+	public void setDieValue(int x){
+		value = x;
 	}
 	
 }

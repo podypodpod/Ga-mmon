@@ -19,23 +19,23 @@ public class PointJUnitTest {
 	
 	
 	@Test
-	public void shouldTakeOnePeiceFromBlackCount(){
+	public void shouldTakeOnePieceFromBlackCount(){
 		//Given
 		testSubject.setBlackCount(5);
 		
 		//When
-		testSubject.removeBlackPeice();
+		testSubject.removeBlackPiece();
 		
 		//Then
 		assertEquals(4, testSubject.getBlackCount());
 	}
 	
 	@Test
-	public void shouldTakeOnePeiceFromRedCount(){
+	public void shouldTakeOnePieceFromRedCount(){
 		//Given
 		testSubject.setRedCount(5);
 		//When
-		testSubject.removeRedPeice();
+		testSubject.removeRedPiece();
 		//Then
 		assertEquals(4,testSubject.getRedCount());
 	}
@@ -95,31 +95,31 @@ public class PointJUnitTest {
 	}
 	
 	@Test
-	public void shouldAddOnePeiceToBlackCount(){
+	public void shouldAddOnePieceToBlackCount(){
 		//Given
 		testSubject.setBlackCount(5);
 		
 		//When
-		testSubject.addBlackPeice();
+		testSubject.addBlackPiece();
 		
 		//Then
 		assertEquals(6, testSubject.getBlackCount());
 	}
 	
 	@Test
-	public void shouldAddOnePeiceToRedCount(){
+	public void shouldAddOnePieceToRedCount(){
 		//Given
 		testSubject.setRedCount(3);
 		
 		//When
-		testSubject.addRedPeice();
+		testSubject.addRedPiece();
 		
 		//Then
 		assertEquals(4, testSubject.getRedCount());
 	}
 	
 	@Test
-	public void shouldRemoveOnePeiceFromRedCount(){
+	public void shouldRemoveOnePieceFromRedCount(){
 		//Given
 		testSubject.setRedCount(4);
 		
@@ -131,7 +131,7 @@ public class PointJUnitTest {
 	}
 	
 	@Test
-	public void shouldRemoveOnePeiceFromBlackCountWhenTrueIsSentIn(){
+	public void shouldRemoveOnePieceFromBlackCountWhenTrueIsSentIn(){
 		//Given
 		testSubject.setBlackCount(4);
 		
@@ -143,7 +143,7 @@ public class PointJUnitTest {
 	}
 	
 	@Test
-	public void shouldAddOnePeiceToBlackCountWhenTrueIsSentIn(){
+	public void shouldAddOnePieceToBlackCountWhenTrueIsSentIn(){
 		//Given
 		testSubject.setBlackCount(4);
 		
@@ -155,7 +155,7 @@ public class PointJUnitTest {
 	}
 	
 	@Test
-	public void shouldAddOnePeiceToRedCountWhenFalseIsSentIn(){
+	public void shouldAddOnePieceToRedCountWhenFalseIsSentIn(){
 		//Given
 		testSubject.setRedCount(4);
 		

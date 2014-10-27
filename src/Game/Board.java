@@ -35,7 +35,7 @@ public class Board {
 		
 		printBoardGUI();
 		
-		Main.bp.repaint();
+		Game.bp.repaint();
 	}
 	
 	
@@ -117,7 +117,7 @@ public class Board {
 	 * Prints the board gui.
 	 */
 	public void printBoardGUI(){
-		Main.bp.printCheckers(Points, redBore, blackBore);
+		Game.bp.printCheckers(Points, redBore, blackBore);
 	}
 	
 	/**

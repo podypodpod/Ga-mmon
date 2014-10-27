@@ -38,32 +38,32 @@ public class Point {
 	public void setRedCount(int rc){
 		redCount = rc;
 	}
-	//removeBlackPeice
+	//removeBlackpiece
 	/**
-	 * Removes the black peice.
+	 * Removes the black piece.
 	 */
-	public void removeBlackPeice(){
+	public void removeBlackPiece(){
 		blackCount--;
 	}
-	//removeRedPeice
+	//removeRedpiece
 	/**
-	 * Removes the red peice.
+	 * Removes the red piece.
 	 */
-	public void removeRedPeice(){
+	public void removeRedPiece(){
 		redCount--;
 	}
-	//addBlackPeice
+	//addBlackpiece
 	/**
-	 * Adds the black peice.
+	 * Adds the black piece.
 	 */
-	public void addBlackPeice(){
+	public void addBlackPiece(){
 		blackCount++;
 	}
-	//addRedPeice
+	//addRedpiece
 	/**
-	 * Adds the red peice.
+	 * Adds the red piece.
 	 */
-	public void addRedPeice(){
+	public void addRedPiece(){
 		redCount++;
 	}
 	//getBlackCount
@@ -113,26 +113,26 @@ public class Point {
 	
 	public boolean getCol(){
 		if(blackCount>redCount){
-			return false;
-		}else{
 			return true;
+		}else{
+			return false;
 		}
 	}
 
 	public void removePiece(Boolean black) {
 		if(black){
-			removeBlackPeice();
+			removeBlackPiece();
 		}else{
-			removeRedPeice();
+			removeRedPiece();
 		}
 		
 	}
 
 	public void addPiece(Boolean black) {
 		if(black){
-			addBlackPeice();
+			addBlackPiece();
 		}else{
-			addRedPeice();
+			addRedPiece();
 		}
 	}
 	
