@@ -6,6 +6,10 @@ public class AIPlayer extends Player{
 
 	MoveGenerator moveGen;
 	
+	
+	
+	
+	//default cons
 	public AIPlayer(boolean b) {
 		super(b);
 		
@@ -13,15 +17,29 @@ public class AIPlayer extends Player{
 		
 	}
 	
+	//Clone cons
+	public AIPlayer(AIPlayer p) {
+		super(p.black);
+		
+		this.movesLeft = p.movesLeft;
+		this.black = p.black;
+		this.currentRoll1 = p.currentRoll1;
+		this.currentRoll2 = p.currentRoll2;
+		this.die1 = p.die1;
+		this.die2 = p.die2;
+		this.turnOver = p.turnOver;
+		this.moveGen = p.moveGen;
+	}
+	
 	public void turn(Board currentBoard){
 		
-		System.out.println("hheyeheyey");
+		System.out.println("------------AI's Turn!-----------------");
 		
 		movesLeft = new ArrayList<Integer>();
 		
 		//roll dice
-		currentRoll1 = Die1.RollDie();
-		currentRoll2 = Die2.RollDie();
+		currentRoll1 = die1.RollDie();
+		currentRoll2 = die2.RollDie();
 		
 		//adding them to the array list
 		movesLeft.add(currentRoll1);
@@ -34,12 +52,12 @@ public class AIPlayer extends Player{
 			movesLeft.add(currentRoll1);
 
 			
-			System.out.println("Two rolls of "+currentRoll1+" have been made");
+			System.out.println("AI rolls two rolls of "+currentRoll1+" have been made, "+movesLeft.size()+" moves left");
 		}else{
-			System.out.println("a "+currentRoll1+" and a "+ currentRoll2+" have been rolled");
+			System.out.println("AI rolls a "+currentRoll1+" and a "+ currentRoll2+" have been rolled, "+movesLeft.size()+" moves left");
 		}
 		
-		moveGen.generateMoves(currentBoard, movesLeft, this);
+		moveGen.generateMoves(currentBoard, this);
 		
 	}
 	

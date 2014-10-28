@@ -11,18 +11,19 @@ import java.util.Scanner;
  */
 public class Player {
 	
-	static List<Integer> movesLeft;
+	public List<Integer> movesLeft;
 	
 	/** The side boolean. */
 	Boolean black;
 	
 	/** The Dice. */
-	Die Die1, Die2;
+	Die die1, die2;
+	
+	boolean turnOver;
 	
 	int currentRoll1 = 0, currentRoll2 = 0;
 	
 	
-	boolean turnOver;
 	
 	/**
 	 * Instantiates a new player.
@@ -33,8 +34,8 @@ public class Player {
 		
 		black = b;
 		
-		Die1 = new Die();
-		Die2 = new Die();
+		die1 = new Die();
+		die2 = new Die();
 	
 	}
 	
@@ -50,8 +51,8 @@ public class Player {
 		movesLeft = new ArrayList<Integer>();
 		
 		//roll dice
-		currentRoll1 = Die1.RollDie();
-		currentRoll2 = Die2.RollDie();
+		currentRoll1 = die1.RollDie();
+		currentRoll2 = die2.RollDie();
 		
 		//adding them to the array list
 		movesLeft.add(currentRoll1);
@@ -71,7 +72,10 @@ public class Player {
 			
 		}
 		
+		
+		//ASKING WHAT TO DO
 		while(!turnOver){
+			
 			System.out.println("What do you want to do?, "+movesLeft.size()+" moves left");
 			
 			System.out.println("1) Move a piece");
@@ -89,10 +93,16 @@ public class Player {
 				System.out.println("to which point");
 				int to = Scanner.nextInt();
 				
+				//IF ITS POSSIBLE
 				if(movepiecePoss(from, to, liveBoard)){
-					
+					//MOVE THE PIECE
 					movepiece(from, to, liveBoard);
-					turnOver = true;
+					//REMOVE THE "MOVE"
+					movesLeft.remove(Integer.valueOf((distanceBetween(from, to))));
+					
+					if(movesLeft.size()==0){
+						turnOver = true;
+					}
 				}else{
 					System.out.println("invalid move");
 				}
@@ -104,6 +114,7 @@ public class Player {
 				turnOver = true;
 				
 			}
+			Scanner.close();
 		}
 	}
 	
@@ -119,36 +130,40 @@ public class Player {
 		
 		//FROM piece
 		
-		//checking there is at least 1 chip at the starting position and it is their chip
-		if( (liveBoard.Points[from].numEither()>0) && (liveBoard.Points[from].getCol()==black) ){
-	
+		//simply checking if its within the array bounds
+		if(from>=0 && from<=25 && to<=25 && to>=0){
 			
-			//making sure if you have a piece at 0 then you have to move that first
-			if(!((from!=0 || from!=25) &&
-					//and your zero pieces does have a piece on it, deny
-					(black && liveBoard.Points[0].numEither()!=0) || (!black && liveBoard.Points[25].numEither()!=0))) {
+			//checking there is at least 1 chip at the starting position and it is their chip
+			if( (liveBoard.Points[from].numEither()>0) && (liveBoard.Points[from].getCol()==black) ){
+		
 				
-				//TO piece
-				
-				//looping through the moves Left array to check against what they have asked for
-				boolean validLength = false;
-				 for(int x: movesLeft){
-					 if( x == distanceBetween(from,to)){
-						 validLength = true;
-					 }
-				 }
-				 if(validLength){
-					 
-					 //need to check the desination point has only 1 enemy chip or less or empty or one of yours
-					 if((liveBoard.Points[to].getCol()==black) || (liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()<=1)){
-						 
-						 //DONE CHECKING
-						 //possible to move the piece
-						 return true;
+				//making sure if you have a piece at 0 then you have to move that first
+				if(!((from!=0 || from!=25) &&
+						//and your zero pieces does have a piece on it, deny
+						(black && liveBoard.Points[0].numEither()!=0) || (!black && liveBoard.Points[25].numEither()!=0))) {
+					
+					//TO piece
+					
+					//looping through the moves Left array to check against what they have asked for
+					boolean validLength = false;
+					 for(int x: movesLeft){
+						 if( x == distanceBetween(from,to)){
+							 validLength = true;
 						 }
 					 }
-				 }
-			}
+					 if(validLength){
+						 
+						 //need to check the desination point has only 1 enemy chip or less or empty or one of yours
+						 if((liveBoard.Points[to].getCol()==black) || (liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()<=1)){
+							 
+							 //DONE CHECKING
+							 //possible to move the piece
+							 return true;
+							 }
+						 }
+					 }
+				}
+		}
 		//else the move is not possible
 		return false;
 

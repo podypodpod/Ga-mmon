@@ -58,13 +58,13 @@ public class PlayerJUnitTest {
 		
 		
 		//Given
-		p1.Die1.setDieValue(1);
-		p1.Die2.setDieValue(3);
+		p1.die1.setDieValue(1);
+		p1.die2.setDieValue(3);
 		
 		p1.movesLeft = new ArrayList<Integer>();
 		
-		p1.movesLeft.add(p1.Die1.getDieValue());
-		p1.movesLeft.add(p1.Die2.getDieValue());
+		p1.movesLeft.add(p1.die1.getDieValue());
+		p1.movesLeft.add(p1.die2.getDieValue());
 		
 		//When
 		

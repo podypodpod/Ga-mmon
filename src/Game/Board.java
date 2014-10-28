@@ -12,9 +12,7 @@ public class Board {
 	
 	/** The Points. */
 	public Point[] Points;
-	
-	
-	
+
 	
 	/**
 	 * Instantiates a new board.
@@ -32,13 +30,7 @@ public class Board {
 		//setting the bore chips to 0
 		redBore = 0;
 		blackBore = 0;
-		
-		printBoardGUI();
-		
-		Game.bp.repaint();
 	}
-	
-	
 	
 	/**
 	 * Instantiates a new board, cloning the one passed in
@@ -46,7 +38,7 @@ public class Board {
 	 * @param copy the copy board
 	 */
 	public Board(Board copy){
-		this.Points = copy.Points;
+		this.Points = copy.Points.clone();
 		this.redBore = copy.redBore;
 		this.blackBore = copy.blackBore;
 	}
