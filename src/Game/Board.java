@@ -38,7 +38,13 @@ public class Board {
 	 * @param copy the copy board
 	 */
 	public Board(Board copy){
-		this.Points = copy.Points.clone();
+		
+		this.Points = new Point[26];
+		for(int i = 0; i<copy.Points.length; i++){
+			Point x = new Point(copy.Points[i]);
+			this.Points[i] = x;
+		}
+
 		this.redBore = copy.redBore;
 		this.blackBore = copy.blackBore;
 	}
@@ -121,13 +127,13 @@ public class Board {
 	public boolean isthereZero(boolean black){
 		
 		if(black){
-			if(Points[0].getBlackCount()>0){
+			if(Points[25].getBlackCount()>0){
 				return true;
 			}else{
 				return false;
 			}
 		}else{
-			if(Points[25].getRedCount()>0){
+			if(Points[0].getRedCount()>0){
 				return true;
 			}else{
 				return false;

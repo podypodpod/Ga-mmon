@@ -177,7 +177,7 @@ public class PointJUnitTest {
 		Boolean x = testSubject.getCol();
 		
 		//Then
-		assertEquals(false, x);
+		assertEquals(true, x);
 	}
 	
 	
@@ -191,7 +191,22 @@ public class PointJUnitTest {
 		Boolean x = testSubject.getCol();
 		
 		//Then
-		assertEquals(true, x);
+		assertEquals(false, x);
+	}
+	
+	@Test
+	public void shouldCloneThePoint(){
+		//Given
+		testSubject.setRedCount(7);
+		testSubject.setBlackCount(0);
+		
+		Point newPoint;
+		
+		//When
+		newPoint = new Point(testSubject);
+		
+		//Then
+		assertEquals(7, newPoint.getRedCount());
 	}
 	
 }

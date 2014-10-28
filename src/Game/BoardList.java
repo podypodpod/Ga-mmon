@@ -27,12 +27,8 @@ public class BoardList {
 	
 	public void addBoard(Board b, int to, int from, AIPlayer p1, MoveGenerator mg){
 		
-		//create a copy of the original board and player
-		Board bClone = new Board(b);
-		//AIPlayer p1Clone = new AIPlayer(p1);
-		
 		//move the piece on this new board
-		p1.movepiece(from, to, bClone);
+		p1.movepiece(from, to, b);
 		if(p1.movesLeft.size()>1){
 			p1.movesLeft.remove(Integer.valueOf(p1.distanceBetween(from, to)));
 		}else{
@@ -43,15 +39,13 @@ public class BoardList {
 		
 		//check if any further moves can be made
 		if(p1.movesLeft.size()!=0){
-			mg.generateMoves(bClone, p1);
+			mg.generateMoves(b, p1);
 		}
 
 		
 		//add the board to the list
-		addBoard(bClone);
+		addBoard(b);
 		
 		
 	}
-
-
 }

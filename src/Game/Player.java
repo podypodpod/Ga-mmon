@@ -1,7 +1,5 @@
 package Game;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -11,7 +9,7 @@ import java.util.Scanner;
  */
 public class Player {
 	
-	public List<Integer> movesLeft;
+	public MovesLeft movesLeft;
 	
 	/** The side boolean. */
 	Boolean black;
@@ -48,7 +46,7 @@ public class Player {
 		
 		System.out.println("------------Your Turn!-----------------");
 		
-		movesLeft = new ArrayList<Integer>();
+		movesLeft = new MovesLeft();
 		
 		//roll dice
 		currentRoll1 = die1.RollDie();
@@ -146,7 +144,7 @@ public class Player {
 					
 					//looping through the moves Left array to check against what they have asked for
 					boolean validLength = false;
-					 for(int x: movesLeft){
+					 for(int x: movesLeft.movesLeft){
 						 if( x == distanceBetween(from,to)){
 							 validLength = true;
 						 }
@@ -178,10 +176,11 @@ public class Player {
 			 liveBoard.Points[from].removePiece(black);
 			 liveBoard.Points[to].removePiece(!black);
 			 liveBoard.Points[to].addPiece(black);
+			 
 			 if(black){
-				 liveBoard.Points[0].addBlackPiece();
+				 liveBoard.Points[0].addRedPiece();
 			 }else{
-				 liveBoard.Points[25].addRedPiece();
+				 liveBoard.Points[25].addBlackPiece();
 			 }
 			 
 		 //if its empty

@@ -2,8 +2,6 @@ package Game;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -61,7 +59,7 @@ public class PlayerJUnitTest {
 		p1.die1.setDieValue(1);
 		p1.die2.setDieValue(3);
 		
-		p1.movesLeft = new ArrayList<Integer>();
+		p1.movesLeft = new MovesLeft();
 		
 		p1.movesLeft.add(p1.die1.getDieValue());
 		p1.movesLeft.add(p1.die2.getDieValue());
@@ -74,6 +72,59 @@ public class PlayerJUnitTest {
 		
 	}
 	
-	
 
+	@Test
+	public void testingMovePeiceFromDefaultBoardMovingToEmptySpace() {
+		
+		
+		//Given
+		b1.setStartPosition();
+		
+		//When
+		p1.movepiece(1, 2, b1);
+		
+		//Then
+
+		assertEquals(1, b1.Points[2].getRedCount());
+		
+	}
+	
+	@Test
+	public void testingMovePeiceFromBoardToANonEmptySpaceTakingBlack() {
+		
+		Player p2 = new Player(true);
+		
+		//Given
+		b1.setStartPosition();
+		p2.movepiece(6, 2, b1);
+		
+		//When
+		p1.movepiece(1, 2, b1);
+		
+		//Then
+
+		assertEquals(1, b1.Points[2].getRedCount());
+		assertEquals(1, b1.Points[25].getBlackCount());
+		
+	}
+
+	@Test
+	public void testingMovePeiceFromBoardToANonEmptySpaceTakingRed() {
+		
+		Player p2 = new Player(true);
+		
+		//Given
+		b1.setStartPosition();
+		p1.movepiece(1, 2, b1);
+		
+		//When
+		p2.movepiece(6, 2, b1);
+		
+		//Then
+
+		assertEquals(1, b1.Points[2].getBlackCount());
+		assertEquals(1, b1.Points[0].getRedCount());
+		
+	}
+	
 }

@@ -41,6 +41,7 @@ public class BoardJUnitTest {
 			assertEquals(5,x12.getRedCount());
 			assertEquals(3,x17.getRedCount());
 			assertEquals(5,x19.getRedCount());
+			
 			//BLACK
 			assertEquals(5,x6.getBlackCount());
 			assertEquals(3,x8.getBlackCount());
@@ -50,14 +51,59 @@ public class BoardJUnitTest {
 	}
 	
 	
-	/*
+	
 	@Test
-	public void x() {
+	public void testingCloneBoardConstructor() {
 		//Given
+		Board newBoard;
+		testSubject.blackBore = 10;
 		
 		//When
+		newBoard = new Board(testSubject);
 		
 		//Then
+		assertEquals(10, newBoard.blackBore);
 	}
-*/
+	
+	@Test
+	public void testingIsThereZeroFunctionWhenSendingInColorBlackTRUEWithDefaultBoard() {
+		//When
+		Boolean x = testSubject.isthereZero(true);
+		
+		//Then
+		assertEquals(false, x);
+	}
+	
+	@Test
+	public void testingIsThereZeroFunctionWhenSendingInColorREDFalseWithDefaultBoard() {
+		//When
+		Boolean x = testSubject.isthereZero(false);
+		
+		//Then
+		assertEquals(false, x);
+	}
+
+	@Test
+	public void testingIsThereZeroFunctionWhenSendingInColorBLACKtrueWithAZeroPeice() {
+		//Given
+		testSubject.Points[25].addBlackPiece();
+		
+		//When
+		Boolean x = testSubject.isthereZero(true);
+		
+		//Then
+		assertEquals(true, x);
+	}
+	
+	@Test
+	public void testingIsThereZeroFunctionWhenSendingInColorREDtrueWithAZeroPeice() {
+		//Given
+		testSubject.Points[0].addRedPiece();
+		
+		//When
+		Boolean x = testSubject.isthereZero(false);
+		
+		//Then
+		assertEquals(true, x);
+	}
 }

@@ -1,12 +1,8 @@
 package Game;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class MoveGenerator {
 	
-	Board currentBoard;
 	BoardList BoardList;
 	
 	public MoveGenerator(){
@@ -15,22 +11,15 @@ public class MoveGenerator {
 		
 	}
 	
-	public void setBoard(Board cb){
-		currentBoard = cb;
+	public void setBoard(){
 	}
 
 	public void generateMoves(Board cb, AIPlayer p){
-		setBoard(cb);
-		
-		//Iterator<Integer> moves = p.movesLeft.iterator();
 		
 		//Loop all moves
-		
-		
-		for(int currentMove: p.movesLeft){
-		//while(moves.hasNext()){
-			//int currentMove = moves.next();
+		for(int currentMove: p.movesLeft.movesLeft){
 			
+			//check the current move doesnt = 0, this would mean it has been removed and a new board has been created
 			if(currentMove!= 0){
 				
 				System.out.println("Move: "+currentMove);
@@ -38,7 +27,7 @@ public class MoveGenerator {
 				//loop all points
 				for(int point = 0; point < cb.Points.length; point++){
 					
-					System.out.println(point);
+					System.out.println("P"+point + ", MovesLeft: " + p.movesLeft.movesLeft.size() + "current Move: "+ currentMove);
 					
 					//if the current point can move the current move, create new board of it
 					if(p.movepiecePoss(point, point-currentMove, cb)){
@@ -46,7 +35,7 @@ public class MoveGenerator {
 						System.out.println("-New Board created: " + point + " to " + (point-currentMove) + ", Using move "+currentMove+". "+((p.movesLeft.size())-1)+" further moves left.");
 						
 						//adding the new board to the list
-						BoardList.addBoard(cb, (point-currentMove), point, new AIPlayer(p), this);
+						BoardList.addBoard(new Board(cb), (point-currentMove), point, new AIPlayer(p), this);
 	
 					}
 				}

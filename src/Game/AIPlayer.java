@@ -1,6 +1,5 @@
 package Game;
 
-import java.util.ArrayList;
 
 public class AIPlayer extends Player{
 
@@ -21,7 +20,7 @@ public class AIPlayer extends Player{
 	public AIPlayer(AIPlayer p) {
 		super(p.black);
 		
-		this.movesLeft = p.movesLeft;
+		this.movesLeft = new MovesLeft(p.movesLeft);
 		this.black = p.black;
 		this.currentRoll1 = p.currentRoll1;
 		this.currentRoll2 = p.currentRoll2;
@@ -35,7 +34,7 @@ public class AIPlayer extends Player{
 		
 		System.out.println("------------AI's Turn!-----------------");
 		
-		movesLeft = new ArrayList<Integer>();
+		movesLeft = new MovesLeft();
 		
 		//roll dice
 		currentRoll1 = die1.RollDie();

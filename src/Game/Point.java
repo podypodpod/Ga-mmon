@@ -20,6 +20,11 @@ public class Point {
 		redCount = 0;
 	}
 	
+	public Point(Point p){
+		this.blackCount = p.blackCount;
+		this.redCount = p.redCount;
+	}
+	
 	//setBlackCount
 	/**
 	 * Sets the black count.
