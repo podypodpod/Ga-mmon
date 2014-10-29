@@ -48,4 +48,27 @@ public class BoardList {
 		
 		
 	}
+	
+	
+	public void removeClones(){
+
+	}
+	
+	public void chooseBoard(){
+		
+		Board x = boardList.get(0);
+		
+		
+	}
+	
+	public void printBoardList(){
+		int counter = 0;
+		for(Board x: boardList){
+			counter++;
+			System.out.println("----------------------------");
+			System.out.println("Board num "+ counter);
+			x.printBoard();
+			System.out.println("----------------------------");
+		}
+	}
 }

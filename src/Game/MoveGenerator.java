@@ -3,11 +3,11 @@ package Game;
 
 public class MoveGenerator {
 	
-	BoardList BoardList;
+	BoardList boardList;
 	
 	public MoveGenerator(){
 		
-		BoardList = new BoardList();
+		boardList = new BoardList();
 		
 	}
 	
@@ -35,7 +35,7 @@ public class MoveGenerator {
 						System.out.println("-New Board created: " + point + " to " + (point-currentMove) + ", Using move "+currentMove+". "+((p.movesLeft.size())-1)+" further moves left.");
 						
 						//adding the new board to the list
-						BoardList.addBoard(new Board(cb), (point-currentMove), point, new AIPlayer(p), this);
+						boardList.addBoard(new Board(cb), (point-currentMove), point, new AIPlayer(p), this);
 	
 					}
 				}

@@ -58,6 +58,8 @@ public class AIPlayer extends Player{
 		
 		moveGen.generateMoves(currentBoard, this);
 		
+		
+		
 	}
 	
 }
