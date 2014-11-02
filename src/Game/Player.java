@@ -112,7 +112,6 @@ public class Player {
 				turnOver = true;
 				
 			}
-			Scanner.close();
 		}
 	}
 	
@@ -142,24 +141,28 @@ public class Player {
 					
 					//TO piece
 					
-					//looping through the moves Left array to check against what they have asked for
-					boolean validLength = false;
-					 for(int x: movesLeft.movesLeft){
-						 if( x == distanceBetween(from,to)){
-							 validLength = true;
-						 }
-					 }
-					 if(validLength){
-						 
-						 //need to check the desination point has only 1 enemy chip or less or empty or one of yours
-						 if((liveBoard.Points[to].getCol()==black) || (liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()<=1)){
-							 
-							 //DONE CHECKING
-							 //possible to move the piece
-							 return true;
+					//checking it is not moving in to the 0 spaces
+					if(!(black && to==0)||(!black && to==25)){
+					
+						//looping through the moves Left array to check against what they have asked for
+						boolean validLength = false;
+						 for(int x: movesLeft.movesLeft){
+							 if( x == distanceBetween(from,to)){
+								 validLength = true;
 							 }
 						 }
-					 }
+						 if(validLength){
+							 
+							 //need to check the destination point has only 1 enemy chip or less or empty or one of yours
+							 if((liveBoard.Points[to].getCol()==black) || (liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()<=1)){
+								 
+								 //DONE CHECKING
+								 //possible to move the piece
+								 return true;
+								 }
+							 }
+						 }
+					}
 				}
 		}
 		//else the move is not possible

@@ -9,7 +9,8 @@ import javax.swing.JFrame;
 public class Game {
 	
 	/** The Player2. */
-	Player PlayerAI,Player2;
+	Player Player2;
+	AIPlayer PlayerAI;
 	
 	/** The board. */
 	Board liveBoard;
@@ -69,11 +70,13 @@ public class Game {
 		//presume here there needs to be a loop going to a turn() method on each player with a global boolean that ends it when the game is complete
 		while(gameActive){
 			if(AITurn){
-				PlayerAI.turn(liveBoard);
+				liveBoard = new Board(PlayerAI.AIturn(liveBoard));
+				liveBoard.printBoardGUI();
 				AITurn = false;
 				
 			}else{
 				Player2.turn(liveBoard);
+				liveBoard.printBoardGUI();
 				AITurn = true;
 			}
 		}

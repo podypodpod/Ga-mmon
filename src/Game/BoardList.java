@@ -10,7 +10,7 @@ import java.util.List;
 public class BoardList {
 	
 	/** The all pos moves. */
-	List<Board> boardList;
+	private List<Board> boardList;
 
 	/**
 	 * Instantiates a new board list.
@@ -19,6 +19,10 @@ public class BoardList {
 		
 		boardList = new ArrayList<Board>();
 		
+	}
+	
+	public void clearList(){
+		boardList.clear();
 	}
 	
 	public void addBoard(Board b){
@@ -54,9 +58,16 @@ public class BoardList {
 
 	}
 	
-	public void chooseBoard(){
+	public Board selectBoard(){
 		
-		Board x = boardList.get(0);
+		//create a new board
+		Board chosenBoard;
+		
+		//decide which one is the best
+		chosenBoard = boardList.get(0);
+		
+		//return the best
+		return chosenBoard;
 		
 		
 	}

@@ -30,7 +30,7 @@ public class AIPlayer extends Player{
 		this.moveGen = p.moveGen;
 	}
 	
-	public void turn(Board currentBoard){
+	public Board AIturn(Board currentBoard){
 		
 		System.out.println("------------AI's Turn!-----------------");
 		
@@ -56,9 +56,11 @@ public class AIPlayer extends Player{
 			System.out.println("AI rolls a "+currentRoll1+" and a "+ currentRoll2+" have been rolled, "+movesLeft.size()+" moves left");
 		}
 		
-		moveGen.generateMoves(currentBoard, this);
+		Board newBoard = moveGen.getNextMoveBoard(currentBoard, this);
 		
+		newBoard.printBoard();
 		
+		return newBoard;
 		
 	}
 	

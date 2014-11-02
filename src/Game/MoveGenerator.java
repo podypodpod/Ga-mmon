@@ -13,6 +13,17 @@ public class MoveGenerator {
 	
 	public void setBoard(){
 	}
+	
+	public Board getNextMoveBoard(Board cb, AIPlayer p){
+		//Clear the list
+		boardList.clearList();
+		
+		//generate all possible moves
+		generateMoves(cb, p);
+		
+		//select the best move and return it
+		return boardList.selectBoard();
+	}
 
 	public void generateMoves(Board cb, AIPlayer p){
 		
