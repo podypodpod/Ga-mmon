@@ -1,6 +1,5 @@
 package Game;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Point.
  */

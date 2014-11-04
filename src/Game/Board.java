@@ -1,5 +1,4 @@
 package Game;
-// TODO: Auto-generated Javadoc
 /**
  * The Class Board.
  * 
@@ -139,6 +138,34 @@ public class Board {
 				return false;
 			}
 		}
+		
+	}
+	
+	
+	public boolean canPlayerBear(boolean black){
+		//BLACK
+		if(black){
+			//looping all areas apart from the players own quarter
+			for(int x = 7; x<25;x++){
+				//if any of them contain a black piece
+				if(Points[x].getBlackCount()>0){
+					return false;
+				}
+				return true;
+			}
+			
+		//RED
+		}else{
+			//looping all areas apart from the players own quarter
+			for(int x = 1; x<18;x++){
+				//if any of them contain a red piece
+				if(Points[x].getRedCount()>0){
+					return false;
+				}
+				return true;
+			}
+		}
+		return false;
 		
 	}
 	

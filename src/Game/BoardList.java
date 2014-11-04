@@ -2,8 +2,6 @@ package Game;
 
 import java.util.ArrayList;
 import java.util.List;
-
-// TODO: Auto-generated Javadoc
 /**
  * The Class BoardList.
  */
@@ -65,7 +63,7 @@ public class BoardList {
 		Board chosenBoard;
 		
 		//decide which one is the best
-		int x = (int)(Math.random()*boardList.size())+1;
+		int x = (int)(Math.random()*boardList.size()-1)+1;
 		
 		chosenBoard = boardList.get(x);
 		

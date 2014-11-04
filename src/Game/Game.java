@@ -2,7 +2,6 @@ package Game;
 
 import javax.swing.JFrame;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Game.
  */

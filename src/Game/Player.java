@@ -80,6 +80,7 @@ public class Player {
 			System.out.println("2) Skip go");
 			System.out.println("3) Concede");
 			
+			@SuppressWarnings("resource")
 			Scanner Scanner = new Scanner(System.in);
 			
 			int option = Scanner.nextInt();
