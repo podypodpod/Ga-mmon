@@ -1,6 +1,16 @@
-package Game;
+package backgammon.game;
+
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import backgammon.gui.BoardPanel;
+import backgammon.gui.ControlPanel;
 
 /**
  * The Class Game.
@@ -18,7 +28,9 @@ public class Game {
 	boolean AITurn = false;
 	
 	//GUI stuff
-	public static BoardPanel bp;
+	static BoardPanel bp;
+	ControlPanel cp;
+	JPanel mainPanel;
 	JFrame frame;
 
 	/** The active game boolean, if the game is active. */
@@ -34,12 +46,34 @@ public class Game {
 	Game(){
 		
 		//GUI
+		//Creating JFrame and panel
 		frame = new JFrame("GAMMON BACK");
-		bp = new BoardPanel();
-		frame.add(bp);
-		frame.setSize(1169,637);
-		frame.setVisible(true);
+		mainPanel = new JPanel();
+		mainPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
 
+		
+		//creating and adding the Board Panel
+		bp = new BoardPanel();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1.0;
+		c.weighty = 1.0;
+		mainPanel.add(bp, c);
+		
+		//creating and adding the control panel
+		cp = new ControlPanel();
+		c.gridx = 1;
+		c.gridy = 0;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		mainPanel.add(cp,c);
+		
+		frame.add(mainPanel);
+		frame.setSize(1345,637);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		liveBoard = new Board();
 		liveBoard.printBoardGUI();

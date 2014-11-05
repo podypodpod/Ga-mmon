@@ -1,4 +1,4 @@
-package Game;
+package backgammon.game;
 
 
 public class AIPlayer extends Player{

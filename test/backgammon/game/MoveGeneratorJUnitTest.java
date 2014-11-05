@@ -1,9 +1,13 @@
-package Game;
+package backgammon.game;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import backgammon.game.AIPlayer;
+import backgammon.game.Board;
+import backgammon.game.MoveGenerator;
 
 public class MoveGeneratorJUnitTest {
 	

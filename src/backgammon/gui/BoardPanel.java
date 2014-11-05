@@ -1,4 +1,4 @@
-package Game;
+package backgammon.gui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -6,13 +6,19 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import backgammon.game.Point;
 
 
 public class BoardPanel extends JPanel{
 	
 	Point[] allPoints = null;
 	int redBore, blackBore;
+	Image imgBG;
+	Graphics2D g2;
 
 	/**`
 	 * 
@@ -23,7 +29,9 @@ public class BoardPanel extends JPanel{
 	
 	
 	public BoardPanel(){
-
+		
+		setSize(1169,637);
+		
 	}
 	
 	
@@ -32,13 +40,13 @@ public class BoardPanel extends JPanel{
 		
 		super.paintComponent(g);
 		this.setBackground(Color.WHITE);
-		Graphics2D g2 = (Graphics2D) g;
+		g2 = (Graphics2D) g;
 
 	    //setting font for the drawn strings on the game
 		g2.setFont(new Font("default", Font.BOLD, 16));
 		
 		//Drawing background
-		Image imgBG = Toolkit.getDefaultToolkit().getImage("images/Backgammon blank board2.png");
+		imgBG = Toolkit.getDefaultToolkit().getImage("images/Backgammon blank board2.png");
 	    g2.drawImage(imgBG, 0, 0, this);
 	    
 
@@ -127,6 +135,9 @@ public class BoardPanel extends JPanel{
     		g2.drawOval(1060, 390, 50, 50);
     		g2.drawString(redBore+"", 1080, 420);
 	    }
+	    
+	    
+
 	    
 	}
 	

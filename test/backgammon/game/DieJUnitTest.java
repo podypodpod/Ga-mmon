@@ -1,9 +1,11 @@
-package Game;
+package backgammon.game;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import backgammon.game.Die;
 
 public class DieJUnitTest {
 	

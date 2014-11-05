@@ -1,4 +1,4 @@
-package Game;
+package backgammon.game;
 
 import java.util.Scanner;
 

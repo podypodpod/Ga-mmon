@@ -1,4 +1,4 @@
-package Game;
+package backgammon.game;
 /**
  * The Class Board.
  * 
@@ -143,6 +143,7 @@ public class Board {
 	
 	
 	public boolean canPlayerBear(boolean black){
+		
 		//BLACK
 		if(black){
 			//looping all areas apart from the players own quarter
@@ -151,7 +152,6 @@ public class Board {
 				if(Points[x].getBlackCount()>0){
 					return false;
 				}
-				return true;
 			}
 			
 		//RED
@@ -162,10 +162,9 @@ public class Board {
 				if(Points[x].getRedCount()>0){
 					return false;
 				}
-				return true;
 			}
 		}
-		return false;
+		return true;
 		
 	}
 	

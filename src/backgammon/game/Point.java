@@ -1,4 +1,4 @@
-package Game;
+package backgammon.game;
 
 /**
  * The Class Point.
