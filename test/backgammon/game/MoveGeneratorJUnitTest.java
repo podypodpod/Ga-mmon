@@ -35,7 +35,6 @@ public class MoveGeneratorJUnitTest {
 		//standard board is set up
 		
 		//When
-		mg.generateMoves(theBoard, p);
 		
 		//Then
 		assertEquals(1,1);

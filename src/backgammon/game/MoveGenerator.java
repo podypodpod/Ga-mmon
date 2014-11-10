@@ -31,7 +31,7 @@ public class MoveGenerator {
 		//Loop all moves
 		for(int currentMove: p.movesLeft.movesLeft){
 			
-			//check the current move doesnt = 0, this would mean it has been removed and a new board has been created
+			//check the current move doesn't = 0, this would mean it has been removed and a new board has been created
 			if(currentMove!= 0){
 				
 				//System.out.println("Move: "+currentMove);

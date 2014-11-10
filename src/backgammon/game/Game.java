@@ -22,6 +22,7 @@ public class Game implements Runnable{
 	/** The active game boolean, if the game is active. */
 	boolean gameActive;
 	
+	boolean isAIBlack = false;
 
 	
 	//initial rolls
@@ -39,8 +40,8 @@ public class Game implements Runnable{
 		//game active
 		gameActive = true;
 		
-		PlayerAI = new AIPlayer(true);
-		Player2 = new Player(false);
+		PlayerAI = new AIPlayer(isAIBlack);
+		Player2 = new Player(isAIBlack);
 		
 	}
 	
@@ -60,7 +61,12 @@ public class Game implements Runnable{
 	@Override
 	public void run() {
 		
-		System.out.println("     Welcome! New game, you are RED");
+		System.out.print("     Welcome! New game, you are ");
+		if(isAIBlack){
+			System.out.println("RED");
+		}else{
+			System.out.println("BLACK");
+		}
 		
 		System.out.println("     Initial dice throw commencing..");
 
@@ -83,6 +89,14 @@ public class Game implements Runnable{
 				AITurn = false;
 				
 			}else{
+				/*
+				//for testing them to play against each other
+				liveBoard = new Board(Player2.AIturn(liveBoard));
+				liveBoard.printBoardGUI();
+				AITurn = true;
+				*/
+				
+				
 				Player2.turn(liveBoard);
 				liveBoard.printBoardGUI();
 				AITurn = true;

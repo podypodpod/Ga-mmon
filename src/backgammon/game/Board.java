@@ -80,7 +80,7 @@ public class Board {
 	 */
 	public void printBoard(){
 		System.out.println("|---------------------------------------|");
-		System.out.println("|  Black 0 = "+ Points[0].getBlackCount()+"        |"  + "  Beared: 0      |");
+		System.out.println("|  Black 0 = "+ Points[25].numEither()+"        |"  + "  Beared: 0      |");
 		System.out.println("|---------------------------------------|");
 		System.out.println("|NUM| 1| 2| 3| 4| 5| 6| 7| 8| 9|10|11|12|");
 		System.out.print("|RED");
@@ -106,7 +106,7 @@ public class Board {
 		}
 		System.out.println("|");
 		System.out.println("|---------------------------------------|");
-		System.out.println("|  Red 0 = "+ Points[25].getRedCount()+"          |"+ "  Beared: 0      |");
+		System.out.println("|  Red 0 = "+ Points[0].numEither()+"          |"+ "  Beared: 0      |");
 		System.out.println("|---------------------------------------|");
 	}
 	
@@ -116,6 +116,8 @@ public class Board {
 	public void printBoardGUI(){
 		Main.containerFrame.bp.printCheckers(Points, redBore, blackBore);
 	}
+	
+	
 	
 	/**
 	 * Checks if is there zero.

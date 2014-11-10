@@ -6,12 +6,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import backgammon.game.Board;
-import backgammon.game.MovesLeft;
 import backgammon.game.Player;
 
 public class PlayerJUnitTest {
 
-	Player p1;
+	Player p1,p2;
 	Board b1;
 	
 	
@@ -20,6 +19,7 @@ public class PlayerJUnitTest {
 		
 	//RED PLAYER	
 	p1 = new Player(false);
+	p2 = new Player(true);
 	
 	b1 = new Board();
 	}
@@ -56,26 +56,36 @@ public class PlayerJUnitTest {
 	}
 
 	@Test
-	public void ShouldReturnTrueWhenIImputACorrectMove() {
-		
-		
+	public void ShouldReturnTrueWhenIInputACorrectMoveASingleDiceRoll() {	
 		//Given
-		p1.die1.setDieValue(1);
-		p1.die2.setDieValue(3);
-		
-		p1.movesLeft = new MovesLeft();
-		
-		p1.movesLeft.add(p1.die1.getDieValue());
-		p1.movesLeft.add(p1.die2.getDieValue());
+		p1.movesLeft.add(1);
+		p1.movesLeft.add(2);
 		
 		//When
+		//Then
+
+		assertTrue(p1.movepiecePoss(1,3,b1));
+	}
+	
+	
+	/*
+	 * TODO: Should Return True When I Input A Correct Move Using Both Dice Rolls, does not
+	 * 
+	 * In theory the game should let you do this, but at the moment it does not if I have time adjust this
+	 * 
+	 * but not a big deal as technically it is 2 moves anyway, just done in one click normally
+	 */
+	@Test
+	public void ShouldReturnTrueWhenIInputACorrectMoveUsingBothDiceRolls() {	
+		//Given
+		p1.movesLeft.add(1);
+		p1.movesLeft.add(2);
 		
+		//When
 		//Then
 
 		assertTrue(p1.movepiecePoss(1,4,b1));
-		
 	}
-	
 
 	@Test
 	public void testingMovePeiceFromDefaultBoardMovingToEmptySpace() {
@@ -96,8 +106,6 @@ public class PlayerJUnitTest {
 	@Test
 	public void testingMovePeiceFromBoardToANonEmptySpaceTakingBlack() {
 		
-		Player p2 = new Player(true);
-		
 		//Given
 		b1.setStartPosition();
 		p2.movepiece(6, 2, b1);
@@ -115,8 +123,6 @@ public class PlayerJUnitTest {
 	@Test
 	public void testingMovePeiceFromBoardToANonEmptySpaceTakingRed() {
 		
-		Player p2 = new Player(true);
-		
 		//Given
 		b1.setStartPosition();
 		p1.movepiece(1, 2, b1);
@@ -130,5 +136,40 @@ public class PlayerJUnitTest {
 		assertEquals(1, b1.Points[0].getRedCount());
 		
 	}
+	
+	
+	@Test
+	public void testingMovePeiceFromRed0PeiceBackOnBoard() {
+		
+		//Given
+		b1.setStartPosition();
+		p1.movepiece(19, 0, b1);
+		p1.movesLeft.movesLeft.add(2);
+		
+		//When
+		boolean possible = p1.movepiecePoss(0, 2, b1);
+		
+		//Then
+		assertTrue(possible);
+		
+	}
+	
+	
+	@Test
+	public void testingMovePeiceOnBoardWhenThereIsAZeroIIgnore() {
+		
+		//Given
+		b1.setStartPosition();
+		p1.movepiece(19, 0, b1);
+		p1.movesLeft.movesLeft.add(2);
+		
+		//When
+		boolean possible = p1.movepiecePoss(19, 21, b1);
+		
+		//Then
+		assertFalse(possible);
+		
+	}
+	
 	
 }

@@ -38,5 +38,9 @@ public class MovesLeft {
 	int getNext(){
 		return movesLeft.get(0);
 	}
+	
+	void clear(){
+		movesLeft.clear();
+	}
 
 }
