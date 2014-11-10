@@ -63,13 +63,18 @@ public class BoardList {
 		Board chosenBoard;
 		
 		//decide which one is the best
-		int x = (int)(Math.random()*boardList.size()-1)+1;
+		//(int)(Math.random() * (max - min) + min)
+		int x = (int)(Math.random()*(boardList.size()));
+
 		
-		chosenBoard = boardList.get(x);
-		
-		//return the best
-		return chosenBoard;
-		
+		if(boardList.size()!=0){
+			chosenBoard = boardList.get(x);
+			return chosenBoard;
+		}else
+		{
+			//if there are no possible new boards(no possible moves) return null
+			return null;
+		}
 		
 	}
 	

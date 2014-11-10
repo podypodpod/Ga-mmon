@@ -22,6 +22,7 @@ public class MoveGenerator {
 		generateMoves(cb, p);
 		
 		//select the best move and return it
+		//if no moves it will return null
 		return boardList.selectBoard();
 	}
 
