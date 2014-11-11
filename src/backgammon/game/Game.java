@@ -9,8 +9,7 @@ package backgammon.game;
 public class Game implements Runnable{
 	
 	/** The Player2. */
-	Player Player2;
-	AIPlayer PlayerAI;
+	AIPlayer Player2, PlayerAI;
 	
 	/** The board. */
 	Board liveBoard;
@@ -22,7 +21,10 @@ public class Game implements Runnable{
 	/** The active game boolean, if the game is active. */
 	boolean gameActive;
 	
+	
+	// Quick booleans to change when you want a real player / AI player or change the team color
 	boolean isAIBlack = true;
+	boolean areBothAIs = true;
 
 	
 	//initial rolls
@@ -41,7 +43,12 @@ public class Game implements Runnable{
 		gameActive = true;
 		
 		PlayerAI = new AIPlayer(isAIBlack);
-		Player2 = new Player(!isAIBlack);
+		if(areBothAIs){
+			Player2 = new AIPlayer(!isAIBlack);
+		}else{
+			Player2 = new AIPlayer(!isAIBlack);
+		}
+		
 		
 	}
 	
@@ -89,22 +96,22 @@ public class Game implements Runnable{
 				AITurn = false;
 				
 			}else{
-				/*
-				//for testing them to play against each other
-				liveBoard = new Board(Player2.AIturn(liveBoard));
-				liveBoard.printBoardGUI();
-				AITurn = true;
-				*/
 				
-				
-				Player2.turn(liveBoard);
-				liveBoard.printBoardGUI();
-				AITurn = true;
+				if(areBothAIs){
+					liveBoard = new Board(((AIPlayer) Player2).AIturn(liveBoard));
+					liveBoard.printBoardGUI();
+					AITurn = true;
+				}else{
+					
+					Player2.turn(liveBoard);
+					liveBoard.printBoardGUI();
+					AITurn = true;
+				}
+
 			}
 		}
 		
 		
 	}
-	
 	
 }

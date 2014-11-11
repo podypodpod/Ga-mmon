@@ -41,14 +41,30 @@ public class MoveGenerator {
 					
 					//System.out.println("P"+point + ", MovesLeft: " + p.movesLeft.movesLeft.size() + "current Move: "+ currentMove);
 					
-					//if the current point can move the current move, create new board of it
-					if(p.movepiecePoss(point, point-currentMove, cb)){
+					
+					
+					if(p.black){
 						
-						//System.out.println("-New Board created: " + point + " to " + (point-currentMove) + ", Using move "+currentMove+". "+((p.movesLeft.size())-1)+" further moves left.");
+
+						//if the current point can move the current move, create new board of it
+						if(p.movepiecePoss(point, point-currentMove, cb)){
+							
+							//System.out.println("-New Board created: " + point + " to " + (point-currentMove) + ", Using move "+currentMove+". "+((p.movesLeft.size())-1)+" further moves left.");
+							
+							//adding the new board to the list
+							boardList.addBoard(new Board(cb), (point-currentMove), point, new AIPlayer(p), this);
+		
+						}
+					}else if(!p.black){
 						
-						//adding the new board to the list
-						boardList.addBoard(new Board(cb), (point-currentMove), point, new AIPlayer(p), this);
-	
+					}
+						//if the current point can move the current move, create new board of it
+						if(p.movepiecePoss(point, point+currentMove, cb)){
+							
+							//System.out.println("-New Board created: " + point + " to " + (point+currentMove) + ", Using move "+currentMove+". "+((p.movesLeft.size())-1)+" further moves left.");
+						
+							//adding the new board to the list
+							boardList.addBoard(new Board(cb), (point+currentMove), point, new AIPlayer(p), this);
 					}
 				}
 			}else{

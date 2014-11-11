@@ -135,34 +135,38 @@ public class Player {
 
 			//checking there is at least 1 chip at the starting position and it is their chip
 			if( (liveBoard.Points[from].numEither()>0) && (liveBoard.Points[from].getCol()==black) ){
+				
+				//checking its going the right direction
+				if((black && to<from)||(!black && to>from)){
 
-				//making sure if you have a piece at 0 then you have to move that first
-				if(liveBoard.isthereZero(black)){
-					if((black && from!=25)||(!black && from!=0)){
-						return false;
-					}
-				}
-
-				//TO piece
-
-				//checking it is not moving in to the 0 spaces
-				if(to!=0 && to!=25){
-
-					//looping through the moves Left array to check against what they have asked for
-					boolean validLength = false;
-					for(int x: movesLeft.movesLeft){
-						if( x == distanceBetween(from,to)){
-							validLength = true;
+					//making sure if you have a piece at 0 then you have to move that first
+					if(liveBoard.isthereZero(black)){
+						if((black && from!=25)||(!black && from!=0)){
+							return false;
 						}
 					}
-					if(validLength){
-
-						//need to check the destination point has only 1 enemy chip or less or empty or one of yours
-						if((liveBoard.Points[to].getCol()==black) || (liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()<=1)){
-
-							//DONE CHECKING
-							//possible to move the piece
-							return true;
+	
+					//TO piece
+	
+					//checking it is not moving in to the 0 spaces
+					if(to!=0 && to!=25){
+	
+						//looping through the moves Left array to check against what they have asked for
+						boolean validLength = false;
+						for(int x: movesLeft.movesLeft){
+							if( x == distanceBetween(from,to)){
+								validLength = true;
+							}
+						}
+						if(validLength){
+	
+							//need to check the destination point has only 1 enemy chip or less or empty or one of yours
+							if((liveBoard.Points[to].getCol()==black) || (liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()<=1)){
+	
+								//DONE CHECKING
+								//possible to move the piece
+								return true;
+							}
 						}
 					}
 				}
