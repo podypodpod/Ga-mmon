@@ -8,134 +8,149 @@ import java.util.Scanner;
  * 2 will be made, AI and you
  */
 public class Player {
-	
+
 	public MovesLeft movesLeft;
-	
+
 	/** The side boolean. */
 	Boolean black;
-	
+
 	/** The Dice. */
 	Die die1, die2;
-	
+
 	boolean turnOver;
-	
+
 	int currentRoll1 = 0, currentRoll2 = 0;
-	
-	
-	
+
+
+
 	/**
 	 * Instantiates a new player.
 	 *
 	 * @param b the b
 	 */
 	public Player(boolean b){
-		
+
 		black = b;
-		
+
 		movesLeft = new MovesLeft();
-		
+
 		die1 = new Die();
 		die2 = new Die();
-	
+
 	}
-	
+
 	/**
 	 * Turn.
 	 */
 	public void turn(Board liveBoard){
-		
+
 		turnOver = false;
-		
+
 		System.out.println("------------Your Turn!-----------------");
 
 		movesLeft.clear();
-		
+
 		//roll dice
 		currentRoll1 = die1.RollDie();
 		currentRoll2 = die2.RollDie();
-		
+
 		//adding them to the array list
 		movesLeft.add(currentRoll1);
 		movesLeft.add(currentRoll2);
-		
+
 		//if you roll a double
 		if(currentRoll1 == currentRoll2){
-			
+
 			movesLeft.add(currentRoll1);
 			movesLeft.add(currentRoll1);
-			
-			
+
+
 			System.out.println("Two rolls of "+currentRoll1+" have been made, you have 4 moves of "+currentRoll1);
-			
+
 		}else{
 			System.out.println("A "+currentRoll1+" and a "+ currentRoll2+" have been rolled");
-			
+
 		}
-		
-		
+
+
 		//ASKING WHAT TO DO
 		while(!turnOver){
-			
+
+
 			System.out.println("What do you want to do?, "+movesLeft.size()+" moves left");
-			
+
 			System.out.println("1) Move a piece");
-			System.out.println("2) Skip go");
-			System.out.println("3) Concede");
-			
+			System.out.println("2) Bear off a piece");
+			System.out.println("3) Skip or Finish go");
+			System.out.println("4) Concede");
+
 			@SuppressWarnings("resource")
 			Scanner Scanner = new Scanner(System.in);
-			
+
 			int option = Scanner.nextInt();
 
 			//MOVE A piece
 			if(option == 1){
-				System.out.println("from which point: ");
+				System.out.println("from which point (1,2,3 etc): ");
 				int from = Scanner.nextInt();
-				System.out.println("to which point");
+				System.out.println("to which point (1,2,3,bear=-1 etc)");
 				int to = Scanner.nextInt();
-				
+
 				//IF ITS POSSIBLE
-				if(movepiecePoss(from, to, liveBoard)){
+				if(movePiecePoss(from, to, liveBoard)){
 					//MOVE THE PIECE
-					movepiece(from, to, liveBoard);
+					movePiece(from, to, liveBoard);
 					//REMOVE THE "MOVE"
 					movesLeft.remove(Integer.valueOf((distanceBetween(from, to))));
-					
+
 					if(movesLeft.size()==0){
 						turnOver = true;
 					}
 				}else{
 					System.out.println("invalid move");
 				}
-			//SKIP GO
+				//SKIP GO
 			}else if(option == 2){
-				turnOver = true;
-			//CONCEEDING
+				if(liveBoard.canPlayerBear(this.black)){
+
+					//CHECK ITS A VALID MOVE/LENGTH
+
+					System.out.println("Bear wich piece?");
+
+					int bearPeice = Scanner.nextInt();
+					if(movePiecePoss(bearPeice, -1, liveBoard)){
+						liveBoard.bearPiece(bearPeice, this.black);
+					}
+				}else{
+					System.out.println("Can not bear pieces yet");
+				}
 			}else if(option == 3){
 				turnOver = true;
-				
+				//CONCEEDING
+			}else if(option == 4){
+				turnOver = true;
+
 			}
 		}
 	}
-	
-	
-	
+
+
+
 	/**
-	 * Move piece.
-	 *TODO: Pieces can't bear 
+	 * Move piece. 
 	 * @param from the from
 	 * @param to the to
 	 */
-	public boolean movepiecePoss(int from, int to, Board liveBoard){
-		
+	public boolean movePiecePoss(int from, int to, Board liveBoard){
+
 		//FROM piece
-		
-		//simply checking if its within the array bounds
-		if(from>=0 && from<=25 && to<=25 && to>=0){
+
+		//simply checking if its within the array bounds, -1 = bear
+		if(from>=0 && from<=25 && to<=26 && to>=-1){
 
 			//checking there is at least 1 chip at the starting position and it is their chip
 			if( (liveBoard.Points[from].numEither()>0) && (liveBoard.Points[from].getCol()==black) ){
-				
+
 				//checking its going the right direction
 				if((black && to<from)||(!black && to>from)){
 
@@ -145,12 +160,12 @@ public class Player {
 							return false;
 						}
 					}
-	
-					//TO piece
-	
+
+					//TO piece, -1 = bear
+
 					//checking it is not moving in to the 0 spaces
-					if(to!=0 && to!=25){
-	
+					if(to!=0 && to!=25 && to!=-1 && to!=26){
+
 						//looping through the moves Left array to check against what they have asked for
 						boolean validLength = false;
 						for(int x: movesLeft.movesLeft){
@@ -159,14 +174,37 @@ public class Player {
 							}
 						}
 						if(validLength){
-	
+
 							//need to check the destination point has only 1 enemy chip or less or empty or one of yours
 							if((liveBoard.Points[to].getCol()==black) || (liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()<=1)){
-	
+
 								//DONE CHECKING
 								//possible to move the piece
 								return true;
 							}
+						}
+
+						
+					//TO: BEARING, if the player can bear
+					}else if(((to==-1 || to==26) && liveBoard.canPlayerBear((liveBoard.Points[from].getCol())))){
+						
+						int y = 0;
+						
+						if(to==-1){
+							y=1;
+						}else{
+							y=-1;
+						}
+						
+						//looping through the moves Left array to check against what they have asked for
+						boolean validLength = false;
+						for(int x: movesLeft.movesLeft){
+							if( x == distanceBetween(from,(to+y))){
+								validLength = true;
+							}
+						}
+						if(validLength){
+							return true;
 						}
 					}
 				}
@@ -176,31 +214,37 @@ public class Player {
 		return false;
 
 	}
-	
-	public void movepiece(int from, int to, Board liveBoard){
-		 //actually moving the piece
-		 
-		 //if there is an opposing piece there
-		 if(liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()==1){
-			 
-			 liveBoard.Points[from].removePiece(black);
-			 liveBoard.Points[to].removePiece(!black);
-			 liveBoard.Points[to].addPiece(black);
-			 
-			 if(black){
-				 liveBoard.Points[0].addRedPiece();
-			 }else{
-				 liveBoard.Points[25].addBlackPiece();
-			 }
-			 
-		 //if its empty
-		 }else{
-			 
-			 liveBoard.Points[from].removePiece(black);
-			 liveBoard.Points[to].addPiece(black);
-		 }
+
+	public void movePiece(int from, int to, Board liveBoard){
+		//actually moving the piece
+
+		//if there is an opposing piece there
+		if(to!=-1 && to!=26){
+			if(liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()==1){
+
+				liveBoard.Points[from].removePiece(black);
+				liveBoard.Points[to].removePiece(!black);
+				liveBoard.Points[to].addPiece(black);
+
+				if(black){
+					liveBoard.Points[0].addRedPiece();
+				}else{
+					liveBoard.Points[25].addBlackPiece();
+				}
+
+				//if its empty
+			}else{
+
+				liveBoard.Points[from].removePiece(black);
+				liveBoard.Points[to].addPiece(black);
+			}
+		//BEARING THE PEICE OFF
+		}else if(to==-1 || to==26){
+			liveBoard.Points[from].removePiece(black);
+			liveBoard.addToBear(black);
+		}
 	}
-	
+
 	public int distanceBetween(int a, int b){
 		if(a>b){
 			return (a-b);

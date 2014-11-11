@@ -30,7 +30,7 @@ public class BoardList {
 	public void addBoard(Board b, int to, int from, AIPlayer p1, MoveGenerator mg){
 		
 		//move the piece on this new board
-		p1.movepiece(from, to, b);
+		p1.movePiece(from, to, b);
 		
 		if(p1.movesLeft.size()>1){
 			p1.movesLeft.movesLeft.remove(Integer.valueOf(p1.distanceBetween(from, to)));
@@ -52,7 +52,9 @@ public class BoardList {
 		
 	}
 	
-	
+	/*
+	 * TODO: Actually create the remove Clones method, removing any duplicatres in the board list
+	 */
 	public void removeClones(){
 
 	}
@@ -66,6 +68,8 @@ public class BoardList {
 		//(int)(Math.random() * (max - min) + min)
 		int x = (int)(Math.random()*(boardList.size()));
 
+		System.out.println("board list size: "+boardList.size());
+		
 		
 		if(boardList.size()!=0){
 			chosenBoard = boardList.get(x);

@@ -56,16 +56,13 @@ public class AIPlayer extends Player{
 			System.out.println("AI rolls a "+currentRoll1+" and a "+ currentRoll2+" have been rolled, "+movesLeft.size()+" moves left");
 		}
 		
-		//get next board (could be null if there arent any next moves)
+		//get next board (could be null if there aren't any next moves)
 		Board newBoard = moveGen.getNextMoveBoard(currentBoard, this);
 		
 		if(newBoard == null){
 			//if null, just use the existing board
 			newBoard = currentBoard;
 		}
-		
-		//print board
-		newBoard.printBoard();
 		
 		return newBoard;
 		

@@ -64,7 +64,7 @@ public class PlayerJUnitTest {
 		//When
 		//Then
 
-		assertTrue(p1.movepiecePoss(1,3,b1));
+		assertTrue(p1.movePiecePoss(1,3,b1));
 	}
 	
 	
@@ -84,7 +84,7 @@ public class PlayerJUnitTest {
 		//When
 		//Then
 
-		assertTrue(p1.movepiecePoss(1,4,b1));
+		assertTrue(p1.movePiecePoss(1,4,b1));
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class PlayerJUnitTest {
 		b1.setStartPosition();
 		
 		//When
-		p1.movepiece(1, 2, b1);
+		p1.movePiece(1, 2, b1);
 		
 		//Then
 
@@ -108,10 +108,10 @@ public class PlayerJUnitTest {
 		
 		//Given
 		b1.setStartPosition();
-		p2.movepiece(6, 2, b1);
+		p2.movePiece(6, 2, b1);
 		
 		//When
-		p1.movepiece(1, 2, b1);
+		p1.movePiece(1, 2, b1);
 		
 		//Then
 
@@ -125,10 +125,10 @@ public class PlayerJUnitTest {
 		
 		//Given
 		b1.setStartPosition();
-		p1.movepiece(1, 2, b1);
+		p1.movePiece(1, 2, b1);
 		
 		//When
-		p2.movepiece(6, 2, b1);
+		p2.movePiece(6, 2, b1);
 		
 		//Then
 
@@ -143,11 +143,11 @@ public class PlayerJUnitTest {
 		
 		//Given
 		b1.setStartPosition();
-		p1.movepiece(19, 0, b1);
+		p1.movePiece(19, 0, b1);
 		p1.movesLeft.movesLeft.add(2);
 		
 		//When
-		boolean possible = p1.movepiecePoss(0, 2, b1);
+		boolean possible = p1.movePiecePoss(0, 2, b1);
 		
 		//Then
 		assertTrue(possible);
@@ -160,11 +160,11 @@ public class PlayerJUnitTest {
 		
 		//Given
 		b1.setStartPosition();
-		p1.movepiece(19, 0, b1);
+		p1.movePiece(19, 0, b1);
 		p1.movesLeft.movesLeft.add(2);
 		
 		//When
-		boolean possible = p1.movepiecePoss(19, 21, b1);
+		boolean possible = p1.movePiecePoss(19, 21, b1);
 		
 		//Then
 		assertFalse(possible);

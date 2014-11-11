@@ -80,7 +80,7 @@ public class Board {
 	 */
 	public void printBoard(){
 		System.out.println("|---------------------------------------|");
-		System.out.println("|  Black 0 = "+ Points[25].numEither()+"        |"  + "  Beared: 0      |");
+		System.out.println("|  Black 0 = "+ Points[25].numEither()+"        |"+ "  Beared: "+blackBore+"     |");
 		System.out.println("|---------------------------------------|");
 		System.out.println("|NUM| 1| 2| 3| 4| 5| 6| 7| 8| 9|10|11|12|");
 		System.out.print("|RED");
@@ -106,7 +106,7 @@ public class Board {
 		}
 		System.out.println("|");
 		System.out.println("|---------------------------------------|");
-		System.out.println("|  Red 0 = "+ Points[0].numEither()+"          |"+ "  Beared: 0      |");
+		System.out.println("|  Red 0 = "+ Points[0].numEither()+"          |"+ "  Beared: "+redBore+"     |");
 		System.out.println("|---------------------------------------|");
 	}
 	
@@ -168,6 +168,32 @@ public class Board {
 		}
 		return true;
 		
+	}
+
+	public boolean hasPlayerWon(Boolean black) {
+		if(black && blackBore == 15){
+			return true;
+		}else if(!black && redBore == 15){
+			return true;
+		}else{
+		return false;
+		}
+	}
+
+	public void bearPiece(int bearPeice, boolean black) {
+		
+		Points[bearPeice].removePiece(black);
+		addToBear(black);
+	}
+	
+	public void addToBear(boolean black){
+		
+		if(black){
+			blackBore++;
+		}else
+		{
+			redBore++;
+		}
 	}
 	
 }

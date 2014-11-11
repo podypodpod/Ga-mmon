@@ -24,10 +24,7 @@ public class BoardPanel extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	
-	
-	
+
 	public BoardPanel(){
 		
 		setSize(1169,637);
@@ -36,7 +33,6 @@ public class BoardPanel extends JPanel{
 	
 	
 	public void paintComponent(Graphics g){
-		
 		
 		super.paintComponent(g);
 		this.setBackground(Color.WHITE);
@@ -120,20 +116,20 @@ public class BoardPanel extends JPanel{
 	    }
 	    
 	    //Drawing checkers that have been bored
-	    if(redBore != 0){
-	    	
-	    	g2.setColor(Color.RED);
-	    	g2.fillOval(1060, 150, 50, 50);
-    		g2.setColor(Color.WHITE);
-    		g2.drawOval(1060, 150, 50, 50);
-    		g2.drawString(redBore+"", 1080, 180);
-	    }
 	    if(blackBore != 0){
 	    	g2.setColor(Color.BLACK);
-	    	g2.fillOval(1060, 390, 50, 50);
+	    	g2.fillOval(1050, 150, 50, 50);
     		g2.setColor(Color.WHITE);
-    		g2.drawOval(1060, 390, 50, 50);
-    		g2.drawString(redBore+"", 1080, 420);
+    		g2.drawOval(1050, 150, 50, 50);
+    		g2.drawString(blackBore+"", 1070, 180);
+
+	    }
+	    if(redBore != 0){
+	    	g2.setColor(Color.RED);
+	    	g2.fillOval(1050, 390, 50, 50);
+    		g2.setColor(Color.WHITE);
+    		g2.drawOval(1050, 390, 50, 50);
+    		g2.drawString(redBore+"", 1070, 420);
 	    }
 	    
 	    

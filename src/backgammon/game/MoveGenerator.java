@@ -15,14 +15,17 @@ public class MoveGenerator {
 	}
 	
 	public Board getNextMoveBoard(Board cb, AIPlayer p){
+		
 		//Clear the list
 		boardList.clearList();
 		
 		//generate all possible moves
 		generateMoves(cb, p);
 		
-		//select the best move and return it
-		//if no moves it will return null
+		//removing any duplicates in the list
+		boardList.removeClones();
+		
+		//select the best board and return it, if no possible next moves it will return null and carry on using the same board
 		return boardList.selectBoard();
 	}
 
@@ -34,22 +37,13 @@ public class MoveGenerator {
 			//check the current move doesn't = 0, this would mean it has been removed and a new board has been created
 			if(currentMove!= 0){
 				
-				//System.out.println("Move: "+currentMove);
-				
 				//loop all points
 				for(int point = 0; point < cb.Points.length; point++){
-					
-					//System.out.println("P"+point + ", MovesLeft: " + p.movesLeft.movesLeft.size() + "current Move: "+ currentMove);
-					
-					
-					
-					if(p.black){
 						
+					if(p.black){
 
 						//if the current point can move the current move, create new board of it
-						if(p.movepiecePoss(point, point-currentMove, cb)){
-							
-							//System.out.println("-New Board created: " + point + " to " + (point-currentMove) + ", Using move "+currentMove+". "+((p.movesLeft.size())-1)+" further moves left.");
+						if(p.movePiecePoss(point, point-currentMove, cb)){
 							
 							//adding the new board to the list
 							boardList.addBoard(new Board(cb), (point-currentMove), point, new AIPlayer(p), this);
@@ -59,9 +53,7 @@ public class MoveGenerator {
 						
 					}
 						//if the current point can move the current move, create new board of it
-						if(p.movepiecePoss(point, point+currentMove, cb)){
-							
-							//System.out.println("-New Board created: " + point + " to " + (point+currentMove) + ", Using move "+currentMove+". "+((p.movesLeft.size())-1)+" further moves left.");
+						if(p.movePiecePoss(point, point+currentMove, cb)){
 						
 							//adding the new board to the list
 							boardList.addBoard(new Board(cb), (point+currentMove), point, new AIPlayer(p), this);

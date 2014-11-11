@@ -37,7 +37,7 @@ public class ContainerFrame extends JFrame implements Runnable{
 	public void createGUI(){
 		
 		//Creating JFrame and panel
-		frame = new JFrame("GAMMON BACK");
+		frame = new JFrame("GA-mmon");
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -61,7 +61,7 @@ public class ContainerFrame extends JFrame implements Runnable{
 		mainPanel.add(cp,c);
 		
 		frame.add(mainPanel);
-		frame.setSize(1345,637);
+		frame.setSize(1355,637);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
