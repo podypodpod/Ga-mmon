@@ -22,7 +22,7 @@ public class Game implements Runnable{
 	/** The active game boolean, if the game is active. */
 	boolean gameActive;
 	
-	boolean isAIBlack = false;
+	boolean isAIBlack = true;
 
 	
 	//initial rolls
@@ -41,7 +41,7 @@ public class Game implements Runnable{
 		gameActive = true;
 		
 		PlayerAI = new AIPlayer(isAIBlack);
-		Player2 = new Player(isAIBlack);
+		Player2 = new Player(!isAIBlack);
 		
 	}
 	
