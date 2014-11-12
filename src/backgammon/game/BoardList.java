@@ -46,17 +46,22 @@ public class BoardList {
 		}
 
 		
-		//add the board to the list
-		addBoard(b);
-		
-		
+		//add the board to the list if there is not a duplicate
+		if(!(thereIsADuplicate(b))){
+			addBoard(b);
+		}
 	}
 	
 	/*
 	 * TODO: Actually create the remove Clones method, removing any duplicatres in the board list
 	 */
-	public void removeClones(){
-
+	public boolean thereIsADuplicate(Board b){
+		for(Board x: boardList){
+			if(x.equals(b)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public Board selectBoard(){

@@ -22,9 +22,6 @@ public class MoveGenerator {
 		//generate all possible moves
 		generateMoves(cb, p);
 		
-		//removing any duplicates in the list
-		boardList.removeClones();
-		
 		//select the best board and return it, if no possible next moves it will return null and carry on using the same board
 		return boardList.selectBoard();
 	}

@@ -196,4 +196,24 @@ public class Board {
 		}
 	}
 	
+	public boolean equals(Board b){
+		
+		boolean theSame = true;
+		
+		//checking beared points
+		if(this.redBore != b.redBore || this.blackBore != b.blackBore){
+			theSame=false;
+		}
+		
+		//checking points
+		for(int x = 0; x<this.Points.length; x++){
+			if(!(this.Points[x].equals(b.Points[x]))){
+				theSame = false;
+			}
+		}
+		
+		return theSame;
+		
+	}
+	
 }

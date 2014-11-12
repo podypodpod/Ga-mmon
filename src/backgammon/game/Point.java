@@ -1,5 +1,7 @@
 package backgammon.game;
 
+import java.awt.Paint;
+
 /**
  * The Class Point.
  */
@@ -138,6 +140,18 @@ public class Point {
 		}else{
 			addRedPiece();
 		}
+	}
+	
+	public boolean equals(Point p){
+		boolean theSame = true;
+		
+		if(this.redCount != p.redCount){
+			theSame=false;
+		}else if(this.blackCount != p.blackCount){
+			theSame=false;
+		}
+		
+		return theSame;
 	}
 	
 	
