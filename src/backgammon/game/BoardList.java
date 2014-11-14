@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class BoardList {
 	
-	/** The all pos moves. */
+	/** The all possible moves. */
 	private List<Board> boardList;
 
 	/**
@@ -53,7 +53,6 @@ public class BoardList {
 	}
 	
 	/*
-	 * TODO: Actually create the remove Clones method, removing any duplicatres in the board list
 	 */
 	public boolean thereIsADuplicate(Board b){
 		for(Board x: boardList){

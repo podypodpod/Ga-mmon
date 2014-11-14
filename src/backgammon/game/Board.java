@@ -2,19 +2,18 @@ package backgammon.game;
 /**
  * The Class Board.
  * 
- * 
+ * Holds all the data on the board, where all the peices are, if the player is in a position to move etc
  */
 public class Board {
 
-	/** The black bore. */
+	/** The black and red bore amounts */
 	int redBore, blackBore;
 	
-	/** The Points. */
+	/** The Points array, where all the pieces are located on the board */
 	public Point[] Points;
-
 	
 	/**
-	 * Instantiates a new board.
+	 * Instantiates a new board and sets the starting position
 	 */
 	public Board(){
 		//Creating 26 points
@@ -50,7 +49,7 @@ public class Board {
 	
 	
 	/**
-	 * Sets the start position.
+	 * Sets the start position in a standard game of backgammon
 	 */
 	public void setStartPosition(){
 		//Resetting all to 0
@@ -61,7 +60,6 @@ public class Board {
 
 		//completing the starting position of the checkers
 		//Red Checkers
-		
 		Points[1].setRedCount(2);
 		Points[12].setRedCount(5);
 		Points[17].setRedCount(3);
@@ -74,7 +72,7 @@ public class Board {
 	}
 	
 	/**
-	 * Prints the board.
+	 * Prints the board to console.
 	 * 
 	 * An actual Board resembling a BackGammon board and not just a list of values
 	 */

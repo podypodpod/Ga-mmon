@@ -3,8 +3,9 @@ package backgammon.game;
 import backgammon.gui.ContainerFrame;
 
 /**
- * The Class Main.
+ * The Main class
  * 
+ * Creates 2 threads, one for the gui and one for the game loop
  * 
  */
 public class Main {
@@ -14,6 +15,8 @@ public class Main {
 	
 	/**
 	 * The main method.
+	 * 
+	 *  Creates 2 threads, one for the gui and one for the game loop
 	 *
 	 * @param args the arguments
 	 */

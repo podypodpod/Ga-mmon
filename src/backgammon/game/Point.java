@@ -1,7 +1,5 @@
 package backgammon.game;
 
-import java.awt.Paint;
-
 /**
  * The Class Point.
  */
