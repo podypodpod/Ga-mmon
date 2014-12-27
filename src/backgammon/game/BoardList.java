@@ -136,4 +136,17 @@ public class BoardList {
 			System.out.println("----------------------------");
 		}
 	}
+	
+	/**
+	 * Checks for contents.
+	 *
+	 * @return true, if successful
+	 */
+	public boolean hasContents(){
+		if(boardList.size()>0){
+			return true;
+		}else{
+			return false;
+		}
+	}
 }

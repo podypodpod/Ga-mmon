@@ -1,5 +1,5 @@
 package backgammon.game;
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Die.
  */
@@ -21,7 +21,7 @@ public class Die {
 	 * @return the int
 	 */
 	public int RollDie(){
-		//using Die1
+
 		value = (int)(Math.random()*6)+1;
 		return value;
 	}

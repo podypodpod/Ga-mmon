@@ -170,6 +170,4 @@ public class PlayerJUnitTest {
 		assertFalse(possible);
 		
 	}
-	
-	
 }

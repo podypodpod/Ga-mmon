@@ -32,5 +32,14 @@ public class DieJUnitTest {
 		}
 		assertTrue(y);
 	}
+	
+	@Test
+	public void GetDieValueShouldEqualWhatIsSet(){
+		//when
+		d1.setDieValue(4);
+		
+		//then
+		assertEquals(4, d1.getDieValue());
+	}
 
 }

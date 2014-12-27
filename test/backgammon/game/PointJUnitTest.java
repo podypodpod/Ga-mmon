@@ -211,4 +211,49 @@ public class PointJUnitTest {
 		assertEquals(7, newPoint.getRedCount());
 	}
 	
+	@Test
+	public void shouldReturnTrueWhenPassedTwoIdenticalPoints(){
+		//Given
+		testSubject.setBlackCount(4);
+
+		Point OtherPoint = new Point();
+		OtherPoint.setBlackCount(4);
+		
+		//When
+		boolean x = testSubject.equals(OtherPoint);
+		
+		//Then
+		assertTrue(x);
+	}
+	
+
+	@Test
+	public void shouldReturnFalseWhenPassedTwoDifferentPointsDifCol(){
+		//Given
+		testSubject.setBlackCount(3);
+
+		Point OtherPoint = new Point();
+		OtherPoint.setRedCount(4);
+		
+		//When
+		boolean x = testSubject.equals(OtherPoint);
+		
+		//Then
+		assertFalse(x);
+	}
+	
+	@Test
+	public void shouldReturnFalseWhenPassedTwoDifferentPointsDifNums(){
+		//Given
+		testSubject.setBlackCount(3);
+
+		Point OtherPoint = new Point();
+		OtherPoint.setBlackCount(4);
+		
+		//When
+		boolean x = testSubject.equals(OtherPoint);
+		
+		//Then
+		assertFalse(x);
+	}
 }

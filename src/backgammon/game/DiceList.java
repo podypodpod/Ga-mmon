@@ -5,10 +5,10 @@ import java.util.List;
 
 /**
  * The Class DiceList.
+ * 
+ * Container for the Dice
  */
 public class DiceList {
-	
-	/** The moves left. */
 	
 	/** The dice. */
 	Die d1,d2;
@@ -23,6 +23,9 @@ public class DiceList {
 	
 	/**
 	 * Roll dice.
+	 * Rolls two random dice and returns the results
+	 * 
+	 * @return list of Dice rolls
 	 */
 	public List<Integer> RollDice(){
 		
@@ -39,7 +42,4 @@ public class DiceList {
 		}
 		return diceRolls;
 	}
-	
-
-
 }
