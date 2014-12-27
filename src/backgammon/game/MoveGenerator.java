@@ -1,19 +1,27 @@
 package backgammon.game;
 
-
+/**
+ * The Class MoveGenerator.
+ */
 public class MoveGenerator {
 	
+	/** The board list. */
 	BoardList boardList;
 	
+	/**
+	 * Instantiates a new move generator.
+	 */
 	public MoveGenerator(){
-		
 		boardList = new BoardList();
-		
 	}
 	
-	public void setBoard(){
-	}
-	
+	/**
+	 * Gets the next move board.
+	 *
+	 * @param cb the current board
+	 * @param p the player
+	 * @return the next move board
+	 */
 	public Board getNextMoveBoard(Board cb, AIPlayer p){
 		
 		//Clear the list
@@ -26,6 +34,12 @@ public class MoveGenerator {
 		return boardList.selectBoard();
 	}
 
+	/**
+	 * Generate all possible moves.
+	 *
+	 * @param cb the current board
+	 * @param p the player
+	 */
 	public void generateMoves(Board cb, AIPlayer p){
 		
 		//Loop all moves
@@ -61,5 +75,4 @@ public class MoveGenerator {
 			}
 		}
 	}
-
 }

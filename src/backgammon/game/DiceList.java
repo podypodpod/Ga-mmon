@@ -3,36 +3,43 @@ package backgammon.game;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Class DiceList.
+ */
 public class DiceList {
 	
-	private List<Integer> movesLeft;
+	/** The moves left. */
+	
+	/** The dice. */
 	Die d1,d2;
 	
-	public DiceList(){
-		movesLeft = new ArrayList<Integer>();
-		
+	/**
+	 * Instantiates a new dice list.
+	 */
+	public DiceList(){		
 		d1 = new Die();
 		d2 = new Die();
 	}
 	
-	public void RollDice(){
+	/**
+	 * Roll dice.
+	 */
+	public List<Integer> RollDice(){
+		
+		List<Integer> diceRolls = new ArrayList<Integer>();
 		
 		//roll dice
-		movesLeft.add(d1.RollDie());
-		movesLeft.add(d2.RollDie());
+		diceRolls.add(d1.RollDie());
+		diceRolls.add(d2.RollDie());
 		
 		//add 2 extra if there is a double roll
-		if(movesLeft.get(0) == movesLeft.get(1)){
-			movesLeft.add(Integer.valueOf(movesLeft.get(0)));
+		if(diceRolls.get(0) == diceRolls.get(1)){
+			diceRolls.add(Integer.valueOf(diceRolls.get(0)));
+			diceRolls.add(Integer.valueOf(diceRolls.get(0)));
 		}
+		return diceRolls;
 	}
 	
-	public void remove(int index){
-		movesLeft.remove(index);
-	}
-	
-	public void remove(Object o){
-		movesLeft.remove(o);
-	}
+
 
 }

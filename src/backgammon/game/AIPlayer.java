@@ -2,6 +2,8 @@ package backgammon.game;
 
 /**
  * The Class AIPlayer.
+ * 
+ * extends the Player class
  */
 public class AIPlayer extends Player{
 
@@ -11,7 +13,7 @@ public class AIPlayer extends Player{
 	/**
 	 * Instantiates a new AI player.
 	 *
-	 * @param b the b
+	 * @param b the color of the player, true = black
 	 */
 	public AIPlayer(boolean b) {
 		//super is the player class, the boolean is the colour of the player
@@ -29,8 +31,6 @@ public class AIPlayer extends Player{
 		
 		this.movesLeft = new MovesLeft(p.movesLeft);
 		this.black = p.black;
-		this.currentRoll1 = p.currentRoll1;
-		this.currentRoll2 = p.currentRoll2;
 		this.die1 = p.die1;
 		this.die2 = p.die2;
 		this.turnOver = p.turnOver;
@@ -39,34 +39,22 @@ public class AIPlayer extends Player{
 	
 	/**
 	 * AI Player's turn.
+	 * Dice are rolled, all possible moves generated, best is selected, turn over.
 	 *
 	 * @param currentBoard the current board
-	 * @return the resulting board
+	 * @return the resulting board at the end
 	 */
 	public Board AIturn(Board currentBoard){
 		
 		System.out.println("------------AI's Turn!-----------------");
 		
 		movesLeft = new MovesLeft();
+
+		//Rolling the dice
+		movesLeft.setTo(dice.RollDice());
 		
-		//roll dice
-		currentRoll1 = die1.RollDie();
-		currentRoll2 = die2.RollDie();
+		System.out.println("Player has : "+movesLeft.toString());
 		
-		//adding them to the array list
-		movesLeft.add(currentRoll1);
-		movesLeft.add(currentRoll2);
-		
-		//if you roll a double
-		if(currentRoll1 == currentRoll2){
-			
-			movesLeft.add(currentRoll1);
-			movesLeft.add(currentRoll1);
-			
-			System.out.println("AI rolls two rolls of "+currentRoll1+" have been made, "+movesLeft.size()+" moves left");
-		}else{
-			System.out.println("AI rolls a "+currentRoll1+" and a "+ currentRoll2+" have been rolled, "+movesLeft.size()+" moves left");
-		}
 		
 		//get next board (could be null if there aren't any next moves)
 		Board newBoard = moveGen.getNextMoveBoard(currentBoard, this);
@@ -79,7 +67,5 @@ public class AIPlayer extends Player{
 		
 		//return the new board, with the new moves implemented (or not if not possible, could be the same)
 		return newBoard;
-		
 	}
-	
 }

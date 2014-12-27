@@ -2,6 +2,9 @@ package backgammon.game;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
+// TODO: Auto-generated Javadoc
 /**
  * The Class BoardList.
  */
@@ -11,6 +14,8 @@ public class BoardList {
 	private List<Board> boardList;
 
 	/**
+	 * BoardList
+	 * 
 	 * Instantiates a new board list.
 	 */
 	public BoardList(){
@@ -19,14 +24,36 @@ public class BoardList {
 		
 	}
 	
+	/**
+	 * clearList
+	 * 
+	 * Emptys the list.
+	 */
 	public void clearList(){
 		boardList.clear();
 	}
 	
+	/**
+	 * addBoard
+	 * Adds the board passed in.
+	 *
+	 * @param b the board
+	 */
 	public void addBoard(Board b){
 		boardList.add(b);
 	}
 	
+	/**
+	 * addBoard
+	 * adds the board passed in with the move also passed in applied to it first.
+	 * It then checks if any more moves can be made
+	 *
+	 * @param b the board passed in
+	 * @param to the destination of move
+	 * @param from the start of the move
+	 * @param p1 the player object
+	 * @param mg the move generator
+	 */
 	public void addBoard(Board b, int to, int from, AIPlayer p1, MoveGenerator mg){
 		
 		//move the piece on this new board
@@ -38,21 +65,25 @@ public class BoardList {
 			p1.movesLeft.movesLeft.remove(0);
 			p1.movesLeft.movesLeft.add(Integer.valueOf(0));
 		}
-
 		
 		//check if any further moves can be made
 		if(!((p1.movesLeft.size()==1 && p1.movesLeft.getNext()==0)||(p1.movesLeft.size()==0))){
 			mg.generateMoves(b, p1);
 		}
 
-		
 		//add the board to the list if there is not a duplicate
 		if(!(thereIsADuplicate(b))){
 			addBoard(b);
 		}
 	}
 	
-	/*
+	
+	/**
+	 * There is a duplicate.
+	 * checks if there is already a duplicate of the board passed in already present in the list
+	 *
+	 * @param b the board it is checking against
+	 * @return true, if there is a duplicate
 	 */
 	public boolean thereIsADuplicate(Board b){
 		for(Board x: boardList){
@@ -63,6 +94,12 @@ public class BoardList {
 		return false;
 	}
 	
+	/**
+	 * Select board.
+	 * This will select the best board from the list for the player to use
+	 *
+	 * @return the board that has been selected
+	 */
 	public Board selectBoard(){
 		
 		//create a new board
@@ -86,6 +123,9 @@ public class BoardList {
 		
 	}
 	
+	/**
+	 * Prints the board list.
+	 */
 	public void printBoardList(){
 		int counter = 0;
 		for(Board x: boardList){

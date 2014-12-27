@@ -1,9 +1,11 @@
 package backgammon.game;
+// TODO: Auto-generated Javadoc
 /**
  * The Class Die.
  */
 public class Die {
 	
+	/** The value. */
 	private int value;
 	
 	/**
@@ -25,10 +27,20 @@ public class Die {
 	}
 	
 	
+	/**
+	 * Gets the die value.
+	 *
+	 * @return the die value
+	 */
 	public int getDieValue(){
 		return value;
 	}
 	
+	/**
+	 * Sets the die value.
+	 *
+	 * @param x the new die value
+	 */
 	public void setDieValue(int x){
 		value = x;
 	}

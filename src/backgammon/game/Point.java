@@ -1,5 +1,6 @@
 package backgammon.game;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class Point.
  */
@@ -12,6 +13,7 @@ public class Point {
 	private int redCount;
 	
 	/**
+	 * default constructor
 	 * Instantiates a new point.
 	 */
 	public Point(){
@@ -19,12 +21,17 @@ public class Point {
 		redCount = 0;
 	}
 	
+	/**
+	 * clone constructor
+	 * Instantiates a new point.
+	 *
+	 * @param p the point to copy
+	 */
 	public Point(Point p){
 		this.blackCount = p.blackCount;
 		this.redCount = p.redCount;
 	}
 	
-	//setBlackCount
 	/**
 	 * Sets the black count.
 	 *
@@ -33,7 +40,7 @@ public class Point {
 	public void setBlackCount(int bc){
 		blackCount = bc;
 	}
-	//setRedCount
+	
 	/**
 	 * Sets the red count.
 	 *
@@ -42,35 +49,35 @@ public class Point {
 	public void setRedCount(int rc){
 		redCount = rc;
 	}
-	//removeBlackpiece
+
 	/**
 	 * Removes the black piece.
 	 */
 	public void removeBlackPiece(){
 		blackCount--;
 	}
-	//removeRedpiece
+
 	/**
 	 * Removes the red piece.
 	 */
 	public void removeRedPiece(){
 		redCount--;
 	}
-	//addBlackpiece
+
 	/**
 	 * Adds the black piece.
 	 */
 	public void addBlackPiece(){
 		blackCount++;
 	}
-	//addRedpiece
+
 	/**
 	 * Adds the red piece.
 	 */
 	public void addRedPiece(){
 		redCount++;
 	}
-	//getBlackCount
+	
 	/**
 	 * Gets the black count.
 	 *
@@ -79,7 +86,7 @@ public class Point {
 	public int getBlackCount(){
 		return blackCount;
 	}
-	//getRedCount
+	
 	/**
 	 * Gets the red count.
 	 *
@@ -115,6 +122,11 @@ public class Point {
 		}
 	}
 	
+	/**
+	 * Gets the col.
+	 *
+	 * @return the col
+	 */
 	public boolean getCol(){
 		if(blackCount>redCount){
 			return true;
@@ -123,6 +135,11 @@ public class Point {
 		}
 	}
 
+	/**
+	 * Removes the piece.
+	 *
+	 * @param black the black
+	 */
 	public void removePiece(Boolean black) {
 		if(black){
 			removeBlackPiece();
@@ -132,6 +149,11 @@ public class Point {
 		
 	}
 
+	/**
+	 * Adds the piece.
+	 *
+	 * @param black the black
+	 */
 	public void addPiece(Boolean black) {
 		if(black){
 			addBlackPiece();
@@ -140,6 +162,12 @@ public class Point {
 		}
 	}
 	
+	/**
+	 * Equals.
+	 *
+	 * @param p the point
+	 * @return true, if successful
+	 */
 	public boolean equals(Point p){
 		boolean theSame = true;
 		

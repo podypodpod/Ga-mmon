@@ -1,4 +1,5 @@
 package backgammon.game;
+// TODO: Auto-generated Javadoc
 /**
  * The Class Board.
  * 
@@ -6,22 +7,26 @@ package backgammon.game;
  */
 public class Board {
 
-	/** The black and red bore amounts */
+	/**  The black and red bore amounts. */
 	int redBore, blackBore;
 	
-	/** The Points array, where all the pieces are located on the board */
+	/**  The Points array, where all the pieces are located on the board. */
 	public Point[] Points;
 	
 	/**
-	 * Instantiates a new board and sets the starting position
+	 * Board default Constructor
+	 * Instantiates a new board and sets the starting position to the default start pos.
 	 */
 	public Board(){
+		
 		//Creating 26 points
 		Points = new Point[26];
+		
 		//creating the blank objects
 		for(int x = 0; x<Points.length;x++){
 			Points[x] = new Point();
 		}
+		
 		//Resetting all to 0
 		setStartPosition();
 		
@@ -31,34 +36,42 @@ public class Board {
 	}
 	
 	/**
-	 * Instantiates a new board, cloning the one passed in
+	 * Instantiates a new board, cloning the one passed in.
 	 *
 	 * @param copy the copy board
 	 */
 	public Board(Board copy){
-		
+		//26 new points
 		this.Points = new Point[26];
+		
+		//coppying each one over in a loop
 		for(int i = 0; i<copy.Points.length; i++){
+			//copy
 			Point x = new Point(copy.Points[i]);
+			//add
 			this.Points[i] = x;
 		}
-
+		
+		//copying bored
 		this.redBore = copy.redBore;
 		this.blackBore = copy.blackBore;
 	}
 	
 	
 	/**
-	 * Sets the start position in a standard game of backgammon
+	 * setStartPosition
+	 * 
+	 * Sets the start position in a standard game of backgammon.
 	 */
 	public void setStartPosition(){
+		
 		//Resetting all to 0
 		for(int x =0; x<Points.length;x++){
 			Points[x].setBlackCount(0);
 			Points[x].setRedCount(0);
 		}
 
-		//completing the starting position of the checkers
+		//completing the starting position of the checkers, the rest left at 0
 		//Red Checkers
 		Points[1].setRedCount(2);
 		Points[12].setRedCount(5);
@@ -120,7 +133,7 @@ public class Board {
 	/**
 	 * Checks if is there zero.
 	 *
-	 * @param black the black
+	 * @param black the color of the player
 	 * @return true, if is there zero
 	 */
 	public boolean isthereZero(boolean black){
@@ -142,6 +155,14 @@ public class Board {
 	}
 	
 	
+	/**
+	 * Can player bear.
+	 * 
+	 * checks the board positions etc to check if the player can legally bear
+	 *
+	 * @param black the player color
+	 * @return true, if successful
+	 */
 	public boolean canPlayerBear(boolean black){
 		
 		//BLACK
@@ -168,22 +189,43 @@ public class Board {
 		
 	}
 
+	/**
+	 * Checks for player winning.
+	 *
+	 * @param black the player color
+	 * @return true, if they have won
+	 */
 	public boolean hasPlayerWon(Boolean black) {
+		//checking if the bore peices = 15
 		if(black && blackBore == 15){
+			//won
 			return true;
 		}else if(!black && redBore == 15){
+			//won
 			return true;
 		}else{
-		return false;
+			//not won yet
+			return false;
 		}
 	}
 
+	/**
+	 * Bear piece.
+	 *
+	 * @param bearPeice the position to bear
+	 * @param black the player color
+	 */
 	public void bearPiece(int bearPeice, boolean black) {
 		
 		Points[bearPeice].removePiece(black);
 		addToBear(black);
 	}
 	
+	/**
+	 * Adds the to bear.
+	 *
+	 * @param black the player color
+	 */
 	public void addToBear(boolean black){
 		
 		if(black){
@@ -194,6 +236,14 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * Equals.
+	 * 
+	 * Board comparison, if they are the same (same peice positions)
+	 *
+	 * @param b the board
+	 * @return true, if they are the same
+	 */
 	public boolean equals(Board b){
 		
 		boolean theSame = true;

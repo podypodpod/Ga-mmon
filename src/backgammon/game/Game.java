@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
  */
 public class Game implements Runnable{
 
-	/** The Players created */
+	/**  The Players created. */
 	AIPlayer Player1, Player2;
 
 	/** The board. */
@@ -22,11 +22,17 @@ public class Game implements Runnable{
 	boolean gameActive;
 
 	// Quick booleans to change when you want a real player / AI player or change the team color
+	/** The is p1 black. */
 	boolean isP1Black = true;
+	
+	/** The are both a is. */
 	boolean areBothAIs = true;
+	
+	/** The time delay. */
 	int timeDelay = 200;
 
 	//initial rolls
+	/** The p2 roll. */
 	int p1Roll = 0, p2Roll = 0;
 
 	/**
@@ -59,10 +65,11 @@ public class Game implements Runnable{
 			initialRoll();
 		}
 	}
+	
 	/**
 	 * Run method
 	 * 
-	 * Contains the game loop
+	 * Contains the game loop.
 	 */
 	@Override
 	public void run() {
@@ -172,11 +179,8 @@ public class Game implements Runnable{
 					}else{
 						p1sTurn = true;
 					}
-					
 				}
-
 			}
 		}
 	}
-
 }

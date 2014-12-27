@@ -16,11 +16,10 @@ public class Player {
 
 	/** The Dice. */
 	Die die1, die2;
+	
+	DiceList dice;
 
 	boolean turnOver;
-
-	int currentRoll1 = 0, currentRoll2 = 0;
-
 
 
 	/**
@@ -33,10 +32,11 @@ public class Player {
 		black = b;
 
 		movesLeft = new MovesLeft();
+		
+		dice = new DiceList();
 
 		die1 = new Die();
 		die2 = new Die();
-
 	}
 
 	/**
@@ -48,31 +48,11 @@ public class Player {
 
 		System.out.println("------------Your Turn!-----------------");
 
-		movesLeft.clear();
-
-		//roll dice
-		currentRoll1 = die1.RollDie();
-		currentRoll2 = die2.RollDie();
-
-		//adding them to the array list
-		movesLeft.add(currentRoll1);
-		movesLeft.add(currentRoll2);
-
-		//if you roll a double
-		if(currentRoll1 == currentRoll2){
-
-			movesLeft.add(currentRoll1);
-			movesLeft.add(currentRoll1);
-
-
-			System.out.println("Two rolls of "+currentRoll1+" have been made, you have 4 moves of "+currentRoll1);
-
-		}else{
-			System.out.println("A "+currentRoll1+" and a "+ currentRoll2+" have been rolled");
-
-		}
-
-
+		//Rolling the dice
+		movesLeft.setTo(dice.RollDice());
+		
+		System.out.println("Player has : "+movesLeft.toString());
+		
 		//ASKING WHAT TO DO
 		while(!turnOver){
 
