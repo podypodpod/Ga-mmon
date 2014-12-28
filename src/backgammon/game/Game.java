@@ -2,6 +2,8 @@ package backgammon.game;
 
 import javax.swing.JOptionPane;
 
+import backgammon.settings.GameSettings;
+
 /**
  * The Class Game.
  * 
@@ -23,13 +25,13 @@ public class Game implements Runnable{
 
 	// Quick booleans to change when you want a real player / AI player or change the team color
 	/** The is p1 black. */
-	boolean isP1Black = true;
+	boolean isP1Black = GameSettings.isP1Black();
 	
 	/** The are both a is. */
-	boolean areBothAIs = true;
+	boolean areBothAIs = GameSettings.getAreBothAI();
 	
 	/** The time delay. */
-	int timeDelay = 200;
+	int timeDelay = GameSettings.getTimeDelay();
 
 	//initial rolls
 	/** The p2 roll. */
@@ -75,25 +77,30 @@ public class Game implements Runnable{
 	public void run() {
 		
 		//Printing game info out to console
-		System.out.print("     Welcome! New game, you are ");
-		if(isP1Black){
-			System.out.println("RED");
-		}else{
-			System.out.println("BLACK");
+		System.out.print("Welcome! New game with two players");
+		
+		if(!areBothAIs){
+			System.out.println("You are Player 2");
 		}
-		System.out.println("     Initial dice throw commencing..");
+		
+		if(isP1Black){
+			System.out.println("Player 1 is BLACK, Player 2 is RED");
+		}else{
+			System.out.println("Player 1 is RED, Player 2 is BLACK");
+		}
+		System.out.println("Initial dice throw commencing..");
 		
 		//initial roll method, decides who moves first
 		initialRoll();
 
-		System.out.println("     AI rolls: "+p1Roll+"     You roll: "+p2Roll);
+		System.out.println("Player 1 rolls: "+p1Roll+"     Player 2: "+p2Roll);
 		//if player 1 has won
 		if(p1Roll>p2Roll){
-			System.out.println("     AI wins! wait for your turn...");
+			System.out.println("Player 1(Black="+Player1.black+") Has won the roll");
 			p1sTurn = true;
 		//if player 2 has won
 		}else{
-			System.out.println("     You win the roll!....");
+			System.out.println("Player 2(Black="+Player2.black+") Has won the roll");
 			p1sTurn = false;
 		}
 		
@@ -115,7 +122,7 @@ public class Game implements Runnable{
 				//if they have won, then set the gameActive to false and display the message
 				if(liveBoard.hasPlayerWon(Player1.black)){
 					gameActive = false;
-					JOptionPane.showMessageDialog(null, "Player AI has won!");
+					JOptionPane.showMessageDialog(null, "Player 1 has won! (Black="+Player1.black+")");
 					
 				//if they haven't won then continue
 				}else{
@@ -146,7 +153,7 @@ public class Game implements Runnable{
 					//checking if the player has now won, if they have then gaveActive is now false and they are told they have won
 					if(liveBoard.hasPlayerWon(Player2.black)){
 						gameActive = false;
-						JOptionPane.showMessageDialog(null, "Player 2 has won!");
+						JOptionPane.showMessageDialog(null, "Player 2 has won! (Black="+Player2.black+")");
 						
 					//if not, let the game loop contine
 					}else{
@@ -175,7 +182,7 @@ public class Game implements Runnable{
 					//gameActive is false if they have, and they are informed
 					if(liveBoard.hasPlayerWon(Player2.black)){
 						gameActive = false;
-						JOptionPane.showMessageDialog(null, "Player 2 has won!");
+						JOptionPane.showMessageDialog(null, "Player 2 has won! (Black="+Player2.black+")");
 					}else{
 						p1sTurn = true;
 					}

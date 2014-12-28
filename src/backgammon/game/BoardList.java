@@ -3,8 +3,6 @@ package backgammon.game;
 import java.util.ArrayList;
 import java.util.List;
 
-
-// TODO: Auto-generated Javadoc
 /**
  * The Class BoardList.
  */
@@ -19,9 +17,7 @@ public class BoardList {
 	 * Instantiates a new board list.
 	 */
 	public BoardList(){
-		
 		boardList = new ArrayList<Board>();
-		
 	}
 	
 	/**
@@ -105,14 +101,18 @@ public class BoardList {
 		//create a new board
 		Board chosenBoard;
 		
-		//decide which one is the best
-		//(int)(Math.random() * (max - min) + min)
-		int x = (int)(Math.random()*(boardList.size()));
-
-		System.out.println("board list size: "+boardList.size());
-		
-		
 		if(boardList.size()!=0){
+			
+			//rate them all on the the play style etc
+			rankBoards();
+			
+			//pass them to the GA to decide which it will use
+			//
+			//currently random
+			int x = (int)(Math.random()*(boardList.size()));
+
+			System.out.println("board list size: "+boardList.size());
+			
 			chosenBoard = boardList.get(x);
 			return chosenBoard;
 		}else
@@ -148,5 +148,15 @@ public class BoardList {
 		}else{
 			return false;
 		}
+	}
+
+	/**
+	 * Rank Boards.
+	 * 
+	 * Method will order them to allow the GA to later decide which it picks
+	 */
+	public void rankBoards() {
+		
+		
 	}
 }

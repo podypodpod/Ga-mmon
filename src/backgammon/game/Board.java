@@ -1,5 +1,7 @@
 package backgammon.game;
-// TODO: Auto-generated Javadoc
+
+import backgammon.settings.GameSettings;
+
 /**
  * The Class Board.
  * 
@@ -125,7 +127,12 @@ public class Board {
 	 * Prints the board gui.
 	 */
 	public void printBoardGUI(){
-		Main.containerFrame.bp.printCheckers(Points, redBore, blackBore);
+		if(GameSettings.getNonGuiMode()){
+			System.out.println("Non GUI Mode");
+		}else{
+			GameManager.containerFrame.bp.printCheckers(Points, redBore, blackBore);
+		}
+		
 	}
 	
 	
