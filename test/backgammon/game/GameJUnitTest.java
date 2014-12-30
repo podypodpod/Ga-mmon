@@ -16,7 +16,7 @@ public class GameJUnitTest {
 	@Test
 	public void checkingGameISActive() {
 		//Given
-		game = new Game();
+		game = new Game(null, null);
 		
 		//When
 		//Then

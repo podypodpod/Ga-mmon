@@ -4,16 +4,17 @@ public class Population {
 	
 	Individual[] individuals;
 	
-	public Population( int populationSize){	
+	public Population( int populationSize, boolean initialise){	
 		individuals = new Individual[populationSize];
 		
-		for(int x = 0; x<populationSize; x++){
-			Individual newIndividual = new Individual();
-			
-			individuals[x] = newIndividual;
+		if(initialise){
+			for(int x = 0; x<populationSize; x++){
+				Individual newIndividual = new Individual();
+				
+				individuals[x] = newIndividual;
+			}
 		}
 	}
-	
 	
 	
 	public Individual getFittest(){
@@ -25,5 +26,23 @@ public class Population {
 			}
 		}
 		return fittest;
+	}
+	
+	public int size(){
+		return individuals.length;
+	}
+
+
+    public void saveIndividual(int index, Individual indiv) {
+        individuals[index] = indiv;
+    }
+
+
+	public Individual getIndividual(int i) {
+		return individuals[i];
+	}
+	
+	public Individual[] getPopulation(){
+		return individuals;
 	}
 }

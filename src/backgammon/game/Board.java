@@ -127,14 +127,10 @@ public class Board {
 	 * Prints the board gui.
 	 */
 	public void printBoardGUI(){
-		if(GameSettings.getNonGuiMode()){
-			System.out.println("Non GUI Mode");
-		}else{
+		if(GameSettings.getDisplayGUI()){
 			GameManager.containerFrame.bp.printCheckers(Points, redBore, blackBore);
 		}
-		
 	}
-	
 	
 	
 	/**

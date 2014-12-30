@@ -20,10 +20,10 @@ public class MoveGeneratorJUnitTest {
 
 		theBoard = new Board();
 		
-		p1 = new AIPlayer(true);
-		p2 = new AIPlayer(false);
+		p1 = new AIPlayer(true, null);
+		p2 = new AIPlayer(false, null);
 		
-		mg = new MoveGenerator();
+		mg = new MoveGenerator(null);
 		
 		
 	}

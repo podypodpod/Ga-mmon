@@ -2,6 +2,8 @@ package backgammon.game;
 
 import java.util.Scanner;
 
+import backgammon.settings.GameSettings;
+
 /**
  * The Class Player.
  * 
@@ -46,7 +48,7 @@ public class Player {
 
 		turnOver = false;
 
-		System.out.println("------------Your Turn!-----------------");
+		if(GameSettings.getDisplayConsole()){System.out.println("------------Your Turn!-----------------");}
 
 		//Rolling the dice
 		movesLeft.setTo(dice.RollDice());
@@ -56,13 +58,14 @@ public class Player {
 		//ASKING WHAT TO DO
 		while(!turnOver){
 
-
-			System.out.println("What do you want to do?, "+movesLeft.size()+" moves left");
-
-			System.out.println("1) Move a piece");
-			System.out.println("2) Bear off a piece");
-			System.out.println("3) Skip or Finish go");
-			System.out.println("4) Concede");
+			if(GameSettings.getDisplayConsole()){
+				System.out.println("What do you want to do?, "+movesLeft.size()+" moves left");
+	
+				System.out.println("1) Move a piece");
+				System.out.println("2) Bear off a piece");
+				System.out.println("3) Skip or Finish go");
+				System.out.println("4) Concede");
+			}
 
 			@SuppressWarnings("resource")
 			Scanner Scanner = new Scanner(System.in);

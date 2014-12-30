@@ -3,6 +3,9 @@ package backgammon.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import backgammon.genes.Individual;
+import backgammon.settings.GameSettings;
+
 /**
  * The Class BoardList.
  */
@@ -10,14 +13,17 @@ public class BoardList {
 	
 	/** The all possible moves. */
 	private List<Board> boardList;
+	
+	private Individual playerPersonality;
 
 	/**
 	 * BoardList
 	 * 
 	 * Instantiates a new board list.
 	 */
-	public BoardList(){
+	public BoardList(Individual pp){
 		boardList = new ArrayList<Board>();
+		playerPersonality = pp;
 	}
 	
 	/**
@@ -99,21 +105,33 @@ public class BoardList {
 	public Board selectBoard(){
 		
 		//create a new board
-		Board chosenBoard;
+		Board chosenBoard = null;
 		
-		if(boardList.size()!=0){
+		if(boardList.size()>0){
 			
 			//rate them all on the the play style etc
 			rankBoards();
 			
-			//pass them to the GA to decide which it will use
-			//
-			//currently random
-			int x = (int)(Math.random()*(boardList.size()));
+			//Use the individual to decide what to do next
+			if(playerPersonality!=null){
+				if(playerPersonality.getAgressionChance()>0.5){
+					
+					//TO:DO actually make them play well
+					
+					chosenBoard = boardList.get(0);
+				}else{
+					chosenBoard = boardList.get(boardList.size()-1);
+				}
+				
+			}else{
+				//if the player personality = null then just pick at random, as this means its the oposition
+				int x = (int)(Math.random()*(boardList.size()));
 
-			System.out.println("board list size: "+boardList.size());
+				if(GameSettings.getDisplayConsole()){System.out.println("board list size: "+boardList.size());}
+				
+				chosenBoard = boardList.get(x);
+			}
 			
-			chosenBoard = boardList.get(x);
 			return chosenBoard;
 		}else
 		{

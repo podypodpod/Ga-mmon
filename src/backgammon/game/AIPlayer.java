@@ -1,5 +1,8 @@
 package backgammon.game;
 
+import backgammon.genes.Individual;
+import backgammon.settings.GameSettings;
+
 /**
  * The Class AIPlayer.
  * 
@@ -9,16 +12,19 @@ public class AIPlayer extends Player{
 
 	/** The move generator for the player to use. */
 	MoveGenerator moveGen;
-		
+	
+	private Individual playerPersonality;
+	
 	/**
 	 * Instantiates a new AI player.
 	 *
 	 * @param b the color of the player, true = black
 	 */
-	public AIPlayer(boolean b) {
+	public AIPlayer(boolean b, Individual indiv) {
 		//super is the player class, the boolean is the colour of the player
 		super(b);
-		moveGen = new MoveGenerator();
+		playerPersonality = indiv;
+		moveGen = new MoveGenerator(playerPersonality);
 	}
 	
 	/**
@@ -46,14 +52,14 @@ public class AIPlayer extends Player{
 	 */
 	public Board AIturn(Board currentBoard){
 		
-		System.out.println("------------AI's Turn!-----------------");
+		if(GameSettings.getDisplayConsole()){System.out.println("------------AI's Turn!-----------------");}
 		
 		movesLeft = new MovesLeft();
 
 		//Rolling the dice
 		movesLeft.setTo(dice.RollDice());
 		
-		System.out.println("Player has : "+movesLeft.toString());
+		if(GameSettings.getDisplayConsole()){System.out.println("Player has : "+movesLeft.toString());}
 		
 		
 		//get next board (could be null if there aren't any next moves)

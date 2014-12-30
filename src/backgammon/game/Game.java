@@ -2,6 +2,7 @@ package backgammon.game;
 
 import javax.swing.JOptionPane;
 
+import backgammon.genes.Individual;
 import backgammon.settings.GameSettings;
 
 /**
@@ -33,25 +34,29 @@ public class Game implements Runnable{
 	/** The time delay. */
 	int timeDelay = GameSettings.getTimeDelay();
 
-	//initial rolls
-	/** The p2 roll. */
+	/** initial rolls */
 	int p1Roll = 0, p2Roll = 0;
 
+	Individual indiv1, indiv2;
+	
 	/**
 	 * Instantiates a new game.
 	 */
-	public Game(){
+	public Game(Individual i1, Individual i2){
 
 		liveBoard = new Board();
 		liveBoard.printBoardGUI();
 
 		//game active
 		gameActive = true;
-
-		Player1 = new AIPlayer(isP1Black);
-		Player2 = new AIPlayer(!isP1Black);
+		
+		indiv1 = i1;
+		indiv2 = i2;
+		
+		Player1 = new AIPlayer(isP1Black, indiv1);
+		Player2 = new AIPlayer(!isP1Black, indiv2);
 	}
-
+	
 	/**
 	 * Initial roll.
 	 * 
@@ -68,6 +73,7 @@ public class Game implements Runnable{
 		}
 	}
 	
+	
 	/**
 	 * Run method
 	 * 
@@ -77,30 +83,33 @@ public class Game implements Runnable{
 	public void run() {
 		
 		//Printing game info out to console
-		System.out.print("Welcome! New game with two players");
-		
-		if(!areBothAIs){
-			System.out.println("You are Player 2");
+		if(GameSettings.getDisplayConsole()){
+			System.out.print("Welcome! New game with two players");
+			
+			if(!areBothAIs){
+				System.out.println("You are Player 2");
+			}
+			
+			if(isP1Black){
+				System.out.println("Player 1 is BLACK, Player 2 is RED");
+			}else{
+				System.out.println("Player 1 is RED, Player 2 is BLACK");
+			}
+			System.out.println("Initial dice throw commencing..");
 		}
 		
-		if(isP1Black){
-			System.out.println("Player 1 is BLACK, Player 2 is RED");
-		}else{
-			System.out.println("Player 1 is RED, Player 2 is BLACK");
-		}
-		System.out.println("Initial dice throw commencing..");
 		
 		//initial roll method, decides who moves first
 		initialRoll();
 
-		System.out.println("Player 1 rolls: "+p1Roll+"     Player 2: "+p2Roll);
+		if(GameSettings.getDisplayConsole()){System.out.println("Player 1 rolls: "+p1Roll+"     Player 2: "+p2Roll);}
 		//if player 1 has won
 		if(p1Roll>p2Roll){
-			System.out.println("Player 1(Black="+Player1.black+") Has won the roll");
+			if(GameSettings.getDisplayConsole()){System.out.println("Player 1(Black="+Player1.black+") Has won the roll");}
 			p1sTurn = true;
 		//if player 2 has won
 		}else{
-			System.out.println("Player 2(Black="+Player2.black+") Has won the roll");
+			if(GameSettings.getDisplayConsole()){System.out.println("Player 2(Black="+Player2.black+") Has won the roll");}
 			p1sTurn = false;
 		}
 		
@@ -115,14 +124,18 @@ public class Game implements Runnable{
 				
 				//displaying new board
 				liveBoard.printBoardGUI();
-				
-				//TODO: Create an option to start a new game
-				
+								
 				//checking if the player has won yet
 				//if they have won, then set the gameActive to false and display the message
 				if(liveBoard.hasPlayerWon(Player1.black)){
 					gameActive = false;
-					JOptionPane.showMessageDialog(null, "Player 1 has won! (Black="+Player1.black+")");
+					//JOptionPane.showMessageDialog(null, "Player 1 has won! (Black="+Player1.black+")");
+					System.out.println("Player 1 has won! (Black="+Player1.black+")");
+					indiv1.setFitness(1.0);
+
+					if(indiv2!=null){
+						indiv2.setFitness(0.0);
+					}
 					
 				//if they haven't won then continue
 				}else{
@@ -153,7 +166,12 @@ public class Game implements Runnable{
 					//checking if the player has now won, if they have then gaveActive is now false and they are told they have won
 					if(liveBoard.hasPlayerWon(Player2.black)){
 						gameActive = false;
-						JOptionPane.showMessageDialog(null, "Player 2 has won! (Black="+Player2.black+")");
+						//JOptionPane.showMessageDialog(null, "Player 2 has won! (Black="+Player2.black+")");
+						System.out.println("Player 2 has won! (Black="+Player2.black+")");
+						if(indiv2!=null){
+							indiv2.setFitness(1.0);
+						}
+						indiv1.setFitness(0.0);
 						
 					//if not, let the game loop contine
 					}else{
@@ -183,6 +201,8 @@ public class Game implements Runnable{
 					if(liveBoard.hasPlayerWon(Player2.black)){
 						gameActive = false;
 						JOptionPane.showMessageDialog(null, "Player 2 has won! (Black="+Player2.black+")");
+						if(!indiv2.equals(null)){indiv2.setFitness(1.0);}
+						indiv1.setFitness(0.0);
 					}else{
 						p1sTurn = true;
 					}

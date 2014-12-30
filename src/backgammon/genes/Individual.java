@@ -1,20 +1,49 @@
 package backgammon.genes;
 
+
 public class Individual {
 
-	double howGood;
-	
+	private double agressionChance = 0;
+	private double defensiveChance = 0;
+	private int numOfAtrributes = 2;
+	private double fitness = 0;
 	
 	public Individual(){
-		howGood = Math.random();
-		System.out.println("Indivdual created with gooness of: "+howGood);
+		agressionChance = Math.random();
+		defensiveChance = Math.random();
+		//System.out.println("Indivdual created with agression="+agressionChance+" defnsive="+defensiveChance);
 	}
 	
 	public double getFitness(){
-		return howGood;
+		FitnessCalculator.getFitnessOf(this);
+		return fitness;
+	}
+	
+	public void setFitness(double fit){
+		fitness = fit;
+	}
+
+	public double getAgressionChance() {
+		return agressionChance;
+	}
+	
+	public double getDefensiveChance(){
+		return defensiveChance;
+	}
+	
+	public int getNumOfAttributes(){
+		return numOfAtrributes;
+	}
+
+	public void setAgressionChance(double ac) {
+		agressionChance = ac;
+	}
+	public void setDefensiveChance(double dc) {
+		defensiveChance = dc;
 	}
 	
 	public String toString(){
-		return "Individual with goodness: "+howGood;
+		return "Indiviudal with agr:"+agressionChance+" and def:"+defensiveChance;
 	}
 }
+

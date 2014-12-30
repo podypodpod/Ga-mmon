@@ -1,5 +1,7 @@
 package backgammon.game;
 
+import backgammon.genes.Individual;
+
 /**
  * The Class MoveGenerator.
  */
@@ -8,11 +10,14 @@ public class MoveGenerator {
 	/** The board list. */
 	BoardList boardList;
 	
+	Individual playerPersonality;
+	
 	/**
 	 * Instantiates a new move generator.
 	 */
-	public MoveGenerator(){
-		boardList = new BoardList();
+	public MoveGenerator(Individual pp){
+		playerPersonality = pp;
+		boardList = new BoardList(playerPersonality);
 	}
 	
 	/**
