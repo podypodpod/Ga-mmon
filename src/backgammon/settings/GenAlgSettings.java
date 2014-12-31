@@ -12,16 +12,16 @@ public class GenAlgSettings {
     private static final double mutationRate = 0.015;
     
     /** The Constant tournamentSize. */
-    private static final int tournamentSize = 20;
+    private static final int tournamentSize = 2;
     
     /** The Constant elitism. */
     private static final boolean elitism = true;
     
     /** The Constant generations. */
-    private static final int generations = 10;
+    private static final int generations = 2;
     
     /** the constant population size */
-    private static final int populationSize = 20;
+    private static final int populationSize = 5;
     
     /**
      * Gets the uniformrate.

@@ -11,7 +11,6 @@ public class Individual {
 	public Individual(){
 		agressionChance = Math.random();
 		defensiveChance = Math.random();
-		//System.out.println("Indivdual created with agression="+agressionChance+" defnsive="+defensiveChance);
 	}
 	
 	public double getFitness(){

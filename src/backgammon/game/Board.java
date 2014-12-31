@@ -2,6 +2,7 @@ package backgammon.game;
 
 import backgammon.settings.GameSettings;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class Board.
  * 
@@ -265,6 +266,20 @@ public class Board {
 		
 		return theSame;
 		
+	}
+	
+	/**
+	 * How many has player bore.
+	 *
+	 * @param black the blackBore
+	 * @return the num of bore
+	 */
+	public int howManyHasPlayerBore(boolean black){
+		if(black){
+			return blackBore;
+		}else{
+			return redBore;
+		}
 	}
 	
 }

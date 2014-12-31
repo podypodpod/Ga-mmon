@@ -24,7 +24,6 @@ public class Game implements Runnable{
 	/** The active game boolean, if the game is active. */
 	boolean gameActive;
 
-	// Quick booleans to change when you want a real player / AI player or change the team color
 	/** The is p1 black. */
 	boolean isP1Black = GameSettings.isP1Black();
 	
@@ -131,11 +130,7 @@ public class Game implements Runnable{
 					gameActive = false;
 					//JOptionPane.showMessageDialog(null, "Player 1 has won! (Black="+Player1.black+")");
 					System.out.println("Player 1 has won! (Black="+Player1.black+")");
-					indiv1.setFitness(1.0);
-
-					if(indiv2!=null){
-						indiv2.setFitness(0.0);
-					}
+					gameOver();
 					
 				//if they haven't won then continue
 				}else{
@@ -168,10 +163,7 @@ public class Game implements Runnable{
 						gameActive = false;
 						//JOptionPane.showMessageDialog(null, "Player 2 has won! (Black="+Player2.black+")");
 						System.out.println("Player 2 has won! (Black="+Player2.black+")");
-						if(indiv2!=null){
-							indiv2.setFitness(1.0);
-						}
-						indiv1.setFitness(0.0);
+						gameOver();
 						
 					//if not, let the game loop contine
 					}else{
@@ -201,13 +193,31 @@ public class Game implements Runnable{
 					if(liveBoard.hasPlayerWon(Player2.black)){
 						gameActive = false;
 						JOptionPane.showMessageDialog(null, "Player 2 has won! (Black="+Player2.black+")");
-						if(!indiv2.equals(null)){indiv2.setFitness(1.0);}
-						indiv1.setFitness(0.0);
+						gameOver();
 					}else{
 						p1sTurn = true;
 					}
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Game Over.
+	 * 
+	 * What happens when the game comes to a finish
+	 * 
+	 * Working out the fitness of the game
+	 */
+	public void gameOver(){
+		if(liveBoard.hasPlayerWon(Player1.black)){
+			double reductions = liveBoard.howManyHasPlayerBore(Player2.black)*0.04;
+			if(indiv1!=null){indiv1.setFitness(1-reductions);}
+			if(indiv2!=null){indiv2.setFitness(reductions);}
+		}else if(liveBoard.hasPlayerWon(Player2.black)){
+			double reductions = liveBoard.howManyHasPlayerBore(Player1.black)*0.04;
+			if(indiv2!=null){indiv2.setFitness(1-reductions);}
+			if(indiv1!=null){indiv1.setFitness(reductions);}
 		}
 	}
 }
