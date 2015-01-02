@@ -42,7 +42,7 @@ public class Individual {
 	}
 	
 	public String toString(){
-		return "Indiviudal with agr:"+agressionChance+" and def:"+defensiveChance;
+		return "Indiviudal with agr:"+agressionChance+" and def:"+defensiveChance+", fitness of: "+fitness;
 	}
 }
 

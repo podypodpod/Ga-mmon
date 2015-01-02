@@ -7,12 +7,12 @@ public class Main {
 	public static void main(String[] args) {
 		
 		
-		System.out.println("Initial Population created, size: "+GenAlgSettings.getPopulationSize());
-		Population pop = new Population(GenAlgSettings.getPopulationSize(), true);
 
+		Population pop = new Population(GenAlgSettings.getPopulationSize(), true);
+		System.out.println("Initial Population created, size: "+GenAlgSettings.getPopulationSize());
 		
         System.out.println("------------Fittest Of Initial population: " + pop.getFittest().toString()+"-----------");
-		
+		/*
 		pop = GeneticAlgorithm.evolvePopulation(pop);
 		System.out.println("--------Evolved!--------- this was population 0");
 		for(int x = 0; x<GenAlgSettings.getGenerations()-1;x++){
@@ -22,6 +22,6 @@ public class Main {
 		
         System.out.println("------------Finished-------");
         System.out.println("Solution:");
-        System.out.println(pop.getFittest().toString());
+        System.out.println(pop.getFittest().toString());*/
 	}
 }

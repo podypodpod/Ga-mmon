@@ -2,7 +2,6 @@ package backgammon.game;
 
 import backgammon.settings.GameSettings;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Board.
  * 

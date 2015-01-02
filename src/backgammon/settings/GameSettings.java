@@ -1,6 +1,5 @@
 package backgammon.settings;
 
-// TODO: Auto-generated Javadoc
 /**
  * GameSettings class
  * 
@@ -17,13 +16,13 @@ public class GameSettings {
 	private static boolean areBothAIs = true;
 
 	/** The time delay on the gui printing, 0 time delay wil not display the game well. */
-	private static int timeDelay = 0;
+	private static int timeDelay = 50;
 	
 	/**  whether there actually is a GUI not. */
-	private static boolean displayGUI = false;
+	private static boolean displayGUI = true;
 	
 	/** whether to disply console prints or not. */
-	private static boolean displayConsole = false;
+	private static boolean displayConsole = true;
 	
 	
 	/**

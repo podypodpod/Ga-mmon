@@ -36,7 +36,7 @@ public class MoveGenerator {
 		generateMoves(cb, p);
 		
 		//select the best board and return it, if no possible next moves it will return null and carry on using the same board
-		return boardList.selectBoard();
+		return boardList.selectBoard(cb, p);
 	}
 
 	/**

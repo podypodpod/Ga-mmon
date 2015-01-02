@@ -14,7 +14,10 @@ public class BoardList {
 	/** The all possible moves. */
 	private List<Board> boardList;
 	
+	/** The individual that will make the move */
 	private Individual playerPersonality;
+	
+	private BoardEvaluator bEval;
 
 	/**
 	 * BoardList
@@ -22,8 +25,12 @@ public class BoardList {
 	 * Instantiates a new board list.
 	 */
 	public BoardList(Individual pp){
+		
 		boardList = new ArrayList<Board>();
+		
 		playerPersonality = pp;
+		
+		bEval = new BoardEvaluator();
 	}
 	
 	/**
@@ -102,25 +109,44 @@ public class BoardList {
 	 *
 	 * @return the board that has been selected
 	 */
-	public Board selectBoard(){
+	public Board selectBoard(Board currentBoard, AIPlayer p){
 		
 		//create a new board
 		Board chosenBoard = null;
 		
 		if(boardList.size()>0){
 			
-			//rate them all on the the play style etc
-			rankBoards();
-			
 			//Use the individual to decide what to do next
 			if(playerPersonality!=null){
-				if(playerPersonality.getAgressionChance()>0.5){
+				
+				//Giving the board evaluator the info it needs
+				bEval.setBoard(currentBoard);
+				bEval.setPlayer(p);
+				
+				//try to bear
+				for(Board x: boardList){
+					if(bEval.hasAPeiceBeenBore(x)){
+						chosenBoard = x;
+						break;
+					}
+				}
+				//try to take a peice
+				if(chosenBoard==null){
+					for(Board x: boardList){
+						if(bEval.hasAPeiceBeenTaken(x)){
+							chosenBoard = x;
+							break;
+						}
+					}
+				}
+				//if it cant, just fuckin randomMate
+				if(chosenBoard==null){
+					//if the player personality = null then just pick at random, as this means its the oposition
+					int x = (int)(Math.random()*(boardList.size()));
+
+					if(GameSettings.getDisplayConsole()){System.out.println("board list size: "+boardList.size());}
 					
-					//TO:DO actually make them play well
-					
-					chosenBoard = boardList.get(0);
-				}else{
-					chosenBoard = boardList.get(boardList.size()-1);
+					chosenBoard = boardList.get(x);
 				}
 				
 			}else{
@@ -166,15 +192,5 @@ public class BoardList {
 		}else{
 			return false;
 		}
-	}
-
-	/**
-	 * Rank Boards.
-	 * 
-	 * Method will order them to allow the GA to later decide which it picks
-	 */
-	public void rankBoards() {
-		
-		
 	}
 }
