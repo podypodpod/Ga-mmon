@@ -118,7 +118,7 @@ public class BoardList {
 			
 			//Use the individual to decide what to do next
 			if(playerPersonality!=null){
-				
+
 				//Giving the board evaluator the info it needs
 				bEval.setBoard(currentBoard);
 				bEval.setPlayer(p);
@@ -139,26 +139,26 @@ public class BoardList {
 						}
 					}
 				}
-				//if it cant, just fuckin randomMate
+				//If it can neither bear or take a peice then random
 				if(chosenBoard==null){
-					//if the player personality = null then just pick at random, as this means its the oposition
 					int x = (int)(Math.random()*(boardList.size()));
 
 					if(GameSettings.getDisplayConsole()){System.out.println("board list size: "+boardList.size());}
 					
 					chosenBoard = boardList.get(x);
 				}
-				
+				return chosenBoard;
 			}else{
+				System.out.println("NULL!");
 				//if the player personality = null then just pick at random, as this means its the oposition
 				int x = (int)(Math.random()*(boardList.size()));
 
 				if(GameSettings.getDisplayConsole()){System.out.println("board list size: "+boardList.size());}
 				
 				chosenBoard = boardList.get(x);
+				
+				return chosenBoard;
 			}
-			
-			return chosenBoard;
 		}else
 		{
 			//if there are no possible new boards(no possible moves) return null

@@ -11,6 +11,7 @@ import backgammon.settings.GameSettings;
  */
 public class Player {
 
+	/** The moves left. */
 	public MovesLeft movesLeft;
 
 	/** The side boolean. */
@@ -19,8 +20,10 @@ public class Player {
 	/** The Dice. */
 	Die die1, die2;
 	
+	/** The dice. */
 	DiceList dice;
 
+	/** The turn over. */
 	boolean turnOver;
 
 
@@ -43,6 +46,8 @@ public class Player {
 
 	/**
 	 * Turn.
+	 *
+	 * @param liveBoard the live board
 	 */
 	public void turn(Board liveBoard){
 
@@ -120,9 +125,14 @@ public class Player {
 
 
 	/**
-	 * Move piece. 
-	 * @param from the from
-	 * @param to the to
+	 * Move piece possible.
+	 * 
+	 * Wether the move is possible, doesnt actually move anything
+	 *
+	 * @param from point
+	 * @param to destination
+	 * @param liveBoard the live board
+	 * @return true, if successful
 	 */
 	public boolean movePiecePoss(int from, int to, Board liveBoard){
 
@@ -198,8 +208,14 @@ public class Player {
 
 	}
 
+	/**
+	 * Move piece.
+	 *
+	 * @param from the from
+	 * @param to the to
+	 * @param liveBoard the live board
+	 */
 	public void movePiece(int from, int to, Board liveBoard){
-		//actually moving the piece
 
 		//if there is an opposing piece there
 		if(to!=-1 && to!=26){
@@ -228,6 +244,13 @@ public class Player {
 		}
 	}
 
+	/**
+	 * Distance between.
+	 *
+	 * @param a the first point
+	 * @param b the seccond point
+	 * @return the int
+	 */
 	public int distanceBetween(int a, int b){
 		if(a>b){
 			return (a-b);

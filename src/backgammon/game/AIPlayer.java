@@ -13,6 +13,7 @@ public class AIPlayer extends Player{
 	/** The move generator for the player to use. */
 	MoveGenerator moveGen;
 	
+	/** player personallity is just an appropriate name for the individual*/
 	private Individual playerPersonality;
 	
 	/**

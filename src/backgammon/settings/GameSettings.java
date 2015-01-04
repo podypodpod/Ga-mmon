@@ -16,7 +16,7 @@ public class GameSettings {
 	private static boolean areBothAIs = true;
 
 	/** The time delay on the gui printing, 0 time delay wil not display the game well. */
-	private static int timeDelay = 50;
+	private static int timeDelay = 100;
 	
 	/**  whether there actually is a GUI not. */
 	private static boolean displayGUI = true;

@@ -3,14 +3,30 @@ package backgammon.genes;
 
 public class Individual {
 
-	private double agressionChance = 0;
-	private double defensiveChance = 0;
-	private int numOfAtrributes = 2;
+	
+	private int agressionChance = 0;
+	private int defensiveChance = 0;
+	private int technicalChance = 0;
+	private int randomChance = 0;
+	
+	private char[] personality;
+	
+	private int numOfAtrributes = 4;
+	
 	private double fitness = 0;
 	
 	public Individual(){
-		agressionChance = Math.random();
-		defensiveChance = Math.random();
+		
+		//randomly generate their attributes
+		agressionChance = (int) (Math.random()*100);
+		defensiveChance = (int) (Math.random()*100);
+		technicalChance = (int) (Math.random()*100);
+		randomChance = (int) (Math.random()*100);
+		
+		//convert to block of bite strings
+		int[] perArray = {agressionChance,defensiveChance,technicalChance,randomChance};
+		personality = Util.convertFromIntToBinaryCharAry(perArray);
+		
 	}
 	
 	public double getFitness(){
@@ -22,11 +38,23 @@ public class Individual {
 		fitness = fit;
 	}
 
-	public double getAgressionChance() {
+	public int getAgressionChance() {
+		updateFromBinary();
 		return agressionChance;
 	}
 	
-	public double getDefensiveChance(){
+	public int getRandomChance(){
+		updateFromBinary();
+		return randomChance;
+	}
+	
+	public int getTechnicalChance(){
+		updateFromBinary();
+		return technicalChance;
+	}
+	
+	public int getDefensiveChance(){
+		updateFromBinary();
 		return defensiveChance;
 	}
 	
@@ -34,15 +62,44 @@ public class Individual {
 		return numOfAtrributes;
 	}
 
-	public void setAgressionChance(double ac) {
+	public void setAgressionChance(int ac) {
 		agressionChance = ac;
+		updateToBinary();
 	}
-	public void setDefensiveChance(double dc) {
+
+
+	public void setDefensiveChance(int dc) {
 		defensiveChance = dc;
+		updateToBinary();
+	}
+	
+	public void setTechnicalChance(int tc){
+		technicalChance = tc;
+		updateToBinary();
+	}
+	
+	public void setRandomChance(int rc){
+		randomChance = rc;
+		updateToBinary();
 	}
 	
 	public String toString(){
-		return "Indiviudal with agr:"+agressionChance+" and def:"+defensiveChance+", fitness of: "+fitness;
+		return "Indiviudal with bit string: "+String.valueOf(personality) +" and fitness of: "+fitness+". |Agr: "+getAgressionChance()+"|Def: "+getDefensiveChance() + "|Tech: "+getTechnicalChance()+"|Ran: "+getRandomChance()+"|";
+	}
+
+	public char[] getPersonalityString() {
+		return personality;
+	}
+	
+	private void updateToBinary() {
+		int[] perArray = {agressionChance,defensiveChance,technicalChance,randomChance};
+		personality = Util.convertFromIntToBinaryCharAry(perArray);
+	}
+	private void updateFromBinary() {
+		int[] newAtrributes = Util.convertFromBinaryStringsToIntAr(String.valueOf(personality), 4, 7);
+		agressionChance = newAtrributes[0];
+		defensiveChance = newAtrributes[1];
+		technicalChance = newAtrributes[2];
+		randomChance = newAtrributes[3];
 	}
 }
-

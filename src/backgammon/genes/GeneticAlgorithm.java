@@ -2,14 +2,31 @@ package backgammon.genes;
 
 import backgammon.settings.GenAlgSettings;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GeneticAlgorithm.
+ */
 public class GeneticAlgorithm {
 
     /* GA parameters */
+    /** The Constant uniformRate. */
     private static final double uniformRate =GenAlgSettings.getUniformRate();
+    
+    /** The Constant mutationRate. */
     private static final double mutationRate =GenAlgSettings.getMutationRate();
+    
+    /** The Constant tournamentSize. */
     private static final int tournamentSize = GenAlgSettings.getTournamentSize();
+    
+    /** The Constant elitism. */
     private static final boolean elitism = GenAlgSettings.isElitism();
 	
+	/**
+	 * Evolve population.
+	 *
+	 * @param pop the pop
+	 * @return the population
+	 */
 	public static Population evolvePopulation(Population pop) {
 		
 		Population newPopulation = new Population(pop.size(), false);
@@ -48,6 +65,15 @@ public class GeneticAlgorithm {
 	}
 	
 	
+    /**
+     * Crossover.
+     * 
+     * 
+     *
+     * @param indiv1 the indiv1
+     * @param indiv2 the indiv2
+     * @return the individual
+     */
     private static Individual crossover(Individual indiv1, Individual indiv2) {
     	
         Individual newSol = new Individual();
@@ -68,18 +94,40 @@ public class GeneticAlgorithm {
         return newSol;
     }
 
-    // Mutate an individual
-    private static void mutate(Individual indiv) {
-        // Loop through genes
-        if (Math.random() <= mutationRate) {
-            indiv.setAgressionChance(Math.random());
-        }
-        if (Math.random() <= mutationRate) {
-            indiv.setDefensiveChance(Math.random());
-        }
+    
+    /**
+     * Mutate the individual.
+     *
+     * gets a random num, if its <= to the mutation rate then switch the bit
+     *
+     * @param indiv the individual
+     */
+    public static void mutate(Individual indiv) {
+    	
+        // get the indivs string
+    	char[] indivStr = indiv.getPersonalityString();
+    	
+    	//loop through all bits
+    	for(int x=0;x<indivStr.length;x++){
+    		//random chance
+    		if(Math.random() <= mutationRate){
+    			//swap the bit over
+    			if(indivStr[x]=='0'){
+    				indivStr[x]='1';
+    			}else{
+    				indivStr[x]='0';
+    			}
+    		}
+    	}
     }
 
     // Select individuals for crossover
+    /**
+     * Tournament selection.
+     *
+     * @param pop the pop
+     * @return the individual
+     */
     private static Individual tournamentSelection(Population pop) {
     	
         // Create a tournament population

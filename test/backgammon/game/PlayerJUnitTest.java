@@ -17,11 +17,10 @@ public class PlayerJUnitTest {
 	@Before
 	public void setUp() throws Exception {
 		
-	//RED PLAYER	
-	p1 = new Player(false);
-	p2 = new Player(true);
-	
-	b1 = new Board();
+		p1 = new Player(false);
+		p2 = new Player(true);
+		
+		b1 = new Board();
 	}
 	
 	
@@ -57,6 +56,7 @@ public class PlayerJUnitTest {
 
 	@Test
 	public void ShouldReturnTrueWhenIInputACorrectMoveASingleDiceRoll() {	
+		
 		//Given
 		p1.movesLeft.add(1);
 		p1.movesLeft.add(2);
@@ -74,6 +74,8 @@ public class PlayerJUnitTest {
 	 * In theory the game should let you do this, but at the moment it does not if I have time adjust this
 	 * 
 	 * but not a big deal as technically it is 2 moves anyway, just done in one click normally
+	 * 
+	 * and when using an AI player it will auto do this, when using manual players it will be 2 moves anyway so really this will never be used
 	 */
 	@Test
 	public void ShouldReturnTrueWhenIInputACorrectMoveUsingBothDiceRolls() {	
@@ -169,5 +171,64 @@ public class PlayerJUnitTest {
 		//Then
 		assertFalse(possible);
 		
+	}
+	
+	@Test
+	public void testingMovePeicPossonBoardWhenTakingAPeice() {
+		
+		//p2 is black
+		
+		//Given
+		b1.setStartPosition();
+		//leaving a peice on its own
+		p1.movePiece(12, 11, b1);
+		
+		p2.movesLeft.movesLeft.add(2);
+		
+		//When
+		boolean possible = p2.movePiecePoss(13, 11, b1);
+		
+		//Then
+		assertTrue(possible);
+	}
+	
+	public void testingMovePeicPossonBoardWhenTakingAPeiceButWithAZero() {
+		
+		//p2 is black
+		
+		//Given
+		b1.setStartPosition();
+		//leaving a peice on its own
+		p1.movePiece(12, 11, b1);
+		p2.movePiece(13, 25, b1);
+		
+		p2.movesLeft.movesLeft.add(2);
+		
+		//When
+		boolean possible = p2.movePiecePoss(13, 11, b1);
+		
+		//Then
+		assertFalse(possible);
+	}
+	
+	
+	@Test
+	public void testingMovePeicPossonBoardWhenTakingAPeiceThatHasMultple() {
+		
+		//p2 is black
+		
+		//Given
+		b1.setStartPosition();
+
+		p1.movePiece(12, 11, b1);
+		p1.movePiece(12, 11, b1);
+		
+		p2.movesLeft.movesLeft.add(2);
+		
+		//When
+		boolean possible = p2.movePiecePoss(13, 11, b1);
+		
+		//Then
+		assertFalse(possible);
 	}
 }
