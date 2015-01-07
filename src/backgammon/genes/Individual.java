@@ -9,7 +9,7 @@ public class Individual {
 	private int technicalChance = 0;
 	private int randomChance = 0;
 	
-	private char[] personality;
+	private char[] chromosome;
 	
 	private int numOfAtrributes = 4;
 	
@@ -25,7 +25,7 @@ public class Individual {
 		
 		//convert to block of bite strings
 		int[] perArray = {agressionChance,defensiveChance,technicalChance,randomChance};
-		personality = Util.convertFromIntToBinaryCharAry(perArray);
+		chromosome = Util.convertFromIntToBinaryCharAry(perArray);
 		
 	}
 	
@@ -84,19 +84,19 @@ public class Individual {
 	}
 	
 	public String toString(){
-		return "Indiviudal with bit string: "+String.valueOf(personality) +" and fitness of: "+fitness+". |Agr: "+getAgressionChance()+"|Def: "+getDefensiveChance() + "|Tech: "+getTechnicalChance()+"|Ran: "+getRandomChance()+"|";
+		return "Indiviudal with chromosome string: "+String.valueOf(chromosome) +" and fitness of: "+fitness+". |Agr: "+getAgressionChance()+"|Def: "+getDefensiveChance() + "|Tech: "+getTechnicalChance()+"|Ran: "+getRandomChance()+"|";
 	}
 
-	public char[] getPersonalityString() {
-		return personality;
+	public char[] getChromosome() {
+		return chromosome;
 	}
 	
 	private void updateToBinary() {
 		int[] perArray = {agressionChance,defensiveChance,technicalChance,randomChance};
-		personality = Util.convertFromIntToBinaryCharAry(perArray);
+		chromosome = Util.convertFromIntToBinaryCharAry(perArray);
 	}
 	private void updateFromBinary() {
-		int[] newAtrributes = Util.convertFromBinaryStringsToIntAr(String.valueOf(personality), 4, 7);
+		int[] newAtrributes = Util.convertFromBinaryStringsToIntAr(String.valueOf(chromosome), 4, 7);
 		agressionChance = newAtrributes[0];
 		defensiveChance = newAtrributes[1];
 		technicalChance = newAtrributes[2];

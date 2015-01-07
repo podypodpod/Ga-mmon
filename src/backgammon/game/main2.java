@@ -2,24 +2,21 @@ package backgammon.game;
 
 import backgammon.genes.GeneticAlgorithm;
 import backgammon.genes.Individual;
-import backgammon.genes.Util;
+import backgammon.genes.Population;
+import backgammon.settings.GenAlgSettings;
 
 public class main2 {
 
 	public static void main(String[] args) {
 		
-		GameManager Game = new GameManager();
+		Population pop = new Population(GenAlgSettings.getPopulationSize(), true);
 		
-		Individual p1 = new Individual();
+		Individual winner;
 		
-
-
+		System.out.println("STARTing tournament --- ");
+		winner = GeneticAlgorithm.tournamentSelection(pop);
+		System.out.println("---  tournament finished  --- ");
 		
-		
-		//Individual p2 = new Individual();
-		//System.out.println(p2.toString());
-		
-		//Game.playIndividualsVsEachOther(p1, p2);
-
+		System.out.println(winner.toString());
 	}
 }

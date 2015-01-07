@@ -10,14 +10,14 @@ public class MoveGenerator {
 	/** The board list. */
 	BoardList boardList;
 	
-	Individual playerPersonality;
+	Individual individual;
 	
 	/**
 	 * Instantiates a new move generator.
 	 */
-	public MoveGenerator(Individual pp){
-		playerPersonality = pp;
-		boardList = new BoardList(playerPersonality);
+	public MoveGenerator(Individual indiv){
+		individual = indiv;
+		boardList = new BoardList(individual);
 	}
 	
 	/**

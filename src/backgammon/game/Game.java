@@ -16,30 +16,37 @@ public class Game implements Runnable{
 	AIPlayer Player1, Player2;
 
 	/** The board. */
-	Board liveBoard;
+	private Board liveBoard;
 
 	/** The AI turn. */
-	boolean p1sTurn = false;
+	private boolean p1sTurn = false;
 
 	/** The active game boolean, if the game is active. */
-	boolean gameActive;
+	private boolean gameActive;
 
 	/** The is p1 black. */
-	boolean isP1Black = GameSettings.isP1Black();
+	private boolean isP1Black = GameSettings.isP1Black();
 	
 	/** The are both a is. */
-	boolean areBothAIs = GameSettings.getAreBothAI();
+	private boolean areBothAIs = GameSettings.getAreBothAI();
 	
 	/** The time delay. */
-	int timeDelay = GameSettings.getTimeDelay();
+	private int timeDelay = GameSettings.getTimeDelay();
 
-	/** initial rolls */
-	int p1Roll = 0, p2Roll = 0;
+	/**  initial rolls. */
+	private int p1Roll = 0, p2Roll = 0;
 
-	Individual indiv1, indiv2;
+	/** The indiv2. */
+	private Individual indiv1, indiv2;
+	
+	private Individual gameVictor = null;
+	
 	
 	/**
 	 * Instantiates a new game.
+	 *
+	 * @param i1 the i1
+	 * @param i2 the i2
 	 */
 	public Game(Individual i1, Individual i2){
 
@@ -47,7 +54,7 @@ public class Game implements Runnable{
 		liveBoard.printBoardGUI();
 
 		//game active
-		gameActive = true;
+		setGameActive(true);
 		
 		indiv1 = i1;
 		indiv2 = i2;
@@ -113,10 +120,10 @@ public class Game implements Runnable{
 		}
 		
 		//The Game Loop, while boolean gameActive is true, keep going
-		while(gameActive){
+		while(isGameActive()){
 			
 			//Player1's Turn if the game is still active and it is now their turn
-			if(p1sTurn && gameActive){
+			if(p1sTurn && isGameActive()){
 				
 				//creating the new board with the chosen moves etc
 				liveBoard = new Board(Player1.AIturn(liveBoard));
@@ -127,7 +134,7 @@ public class Game implements Runnable{
 				//checking if the player has won yet
 				//if they have won, then set the gameActive to false and display the message
 				if(liveBoard.hasPlayerWon(Player1.black)){
-					gameActive = false;
+					setGameActive(false);
 					//JOptionPane.showMessageDialog(null, "Player 1 has won! (Black="+Player1.black+")");
 					System.out.println("Player 1 has won! (Black="+Player1.black+")");
 					gameOver();
@@ -147,7 +154,7 @@ public class Game implements Runnable{
 				}
 
 			//Player2's Turn (could also be an AI)
-			}else if(!p1sTurn && gameActive){
+			}else if(!p1sTurn && isGameActive()){
 				
 				//if you have selected them both to be AI's
 				if(areBothAIs){
@@ -160,7 +167,7 @@ public class Game implements Runnable{
 					
 					//checking if the player has now won, if they have then gaveActive is now false and they are told they have won
 					if(liveBoard.hasPlayerWon(Player2.black)){
-						gameActive = false;
+						setGameActive(false);
 						//JOptionPane.showMessageDialog(null, "Player 2 has won! (Black="+Player2.black+")");
 						System.out.println("Player 2 has won! (Black="+Player2.black+")");
 						gameOver();
@@ -191,7 +198,7 @@ public class Game implements Runnable{
 					//checking if the player has now won
 					//gameActive is false if they have, and they are informed
 					if(liveBoard.hasPlayerWon(Player2.black)){
-						gameActive = false;
+						setGameActive(false);
 						JOptionPane.showMessageDialog(null, "Player 2 has won! (Black="+Player2.black+")");
 						gameOver();
 					}else{
@@ -214,10 +221,32 @@ public class Game implements Runnable{
 			double reductions = liveBoard.howManyHasPlayerBore(Player2.black)*0.04;
 			if(indiv1!=null){indiv1.setFitness(1-reductions);}
 			if(indiv2!=null){indiv2.setFitness(reductions);}
+			
+			gameVictor = indiv1;
+			
 		}else if(liveBoard.hasPlayerWon(Player2.black)){
 			double reductions = liveBoard.howManyHasPlayerBore(Player1.black)*0.04;
 			if(indiv2!=null){indiv2.setFitness(1-reductions);}
 			if(indiv1!=null){indiv1.setFitness(reductions);}
+			
+			gameVictor = indiv2;
 		}
+	}
+
+	/**
+	 * Gets the victor.
+	 *
+	 * @return the victor
+	 */
+	public Individual getVictor() {
+		return gameVictor;
+	}
+
+	public boolean isGameActive() {
+		return gameActive;
+	}
+
+	public void setGameActive(boolean gameActive) {
+		this.gameActive = gameActive;
 	}
 }

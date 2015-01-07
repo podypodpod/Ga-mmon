@@ -9,7 +9,8 @@ public class GameManager {
 	public static ContainerFrame containerFrame;
 	private static Game currentGame;
 
-	public GameManager(){	
+	public GameManager(){
+		
 	}
 
 
@@ -21,15 +22,16 @@ public class GameManager {
 
 		//Stops it multithreading
 		try {
-			guiThread.join();
+			if(!GameSettings.getMultiThreading()){guiThread.join();};
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
 
-	public void playIndividualsVsEachOther(Individual ip1, Individual ip2){
-
+	public Individual playIndividualsVsEachOther(Individual ip1, Individual ip2){
+		Individual victor = null;
+		
 		if(GameSettings.getDisplayGUI()){
 			startGui();
 		}
@@ -41,9 +43,13 @@ public class GameManager {
 
 		//stops it multithreading and ruining the GUI
 		try {
-			gameThread.join();
+			if(!GameSettings.getMultiThreading()){gameThread.join();;};
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		
+		victor = currentGame.getVictor();
+		
+		return victor;
 	}
 }

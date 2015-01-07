@@ -21,6 +21,6 @@ public class GameJUnitTest {
 		//When
 		//Then
 
-		assertTrue(game.gameActive);
+		assertTrue(game.isGameActive());
 	}
 }

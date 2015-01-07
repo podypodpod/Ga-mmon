@@ -15,7 +15,7 @@ public class BoardList {
 	private List<Board> boardList;
 	
 	/** The individual that will make the move */
-	private Individual playerPersonality;
+	private Individual individual;
 	
 	private BoardEvaluator bEval;
 
@@ -24,11 +24,11 @@ public class BoardList {
 	 * 
 	 * Instantiates a new board list.
 	 */
-	public BoardList(Individual pp){
+	public BoardList(Individual indiv){
 		
 		boardList = new ArrayList<Board>();
 		
-		playerPersonality = pp;
+		individual = indiv;
 		
 		bEval = new BoardEvaluator();
 	}
@@ -117,40 +117,13 @@ public class BoardList {
 		if(boardList.size()>0){
 			
 			//Use the individual to decide what to do next
-			if(playerPersonality!=null){
-
-				//Giving the board evaluator the info it needs
-				bEval.setBoard(currentBoard);
-				bEval.setPlayer(p);
-				
-				//try to bear
-				for(Board x: boardList){
-					if(bEval.hasAPeiceBeenBore(x)){
-						chosenBoard = x;
-						break;
-					}
-				}
-				//try to take a peice
-				if(chosenBoard==null){
-					for(Board x: boardList){
-						if(bEval.hasAPeiceBeenTaken(x)){
-							chosenBoard = x;
-							break;
-						}
-					}
-				}
-				//If it can neither bear or take a peice then random
-				if(chosenBoard==null){
-					int x = (int)(Math.random()*(boardList.size()));
-
-					if(GameSettings.getDisplayConsole()){System.out.println("board list size: "+boardList.size());}
-					
-					chosenBoard = boardList.get(x);
-				}
+			if(individual!=null){
+				//use the method individual decision to decide which to pick
+				chosenBoard = individualDecision(currentBoard, p);
 				return chosenBoard;
+				
+			//if the player personality = null then just pick at random, as this means its the basic oposition
 			}else{
-				System.out.println("NULL!");
-				//if the player personality = null then just pick at random, as this means its the oposition
 				int x = (int)(Math.random()*(boardList.size()));
 
 				if(GameSettings.getDisplayConsole()){System.out.println("board list size: "+boardList.size());}
@@ -192,5 +165,42 @@ public class BoardList {
 		}else{
 			return false;
 		}
+	}
+	
+	public Board individualDecision(Board currentBoard, AIPlayer p){
+		
+		Board chosenBoard = null;
+		
+		//Giving the board evaluator the info it needs
+		bEval.setBoard(currentBoard);
+		bEval.setPlayer(p);
+		
+		//try to bear
+		for(Board x: boardList){
+			if(bEval.hasAPeiceBeenBore(x)){
+				chosenBoard = x;
+				break;
+			}
+		}
+		if(p.getIndividual().getAgressionChance()>90){
+			//try to take a peice
+			if(chosenBoard==null){
+				for(Board x: boardList){
+					if(bEval.hasAPeiceBeenTaken(x)){
+						chosenBoard = x;
+						break;
+					}
+				}
+			}
+		}
+		//If it can neither bear or take a peice then random
+		if(chosenBoard==null){
+			int x = (int)(Math.random()*(boardList.size()));
+
+			if(GameSettings.getDisplayConsole()){System.out.println("board list size: "+boardList.size());}
+			
+			chosenBoard = boardList.get(x);
+		}
+		return chosenBoard;
 	}
 }

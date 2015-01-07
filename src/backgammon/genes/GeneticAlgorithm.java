@@ -2,25 +2,11 @@ package backgammon.genes;
 
 import backgammon.settings.GenAlgSettings;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class GeneticAlgorithm.
  */
 public class GeneticAlgorithm {
 
-    /* GA parameters */
-    /** The Constant uniformRate. */
-    private static final double uniformRate =GenAlgSettings.getUniformRate();
-    
-    /** The Constant mutationRate. */
-    private static final double mutationRate =GenAlgSettings.getMutationRate();
-    
-    /** The Constant tournamentSize. */
-    private static final int tournamentSize = GenAlgSettings.getTournamentSize();
-    
-    /** The Constant elitism. */
-    private static final boolean elitism = GenAlgSettings.isElitism();
-	
 	/**
 	 * Evolve population.
 	 *
@@ -28,121 +14,155 @@ public class GeneticAlgorithm {
 	 * @return the population
 	 */
 	public static Population evolvePopulation(Population pop) {
-		
+
 		Population newPopulation = new Population(pop.size(), false);
-		
+
 		// Keep our best individual
-        if (elitism) {
-            newPopulation.saveIndividual(0, pop.getFittest());
-        }
+		if (GenAlgSettings.isElitism()) {
+			newPopulation.saveIndividual(0, pop.getFittest());
+		}
 
-        // Crossover population
-        int elitismOffset;
-        if (elitism) {
-            elitismOffset = 1;
-        } else {
-            elitismOffset = 0;
-        }
-        
-        // Loop over the population size and create new individuals with
-        // crossover
-        for (int i = elitismOffset; i < pop.size(); i++) {
-        	
-            Individual indiv1 = tournamentSelection(pop);
-            Individual indiv2 = tournamentSelection(pop);
-            
-            Individual newIndiv = crossover(indiv1, indiv2);
-            
-            newPopulation.saveIndividual(i, newIndiv);
-        }
+		// Crossover population
+		int elitismOffset;
+		if (GenAlgSettings.isElitism()) {
+			elitismOffset = 1;
+		} else {
+			elitismOffset = 0;
+		}
 
-        // Mutate population
-        for (int i = elitismOffset; i < newPopulation.size(); i++) {
-            mutate(newPopulation.getIndividual(i));
-        }
+		// Loop over the population size and create new individuals with the crossover function
+		// the two individuals that are crossed over are the winners of the tournament selection (should provide some of the best players)
+		for (int i = elitismOffset; i < pop.size(); i++) {
 
-        return newPopulation;
+			Individual indiv1 = tournamentSelection(pop);
+			Individual indiv2 = tournamentSelection(pop);
+
+			Individual newIndiv = crossover(indiv1, indiv2);
+
+			newPopulation.saveIndividual(i, newIndiv);
+		}
+
+		// Mutate population
+		for (int i = elitismOffset; i < newPopulation.size(); i++) {
+			mutate(newPopulation.getIndividual(i));
+		}
+
+		return newPopulation;
 	}
-	
-	
-    /**
-     * Crossover.
-     * 
-     * 
-     *
-     * @param indiv1 the indiv1
-     * @param indiv2 the indiv2
-     * @return the individual
-     */
-    private static Individual crossover(Individual indiv1, Individual indiv2) {
-    	
-        Individual newSol = new Individual();
-        
-        // Crossover
-        if (Math.random() <= uniformRate) {
-            newSol.setAgressionChance(indiv1.getAgressionChance());
-        } else {
-            newSol.setAgressionChance(indiv2.getAgressionChance());
-        }
-        
-        if (Math.random() <= uniformRate) {
-            newSol.setDefensiveChance(indiv1.getDefensiveChance());
-        } else {
-            newSol.setDefensiveChance(indiv2.getDefensiveChance());
-        }
-        
-        return newSol;
-    }
 
-    
-    /**
-     * Mutate the individual.
-     *
-     * gets a random num, if its <= to the mutation rate then switch the bit
-     *
-     * @param indiv the individual
-     */
-    public static void mutate(Individual indiv) {
-    	
-        // get the indivs string
-    	char[] indivStr = indiv.getPersonalityString();
-    	
-    	//loop through all bits
-    	for(int x=0;x<indivStr.length;x++){
-    		//random chance
-    		if(Math.random() <= mutationRate){
-    			//swap the bit over
-    			if(indivStr[x]=='0'){
-    				indivStr[x]='1';
-    			}else{
-    				indivStr[x]='0';
-    			}
-    		}
-    	}
-    }
 
-    // Select individuals for crossover
-    /**
-     * Tournament selection.
-     *
-     * @param pop the pop
-     * @return the individual
-     */
-    private static Individual tournamentSelection(Population pop) {
-    	
-        // Create a tournament population
-        Population tournament = new Population(tournamentSize, false);
-        
-        // For each place in the tournament get a random individual
-        for (int i = 0; i < tournamentSize; i++) {
-        	
-            int randomId = (int) (Math.random() * pop.size());
-            tournament.saveIndividual(i, pop.getIndividual(randomId));
-        }
-        
-        // Get the fittest
-        Individual fittest = tournament.getFittest();
-        
-        return fittest;
-    }
+	/**
+	 * Crossover.
+	 * 
+	 * Randomly takes one side or the others attributes according to the uniform rate
+	 *
+	 * @param indiv1 the indiv1
+	 * @param indiv2 the indiv2
+	 * @return the individual
+	 */
+	private static Individual crossover(Individual indiv1, Individual indiv2) {
+
+		Individual newIndiv = new Individual();
+		// Crossover
+		if (Math.random() <= GenAlgSettings.getUniformRate()) {
+			newIndiv.setAgressionChance(indiv1.getAgressionChance());
+		} else {
+			newIndiv.setAgressionChance(indiv2.getAgressionChance());
+		}
+
+		if (Math.random() <= GenAlgSettings.getUniformRate()) {
+			newIndiv.setDefensiveChance(indiv1.getDefensiveChance());
+		} else {
+			newIndiv.setDefensiveChance(indiv2.getDefensiveChance());
+		}
+
+		if (Math.random() <= GenAlgSettings.getUniformRate()) {
+			newIndiv.setTechnicalChance(indiv1.getTechnicalChance());
+		} else {
+			newIndiv.setTechnicalChance(indiv2.getTechnicalChance());
+		}
+
+		if (Math.random() <= GenAlgSettings.getUniformRate()) {
+			newIndiv.setRandomChance(indiv1.getRandomChance());
+		} else {
+			newIndiv.setRandomChance(indiv2.getRandomChance());
+		}
+		return newIndiv;
+	}
+
+
+	/**
+	 * Mutate the individual.
+	 *
+	 * gets a random num, if its <= to the mutation rate then switch the bit
+	 *
+	 * @param indiv the individual
+	 */
+	public static void mutate(Individual indiv) {
+
+		// get the indivs string
+		char[] indivStr = indiv.getChromosome();
+
+		//loop through all bits
+		for(int x=0;x<indivStr.length;x++){
+			//random chance
+			if(Math.random() <= GenAlgSettings.getMutationRate()){
+				//swap the bit over
+				if(indivStr[x]=='0'){
+					indivStr[x]='1';
+				}else{
+					indivStr[x]='0';
+				}
+			}
+		}
+	}
+
+	/**
+	 * Tournament selection.
+	 * 
+	 * Selects the individuals for crossover
+	 * it does this by selecting a random population and playing them against each other until there is one victor
+	 *
+	 * @param pop the pop
+	 * @return the individual
+	 */
+	public static Individual tournamentSelection(Population pop) {
+
+		// Create a tournament population
+		Population tournament = new Population(GenAlgSettings.getTournamentSize(), false);
+
+		// For each place in the tournament get a random individual
+		for (int i = 0; i < GenAlgSettings.getTournamentSize(); i++) {
+
+			int randomId = (int) (Math.random() * pop.size());
+			tournament.saveIndividual(i, pop.getIndividual(randomId));
+		}
+
+		//Get the fittest via battling against each other
+		Individual tournamentVictor = null;
+
+		//until there is a winner
+		while(tournamentVictor==null){
+
+			//create a population for the winner of the round
+			Individual[] winnersOfRound = new Individual[tournament.size()/2];
+
+			Individual winnerOfRound = null;
+			int counter = 0;
+			for(int i = 0; i < tournament.size(); i+=2){
+				winnerOfRound = FitnessCalculator.getFitnessOf(tournament.getIndividual(i), tournament.getIndividual(i+1));
+				winnersOfRound[counter++]=winnerOfRound;
+			}
+
+			//if there is only 1 left, then it is the winner!
+			if(winnersOfRound.length==1){
+				tournamentVictor = winnersOfRound[0];
+			}
+			//setting the tournament array to the winners of the round, so now only has the winners in
+			else{
+				tournament.setArray(winnersOfRound);
+			}
+		}
+		return tournamentVictor;
+	}
 }

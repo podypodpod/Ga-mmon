@@ -16,13 +16,16 @@ public class GameSettings {
 	private static boolean areBothAIs = true;
 
 	/** The time delay on the gui printing, 0 time delay wil not display the game well. */
-	private static int timeDelay = 100;
+	private static int timeDelay = 0;
 	
 	/**  whether there actually is a GUI not. */
-	private static boolean displayGUI = true;
+	private static boolean displayGUI = false;
 	
 	/** whether to disply console prints or not. */
-	private static boolean displayConsole = true;
+	private static boolean displayConsole = false;
+	
+	/** The multi threading. */
+	private static boolean multiThreading = false;
 	
 	
 	/**
@@ -68,6 +71,15 @@ public class GameSettings {
 	 */
 	public static boolean getDisplayConsole(){
 		return displayConsole;
+	}
+
+	/**
+	 * Gets the multi threading.
+	 *
+	 * @return the multi threading
+	 */
+	public static boolean getMultiThreading() {
+		return multiThreading;
 	}
 	
 }

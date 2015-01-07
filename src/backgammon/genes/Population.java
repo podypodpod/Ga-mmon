@@ -45,4 +45,8 @@ public class Population {
 	public Individual[] getPopulation(){
 		return individuals;
 	}
+	
+	public void setArray(Individual[] indivs){
+		individuals = indivs;
+	}
 }
