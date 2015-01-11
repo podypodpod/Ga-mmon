@@ -1,6 +1,7 @@
 package backgammon.genes;
 
 import backgammon.game.GameManager;
+import backgammon.settings.GenAlgSettings;
 
 public class FitnessCalculator {
 	
@@ -18,7 +19,7 @@ public class FitnessCalculator {
 	 */
 	public static void getFitnessOf(Individual i1) {		
 		gm = new GameManager();
-		System.out.println("Playing 1 indivs and 1 null against each other, Game: "+count++);
+		if(GenAlgSettings.isDisplayconsole()){System.out.println("Playing 1 indivs and 1 null against each other, Game: "+count++);}
 		gm.playIndividualsVsEachOther(i1, null);
 	}
 	
@@ -35,7 +36,7 @@ public class FitnessCalculator {
 		
 		gm = new GameManager();
 		
-		System.out.println("Playing 2 indivs against each other, Game number: "+count++);
+		if(GenAlgSettings.isDisplayconsole()){System.out.println("Playing 2 indivs against each other, Game number: "+count++);}
 		
 		victor = gm.playIndividualsVsEachOther(i1, i2);
 		

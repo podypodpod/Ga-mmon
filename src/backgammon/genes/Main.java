@@ -5,9 +5,6 @@ import backgammon.settings.GenAlgSettings;
 public class Main {
 
 	public static void main(String[] args) {
-		
-		
-
 		Population pop = new Population(GenAlgSettings.getPopulationSize(), true);
 		System.out.println("Initial Population created, size: "+GenAlgSettings.getPopulationSize());
 		

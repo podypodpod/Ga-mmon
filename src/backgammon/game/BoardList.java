@@ -6,6 +6,7 @@ import java.util.List;
 import backgammon.genes.Individual;
 import backgammon.settings.GameSettings;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class BoardList.
  */
@@ -14,15 +15,18 @@ public class BoardList {
 	/** The all possible moves. */
 	private List<Board> boardList;
 	
-	/** The individual that will make the move */
+	/**  The individual that will make the move. */
 	private Individual individual;
 	
+	/** The b eval. */
 	private BoardEvaluator bEval;
 
 	/**
 	 * BoardList
 	 * 
 	 * Instantiates a new board list.
+	 *
+	 * @param indiv the indiv
 	 */
 	public BoardList(Individual indiv){
 		
@@ -107,6 +111,8 @@ public class BoardList {
 	 * Select board.
 	 * This will select the best board from the list for the player to use
 	 *
+	 * @param currentBoard the current board
+	 * @param p the p
 	 * @return the board that has been selected
 	 */
 	public Board selectBoard(Board currentBoard, AIPlayer p){
@@ -167,6 +173,18 @@ public class BoardList {
 		}
 	}
 	
+	
+	/**
+	 * Individual decision.
+	 * 
+	 * Is called by select board and it is where the individuals attributes influance the chosen board
+	 * 
+	 * e.g. higher agression chance will produce more peices being taken
+	 *
+	 * @param currentBoard the current board
+	 * @param p the player
+	 * @return the board chosen
+	 */
 	public Board individualDecision(Board currentBoard, AIPlayer p){
 		
 		Board chosenBoard = null;
@@ -182,7 +200,7 @@ public class BoardList {
 				break;
 			}
 		}
-		if(p.getIndividual().getAgressionChance()>90){
+		if(p.getIndividual().getAgressionChance()>70){
 			//try to take a peice
 			if(chosenBoard==null){
 				for(Board x: boardList){

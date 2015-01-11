@@ -1,9 +1,19 @@
 package backgammon.genes;
 
+/**
+ * The Class Population.
+ */
 public class Population {
 	
+	/** The individuals. */
 	Individual[] individuals;
 	
+	/**
+	 * Instantiates a new population.
+	 *
+	 * @param populationSize the population size
+	 * @param initialise the initialise
+	 */
 	public Population( int populationSize, boolean initialise){	
 		individuals = new Individual[populationSize];
 		
@@ -17,6 +27,11 @@ public class Population {
 	}
 	
 	
+	/**
+	 * Gets the fittest.
+	 *
+	 * @return the fittest
+	 */
 	public Individual getFittest(){
 		Individual fittest = individuals[0];
 		
@@ -28,24 +43,51 @@ public class Population {
 		return fittest;
 	}
 	
+	/**
+	 * Size.
+	 *
+	 * @return the int
+	 */
 	public int size(){
 		return individuals.length;
 	}
 
 
+    /**
+     * Save individual.
+     *
+     * @param index the index
+     * @param indiv the indiv
+     */
     public void saveIndividual(int index, Individual indiv) {
         individuals[index] = indiv;
     }
 
 
+	/**
+	 * Gets the individual.
+	 *
+	 * @param i the i
+	 * @return the individual
+	 */
 	public Individual getIndividual(int i) {
 		return individuals[i];
 	}
 	
+	/**
+	 * Gets the population.
+	 *
+	 * @return the population
+	 */
 	public Individual[] getPopulation(){
 		return individuals;
 	}
 	
+	/**
+	 * Sets the array.
+	 *
+	 * @param indivs the new array
+	 */
 	public void setArray(Individual[] indivs){
 		individuals = indivs;
 	}

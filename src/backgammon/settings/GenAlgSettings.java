@@ -4,6 +4,9 @@ package backgammon.settings;
  * The Class GenAlgSettings.
  */
 public class GenAlgSettings {
+	
+	/** The Constant displayConsole. */
+	private static final boolean displayConsole = true;
 
 	/** The Constant uniformRate. */
     private static final double uniformRate = 0.5;
@@ -70,6 +73,10 @@ public class GenAlgSettings {
 
 	public static int getPopulationSize() {
 		return populationSize;
+	}
+
+	public static boolean isDisplayconsole() {
+		return displayConsole;
 	}
 	
 
