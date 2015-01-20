@@ -1,5 +1,13 @@
 package backgammon.genes;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 
 public class Individual {
 
@@ -101,5 +109,58 @@ public class Individual {
 		defensiveChance = newAtrributes[1];
 		technicalChance = newAtrributes[2];
 		randomChance = newAtrributes[3];
+	}
+	
+	
+	public void loadFromFile(String fileName) throws IOException{
+		
+	    BufferedReader br = null;
+	    String retreived;
+	    
+		try {
+			br = new BufferedReader(new FileReader("savedPlayers/"+fileName+".txt"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	    try {
+	        StringBuilder sb = new StringBuilder();
+	        String line = br.readLine();
+
+	        while (line != null) {
+	            sb.append(line);
+	            sb.append(System.lineSeparator());
+	            line = br.readLine();
+	        }
+	        
+	        retreived = sb.toString();
+	    } finally {
+	        br.close();
+	    }
+	    
+	    System.out.println(retreived);
+	}
+	
+	
+	public void saveToFile(String fileName){
+		
+		if(fileName.equals("")||fileName==null){
+			fileName="";
+		}
+		
+		BufferedWriter writer = null;
+		try
+		{
+		    writer = new BufferedWriter(new FileWriter("savedPlayers/"+fileName+".txt"));
+		    writer.write(toString());
+
+		}catch (IOException e){}
+		finally{
+		    try{
+		        if ( writer != null)
+		        writer.close( );
+		    }
+		    catch ( IOException e){}
+		}
 	}
 }
