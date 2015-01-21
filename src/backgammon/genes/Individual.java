@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 
 public class Individual {
@@ -112,7 +111,7 @@ public class Individual {
 	}
 	
 	
-	public void loadFromFile(String fileName) throws IOException{
+	public void loadFromFile(String fileName){
 		
 	    BufferedReader br = null;
 	    String retreived;
@@ -125,20 +124,41 @@ public class Individual {
 		
 	    try {
 	        StringBuilder sb = new StringBuilder();
-	        String line = br.readLine();
+	        String line = null;
+			try {
+				line = br.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
 	        while (line != null) {
 	            sb.append(line);
 	            sb.append(System.lineSeparator());
-	            line = br.readLine();
+	            try {
+					line = br.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 	        }
 	        
 	        retreived = sb.toString();
 	    } finally {
-	        br.close();
+	        try {
+				br.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 	    }
 	    
-	    System.out.println(retreived);
+	    //Got the data and closed the connection
+	    String[] sections = retreived.split(": ");
+	    System.out.println(sections[0]);
+	    System.out.println(sections[1]);
+	    System.out.println(sections[2]);
+	    System.out.println(sections[3]);
+	    System.out.println(sections[4]);
+	    System.out.println(sections[5]);
+	    //TODO: Actually set the vars to the indv, currently changing the vars so do this after
 	}
 	
 	

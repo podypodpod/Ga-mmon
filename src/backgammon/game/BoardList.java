@@ -5,8 +5,6 @@ import java.util.List;
 
 import backgammon.genes.Individual;
 import backgammon.settings.GameSettings;
-
-// TODO: Auto-generated Javadoc
 /**
  * The Class BoardList.
  */

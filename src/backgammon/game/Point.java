@@ -1,6 +1,4 @@
 package backgammon.game;
-
-// TODO: Auto-generated Javadoc
 /**
  * The Class Point.
  */

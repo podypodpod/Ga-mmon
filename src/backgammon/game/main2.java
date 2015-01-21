@@ -1,11 +1,7 @@
 package backgammon.game;
 
-import java.io.IOException;
-
-import backgammon.genes.GeneticAlgorithm;
 import backgammon.genes.Individual;
-import backgammon.genes.Population;
-import backgammon.settings.GenAlgSettings;
+
 
 public class main2 {
 
@@ -24,6 +20,6 @@ public class main2 {
 		*/
 		
 		Individual I1 = new Individual();
-		I1.saveToFile("Player2");
+		I1.loadFromFile("PlayerFromGen0");
 	}
 }

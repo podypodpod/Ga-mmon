@@ -1,0 +1,1 @@
+Indiviudal with chromosome string: 0100111011010110111110010110 and fitness of: 0.64. |Agr: 39|Def: 53|Tech: 95|Ran: 22|

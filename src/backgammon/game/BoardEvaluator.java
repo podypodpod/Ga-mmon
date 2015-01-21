@@ -57,10 +57,10 @@ public class BoardEvaluator {
 	public void setPlayer(AIPlayer p){
 		currentPlayer = p;
 		if(p.black){
-			myZero = 25;
+			setMyZero(25);
 			oponentZero=0;
 		}else{
-			myZero = 0;
+			setMyZero(0);
 			oponentZero=25;
 		}
 	}
@@ -78,5 +78,21 @@ public class BoardEvaluator {
 		}else{
 			return false;
 		}
+	}
+
+	/**getMyZero
+	 * 
+	 * @return the value of myZero
+	 */
+	public int getMyZero() {
+		return myZero;
+	}
+
+	/**setMyZero
+	 * 
+	 * @param myZero
+	 */
+	public void setMyZero(int myZero) {
+		this.myZero = myZero;
 	}
 }
