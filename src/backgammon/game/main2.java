@@ -3,6 +3,8 @@ package backgammon.game;
 import backgammon.genes.Individual;
 
 
+
+
 public class main2 {
 
 	public static void main(String[] args) {
@@ -20,6 +22,9 @@ public class main2 {
 		*/
 		
 		Individual I1 = new Individual();
+		System.out.println(I1.toString());
 		I1.loadFromFile("PlayerFromGen0");
+		System.out.println(I1.toString());
+
 	}
 }

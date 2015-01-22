@@ -2,10 +2,15 @@ package backgammon.genes;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Properties;
 
 
 public class Individual {
@@ -112,75 +117,67 @@ public class Individual {
 	
 	
 	public void loadFromFile(String fileName){
-		
-	    BufferedReader br = null;
-	    String retreived;
-	    
+	
+		Properties properties = new Properties();
+		InputStream input = null;
+	 
 		try {
-			br = new BufferedReader(new FileReader("savedPlayers/"+fileName+".txt"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-	    try {
-	        StringBuilder sb = new StringBuilder();
-	        String line = null;
-			try {
-				line = br.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-	        while (line != null) {
-	            sb.append(line);
-	            sb.append(System.lineSeparator());
-	            try {
-					line = br.readLine();
+			input = new FileInputStream("savedPlayers/"+fileName+".properties");
+	 
+			// load the file
+			properties.load(input);
+	 
+			//get the chromosome value
+			chromosome = properties.getProperty("chromosome").toCharArray();
+			//update to the rest of the attributes
+			updateFromBinary();
+	 
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-	        }
-	        
-	        retreived = sb.toString();
-	    } finally {
-	        try {
-				br.close();
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
-	    }
-	    
-	    //Got the data and closed the connection
-	    String[] sections = retreived.split(": ");
-	    System.out.println(sections[0]);
-	    System.out.println(sections[1]);
-	    System.out.println(sections[2]);
-	    System.out.println(sections[3]);
-	    System.out.println(sections[4]);
-	    System.out.println(sections[5]);
-	    //TODO: Actually set the vars to the indv, currently changing the vars so do this after
+		}
 	}
 	
 	
 	public void saveToFile(String fileName){
 		
-		if(fileName.equals("")||fileName==null){
-			fileName="";
-		}
 		
-		BufferedWriter writer = null;
-		try
-		{
-		    writer = new BufferedWriter(new FileWriter("savedPlayers/"+fileName+".txt"));
-		    writer.write(toString());
-
-		}catch (IOException e){}
-		finally{
-		    try{
-		        if ( writer != null)
-		        writer.close( );
-		    }
-		    catch ( IOException e){}
+		Properties properties = new Properties();
+		OutputStream output = null;
+	 
+		try {
+	 
+			output = new FileOutputStream("savedPlayers/"+fileName+".properties");
+	
+			// set the properties value
+			properties.setProperty("chromosome", String.valueOf(chromosome));
+			properties.setProperty("fitness", getFitness()+"");
+			properties.setProperty("agressionChance", agressionChance+"");
+			properties.setProperty("defensiveChance", defensiveChance+"");
+			properties.setProperty("technicalChance", technicalChance+"");
+			properties.setProperty("randomChance", randomChance+"");
+			
+			//save the file to the savedPlayers folder
+			properties.store(output, null);
+	 
+		} catch (IOException io) {
+			io.printStackTrace();
+		} finally {
+			if (output != null) {
+				try {
+					output.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+	 
 		}
 	}
 }
