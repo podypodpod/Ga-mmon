@@ -15,6 +15,8 @@ public class GeneticAlgorithm {
 	 */
 	public static Population evolvePopulation(Population pop) {
 
+		if(GenAlgSettings.isDisplayconsole()){System.out.println("------EVOLVE POPULATION-------------------");}
+		
 		Population newPopulation = new Population(pop.size(), false);
 
 		// Keep our best individual
@@ -62,6 +64,8 @@ public class GeneticAlgorithm {
 	 */
 	private static Individual crossover(Individual indiv1, Individual indiv2) {
 
+		if(GenAlgSettings.isDisplayconsole()){System.out.println("------CROSSOVER-------------------");}
+		
 		Individual newIndiv = new Individual();
 		// Crossover
 		if (Math.random() <= GenAlgSettings.getUniformRate()) {
@@ -100,6 +104,8 @@ public class GeneticAlgorithm {
 	 */
 	public static void mutate(Individual indiv) {
 
+		if(GenAlgSettings.isDisplayconsole()){System.out.println("------MUTATING-------------------");}
+		
 		// get the indivs string
 		char[] indivStr = indiv.getChromosome();
 
@@ -127,6 +133,8 @@ public class GeneticAlgorithm {
 	 * @return the individual
 	 */
 	public static Individual tournamentSelection(Population pop) {
+		
+		if(GenAlgSettings.isDisplayconsole()){System.out.println("------TOURNAMENT SELECTION-------------------");}
 
 		// Create a tournament population
 		Population tournament = new Population(GenAlgSettings.getTournamentSize(), false);
@@ -150,7 +158,7 @@ public class GeneticAlgorithm {
 			Individual winnerOfRound = null;
 			int counter = 0;
 			for(int i = 0; i < tournament.size(); i+=2){
-				winnerOfRound = FitnessCalculator.getFitnessOf(tournament.getIndividual(i), tournament.getIndividual(i+1));
+				winnerOfRound = FitnessCalculator.getWinnerOf(tournament.getIndividual(i), tournament.getIndividual(i+1));
 				winnersOfRound[counter++]=winnerOfRound;
 			}
 

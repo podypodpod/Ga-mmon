@@ -42,7 +42,6 @@ public class Individual {
 	}
 	
 	public double getFitness(){
-		FitnessCalculator.getFitnessOf(this);
 		return fitness;
 	}
 	

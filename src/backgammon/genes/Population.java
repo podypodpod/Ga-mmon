@@ -1,5 +1,7 @@
 package backgammon.genes;
 
+import backgammon.game.GameManager;
+
 /**
  * The Class Population.
  */
@@ -33,6 +35,9 @@ public class Population {
 	 * @return the fittest
 	 */
 	public Individual getFittest(){
+		
+		calculateFitness();
+		
 		Individual fittest = individuals[0];
 		
 		for(int x = 1;x<individuals.length; x++){
@@ -90,5 +95,14 @@ public class Population {
 	 */
 	public void setArray(Individual[] indivs){
 		individuals = indivs;
+	}
+	
+	/**
+	 * calculates fitness of whole population
+	 * 
+	 * Uses round robin to play all against each other
+	 */
+	public void calculateFitness(){
+		FitnessCalculator.calculateFitnessOfPopulation(this);
 	}
 }

@@ -18,6 +18,14 @@ public class Game implements Runnable{
 	/** The board. */
 	private Board liveBoard;
 
+	public Board getLiveBoard() {
+		return liveBoard;
+	}
+
+	public void setLiveBoard(Board liveBoard) {
+		this.liveBoard = liveBoard;
+	}
+
 	/** The AI turn. */
 	private boolean p1sTurn = false;
 
@@ -56,11 +64,11 @@ public class Game implements Runnable{
 		//game active
 		setGameActive(true);
 		
-		indiv1 = i1;
-		indiv2 = i2;
+		setIndiv1(i1);
+		setIndiv2(i2);
 		
-		Player1 = new AIPlayer(isP1Black, indiv1);
-		Player2 = new AIPlayer(!isP1Black, indiv2);
+		Player1 = new AIPlayer(isP1Black, getIndiv1());
+		Player2 = new AIPlayer(!isP1Black, getIndiv2());
 	}
 	
 	/**
@@ -142,11 +150,13 @@ public class Game implements Runnable{
 				//if they haven't won then continue
 				}else{
 
-					//just to slow the visual process down, needed if both are AI
-					try {
-						Thread.sleep(timeDelay);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+					if(GameSettings.getDisplayGUI()){
+						//just to slow the visual process down, needed if both are AI
+						try {
+							Thread.sleep(timeDelay);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
 					
 					//if the player has not won the game, change boolean to allow the other player to take his turn
@@ -175,11 +185,13 @@ public class Game implements Runnable{
 					//if not, let the game loop contine
 					}else{
 
-						//just to slow the visual process down, needed if both are AI
-						try {
-							Thread.sleep(timeDelay);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
+						if(GameSettings.getDisplayGUI()){
+							//just to slow the visual process down, needed if both are AI
+							try {
+								Thread.sleep(timeDelay);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
 						}
 						
 						//if the player has not won the game, change boolean to allow the other player to take his turn
@@ -217,19 +229,11 @@ public class Game implements Runnable{
 	 * Working out the fitness of the game
 	 */
 	public void gameOver(){
+		
 		if(liveBoard.hasPlayerWon(Player1.black)){
-			double reductions = liveBoard.howManyHasPlayerBore(Player2.black)*0.04;
-			if(indiv1!=null){indiv1.setFitness(1-reductions);}
-			if(indiv2!=null){indiv2.setFitness(reductions);}
-			
-			gameVictor = indiv1;
-			
-		}else if(liveBoard.hasPlayerWon(Player2.black)){
-			double reductions = liveBoard.howManyHasPlayerBore(Player1.black)*0.04;
-			if(indiv2!=null){indiv2.setFitness(1-reductions);}
-			if(indiv1!=null){indiv1.setFitness(reductions);}
-			
-			gameVictor = indiv2;
+			gameVictor = getIndiv1();
+		}else{
+			gameVictor = getIndiv2();
 		}
 	}
 
@@ -248,5 +252,25 @@ public class Game implements Runnable{
 
 	public void setGameActive(boolean gameActive) {
 		this.gameActive = gameActive;
+	}
+	
+	public GameStats getGameStats(){
+		return new GameStats(this);
+	}
+
+	public Individual getIndiv1() {
+		return indiv1;
+	}
+
+	public void setIndiv1(Individual indiv1) {
+		this.indiv1 = indiv1;
+	}
+
+	public Individual getIndiv2() {
+		return indiv2;
+	}
+
+	public void setIndiv2(Individual indiv2) {
+		this.indiv2 = indiv2;
 	}
 }

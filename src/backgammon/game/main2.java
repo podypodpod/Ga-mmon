@@ -20,11 +20,11 @@ public class main2 {
 		
 		System.out.println(winner.toString());
 		*/
+		GameManager gm = new GameManager();
 		
-		Individual I1 = new Individual();
-		System.out.println(I1.toString());
-		I1.loadFromFile("PlayerFromGen0");
-		System.out.println(I1.toString());
+		GameStats gs =gm.playIndividualsVsEachOther(new Individual(), new Individual());
+		
+		System.out.println(gs.getVictor().toString());
 
 	}
 }

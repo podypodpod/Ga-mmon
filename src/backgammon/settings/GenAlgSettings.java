@@ -21,10 +21,10 @@ public class GenAlgSettings {
     private static final boolean elitism = true;
     
     /** The Constant generations. */
-    private static final int generations = 50;
+    private static final int generations = 2;
     
     /** the constant population size */
-    private static final int populationSize = 20;
+    private static final int populationSize = 10;
     
     /**
      * Gets the uniformrate.
