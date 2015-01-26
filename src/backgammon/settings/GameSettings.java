@@ -3,6 +3,7 @@ package backgammon.settings;
 /**
  * GameSettings class
  * 
+ * 
  * Only created this to simplify changing the settings of the game
  * 
  * Puts all settings for the actual game in one place..e.g. timeDelay for if it actually needs to be seen
