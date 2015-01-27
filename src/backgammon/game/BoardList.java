@@ -122,11 +122,12 @@ public class BoardList {
 			
 			//Use the individual to decide what to do next
 			if(individual!=null){
+				
 				//use the method individual decision to decide which to pick
 				chosenBoard = individualDecision(currentBoard, p);
 				return chosenBoard;
 				
-			//if the player personality = null then just pick at random, as this means its the basic oposition
+			//if the player personality = null then just pick at random, as this means its the basic opposition to test against
 			}else{
 				int x = (int)(Math.random()*(boardList.size()));
 
@@ -185,37 +186,43 @@ public class BoardList {
 	 */
 	public Board individualDecision(Board currentBoard, AIPlayer p){
 		
+		//if returned null it doesn't change
 		Board chosenBoard = null;
 		
 		//Giving the board evaluator the info it needs
 		bEval.setBoard(currentBoard);
 		bEval.setPlayer(p);
 		
-		//try to bear
-		for(Board x: boardList){
-			if(bEval.hasAPeiceBeenBore(x)){
-				chosenBoard = x;
-				break;
+		//checking if the player can bear
+		if(currentBoard.canPlayerBear(p.black)){
+			
+			//try to bear
+			for(Board x: boardList){
+				if(bEval.hasAPeiceBeenBore(x)){
+					chosenBoard = x;
+					break;
+				}
 			}
-		}
-		if(p.getIndividual().getAgressionChance()>70){
-			//try to take a peice
-			if(chosenBoard==null){
-				for(Board x: boardList){
-					if(bEval.hasAPeiceBeenTaken(x)){
-						chosenBoard = x;
-						break;
+		}else{
+			if(p.getIndividual().getAgressionChance()>70&&boardList==null){
+				//try to take a piece
+				if(chosenBoard==null){
+					for(Board x: boardList){
+						if(bEval.hasAPeiceBeenTaken(x)){
+							chosenBoard = x;
+							break;
+						}
 					}
 				}
 			}
-		}
-		//If it can neither bear or take a peice then random
-		if(chosenBoard==null){
-			int x = (int)(Math.random()*(boardList.size()));
+			//If it can neither bear or take a peice then random
+			if(chosenBoard==null){
+				int x = (int)(Math.random()*(boardList.size()));
 
-			if(GameSettings.getDisplayConsole()){System.out.println("board list size: "+boardList.size());}
-			
-			chosenBoard = boardList.get(x);
+				if(GameSettings.getDisplayConsole()){System.out.println("board list size: "+boardList.size());}
+				
+				chosenBoard = boardList.get(x);
+			}
 		}
 		return chosenBoard;
 	}

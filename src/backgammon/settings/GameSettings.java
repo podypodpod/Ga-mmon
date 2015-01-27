@@ -16,7 +16,7 @@ public class GameSettings {
 	/** if both players are QI or one human. */
 	private static boolean areBothAIs = true;
 
-	/** The time delay on the gui printing, 0 time delay wil not display the game well. */
+	/** The time delay on the GUI printing, 0 time delay wil not display the game well. */
 	private static int timeDelay = 0;
 	
 	/**  whether there actually is a GUI not. */

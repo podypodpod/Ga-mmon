@@ -1,7 +1,5 @@
 package backgammon.genes;
 
-import backgammon.game.GameManager;
-import backgammon.game.GameStats;
 import backgammon.settings.GenAlgSettings;
 
 public class Main {

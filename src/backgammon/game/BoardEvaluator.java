@@ -5,7 +5,7 @@ import backgammon.settings.GameSettings;
 /**
  * The Class BoardEvaluator.
  * 
- * usefull methods for picking boards from the board list e.g. pick a board where it will take a peice
+ * Useful methods for picking boards from the board list e.g. pick a board where it will take a peice
  */
 public class BoardEvaluator {
 	
@@ -15,18 +15,18 @@ public class BoardEvaluator {
 	/** The current player. */
 	private AIPlayer currentPlayer;
 	
-	/** The oponent zero positions. */
+	/** The opponent zero positions. */
 	private int myZero, oponentZero;
 	
 	
 	/**
-	 * Board evalutator cons.
+	 * Board evaluator cons.
 	 */
 	public void BoardEvalutator(){}
 	
 	
 	/**
-	 * Checks for a peice being taken.
+	 * Checks for a piece being taken.
 	 *
 	 * @param newBoard the new board
 	 * @return true, if successful
@@ -66,7 +66,7 @@ public class BoardEvaluator {
 	}
 	
 	/**
-	 * Checks for a peice that has been bore.
+	 * Checks for a piece that has been bore.
 	 *
 	 * @param newBoard the new board
 	 * @return true, if successful

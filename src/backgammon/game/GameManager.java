@@ -35,7 +35,6 @@ public class GameManager {
 	 */
 	public GameStats playIndividualsVsEachOther(Individual ip1, Individual ip2){
 		
-		Individual victor = null;
 		if(GameSettings.getDisplayGUI()){
 			startGui();
 		}
@@ -44,7 +43,7 @@ public class GameManager {
 		currentGame = new Game(ip1, ip2);
 		Thread gameThread = new Thread(currentGame);
 		gameThread.start();
-		//stops it multithreading and ruining the GUI
+		//stops it multi-threading and ruining the GUI
 		try {
 			if(!GameSettings.getMultiThreading()){gameThread.join();};
 		} catch (InterruptedException e) {

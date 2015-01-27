@@ -1,7 +1,4 @@
 package backgammon.genes;
-
-import backgammon.game.GameManager;
-
 /**
  * The Class Population.
  */

@@ -56,6 +56,7 @@ public class MoveGenerator {
 				//loop all points
 				for(int point = 0; point < cb.Points.length; point++){
 						
+					//if the player is black
 					if(p.black){
 
 						//if the current point can move the current move, create new board of it
@@ -65,6 +66,7 @@ public class MoveGenerator {
 							boardList.addBoard(new Board(cb), (point-currentMove), point, new AIPlayer(p), this);
 		
 						}
+					//if the player is red
 					}else if(!p.black){
 						
 					}

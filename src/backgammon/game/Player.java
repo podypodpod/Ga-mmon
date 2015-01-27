@@ -127,7 +127,7 @@ public class Player {
 	/**
 	 * Move piece possible.
 	 * 
-	 * Wether the move is possible, doesnt actually move anything
+	 * Whether the move is possible, doesn't actually move anything
 	 *
 	 * @param from point
 	 * @param to destination
@@ -154,7 +154,7 @@ public class Player {
 						}
 					}
 
-					//TO piece, -1 = bear
+					//TO piece, -1 or 26 = bear
 
 					//checking it is not moving in to the 0 spaces
 					if(to!=0 && to!=25 && to!=-1 && to!=26){
@@ -178,10 +178,10 @@ public class Player {
 						}
 
 						
-					//TO: BEARING, if the player can bear
+					//BEARING, if the player can bear (bearing is counted as point -1 or 26)
 					}else if(((to==-1 || to==26) && liveBoard.canPlayerBear((liveBoard.Points[from].getCol())))){
-						
-						int y = 0;
+												
+						int y;
 						
 						if(to==-1){
 							y=1;
