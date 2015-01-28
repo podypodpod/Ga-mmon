@@ -204,7 +204,7 @@ public class BoardList {
 				}
 			}
 		}else{
-			if(p.getIndividual().getAgressionChance()>70&&boardList==null){
+			if(p.getIndividual().getAttribute(1).getValue()>70&&boardList==null){
 				//try to take a piece
 				if(chosenBoard==null){
 					for(Board x: boardList){

@@ -68,28 +68,13 @@ public class GeneticAlgorithm {
 		
 		Individual newIndiv = new Individual();
 		// Crossover
-		if (Math.random() <= GenAlgSettings.getUniformRate()) {
-			newIndiv.setAgressionChance(indiv1.getAgressionChance());
-		} else {
-			newIndiv.setAgressionChance(indiv2.getAgressionChance());
-		}
-
-		if (Math.random() <= GenAlgSettings.getUniformRate()) {
-			newIndiv.setDefensiveChance(indiv1.getDefensiveChance());
-		} else {
-			newIndiv.setDefensiveChance(indiv2.getDefensiveChance());
-		}
-
-		if (Math.random() <= GenAlgSettings.getUniformRate()) {
-			newIndiv.setTechnicalChance(indiv1.getTechnicalChance());
-		} else {
-			newIndiv.setTechnicalChance(indiv2.getTechnicalChance());
-		}
-
-		if (Math.random() <= GenAlgSettings.getUniformRate()) {
-			newIndiv.setRandomChance(indiv1.getRandomChance());
-		} else {
-			newIndiv.setRandomChance(indiv2.getRandomChance());
+		
+		for(int x = 0; x<indiv1.getNumOfAttributes(); x++){
+			if (Math.random() <= GenAlgSettings.getUniformRate()) {
+				newIndiv.setAttribute(x, indiv1.getAttribute(x));
+			} else {
+				newIndiv.setAttribute(x, indiv2.getAttribute(x));
+			}
 		}
 		return newIndiv;
 	}

@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import java.util.Properties;
 
 
@@ -12,25 +13,15 @@ import java.util.Properties;
  * The Class Individual.
  */
 public class Individual {
-
 	
-	/** The agression chance. */
-	private int agressionChance = 0;
+	//number of attributes
+	private int numOfAttributes = 5;
 	
-	/** The defensive chance. */
-	private int defensiveChance = 0;
-	
-	/** The technical chance. */
-	private int technicalChance = 0;
-	
-	/** The random chance. */
-	private int randomChance = 0;
+	//Attributes	
+	private IndivAttribute[] listOfAttributes = null;
 	
 	/** The chromosome. */
 	private char[] chromosome;
-	
-	/** The num of atrributes. */
-	private int numOfAtrributes = 4;
 	
 	/** The fitness. */
 	private double fitness = 0;
@@ -39,17 +30,18 @@ public class Individual {
 	 * Instantiates a new individual.
 	 */
 	public Individual(){
-		
-		//randomly generate their attributes
-		agressionChance = (int) (Math.random()*100);
-		defensiveChance = (int) (Math.random()*100);
-		technicalChance = (int) (Math.random()*100);
-		randomChance = (int) (Math.random()*100);
+
+		//add attributes to the array
+		listOfAttributes = new IndivAttribute[]{
+				new IndivAttribute("bearAPiece"), 
+				new IndivAttribute("takeAPiece"), 
+				new IndivAttribute("doubleUpAPiece"), 
+				new IndivAttribute("blockAnOpponent"),
+				new IndivAttribute("movingAPieceSolo")
+			};
 		
 		//convert to block of bite strings
-		int[] perArray = {agressionChance,defensiveChance,technicalChance,randomChance};
-		chromosome = Util.convertFromIntToBinaryCharAry(perArray);
-		
+		chromosome = Util.convertFromIntToBinaryCharAry(listOfAttributes);
 	}
 	
 	/**
@@ -70,101 +62,26 @@ public class Individual {
 		fitness = fit;
 	}
 
-	/**
-	 * Gets the agression chance.
-	 *
-	 * @return the agression chance
-	 */
-	public int getAgressionChance() {
-		updateFromBinary();
-		return agressionChance;
-	}
 	
 	/**
-	 * Gets the random chance.
+	 * Gets the number of attributes.
 	 *
-	 * @return the random chance
-	 */
-	public int getRandomChance(){
-		updateFromBinary();
-		return randomChance;
-	}
-	
-	/**
-	 * Gets the technical chance.
-	 *
-	 * @return the technical chance
-	 */
-	public int getTechnicalChance(){
-		updateFromBinary();
-		return technicalChance;
-	}
-	
-	/**
-	 * Gets the defensive chance.
-	 *
-	 * @return the defensive chance
-	 */
-	public int getDefensiveChance(){
-		updateFromBinary();
-		return defensiveChance;
-	}
-	
-	/**
-	 * Gets the num of attributes.
-	 *
-	 * @return the num of attributes
+	 * @return the number of attributes
 	 */
 	public int getNumOfAttributes(){
-		return numOfAtrributes;
+		return numOfAttributes;
 	}
 
-	/**
-	 * Sets the agression chance.
-	 *
-	 * @param ac the new agression chance
-	 */
-	public void setAgressionChance(int ac) {
-		agressionChance = ac;
-		updateToBinary();
-	}
-
-
-	/**
-	 * Sets the defensive chance.
-	 *
-	 * @param dc the new defensive chance
-	 */
-	public void setDefensiveChance(int dc) {
-		defensiveChance = dc;
-		updateToBinary();
-	}
-	
-	/**
-	 * Sets the technical chance.
-	 *
-	 * @param tc the new technical chance
-	 */
-	public void setTechnicalChance(int tc){
-		technicalChance = tc;
-		updateToBinary();
-	}
-	
-	/**
-	 * Sets the random chance.
-	 *
-	 * @param rc the new random chance
-	 */
-	public void setRandomChance(int rc){
-		randomChance = rc;
-		updateToBinary();
-	}
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString(){
-		return "Indiviudal with chromosome string: "+String.valueOf(chromosome) +" and fitness of: "+fitness+". |Agr: "+getAgressionChance()+"|Def: "+getDefensiveChance() + "|Tech: "+getTechnicalChance()+"|Ran: "+getRandomChance()+"|";
+		String result = "Indiviudal with chromosome string: "+String.valueOf(chromosome) +" and fitness of: "+fitness;
+		for(int x = 0; x<listOfAttributes.length; x++){
+			result+="| "+listOfAttributes[x].getName()+": "+listOfAttributes[x].getValue();
+		}
+		return result;
 	}
 
 	/**
@@ -180,19 +97,17 @@ public class Individual {
 	 * Update to binary.
 	 */
 	private void updateToBinary() {
-		int[] perArray = {agressionChance,defensiveChance,technicalChance,randomChance};
-		chromosome = Util.convertFromIntToBinaryCharAry(perArray);
+		chromosome = Util.convertFromIntToBinaryCharAry(listOfAttributes);
 	}
 	
 	/**
 	 * Update from binary.
 	 */
 	private void updateFromBinary() {
-		int[] newAtrributes = Util.convertFromBinaryStringsToIntAr(String.valueOf(chromosome), 4, 7);
-		agressionChance = newAtrributes[0];
-		defensiveChance = newAtrributes[1];
-		technicalChance = newAtrributes[2];
-		randomChance = newAtrributes[3];
+		int[] values = Util.convertFromBinaryStringsToIntAr(String.valueOf(chromosome), numOfAttributes, 7);
+		for(int x = 0; x<values.length; x++){
+			listOfAttributes[x].setValue(values[x]);
+		}
 	}
 	
 	
@@ -249,11 +164,10 @@ public class Individual {
 			// set the properties value
 			properties.setProperty("chromosome", String.valueOf(chromosome));
 			properties.setProperty("fitness", getFitness()+"");
-			properties.setProperty("agressionChance", agressionChance+"");
-			properties.setProperty("defensiveChance", defensiveChance+"");
-			properties.setProperty("technicalChance", technicalChance+"");
-			properties.setProperty("randomChance", randomChance+"");
-			
+			for(IndivAttribute x : listOfAttributes){
+				properties.setProperty(x.getName(), x.getValue()+"");
+			}
+
 			//save the file to the savedPlayers folder
 			properties.store(output, null);
 	 
@@ -269,5 +183,15 @@ public class Individual {
 			}
 	 
 		}
+		
+	}
+	
+	
+	public void setAttribute(int attr, IndivAttribute data){
+		listOfAttributes[attr] = data;
+		updateToBinary();
+	}
+	public IndivAttribute getAttribute(int pos){
+		return listOfAttributes[pos];
 	}
 }

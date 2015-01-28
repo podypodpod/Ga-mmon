@@ -27,10 +27,10 @@ public class Util {
 	 * @param numbersToConvert the numbers to convert
 	 * @return the char[]
 	 */
-	public static char[] convertFromIntToBinaryCharAry (int[] numbersToConvert){
+	public static char[] convertFromIntToBinaryCharAry (IndivAttribute[] numbersToConvert){
 		StringBuffer binaryString = new StringBuffer();
 		for(int x = 0; x<numbersToConvert.length;x++){
-			binaryString.append(convertFromIntToBinaryStr(numbersToConvert[x]));
+			binaryString.append(convertFromIntToBinaryStr(numbersToConvert[x].getValue()));
 		}
 		return binaryString.toString().toCharArray();
 	}

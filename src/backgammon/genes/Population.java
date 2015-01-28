@@ -102,4 +102,8 @@ public class Population {
 	public void calculateFitness(){
 		FitnessCalculator.calculateFitnessOfPopulation(this);
 	}
+	
+	public String toString(){
+		return "Population of size: "+size();
+	}
 }
