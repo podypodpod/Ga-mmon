@@ -3,19 +3,20 @@ package backgammon.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import backgammon.genes.IndivAttribute;
 import backgammon.genes.Individual;
 import backgammon.settings.GameSettings;
 /**
  * The Class BoardList.
  */
 public class BoardList {
-	
+
 	/** The all possible moves. */
 	private List<Board> boardList;
-	
+
 	/**  The individual that will make the move. */
 	private Individual individual;
-	
+
 	/** The b eval. */
 	private BoardEvaluator bEval;
 
@@ -27,14 +28,14 @@ public class BoardList {
 	 * @param indiv the indiv
 	 */
 	public BoardList(Individual indiv){
-		
+
 		boardList = new ArrayList<Board>();
-		
+
 		individual = indiv;
-		
+
 		bEval = new BoardEvaluator();
 	}
-	
+
 	/**
 	 * clearList
 	 * 
@@ -43,7 +44,7 @@ public class BoardList {
 	public void clearList(){
 		boardList.clear();
 	}
-	
+
 	/**
 	 * addBoard
 	 * Adds the board passed in.
@@ -53,7 +54,7 @@ public class BoardList {
 	public void addBoard(Board b){
 		boardList.add(b);
 	}
-	
+
 	/**
 	 * addBoard
 	 * adds the board passed in with the move also passed in applied to it first.
@@ -66,17 +67,17 @@ public class BoardList {
 	 * @param mg the move generator
 	 */
 	public void addBoard(Board b, int to, int from, AIPlayer p1, MoveGenerator mg){
-		
+
 		//move the piece on this new board
 		p1.movePiece(from, to, b);
-		
+
 		if(p1.movesLeft.size()>1){
 			p1.movesLeft.movesLeft.remove(Integer.valueOf(p1.distanceBetween(from, to)));
 		}else{
 			p1.movesLeft.movesLeft.remove(0);
 			p1.movesLeft.movesLeft.add(Integer.valueOf(0));
 		}
-		
+
 		//check if any further moves can be made
 		if(!((p1.movesLeft.size()==1 && p1.movesLeft.getNext()==0)||(p1.movesLeft.size()==0))){
 			mg.generateMoves(b, p1);
@@ -87,8 +88,8 @@ public class BoardList {
 			addBoard(b);
 		}
 	}
-	
-	
+
+
 	/**
 	 * There is a duplicate.
 	 * checks if there is already a duplicate of the board passed in already present in the list
@@ -104,7 +105,7 @@ public class BoardList {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Select board.
 	 * This will select the best board from the list for the player to use
@@ -114,27 +115,27 @@ public class BoardList {
 	 * @return the board that has been selected
 	 */
 	public Board selectBoard(Board currentBoard, AIPlayer p){
-		
+
 		//create a new board
 		Board chosenBoard = null;
-		
+
 		if(boardList.size()>0){
-			
+
 			//Use the individual to decide what to do next
 			if(individual!=null){
-				
+
 				//use the method individual decision to decide which to pick
 				chosenBoard = individualDecision(currentBoard, p);
 				return chosenBoard;
-				
-			//if the player personality = null then just pick at random, as this means its the basic opposition to test against
+
+				//if the player personality = null then just pick at random, as this means its the basic opposition to test against
 			}else{
 				int x = (int)(Math.random()*(boardList.size()));
 
 				if(GameSettings.getDisplayConsole()){System.out.println("board list size: "+boardList.size());}
-				
+
 				chosenBoard = boardList.get(x);
-				
+
 				return chosenBoard;
 			}
 		}else
@@ -142,9 +143,9 @@ public class BoardList {
 			//if there are no possible new boards(no possible moves) return null
 			return null;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Prints the board list.
 	 */
@@ -158,7 +159,7 @@ public class BoardList {
 			System.out.println("----------------------------");
 		}
 	}
-	
+
 	/**
 	 * Checks for contents.
 	 *
@@ -171,8 +172,8 @@ public class BoardList {
 			return false;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Individual decision.
 	 * 
@@ -185,17 +186,29 @@ public class BoardList {
 	 * @return the board chosen
 	 */
 	public Board individualDecision(Board currentBoard, AIPlayer p){
-		
+
 		//if returned null it doesn't change
 		Board chosenBoard = null;
-		
+
 		//Giving the board evaluator the info it needs
 		bEval.setBoard(currentBoard);
 		bEval.setPlayer(p);
-		
-		//checking if the player can bear
-		if(currentBoard.canPlayerBear(p.black)){
-			
+
+
+		/*
+		EXAMPLE TEXT FILE
+			new IndivAttribute("bearAPiece"), 
+			new IndivAttribute("takeAPiece"), 
+			new IndivAttribute("doubleUpAPiece"), 
+			new IndivAttribute("blockAnOpponent"),
+			new IndivAttribute("movingAPieceSolo")
+		 */
+
+
+		// END GAME
+		// Attribute 0 = bear a piece
+		if(currentBoard.canPlayerBear(p.black) && p.getIndividual().getAttribute(0).getValue()>(int) (Math.random()*100)){
+
 			//try to bear
 			for(Board x: boardList){
 				if(bEval.hasAPeiceBeenBore(x)){
@@ -203,24 +216,57 @@ public class BoardList {
 					break;
 				}
 			}
-		}else{
-			if(p.getIndividual().getAttribute(1).getValue()>70&&boardList==null){
+
+			// MID GAME
+		}else if(chosenBoard==null){
+
+			// Attribute 1 = take a piece
+			if(p.getIndividual().getAttribute(1).getValue()>(int) (Math.random()*100)){
 				//try to take a piece
-				if(chosenBoard==null){
-					for(Board x: boardList){
-						if(bEval.hasAPeiceBeenTaken(x)){
-							chosenBoard = x;
-							break;
-						}
+				for(Board x: boardList){
+					if(bEval.hasAPeiceBeenTaken(x)){
+						chosenBoard = x;
+						break;
 					}
 				}
-			}
-			//If it can neither bear or take a peice then random
-			if(chosenBoard==null){
+
+				// Attribute 2 = doubleUpAPiece
+			}else if(p.getIndividual().getAttribute(2).getValue()>(int) (Math.random()*100)){
+				//try to double up a piece
+				for(Board x: boardList){
+					if(bEval.hasABlotBeenDoubled(x)){
+						chosenBoard = x;
+						break;
+					}
+				}
+
+			/* Attribute 3 = blockAnOpponent
+			}else if(p.getIndividual().getAttribute(2).getValue()>(int) (Math.random()*100)){
+				//try to blockAnOpponent
+				for(Board x: boardList){
+					if(bEval.xxxxxxxx(x)){
+						chosenBoard = x;
+						break;
+					}
+				}*/
+				
+			/* Attribute 3 = blockAnOpponent
+			}else if(p.getIndividual().getAttribute(2).getValue()>(int) (Math.random()*100)){
+				//try to blockAnOpponent
+				for(Board x: boardList){
+					if(bEval.xxxxxxxx(x)){
+						chosenBoard = x;
+						break;
+					}
+				}*/
+
+
+				//NO SPECIFIC MOVES AVAILABLE - RANDOM
+			}else if(chosenBoard==null){
 				int x = (int)(Math.random()*(boardList.size()));
 
 				if(GameSettings.getDisplayConsole()){System.out.println("board list size: "+boardList.size());}
-				
+
 				chosenBoard = boardList.get(x);
 			}
 		}

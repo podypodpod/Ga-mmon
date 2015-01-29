@@ -95,4 +95,21 @@ public class BoardEvaluator {
 	public void setMyZero(int myZero) {
 		this.myZero = myZero;
 	}
+
+	/**
+	 * hasABlotBeenDoubled
+	 * 
+	 * Checks to see if the board passed in has had a single piece on its own (a blot)
+	 * doubled and therefore safe from being taken
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if it has been doubled
+	 */
+	public boolean hasABlotBeenDoubled(Board newBoard) {
+		if(liveBoard.getNumOfBlots(currentPlayer.black)<newBoard.getNumOfBlots(currentPlayer.black)){
+			return true;
+		}else{
+			return false;
+		}
+	}
 }

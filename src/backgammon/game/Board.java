@@ -280,5 +280,15 @@ public class Board {
 			return redBore;
 		}
 	}
+
+	public int getNumOfBlots(boolean black) {
+		int num = 0;
+		for(int x = 0; x<Points.length;x++){
+			if(Points[x].numEither()>0 && Points[x].getCol()==true){
+				num++;
+			}
+		}
+		return num;
+	}
 	
 }
