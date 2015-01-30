@@ -14,8 +14,8 @@ public class Main {
 		//save initial fittest
 		System.out.println("Calculating fittest of initial pop");
 		Individual fittest = pop.getFittest();
-		
-		System.out.println("fittest of initial:" +fittest.toString());
+
+
 		
 		fittest.saveToFile("PlayerFromGen");
 				
