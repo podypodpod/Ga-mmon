@@ -6,7 +6,7 @@ package backgammon.settings;
 public class GenAlgSettings {
 	
 	/** The Constant displayConsole. */
-	private static final boolean displayConsole = true;
+	private static final boolean displayConsole = false;
 
 	/** The Constant uniformRate. */
     private static final double uniformRate = 0.5;

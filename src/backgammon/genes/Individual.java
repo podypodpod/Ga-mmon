@@ -159,7 +159,7 @@ public class Individual {
 	 
 		try {
 	 
-			output = new FileOutputStream("savedPlayers/"+fileName+".properties");
+			output = new FileOutputStream("savedPlayers/Attempt2/"+fileName+".properties");
 	
 			// set the properties value
 			properties.setProperty("chromosome", String.valueOf(chromosome));

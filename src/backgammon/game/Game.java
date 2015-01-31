@@ -144,7 +144,7 @@ public class Game implements Runnable{
 				if(liveBoard.hasPlayerWon(Player1.black)){
 					setGameActive(false);
 					//JOptionPane.showMessageDialog(null, "Player 1 has won! (Black="+Player1.black+")");
-					System.out.println("Player 1 has won! (Black="+Player1.black+")");
+					if(GameSettings.getDisplayConsole()){System.out.println("Player 1 has won! (Black="+Player1.black+")");}
 					gameOver();
 					
 				//if they haven't won then continue
@@ -179,7 +179,7 @@ public class Game implements Runnable{
 					if(liveBoard.hasPlayerWon(Player2.black)){
 						setGameActive(false);
 						//JOptionPane.showMessageDialog(null, "Player 2 has won! (Black="+Player2.black+")");
-						System.out.println("Player 2 has won! (Black="+Player2.black+")");
+						if(GameSettings.getDisplayConsole()){System.out.println("Player 2 has won! (Black="+Player2.black+")");}
 						gameOver();
 						
 					//if not, let the game loop contine

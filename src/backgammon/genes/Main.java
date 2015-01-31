@@ -23,7 +23,7 @@ public class Main {
 		pop = GeneticAlgorithm.evolvePopulation(pop);
 		System.out.println("Calculating fitness");
 		fittest = pop.getFittest();
-		fittest.saveToFile("PlayerFromGen"+0);
+		fittest.saveToFile("PlayerFromGen"+1);
 		System.out.println("--------Evolved!--------- this was population 0");
 		
 		
@@ -32,11 +32,11 @@ public class Main {
 			System.out.println("--------Evolved!--------- this was population "+(x+1));
 			System.out.println("Calculating fitness");
 			fittest = pop.getFittest();
-			fittest.saveToFile("PlayerFromGen"+x);
+			fittest.saveToFile("PlayerFromGen"+(x+1));
 		}
 		
         System.out.println("------------Finished-------");
-        //System.out.println("Solution:");
-        //System.out.println(pop.getFittest().toString());
+        System.out.println("Solution:");
+        System.out.println(pop.getFittest().toString());
 	}
 }
