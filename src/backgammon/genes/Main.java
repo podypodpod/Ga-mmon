@@ -17,14 +17,14 @@ public class Main {
 
 
 		
-		fittest.saveToFile("PlayerFromGen");
+		fittest.saveToFile("FittestFromInitialPopulation");
 				
         //evolve once
 		pop = GeneticAlgorithm.evolvePopulation(pop);
 		System.out.println("Calculating fitness");
 		fittest = pop.getFittest();
-		fittest.saveToFile("PlayerFromGen"+1);
-		System.out.println("--------Evolved!--------- this was population 0");
+		fittest.saveToFile("FittestFromGeneration"+1);
+		System.out.println("--------Evolved!--------- this was population 1");
 		
 		
 		for(int x = 0; x<GenAlgSettings.getGenerations()-1;x++){

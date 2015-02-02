@@ -6,7 +6,7 @@ package backgammon.settings;
 public class GenAlgSettings {
 	
 	/** The Constant displayConsole. */
-	private static final boolean displayConsole = false;
+	private static final boolean displayConsole = true;
 
 	/** The Constant uniformRate. */
     private static final double uniformRate = 0.5;
@@ -26,7 +26,29 @@ public class GenAlgSettings {
     /** the constant population size */
     private static final int populationSize = 10;
     
-    /**
+    private static final String savePath = "savedPlayers/Attempt3/";
+    
+    public static double getUniformrate() {
+		return uniformRate;
+	}
+
+	public static double getMutationrate() {
+		return mutationRate;
+	}
+
+	public static int getTournamentsize() {
+		return tournamentSize;
+	}
+
+	public static int getPopulationsize() {
+		return populationSize;
+	}
+
+	public static String getSavePath() {
+		return savePath;
+	}
+
+	/**
      * Gets the uniformrate.
      *
      * @return the uniformrate

@@ -5,8 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import java.util.Properties;
+
+import backgammon.settings.GenAlgSettings;
 
 
 /**
@@ -122,7 +123,7 @@ public class Individual {
 		InputStream input = null;
 	 
 		try {
-			input = new FileInputStream("savedPlayers/"+fileName+".properties");
+			input = new FileInputStream(GenAlgSettings.getSavePath()+fileName+".properties");
 	 
 			// load the file
 			properties.load(input);
