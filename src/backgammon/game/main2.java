@@ -9,7 +9,7 @@ import backgammon.genes.Population;
 public class main2 {
 
 	public static void main(String[] args) {
-		
+		/*
 		System.out.println("---------INDIV 1----------");
 		Individual x = new Individual();
 		x.loadFromFile("PlayerFromGen");
@@ -36,5 +36,14 @@ public class main2 {
 		
 		System.out.println("X won: "+x1won);
 		System.out.println("X1 won: "+x2won);
+		*/
+		
+		
+		GameManager gn = new GameManager();
+		
+		gn.playIndividualsVsEachOther(null, null);
+		
+		
+		
 	}
 }

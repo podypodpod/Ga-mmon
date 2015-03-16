@@ -29,9 +29,7 @@ public class ContainerFrame extends JFrame implements Runnable{
 
 	@Override
 	public void run() {
-		
 		createGUI();
-		
 	}
 	
 	public void createGUI(){
@@ -51,7 +49,7 @@ public class ContainerFrame extends JFrame implements Runnable{
 		c.weightx = 1.0;
 		c.weighty = 1.0;
 		mainPanel.add(bp, c);
-		
+		/*
 		//creating and adding the control panel
 		cp = new ControlPanel();
 		c.gridx = 1;
@@ -59,9 +57,9 @@ public class ContainerFrame extends JFrame implements Runnable{
 		c.weightx = 0.0;
 		c.weighty = 0.0;
 		mainPanel.add(cp,c);
-		
+		*/
 		frame.add(mainPanel);
-		frame.setSize(1355,637);
+		frame.setSize(1166,600);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
