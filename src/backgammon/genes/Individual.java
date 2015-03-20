@@ -1,4 +1,4 @@
-package backgammon.genes;
+	package backgammon.genes;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,7 +16,7 @@ import backgammon.settings.GenAlgSettings;
 public class Individual {
 	
 	//number of attributes
-	private int numOfAttributes = 5;
+	private int numOfAttributes = 6;
 	
 	//Attributes	
 	private IndivAttribute[] listOfAttributes = null;
@@ -38,10 +38,11 @@ public class Individual {
 				new IndivAttribute("takeAPiece"), 
 				new IndivAttribute("doubleUpAPiece"), 
 				new IndivAttribute("blockAnOpponent"),
-				new IndivAttribute("movingAPieceSolo")
+				new IndivAttribute("movingAPieceSolo"),
+				new IndivAttribute("spreadAHomePiece")
 			};
 		
-		//convert to block of bite strings
+		//convert to binary string
 		chromosome = Util.convertFromIntToBinaryCharAry(listOfAttributes);
 	}
 	
@@ -97,7 +98,7 @@ public class Individual {
 	/**
 	 * Update to binary.
 	 */
-	private void updateToBinary() {
+	public void updateToBinary() {
 		chromosome = Util.convertFromIntToBinaryCharAry(listOfAttributes);
 	}
 	
@@ -154,13 +155,13 @@ public class Individual {
 	 */
 	public void saveToFile(String fileName){
 		
-		
+		updateToBinary();
 		Properties properties = new Properties();
 		OutputStream output = null;
 	 
 		try {
 	 
-			output = new FileOutputStream("savedPlayers/Attempt2/"+fileName+".properties");
+			output = new FileOutputStream(GenAlgSettings.getSavePath()+fileName+".properties");
 	
 			// set the properties value
 			properties.setProperty("chromosome", String.valueOf(chromosome));

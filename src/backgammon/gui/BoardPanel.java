@@ -42,7 +42,7 @@ public class BoardPanel extends JPanel{
 		g2.setFont(new Font("default", Font.BOLD, 16));
 		
 		//Drawing background
-		imgBG = Toolkit.getDefaultToolkit().getImage("images/Backgammon blank board3.png");
+		imgBG = Toolkit.getDefaultToolkit().getImage("images/Backgammon blank board.png");
 	    g2.drawImage(imgBG, 0, 0, this);
 	    
 
@@ -81,7 +81,7 @@ public class BoardPanel extends JPanel{
 
 		    	//print top right half checkers
 		    	}else if(i>0 && i<7){
-		    	
+		    		
 		    		g2.fillOval(990-(i*70), 80, 50, 50);
 		    		g2.setColor(Color.WHITE);
 		    		g2.drawOval(990-(i*70), 80, 50, 50);

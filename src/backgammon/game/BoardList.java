@@ -202,22 +202,35 @@ public class BoardList {
 			new IndivAttribute("doubleUpAPiece"), 
 			new IndivAttribute("blockAnOpponent"),
 			new IndivAttribute("movingAPieceSolo")
+			new IndivAttribute("spreadPiece")
 		 */
 
 
 		// END GAME
-		// Attribute 0 = bear a piece
-		if(currentBoard.canPlayerBear(p.black) && p.getIndividual().getAttribute(0).getValue()>(int) (Math.random()*100)){
-
-			//try to bear
-			for(Board x: boardList){
-				if(bEval.hasAPeiceBeenBore(x)){
-					chosenBoard = x;
-					break;
+		if(currentBoard.canPlayerBear(p.black)){
+			
+			// Attribute 0 = bear a piece
+			if(p.getIndividual().getAttribute(0).getValue()>(int) (Math.random()*100)){
+				//try to bear
+				for(Board x: boardList){
+					if(bEval.hasAPeiceBeenBore(x)){
+						chosenBoard = x;
+						break;
+					}
+				}
+			// Attribute 5 = spread pieces
+			}else if(p.getIndividual().getAttribute(5).getValue()>(int) (Math.random()*100)){
+				//try to spread a piece
+				for(Board x: boardList){
+					if(bEval.hasAPieceBeenSpread(x)){
+						chosenBoard = x;
+						break;
+					}
 				}
 			}
 
-			// MID GAME
+
+		// MID/EARLY GAME
 		}else if(chosenBoard==null){
 
 			// Attribute 1 = take a piece
@@ -230,7 +243,7 @@ public class BoardList {
 					}
 				}
 
-				// Attribute 2 = doubleUpAPiece
+			// Attribute 2 = doubleUpAPiece
 			}else if(p.getIndividual().getAttribute(2).getValue()>(int) (Math.random()*100)){
 				//try to double up a piece
 				for(Board x: boardList){
@@ -240,15 +253,15 @@ public class BoardList {
 					}
 				}
 
-			/* Attribute 3 = blockAnOpponent
-			}else if(p.getIndividual().getAttribute(2).getValue()>(int) (Math.random()*100)){
+			// Attribute 3 = blockAnOpponent
+			}else if(p.getIndividual().getAttribute(3).getValue()>(int) (Math.random()*100)){
 				//try to blockAnOpponent
 				for(Board x: boardList){
-					if(bEval.xxxxxxxx(x)){
+					if(bEval.hasTheOponentBeenBlocked(x)){
 						chosenBoard = x;
 						break;
 					}
-				}*/
+				}
 				
 			/* Attribute 3 = blockAnOpponent
 			}else if(p.getIndividual().getAttribute(2).getValue()>(int) (Math.random()*100)){
@@ -261,7 +274,7 @@ public class BoardList {
 				}*/
 
 
-				//NO SPECIFIC MOVES AVAILABLE - RANDOM
+			//NO SPECIFIC MOVES AVAILABLE - RANDOM
 			}else if(chosenBoard==null){
 				int x = (int)(Math.random()*(boardList.size()));
 

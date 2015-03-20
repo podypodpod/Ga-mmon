@@ -19,7 +19,7 @@ public class GeneticAlgorithm {
 		
 		Population newPopulation = new Population(pop.size(), false);
 
-		// Keep our best individual
+		// Keep the best individual
 		if (GenAlgSettings.isElitism()) {
 			newPopulation.saveIndividual(0, pop.getFittest());
 		}

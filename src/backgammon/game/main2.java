@@ -38,12 +38,19 @@ public class main2 {
 		System.out.println("X1 won: "+x2won);
 		*/
 		
-		
 		GameManager gn = new GameManager();
 		
-		gn.playIndividualsVsEachOther(null, null);
+		System.out.println("---------INDIV 1----------");
+		Individual x = new Individual();
+		System.out.println(x.toString());
 		
+		System.out.println("----------INDIV 2---------");
+		Individual x2 = new Individual();
+		System.out.println(x2.toString());
 		
+		GameStats gs = gn.playIndividualsVsEachOther(x, x2);
+		
+		System.out.println(gs.getVictor());
 		
 	}
 }

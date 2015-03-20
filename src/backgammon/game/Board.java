@@ -280,14 +280,70 @@ public class Board {
 			return redBore;
 		}
 	}
-
+	/**
+	 * 
+	 * @param black
+	 * @return
+	 */
 	public int getNumOfBlots(boolean black) {
 		int num = 0;
 		for(int x = 0; x<Points.length;x++){
-			if(Points[x].numEither()>0 && Points[x].getCol()==true){
+			if(Points[x].numEither()==1 && Points[x].getCol()==black){
 				num++;
 			}
 		}
+		return num;
+	}
+	
+	/**
+	 * 
+	 * @param black
+	 * @return
+	 */
+	public int getNumOfHomePointsCovered(Boolean black) {
+		int num = 0;
+		//BLACK
+		if(black){
+			for(int x = 1; x<=6;x++){
+				if(Points[x].numEither()>0 && Points[x].getCol()==black){
+					num++;
+				}
+			}
+		//RED
+		}else{
+			for(int x = 19; x<=24;x++){
+				if(Points[x].numEither()>0 && Points[x].getCol()==black){
+					num++;
+				}
+			}
+		}
+		return num;
+	}
+
+	/**
+	 * 
+	 * @param black
+	 * @return
+	 */
+	public int getNumberOfPiecesSurroundOpponent(Boolean black) {
+		int num=0;
+		//loop points
+		for(int x = 0; x<Points.length;x++){
+			//if there is an oposition peice
+			if(Points[x].numEither()>0 && Points[x].getCol()!=black){
+				if(x<25 && x>0){
+					//checking one before that
+					if(Points[x-1].numEither()>0 &&Points[x-1].getCol()==black){
+						num++;
+					}
+					//checking the point after it
+					if(Points[x+1].numEither()>0 &&Points[x+1].getCol()==black){
+						num++;
+					}
+				}
+			}
+		}
+		
 		return num;
 	}
 	

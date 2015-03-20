@@ -106,7 +106,39 @@ public class BoardEvaluator {
 	 * @return true if it has been doubled
 	 */
 	public boolean hasABlotBeenDoubled(Board newBoard) {
-		if(liveBoard.getNumOfBlots(currentPlayer.black)<newBoard.getNumOfBlots(currentPlayer.black)){
+		if(liveBoard.getNumOfBlots(currentPlayer.black)>newBoard.getNumOfBlots(currentPlayer.black)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * hasAPieceBeenSpread
+	 * 
+	 * checks to see if the board passed in has moved a piece to another spot on the home board when bearing is applicable
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if it has been spread
+	 */
+	public boolean hasAPieceBeenSpread(Board newBoard) {
+		if(liveBoard.getNumOfHomePointsCovered(currentPlayer.black)<newBoard.getNumOfHomePointsCovered(currentPlayer.black)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * hasTheOponentBeenBlocked
+	 * 
+	 * checks to see if the board passed in has moved a piece to block the oponent
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if it has been blocked
+	 */
+	public boolean hasTheOponentBeenBlocked(Board newBoard) {
+		if(liveBoard.getNumberOfPiecesSurroundOpponent(currentPlayer.black)<newBoard.getNumberOfPiecesSurroundOpponent(currentPlayer.black)){
 			return true;
 		}else{
 			return false;

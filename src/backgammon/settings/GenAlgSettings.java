@@ -26,7 +26,7 @@ public class GenAlgSettings {
     /** the constant population size */
     private static final int populationSize = 10;
     
-    private static final String savePath = "savedPlayers/Attempt3/";
+    private static final String savePath = "savedPlayers/Testing/";
     
     public static double getUniformrate() {
 		return uniformRate;

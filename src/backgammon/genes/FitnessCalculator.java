@@ -57,7 +57,7 @@ public class FitnessCalculator {
 		for(int x = 0; x<pop.individuals.length; x++){
 			
 			if(GenAlgSettings.isDisplayconsole()){System.out.println("Testing Player: "+ x);}
-			
+			 
 			//the one we are generating the fitness of
 			Individual testSubject = pop.individuals[x];
 			//will be added to over the course of the games
