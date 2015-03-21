@@ -79,6 +79,9 @@ public class BoardEvaluator {
 			return false;
 		}
 	}
+	
+	
+
 
 	/**getMyZero
 	 * 
@@ -108,6 +111,24 @@ public class BoardEvaluator {
 	public boolean hasABlotBeenDoubled(Board newBoard) {
 		if(liveBoard.getNumOfBlots(currentPlayer.black)>newBoard.getNumOfBlots(currentPlayer.black)){
 			if(GameSettings.getDisplayConsole()){System.out.println("Blot doubled");}
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	/**
+	 * hasAPieceBeenMovedSolo
+	 * 
+	 * Checks to see if the board passed in has had a single piece on its own (a blot)
+	 * created
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if it has been doubled
+	 */
+	public boolean hasAPieceBeenMovedSolo(Board newBoard) {
+		if(liveBoard.getNumOfBlots(currentPlayer.black)<newBoard.getNumOfBlots(currentPlayer.black)){
+			if(GameSettings.getDisplayConsole()){System.out.println("Piece moved solo");}
 			return true;
 		}else{
 			return false;

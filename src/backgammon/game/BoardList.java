@@ -267,6 +267,15 @@ public class BoardList {
 						break;
 					}
 				}	
+				// Attribute 4 = movingAPieceSolo
+			}else if(p.getIndividual().getAttribute(4).getValue()>(int) (Math.random()*100)){
+				//try to move a piece solo
+				for(Board x: boardList){
+					if(bEval.hasAPieceBeenMovedSolo(x)){
+						chosenBoard = x;
+						break;
+					}
+				}	
 
 				// Attribute 6 = addACheckerToAStack
 			}else if(p.getIndividual().getAttribute(6).getValue()>(int) (Math.random()*100)){
