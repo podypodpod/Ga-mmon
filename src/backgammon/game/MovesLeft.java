@@ -111,4 +111,11 @@ public class MovesLeft {
 		
 	}
 
+	public boolean contains(int i) {
+		if(movesLeft.contains(i)){
+			return true;
+		}
+		return false;
+	}
+
 }

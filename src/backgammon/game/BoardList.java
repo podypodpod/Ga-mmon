@@ -141,6 +141,7 @@ public class BoardList {
 		}else
 		{
 			//if there are no possible new boards(no possible moves) return null
+			if(GameSettings.getDisplayConsole()){System.out.println("No possible moves");}
 			return null;
 		}
 
@@ -194,15 +195,21 @@ public class BoardList {
 		bEval.setBoard(currentBoard);
 		bEval.setPlayer(p);
 
+		if(GameSettings.getDisplayConsole()){System.out.println("board list size: "+boardList.size());}
 
 		/*
-		EXAMPLE TEXT FILE
-			new IndivAttribute("bearAPiece"), 
-			new IndivAttribute("takeAPiece"), 
-			new IndivAttribute("doubleUpAPiece"), 
-			new IndivAttribute("blockAnOpponent"),
-			new IndivAttribute("movingAPieceSolo")
-			new IndivAttribute("spreadPiece")
+				new IndivAttribute("bearAPiece"), 					//0
+				new IndivAttribute("takeAPiece"), 					//1
+				new IndivAttribute("doubleUpAPiece"), 				//2
+				new IndivAttribute("blockAnOpponent"),				//3
+				new IndivAttribute("movingAPieceSolo"),				//4
+				new IndivAttribute("spreadAHomePiece"),				//5
+				new IndivAttribute("addACheckerToAStack"),			//6
+				new IndivAttribute("twoOneSplitPlayInitialMove"),	//7
+				new IndivAttribute("twoOneSlotPlayInitialMove"),	//8
+				new IndivAttribute("threeOneInitialMove"),			//9
+				new IndivAttribute("threeTwoSplitInitialMove"),		//10
+				new IndivAttribute("threeTwoOffenceInitialMove")	//11
 		 */
 
 
@@ -229,7 +236,7 @@ public class BoardList {
 				}
 			}
 			// MID/EARLY GAME
-		}else if(chosenBoard==null/* && !currentBoard.isInitialMove*/){
+		}else if(chosenBoard==null && !currentBoard.isInitialMove){
 
 			// Attribute 1 = take a piece
 			if(p.getIndividual().getAttribute(1).getValue()>(int) (Math.random()*100)){
@@ -270,21 +277,165 @@ public class BoardList {
 						break;
 					}
 				}
-				//NO SPECIFIC MOVES AVAILABLE - RANDOM
-			}else if(chosenBoard==null){
-				int x = (int)(Math.random()*(boardList.size()));
-
-				if(GameSettings.getDisplayConsole()){System.out.println("board list size: "+boardList.size());}
-
-				chosenBoard = boardList.get(x);
 			}
-
-			/*FIRST MOVE OF THE GAME
+			//FIRST MOVE OF THE GAME
 		}else if(chosenBoard == null && currentBoard.isInitialMove){
-			//ATTRIBUTE 
-			if(){
 
-			}*/
+			//has a roll of TWO and ONE
+			if(bEval.currentPlayer.movesLeft.contains(2) && bEval.currentPlayer.movesLeft.contains(1)){
+
+				//ATTRIBUTE 7 = twoOneSplitPlayInitialMove
+				if(p.getIndividual().getAttribute(7).getValue()>(int) (Math.random()*100)){
+					for(Board x: boardList){
+						if(bEval.isTwoOneSplitPlayInitialMove(x)){
+							chosenBoard = x;
+							break;
+						}
+					}
+					//ATTRIBUTE 8 = twoOneSlotPlayInitialMove
+				}else if(p.getIndividual().getAttribute(8).getValue()>(int) (Math.random()*100)){
+					for(Board x: boardList){
+						if(bEval.isTwoOneSlotPlayInitialMove(x)){
+							chosenBoard = x;
+							break;
+						}
+					}
+				}
+				//A Roll of THREE and ONE
+			}else if(bEval.currentPlayer.movesLeft.contains(3) && bEval.currentPlayer.movesLeft.contains(1)){
+
+				//ATTRIBUTE 9 = threeOneInitialMove
+				if(p.getIndividual().getAttribute(9).getValue()>(int) (Math.random()*100)){
+					for(Board x: boardList){
+						if(bEval.isThreeOneInitialMove(x)){
+							chosenBoard = x;
+							break;
+						}
+					}
+				}
+
+				//A Roll of THREE and a TWO
+			}else if(bEval.currentPlayer.movesLeft.contains(3) && bEval.currentPlayer.movesLeft.contains(1)){
+
+				//ATTRIBUTE 10 = threeTwoSplitInitialMove
+				if(p.getIndividual().getAttribute(10).getValue()>(int) (Math.random()*100)){
+					for(Board x: boardList){
+						if(bEval.isThreeTwoSplitInitialMove(x)){
+							chosenBoard = x;
+							break;
+						}
+					}
+					//ATTRIBUTE 11 = threeTwoOffenceInitialMove
+				}else if(p.getIndividual().getAttribute(11).getValue()>(int) (Math.random()*100)){
+					for(Board x: boardList){ 
+						if(bEval.isThreeTwoOffenceInitialMove(x)){
+							chosenBoard = x;
+							break;
+						}
+					}
+				}
+
+				//A Roll of FOUR and a ONE
+			}else if(bEval.currentPlayer.movesLeft.contains(4) && bEval.currentPlayer.movesLeft.contains(1)){
+
+				//ATTRIBUTE 12 = fourOneInitialMove
+				if(p.getIndividual().getAttribute(12).getValue()>(int) (Math.random()*100)){
+					for(Board x: boardList){
+						if(bEval.isFourOneInitialMove(x)){
+							chosenBoard = x;
+							break;
+						}
+					}
+
+					//ATTRIBUTE 13 = fourOneInitialMove
+				}else if(p.getIndividual().getAttribute(13).getValue()>(int) (Math.random()*100)){
+					for(Board x: boardList){
+						if(bEval.isFourOneInitialMoveAlt(x)){
+							chosenBoard = x;
+							break;
+						}
+					}
+				}
+				//A Roll of FOUR and TWO
+			}else if(bEval.currentPlayer.movesLeft.contains(4) && bEval.currentPlayer.movesLeft.contains(2)){
+
+				//ATTRIBUTE 14 = fourTwoInitialMove
+				if(p.getIndividual().getAttribute(14).getValue()>(int) (Math.random()*100)){
+					for(Board x: boardList){
+						if(bEval.isFourTwoInitialMove(x)){
+							chosenBoard = x;
+							break;
+						}
+					}
+				}
+				//A Roll of FOUR and THREE
+			}else if(bEval.currentPlayer.movesLeft.contains(4) && bEval.currentPlayer.movesLeft.contains(3)){
+
+				//ATTRIBUTE 15 = fourThreeInitialMoveSplit
+				if(p.getIndividual().getAttribute(15).getValue()>(int) (Math.random()*100)){
+					for(Board x: boardList){
+						if(bEval.isFourThreeInitialMoveSplit(x)){
+							chosenBoard = x;
+							break;
+						}
+					}
+					//ATTRIBUTE 16 = fourThreeInitialMoveBlock
+				}else if(p.getIndividual().getAttribute(16).getValue()>(int) (Math.random()*100)){
+					for(Board x: boardList){
+						if(bEval.isFourThreeInitialMoveBlock(x)){
+							chosenBoard = x;
+							break;
+						}
+					}
+				} 
+				// A Roll of FIVE and ONE
+			}else if(bEval.currentPlayer.movesLeft.contains(5) && bEval.currentPlayer.movesLeft.contains(1)){
+
+				//ATTRIBUTE 17 = fiveOneInitialMove
+				if(p.getIndividual().getAttribute(17).getValue()>(int) (Math.random()*100)){
+					for(Board x: boardList){
+						if(bEval.isFiveOneInitialMove(x)){
+							chosenBoard = x;
+							break;
+						}
+					}
+					//ATTRIBUTE 18 = fiveOneInitialMoveAlt
+				}else if(p.getIndividual().getAttribute(18).getValue()>(int) (Math.random()*100)){
+					for(Board x: boardList){
+						if(bEval.isFiveOneInitialMoveAlt(x)){
+							chosenBoard = x;
+							break;
+						}
+					}
+				} 
+				// A Roll of FIVE and TWO
+			}else if(bEval.currentPlayer.movesLeft.contains(5) && bEval.currentPlayer.movesLeft.contains(2)){
+
+				//ATTRIBUTE 19 = fiveTwoInitialMove
+				if(p.getIndividual().getAttribute(19).getValue()>(int) (Math.random()*100)){
+					for(Board x: boardList){
+						if(bEval.isFiveTwoInitialMove(x)){
+							chosenBoard = x;
+							break;
+						}
+					}
+					//ATTRIBUTE 20 = fiveTwoInitialMoveRisk
+				}else if(p.getIndividual().getAttribute(20).getValue()>(int) (Math.random()*100)){
+					for(Board x: boardList){
+						if(bEval.isFiveTwoInitialMoveRisk(x)){
+							chosenBoard = x;
+							break;
+						}
+					}
+				} 
+			}
+		}
+
+		//if no specific move has been found - pick a random available one
+		if(chosenBoard==null){
+			int x = (int)(Math.random()*(boardList.size()));
+			chosenBoard = boardList.get(x);
+			if(GameSettings.getDisplayConsole()){System.out.println("Random move chosen");}
 		}
 		return chosenBoard;
 	}

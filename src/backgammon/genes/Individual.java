@@ -16,7 +16,7 @@ import backgammon.settings.GenAlgSettings;
 public class Individual {
 	
 	//number of attributes
-	private int numOfAttributes = 7;
+	private int numOfAttributes;
 	
 	//Attributes	
 	private IndivAttribute[] listOfAttributes = null;
@@ -34,14 +34,30 @@ public class Individual {
 
 		//add attributes to the array
 		listOfAttributes = new IndivAttribute[]{
-				new IndivAttribute("bearAPiece"), 
-				new IndivAttribute("takeAPiece"), 
-				new IndivAttribute("doubleUpAPiece"), 
-				new IndivAttribute("blockAnOpponent"),
-				new IndivAttribute("movingAPieceSolo"),
-				new IndivAttribute("spreadAHomePiece"),
-				new IndivAttribute("addACheckerToAStack")
-			};
+				new IndivAttribute("bearAPiece"), 					//0
+				new IndivAttribute("takeAPiece"), 					//1
+				new IndivAttribute("doubleUpAPiece"), 				//2
+				new IndivAttribute("blockAnOpponent"),				//3
+				new IndivAttribute("movingAPieceSolo"),				//4
+				new IndivAttribute("spreadAHomePiece"),				//5
+				new IndivAttribute("addACheckerToAStack"),			//6
+				new IndivAttribute("twoOneSplitPlayInitialMove"),	//7
+				new IndivAttribute("twoOneSlotPlayInitialMove"),	//8
+				new IndivAttribute("threeOneInitialMove"),			//9
+				new IndivAttribute("threeTwoSplitInitialMove"),		//10
+				new IndivAttribute("threeTwoOffenceInitialMove"),	//11
+				new IndivAttribute("fourOneInitialMove"),			//12
+				new IndivAttribute("fourOneInitialMoveAlt"),		//13
+				new IndivAttribute("fourTwoInitialMove"),			//14
+				new IndivAttribute("fourThreeInitialMoveSplit"),	//15
+				new IndivAttribute("fourThreeInitialMoveBlock"),	//16
+				new IndivAttribute("fiveOneInitialMove"),			//17
+				new IndivAttribute("fiveOneInitialMoveAlt"),		//18
+				new IndivAttribute("fiveTwoInitialMove"),			//19
+				new IndivAttribute("fiveTwoInitialMoveRisk")		//20
+		};
+		
+		numOfAttributes = listOfAttributes.length;
 		
 		//convert to binary string
 		chromosome = Util.convertFromIntToBinaryCharAry(listOfAttributes);

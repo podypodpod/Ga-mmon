@@ -69,7 +69,7 @@ public class AIPlayer extends Player{
 
 		//Rolling the dice
 		movesLeft.setTo(dice.RollDice());
-		
+
 		if(GameSettings.getDisplayConsole()){System.out.println("Player has : "+movesLeft.toString());}
 		
 		

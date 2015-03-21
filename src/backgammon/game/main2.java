@@ -1,9 +1,6 @@
 package backgammon.game;
 
-import backgammon.genes.GeneticAlgorithm;
-import backgammon.genes.IndivAttribute;
 import backgammon.genes.Individual;
-import backgammon.genes.Population;
 
 
 public class main2 {
@@ -48,9 +45,17 @@ public class main2 {
 		Individual x2 = new Individual();
 		System.out.println(x2.toString());
 		
-		GameStats gs = gn.playIndividualsVsEachOther(x, x2);
+		System.out.println("--------------------------");
+		System.out.println(x.toString());
+		x.saveToFile("WIZZLELELE");
 		
-		System.out.println(gs.getVictor());
+		Individual newGuy = new Individual();
+		newGuy.loadFromFile("WIZZLELELE");
+		System.out.println(newGuy.toString());
+		System.out.println("--------------------------");
+		GameStats gs = gn.playIndividualsVsEachOther(x, x2);
+		System.out.println("--------------------------");
+		System.out.println("VICTOR! = "+gs.getVictor());
 		
 	}
 }
