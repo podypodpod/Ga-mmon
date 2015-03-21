@@ -16,7 +16,7 @@ import backgammon.settings.GenAlgSettings;
 public class Individual {
 	
 	//number of attributes
-	private int numOfAttributes = 6;
+	private int numOfAttributes = 7;
 	
 	//Attributes	
 	private IndivAttribute[] listOfAttributes = null;
@@ -39,7 +39,8 @@ public class Individual {
 				new IndivAttribute("doubleUpAPiece"), 
 				new IndivAttribute("blockAnOpponent"),
 				new IndivAttribute("movingAPieceSolo"),
-				new IndivAttribute("spreadAHomePiece")
+				new IndivAttribute("spreadAHomePiece"),
+				new IndivAttribute("addACheckerToAStack")
 			};
 		
 		//convert to binary string

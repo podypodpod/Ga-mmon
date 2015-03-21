@@ -15,6 +15,8 @@ public class Board {
 	/**  The Points array, where all the pieces are located on the board. */
 	public Point[] Points;
 	
+	boolean isInitialMove = false;
+	
 	/**
 	 * Board default Constructor
 	 * Instantiates a new board and sets the starting position to the default start pos.
@@ -344,6 +346,20 @@ public class Board {
 			}
 		}
 		
+		return num;
+	}
+
+	public int getNumberOfCheckersOnStacks(Boolean black) {
+		int num = 0;
+		
+		//loop points
+		for(int x = 0; x<Points.length;x++){
+			//if the current point has more than 2 checkers (a stack) and is ours
+			if(Points[x].numEither()>2 && Points[x].getCol()==black){
+				//Add the count of the stack to the int
+				num += Points[x].numEither();
+			}
+		}
 		return num;
 	}
 	

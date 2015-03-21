@@ -144,4 +144,20 @@ public class BoardEvaluator {
 			return false;
 		}
 	}
+
+	/**
+	 * hasAStackBeenAddedTo
+	 * 
+	 * checks to see if the board passed in has moved a piece on top of an existing stack
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if it has been blocked
+	 */
+	public boolean hasAStackBeenAddedTo(Board newBoard) {
+		if(liveBoard.getNumberOfCheckersOnStacks(currentPlayer.black)<newBoard.getNumberOfCheckersOnStacks(currentPlayer.black)){
+			return true;
+		}else{
+			return false;
+		}
+	}
 }

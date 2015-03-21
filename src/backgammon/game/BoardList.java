@@ -208,7 +208,7 @@ public class BoardList {
 
 		// END GAME
 		if(currentBoard.canPlayerBear(p.black)){
-			
+
 			// Attribute 0 = bear a piece
 			if(p.getIndividual().getAttribute(0).getValue()>(int) (Math.random()*100)){
 				//try to bear
@@ -218,7 +218,7 @@ public class BoardList {
 						break;
 					}
 				}
-			// Attribute 5 = spread pieces
+				// Attribute 5 = spread pieces
 			}else if(p.getIndividual().getAttribute(5).getValue()>(int) (Math.random()*100)){
 				//try to spread a piece
 				for(Board x: boardList){
@@ -228,10 +228,8 @@ public class BoardList {
 					}
 				}
 			}
-
-
-		// MID/EARLY GAME
-		}else if(chosenBoard==null){
+			// MID/EARLY GAME
+		}else if(chosenBoard==null/* && !currentBoard.isInitialMove*/){
 
 			// Attribute 1 = take a piece
 			if(p.getIndividual().getAttribute(1).getValue()>(int) (Math.random()*100)){
@@ -243,7 +241,7 @@ public class BoardList {
 					}
 				}
 
-			// Attribute 2 = doubleUpAPiece
+				// Attribute 2 = doubleUpAPiece
 			}else if(p.getIndividual().getAttribute(2).getValue()>(int) (Math.random()*100)){
 				//try to double up a piece
 				for(Board x: boardList){
@@ -253,7 +251,7 @@ public class BoardList {
 					}
 				}
 
-			// Attribute 3 = blockAnOpponent
+				// Attribute 3 = blockAnOpponent
 			}else if(p.getIndividual().getAttribute(3).getValue()>(int) (Math.random()*100)){
 				//try to blockAnOpponent
 				for(Board x: boardList){
@@ -261,20 +259,18 @@ public class BoardList {
 						chosenBoard = x;
 						break;
 					}
-				}
-				
-			/* Attribute 3 = blockAnOpponent
-			}else if(p.getIndividual().getAttribute(2).getValue()>(int) (Math.random()*100)){
-				//try to blockAnOpponent
+				}	
+
+				// Attribute 6 = addACheckerToAStack
+			}else if(p.getIndividual().getAttribute(6).getValue()>(int) (Math.random()*100)){
+				//try to add a checker to a stack
 				for(Board x: boardList){
-					if(bEval.xxxxxxxx(x)){
+					if(bEval.hasAStackBeenAddedTo(x)){
 						chosenBoard = x;
 						break;
 					}
-				}*/
-
-
-			//NO SPECIFIC MOVES AVAILABLE - RANDOM
+				}
+				//NO SPECIFIC MOVES AVAILABLE - RANDOM
 			}else if(chosenBoard==null){
 				int x = (int)(Math.random()*(boardList.size()));
 
@@ -282,6 +278,13 @@ public class BoardList {
 
 				chosenBoard = boardList.get(x);
 			}
+
+			/*FIRST MOVE OF THE GAME
+		}else if(chosenBoard == null && currentBoard.isInitialMove){
+			//ATTRIBUTE 
+			if(){
+
+			}*/
 		}
 		return chosenBoard;
 	}

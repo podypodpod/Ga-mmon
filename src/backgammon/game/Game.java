@@ -85,6 +85,8 @@ public class Game implements Runnable{
 		if(p1Roll==p2Roll){
 			initialRoll();
 		}
+		
+		liveBoard.isInitialMove = true;
 	}
 	
 	
@@ -217,6 +219,7 @@ public class Game implements Runnable{
 						p1sTurn = true;
 					}
 				}
+				liveBoard.isInitialMove = false;
 			}
 		}
 	}
