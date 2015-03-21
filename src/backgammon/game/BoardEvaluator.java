@@ -198,14 +198,14 @@ public class BoardEvaluator {
 		//black
 		if(currentPlayer.black){
 			//if it has performed the move
-			if(newBoard.Points[2].numEither()==1 && newBoard.Points[1].numEither()==1 && newBoard.Points[14].numEither()==1 && newBoard.Points[12].numEither()==4){
+			if(ifPointHasPeices(newBoard,2,1) && ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,14,1) && ifPointHasPeices(newBoard,12,4)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isTwoOneSplitPlayInitialMove");}
 				return true;
 			}
 		//red
 		}else{
 			//if it has performed the move
-			if(newBoard.Points[24].numEither()==1 && newBoard.Points[23].numEither()==1 && newBoard.Points[13].numEither()==4 && newBoard.Points[11].numEither()==1){
+			if(ifPointHasPeices(newBoard,24,1) && ifPointHasPeices(newBoard,23,1) && ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,11,1)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isTwoOneSplitPlayInitialMove");}
 				return true;
 			}
@@ -225,14 +225,14 @@ public class BoardEvaluator {
 		//black
 		if(currentPlayer.black){
 			//if it has performed the move
-			if(newBoard.Points[6].numEither()==4 && newBoard.Points[5].numEither()==1 && newBoard.Points[14].numEither()==1 && newBoard.Points[12].numEither()==4){
+			if(ifPointHasPeices(newBoard,6,4) && ifPointHasPeices(newBoard,5,1) &&ifPointHasPeices(newBoard,14,1) && ifPointHasPeices(newBoard,12,4)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isTwoOneSlotPlayInitialMove");}
 				return true;
 			}
 		//red
 		}else{
 			//if it has performed the move
-			if(newBoard.Points[19].numEither()==4 && newBoard.Points[20].numEither()==1 && newBoard.Points[13].numEither()==4 && newBoard.Points[11].numEither()==1){
+			if(ifPointHasPeices(newBoard,19,4) && ifPointHasPeices(newBoard,20,1) && ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,11,1)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isTwoOneSlotPlayInitialMove");}
 				return true;
 			}
@@ -252,14 +252,14 @@ public class BoardEvaluator {
 		//black
 		if(currentPlayer.black){
 			//if it has performed the move
-			if(newBoard.Points[6].numEither()==4 && newBoard.Points[5].numEither()==2 && newBoard.Points[8].numEither()==2){
+			if(ifPointHasPeices(newBoard,6,4) && ifPointHasPeices(newBoard,5,2) && ifPointHasPeices(newBoard,8,2)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isThreeOneInitialMove");}
 				return true;
 			}
 		//red
 		}else{
 			//if it has performed the move
-			if(newBoard.Points[19].numEither()==4 && newBoard.Points[20].numEither()==2 && newBoard.Points[17].numEither()==2){
+			if(ifPointHasPeices(newBoard,19,4) && ifPointHasPeices(newBoard,20,2) && ifPointHasPeices(newBoard,17,2)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isThreeOneInitialMove");}
 				return true;
 			}
@@ -280,14 +280,14 @@ public class BoardEvaluator {
 		//black
 		if(currentPlayer.black){
 			//if it has performed the move
-			if(newBoard.Points[4].numEither()==1 && newBoard.Points[1].numEither()==1 && newBoard.Points[12].numEither()==4 && newBoard.Points[14].numEither()==1){
+			if(ifPointHasPeices(newBoard,4,1) && ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,14,1)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isThreeTwoSplitInitialMove");}
 				return true;
 			}
 		//red
 		}else{
 			//if it has performed the move
-			if(newBoard.Points[24].numEither()==1 && newBoard.Points[21].numEither()==1 && newBoard.Points[13].numEither()==4 && newBoard.Points[11].numEither()==1){
+			if(ifPointHasPeices(newBoard,24,1) && ifPointHasPeices(newBoard,21,1) && ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,11,1)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isThreeTwoSplitInitialMove");}
 				return true;
 			}
@@ -308,14 +308,14 @@ public class BoardEvaluator {
 		//black
 		if(currentPlayer.black){
 			//if it has performed the move
-			if(newBoard.Points[13].numEither()==3 && newBoard.Points[11].numEither()==1 && newBoard.Points[10].numEither()==1){
+			if(ifPointHasPeices(newBoard,13,3) && ifPointHasPeices(newBoard,11,1) && ifPointHasPeices(newBoard,10,1)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isThreeTwoOffenceInitialMove");}
 				return true;
 			}
 		//red	
 		}else{
 			//if it has performed the move
-			if(newBoard.Points[12].numEither()==3 && newBoard.Points[14].numEither()==1 && newBoard.Points[15].numEither()==1){
+			if(ifPointHasPeices(newBoard,12,3) && ifPointHasPeices(newBoard,14,1) && ifPointHasPeices(newBoard,15,1)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isThreeTwoOffenceInitialMove");}
 				return true;
 			}
@@ -336,14 +336,14 @@ public class BoardEvaluator {
 		//black
 		if(currentPlayer.black){
 			//if it has performed the move
-			if(newBoard.Points[24].numEither()==1 && newBoard.Points[23].numEither()==1 && newBoard.Points[13].numEither()==4 && newBoard.Points[9].numEither()==1){
+			if(ifPointHasPeices(newBoard,24,1) && ifPointHasPeices(newBoard,23,1) && ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,9,1)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFourOneInitialMove");}
 				return true;
 			}
 		//red	
 		}else{
 			//if it has performed the move
-			if(newBoard.Points[1].numEither()==1 && newBoard.Points[2].numEither()==1 && newBoard.Points[12].numEither()==4 && newBoard.Points[16].numEither()==1){
+			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,2,1) && ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,16,1)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFourOneInitialMove");}
 				return true;
 			}
@@ -363,14 +363,14 @@ public class BoardEvaluator {
 		//black
 		if(currentPlayer.black){
 			//if it has performed the move
-			if(newBoard.Points[6].numEither()==4 && newBoard.Points[5].numEither()==1 && newBoard.Points[13].numEither()==4 && newBoard.Points[9].numEither()==1){
+			if(ifPointHasPeices(newBoard,6,4)&& ifPointHasPeices(newBoard,5,1) && ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,9,1)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFourOneInitialMoveAlt");}
 				return true;
 			}
 		//red	
 		}else{
 			//if it has performed the move
-			if(newBoard.Points[19].numEither()==4 && newBoard.Points[20].numEither()==1 && newBoard.Points[12].numEither()==4 && newBoard.Points[16].numEither()==1){
+			if(ifPointHasPeices(newBoard,19,4) && ifPointHasPeices(newBoard,20,1) && ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,16,1)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFourOneInitialMoveAlt");}
 				return true;
 			}
@@ -390,14 +390,14 @@ public class BoardEvaluator {
 		//black
 		if(currentPlayer.black){
 			//if it has performed the move
-			if(newBoard.Points[8].numEither()==2 && newBoard.Points[4].numEither()==2 && newBoard.Points[6].numEither()==4){
+			if(ifPointHasPeices(newBoard,8,2) && ifPointHasPeices(newBoard,4,2) && ifPointHasPeices(newBoard,6,4)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFourTwoInitialMove");}
 				return true;
 			}
 		//red	
 		}else{
 			//if it has performed the move
-			if(newBoard.Points[17].numEither()==2 && newBoard.Points[21].numEither()==2 && newBoard.Points[19].numEither()==4){
+			if(ifPointHasPeices(newBoard,17,2) && ifPointHasPeices(newBoard,21,2) && ifPointHasPeices(newBoard,19,4)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFourTwoInitialMove");}
 				return true;
 			}
@@ -417,14 +417,14 @@ public class BoardEvaluator {
 		//black
 		if(currentPlayer.black){
 			//if it has performed the move
-			if(newBoard.Points[24].numEither()==1 && newBoard.Points[21].numEither()==1 && newBoard.Points[6].numEither()==4 && newBoard.Points[9].numEither()==1){
+			if(ifPointHasPeices(newBoard,24,1) && ifPointHasPeices(newBoard,21,1) && ifPointHasPeices(newBoard,6,4) &&ifPointHasPeices(newBoard,9,1)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFourThreeInitialMoveSplit");}
 				return true;
 			}
 		//red	
 		}else{
 			//if it has performed the move
-			if(newBoard.Points[1].numEither()==1 && newBoard.Points[4].numEither()==1 && newBoard.Points[13].numEither()==4 && newBoard.Points[16].numEither()==1){
+			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,4,1) && ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,16,1)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFourThreeInitialMoveSplit");}
 				return true;
 			}
@@ -444,14 +444,14 @@ public class BoardEvaluator {
 		//black
 		if(currentPlayer.black){
 			//if it has performed the move
-			if(newBoard.Points[13].numEither()==3 && newBoard.Points[10].numEither()==1 && newBoard.Points[9].numEither()==1){
+			if(ifPointHasPeices(newBoard,13,3) && ifPointHasPeices(newBoard,10,1) && ifPointHasPeices(newBoard,9,1)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFourThreeInitialMoveBlock");}
 				return true;
 			}
 		//red	
 		}else{
 			//if it has performed the move
-			if(newBoard.Points[12].numEither()==3 && newBoard.Points[15].numEither()==1 && newBoard.Points[16].numEither()==1){
+			if(ifPointHasPeices(newBoard,12,3) && ifPointHasPeices(newBoard,15,1) && ifPointHasPeices(newBoard,16,1)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFourThreeInitialMoveBlock");}
 				return true;
 			}
@@ -471,14 +471,14 @@ public class BoardEvaluator {
 		//black
 		if(currentPlayer.black){
 			//if it has performed the move
-			if(newBoard.Points[24].numEither()==1 && newBoard.Points[23].numEither()==1 && newBoard.Points[13].numEither()==4 && newBoard.Points[8].numEither()==4){
+			if(ifPointHasPeices(newBoard,24,1) && ifPointHasPeices(newBoard,23,1) && ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,8,4)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMove");}
 				return true;
 			}
 		//red	
 		}else{
 			//if it has performed the move
-			if(newBoard.Points[1].numEither()==1 && newBoard.Points[2].numEither()==1 && newBoard.Points[12].numEither()==4 && newBoard.Points[17].numEither()==4){
+			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,2,1) && ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,17,4)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMove");}
 				return true;
 			}
@@ -498,14 +498,14 @@ public class BoardEvaluator {
 		//black
 		if(currentPlayer.black){
 			//if it has performed the move
-			if(newBoard.Points[6].numEither()==4 && newBoard.Points[5].numEither()==1 && newBoard.Points[13].numEither()==4 && newBoard.Points[8].numEither()==4){
+			if(ifPointHasPeices(newBoard,6,4) && ifPointHasPeices(newBoard,5,1) && ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,8,4)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
 		//red	
 		}else{
 			//if it has performed the move
-			if(newBoard.Points[19].numEither()==4 && newBoard.Points[20].numEither()==1 && newBoard.Points[12].numEither()==4 && newBoard.Points[17].numEither()==4){
+			if(ifPointHasPeices(newBoard,19,4) && ifPointHasPeices(newBoard,20,1) && ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,17,4)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
@@ -525,14 +525,14 @@ public class BoardEvaluator {
 		//black
 		if(currentPlayer.black){
 			//if it has performed the move
-			if(newBoard.Points[11].numEither()==1 && newBoard.Points[13].numEither()==3 && newBoard.Points[8].numEither()==4){
+			if(ifPointHasPeices(newBoard,11,1) && ifPointHasPeices(newBoard,13,3) && ifPointHasPeices(newBoard,8,4)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
 		//red	
 		}else{
 			//if it has performed the move
-			if(newBoard.Points[14].numEither()==1 && newBoard.Points[12].numEither()==3 && newBoard.Points[17].numEither()==4){
+			if(ifPointHasPeices(newBoard,14,1) && ifPointHasPeices(newBoard,12,3) && ifPointHasPeices(newBoard,17,4)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
@@ -552,19 +552,327 @@ public class BoardEvaluator {
 		//black
 		if(currentPlayer.black){
 			//if it has performed the move
-			if(newBoard.Points[24].numEither()==1 && newBoard.Points[22].numEither()==1 && newBoard.Points[13].numEither()==4 && newBoard.Points[8].numEither()==4){
+			if(ifPointHasPeices(newBoard,24,1) && ifPointHasPeices(newBoard,22,1) && ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,8,4)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
-		//red	
+		//red player	
 		}else{
 			//if it has performed the move
-			if(newBoard.Points[1].numEither()==1 && newBoard.Points[3].numEither()==1 && newBoard.Points[12].numEither()==4 && newBoard.Points[17].numEither()==4){
+			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,3,1) && ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,17,4)){
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
 		}
 		return false;
 	}
+
+	/**
+	 * isFiveThreeInitialMove
+	 * 
+	 * checks to see if the board passed in has used this particular initial move (move taken from http://www.bkgm.com/openings.html#opening21)
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if the move has been made
+	 */
+	public boolean isFiveThreeInitialMove(Board newBoard) {
+		//black
+		if(currentPlayer.black){
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,8,2) && ifPointHasPeices(newBoard,6,4) && ifPointHasPeices(newBoard,3,2)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		//red	
+		}else{
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,17,2) && ifPointHasPeices(newBoard,19,4) && ifPointHasPeices(newBoard,22,2)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * isFiveFourInitialMoveAgr
+	 * 
+	 * checks to see if the board passed in has used this particular initial move (move taken from http://www.bkgm.com/openings.html#opening21)
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if the move has been made
+	 */
+	public boolean isFiveFourInitialMoveAgr(Board newBoard) {
+		//black
+		if(currentPlayer.black){
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,13,3) && ifPointHasPeices(newBoard,9,1) && ifPointHasPeices(newBoard,8,4)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		//red	
+		}else{
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,12,3) && ifPointHasPeices(newBoard,16,1) && ifPointHasPeices(newBoard,17,4)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * isFiveFourInitialMoveBal
+	 * 
+	 * checks to see if the board passed in has used this particular initial move (move taken from http://www.bkgm.com/openings.html#opening21)
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if the move has been made
+	 */
+	public boolean isFiveFourInitialMoveBal(Board newBoard) {
+		//black
+		if(currentPlayer.black){
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,24,1) && ifPointHasPeices(newBoard,20,1) && ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,8,4)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		//red	
+		}else{
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,5,1) && ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,17,4)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean ifPointHasPeices(Board newBoard, int point, int num){
+		if(newBoard.Points[point].numEither()==num){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * isSixOneInitialMove
+	 * 
+	 * checks to see if the board passed in has used this particular initial move (move taken from http://www.bkgm.com/openings.html#opening21)
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if the move has been made
+	 */
+	public boolean isSixOneInitialMove(Board newBoard) {
+		//black
+		if(currentPlayer.black){
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,7,2) && ifPointHasPeices(newBoard,8,2) && ifPointHasPeices(newBoard,13,4)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		//red	
+		}else{
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,17,2) && ifPointHasPeices(newBoard,18,2) && ifPointHasPeices(newBoard,12,4)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * isSixTwoInitialMove
+	 * 
+	 * checks to see if the board passed in has used this particular initial move (move taken from http://www.bkgm.com/openings.html#opening21)
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if the move has been made
+	 */
+	public boolean isSixTwoInitialMove(Board newBoard) {
+		//black
+		if(currentPlayer.black){
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,24,1) && ifPointHasPeices(newBoard,18,1) && ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,1,1)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		//red	
+		}else{
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,7,1) && ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,14,1)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * isSixTwoInitialMoveAgr
+	 * 
+	 * checks to see if the board passed in has used this particular initial move (move taken from http://www.bkgm.com/openings.html#opening21)
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if the move has been made
+	 */
+	public boolean isSixTwoInitialMoveAgr(Board newBoard) {
+		//black
+		if(currentPlayer.black){
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,5,1)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		//red	
+		}else{
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,20,1)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * isSixTwoInitialMoveAgr
+	 * 
+	 * checks to see if the board passed in has used this particular initial move (move taken from http://www.bkgm.com/openings.html#opening21)
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if the move has been made
+	 */
+	public boolean isSixThreeInitialMove(Board newBoard) {
+		//black
+		if(currentPlayer.black){
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,24,1) && ifPointHasPeices(newBoard,15,1)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		//red	
+		}else{
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,10,1)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * isSixThreeInitialMoveSplit
+	 * 
+	 * checks to see if the board passed in has used this particular initial move (move taken from http://www.bkgm.com/openings.html#opening21)
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if the move has been made
+	 */
+	public boolean isSixThreeInitialMoveSplit(Board newBoard) {
+		//black
+		if(currentPlayer.black){
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,24,1) && ifPointHasPeices(newBoard,18,1) && ifPointHasPeices(newBoard,10,1) && ifPointHasPeices(newBoard,13,4)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		//red	
+		}else{
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,7,1) && ifPointHasPeices(newBoard,15,1) && ifPointHasPeices(newBoard,12,4)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * isSixFourInitialMove
+	 * 
+	 * checks to see if the board passed in has used this particular initial move (move taken from http://www.bkgm.com/openings.html#opening21)
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if the move has been made
+	 */
+	public boolean isSixFourInitialMove(Board newBoard) {
+		//black
+		if(currentPlayer.black){
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,24,1) && ifPointHasPeices(newBoard,14,1)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		//red	
+		}else{
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,11,1)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	/**
+	 * isSixFourInitialMoveSplit
+	 * 
+	 * checks to see if the board passed in has used this particular initial move (move taken from http://www.bkgm.com/openings.html#opening21)
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if the move has been made
+	 */
+	public boolean isSixFourInitialMoveSplit(Board newBoard) {
+		//black
+		if(currentPlayer.black){
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,24,1) && ifPointHasPeices(newBoard,18,1) && ifPointHasPeices(newBoard,13,4)&& ifPointHasPeices(newBoard,9,1)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		//red	
+		}else{
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,7,1) && ifPointHasPeices(newBoard,12,4)&& ifPointHasPeices(newBoard,16,1)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * isSixFiveInitialMove
+	 * 
+	 * checks to see if the board passed in has used this particular initial move (move taken from http://www.bkgm.com/openings.html#opening21)
+	 * 
+	 * @param newBoard the board we are checking
+	 * @return true if the move has been made
+	 */
+	public boolean isSixFiveInitialMove(Board newBoard) {
+		//black
+		if(currentPlayer.black){
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,24,1) && ifPointHasPeices(newBoard,13,6)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		//red	
+		}else{
+			//if it has performed the move
+			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,12,6)){
+				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 	
 }

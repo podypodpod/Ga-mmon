@@ -54,7 +54,18 @@ public class Individual {
 				new IndivAttribute("fiveOneInitialMove"),			//17
 				new IndivAttribute("fiveOneInitialMoveAlt"),		//18
 				new IndivAttribute("fiveTwoInitialMove"),			//19
-				new IndivAttribute("fiveTwoInitialMoveRisk")		//20
+				new IndivAttribute("fiveTwoInitialMoveRisk"),		//20
+				new IndivAttribute("fiveThreeInitialMove"),			//21
+				new IndivAttribute("fiveFourInitialMoveAgr"),		//22
+				new IndivAttribute("fiveFourInitialMoveBal"),		//23
+				new IndivAttribute("sixOneInitialMove"),			//24
+				new IndivAttribute("sixTwoInitialMove"),			//25
+				new IndivAttribute("sixTwoInitialMoveAgr"),			//26
+				new IndivAttribute("sixThreeInitialMove"),			//27
+				new IndivAttribute("sixThreeInitialMoveSplit"),		//28
+				new IndivAttribute("sixFourInitialMove"),			//29
+				new IndivAttribute("sixFourInitialMoveSplit"),		//30
+				new IndivAttribute("sixFiveInitialMove")			//31
 		};
 		
 		numOfAttributes = listOfAttributes.length;
