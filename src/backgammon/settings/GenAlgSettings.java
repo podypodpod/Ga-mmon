@@ -6,7 +6,7 @@ package backgammon.settings;
 public class GenAlgSettings {
 	
 	/** The Constant displayConsole. */
-	private static final boolean displayConsole = true;
+	private static final boolean displayConsole = false;
 
 	/** The Constant uniformRate. */
     private static final double uniformRate = 0.5;
@@ -15,16 +15,16 @@ public class GenAlgSettings {
     private static final double mutationRate = 0.015;
     
     /** The Constant tournamentSize. Has to be a multple of 4 for the tournament method to work correctly */
-    private static final int tournamentSize = 4;
+    private static final int tournamentSize = 16;
     
     /** The Constant elitism. */
     private static final boolean elitism = true;
     
     /** The Constant generations. */
-    private static final int generations = 5;
+    private static final int generations = 10;
     
     /** the constant population size */
-    private static final int populationSize = 10;
+    private static final int populationSize = 50;
     
     private static final String savePath = "savedPlayers/Testing/";
     
