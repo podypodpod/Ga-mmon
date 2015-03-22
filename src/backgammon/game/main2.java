@@ -44,18 +44,11 @@ public class main2 {
 		System.out.println("----------INDIV 2---------");
 		Individual x2 = new Individual();
 		System.out.println(x2.toString());
-		
-		System.out.println("--------------------------");
-		System.out.println(x.toString());
-		x.saveToFile("WIZZLELELE");
-		
-		Individual newGuy = new Individual();
-		newGuy.loadFromFile("WIZZLELELE");
-		System.out.println(newGuy.toString());
+
 		System.out.println("--------------------------");
 		GameStats gs = gn.playIndividualsVsEachOther(x, x2);
 		System.out.println("--------------------------");
 		System.out.println("VICTOR! = "+gs.getVictor());
-		
+
 	}
 }

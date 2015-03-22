@@ -22,10 +22,10 @@ public class GameSettings {
 	/**  whether there actually is a GUI not. */
 	private static boolean displayGUI = false;
 	
-	/** whether to disply console prints or not. */
+	/** whether to display console prints or not. */
 	private static boolean displayConsole = false;
 	
-	/** The multi threading. */
+	/** The multi-threading. */
 	private static boolean multiThreading = false;
 	
 	

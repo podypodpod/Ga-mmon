@@ -3,7 +3,6 @@ package backgammon.game;
 import java.util.ArrayList;
 import java.util.List;
 
-import backgammon.genes.IndivAttribute;
 import backgammon.genes.Individual;
 import backgammon.settings.GameSettings;
 /**

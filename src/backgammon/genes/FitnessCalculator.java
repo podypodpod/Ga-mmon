@@ -53,13 +53,15 @@ public class FitnessCalculator {
 		
 		gm = new GameManager();
 		if(GenAlgSettings.isDisplayconsole()){System.out.println("Round robin started");}
-		//looping the whole population, x is the one we are measure
+		
+		//looping the whole population, x is the one we are measuring
 		for(int x = 0; x<pop.individuals.length; x++){
 			
 			if(GenAlgSettings.isDisplayconsole()){System.out.println("Testing Player: "+ x);}
 			 
 			//the one we are generating the fitness of
 			Individual testSubject = pop.individuals[x];
+			
 			//will be added to over the course of the games
 			double tempFitness = 0;
 			
@@ -67,7 +69,9 @@ public class FitnessCalculator {
 			for(int y = 0; y<pop.individuals.length; y++){
 				//make sure its not playing itself
 				if(y!=x){
+					//Opponent individual
 					Individual oponent = pop.individuals[y];
+					
 					//adding the result of the game to the temp fitness, so this will add all the games score together
 					GameStats gs = gm.playIndividualsVsEachOther(testSubject, oponent);
 					tempFitness+=gs.getPlayerOneScore();

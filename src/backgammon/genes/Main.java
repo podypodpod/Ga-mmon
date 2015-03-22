@@ -20,19 +20,23 @@ public class Main {
 		fittest.saveToFile("FittestFromInitialPopulation");
 				
         //evolve once
+		System.out.println("-------------------------");
+		System.out.println("Evolving population");
 		pop = GeneticAlgorithm.evolvePopulation(pop);
 		System.out.println("Calculating fitness");
 		fittest = pop.getFittest();
-		fittest.saveToFile("FittestFromGeneration"+1);
-		System.out.println("--------Evolved!--------- this was population 1");
+		fittest.saveToFile("PlayerFromGen"+0);
+		System.out.println("--------Evolved!--------- this was population 0");
 		
 		
 		for(int x = 0; x<GenAlgSettings.getGenerations()-1;x++){
+			System.out.println("-------------------------");
+			System.out.println("Evolving population");
 			pop = GeneticAlgorithm.evolvePopulation(pop);
-			System.out.println("--------Evolved!--------- this was population "+(x+1));
 			System.out.println("Calculating fitness");
 			fittest = pop.getFittest();
 			fittest.saveToFile("PlayerFromGen"+(x+1));
+			System.out.println("--------Evolved!--------- this was population "+(x+1));
 		}
 		
         System.out.println("------------Finished-------");

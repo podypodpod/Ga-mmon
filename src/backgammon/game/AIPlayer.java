@@ -13,17 +13,17 @@ public class AIPlayer extends Player{
 	/** The move generator for the player to use. */
 	MoveGenerator moveGen;
 	
-	/**  player personallity is just an appropriate name for the individual. */
+	/**  player personality is just an appropriate name for the individual. */
 	private Individual individual;
 	
 	/**
 	 * Instantiates a new AI player.
 	 *
 	 * @param b the color of the player, true = black
-	 * @param indiv the indiv
+	 * @param indiv the individual
 	 */
 	public AIPlayer(boolean b, Individual indiv) {
-		//super is the player class, the boolean is the colour of the player
+		//super is the player class, the boolean is the color of the player
 		super(b);
 		individual = indiv;
 		moveGen = new MoveGenerator(individual);

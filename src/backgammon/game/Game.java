@@ -40,6 +40,8 @@ public class Game implements Runnable{
 	
 	/** The time delay. */
 	private int timeDelay = GameSettings.getTimeDelay();
+	
+	private boolean displayConsole = GameSettings.getDisplayConsole();
 
 	/**  initial rolls. */
 	private int p1Roll = 0, p2Roll = 0;
@@ -99,7 +101,7 @@ public class Game implements Runnable{
 	public void run() {
 		
 		//Printing game info out to console
-		if(GameSettings.getDisplayConsole()){
+		if(displayConsole){
 			System.out.print("Welcome! New game with two players");
 			
 			if(!areBothAIs){
@@ -118,14 +120,14 @@ public class Game implements Runnable{
 		//initial roll method, decides who moves first
 		initialRoll();
 
-		if(GameSettings.getDisplayConsole()){System.out.println("Player 1 rolls: "+p1Roll+"     Player 2: "+p2Roll);}
+		if(displayConsole){System.out.println("Player 1 rolls: "+p1Roll+"     Player 2: "+p2Roll);}
 		//if player 1 has won
 		if(p1Roll>p2Roll){
-			if(GameSettings.getDisplayConsole()){System.out.println("Player 1(Black="+Player1.black+") Has won the roll");}
+			if(displayConsole){System.out.println("Player 1(Black="+Player1.black+") Has won the roll");}
 			p1sTurn = true;
 		//if player 2 has won
 		}else{
-			if(GameSettings.getDisplayConsole()){System.out.println("Player 2(Black="+Player2.black+") Has won the roll");}
+			if(displayConsole){System.out.println("Player 2(Black="+Player2.black+") Has won the roll");}
 			p1sTurn = false;
 		}
 		
@@ -139,14 +141,15 @@ public class Game implements Runnable{
 				liveBoard = new Board(Player1.AIturn(liveBoard));
 				
 				//displaying new board
-				liveBoard.printBoardGUI();
+				if(GameSettings.getDisplayGUI()){liveBoard.printBoardGUI();}
 								
 				//checking if the player has won yet
 				//if they have won, then set the gameActive to false and display the message
 				if(liveBoard.hasPlayerWon(Player1.black)){
 					setGameActive(false);
-					//JOptionPane.showMessageDialog(null, "Player 1 has won! (Black="+Player1.black+")");
-					if(GameSettings.getDisplayConsole()){System.out.println("Player 1 has won! (Black="+Player1.black+")");}
+
+					if(displayConsole){System.out.println("Player 1 has won! (Black="+Player1.black+")");}
+					
 					gameOver();
 					
 				//if they haven't won then continue
@@ -174,14 +177,16 @@ public class Game implements Runnable{
 					//get the new board with the selected moves in
 					liveBoard = new Board(Player2.AIturn(liveBoard));
 					
-					//display the new board
-					liveBoard.printBoardGUI();
+					//displaying new board
+					if(GameSettings.getDisplayGUI()){liveBoard.printBoardGUI();}
 					
 					//checking if the player has now won, if they have then gaveActive is now false and they are told they have won
 					if(liveBoard.hasPlayerWon(Player2.black)){
+						
 						setGameActive(false);
-						//JOptionPane.showMessageDialog(null, "Player 2 has won! (Black="+Player2.black+")");
-						if(GameSettings.getDisplayConsole()){System.out.println("Player 2 has won! (Black="+Player2.black+")");}
+
+						if(displayConsole){System.out.println("Player 2 has won! (Black="+Player2.black+")");}
+						
 						gameOver();
 						
 					//if not, let the game loop contine
@@ -206,8 +211,8 @@ public class Game implements Runnable{
 					//Running the turn method, waits for user input on selected move
 					Player2.turn(liveBoard);
 					
-					//prints the board with any new moves
-					liveBoard.printBoardGUI();
+					//displaying new board
+					if(GameSettings.getDisplayGUI()){liveBoard.printBoardGUI();}
 					
 					//checking if the player has now won
 					//gameActive is false if they have, and they are informed

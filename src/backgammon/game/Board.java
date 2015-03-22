@@ -201,11 +201,8 @@ public class Board {
 	 * @return true, if they have won
 	 */
 	public boolean hasPlayerWon(Boolean black) {
-		//checking if the bore peices = 15
-		if(black && blackBore == 15){
-			//won
-			return true;
-		}else if(!black && redBore == 15){
+		//checking if the bore pieces = 15
+		if((black && blackBore == 15)||(!black && redBore == 15)){
 			//won
 			return true;
 		}else{
