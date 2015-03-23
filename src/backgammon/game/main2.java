@@ -37,18 +37,23 @@ public class main2 {
 		
 		GameManager gn = new GameManager();
 		
-		System.out.println("---------INDIV 1----------");
 		Individual x = new Individual();
+		x.loadFromFile("PlayerFromGen0");
 		System.out.println(x.toString());
 		
-		System.out.println("----------INDIV 2---------");
 		Individual x2 = new Individual();
+		x2.loadFromFile("PlayerFromGen9");
 		System.out.println(x2.toString());
-
-		System.out.println("--------------------------");
-		GameStats gs = gn.playIndividualsVsEachOther(x, x2);
-		System.out.println("--------------------------");
-		System.out.println("VICTOR! = "+gs.getVictor());
-
+		
+		for(int i=0;i<5;i++){
+			int num = 0;
+			for(int e = 0; e<10 ; e++){
+				GameStats gs = gn.playIndividualsVsEachOther(x, x2);
+				if(gs.getVictor().equals(x2)){
+					num++;
+				}
+			}
+			System.out.println("X2 won "+ num + "/10 games");
+		}
 	}
 }

@@ -20,7 +20,7 @@ public class GameManager {
 		Thread guiThread = new Thread(containerFrame);
 		guiThread.start();
 
-		//Stops it multithreading
+		//Stops it multi-threading
 		try {
 			if(!GameSettings.getMultiThreading()){guiThread.join();};
 		} catch (InterruptedException e) {
@@ -41,6 +41,7 @@ public class GameManager {
 
 		//The Game Thread
 		currentGame = new Game(ip1, ip2);
+		
 		/*
 		Thread gameThread = new Thread(currentGame);
 		gameThread.start();
@@ -50,6 +51,7 @@ public class GameManager {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}*/
+		
 		currentGame.run();
 		return currentGame.getGameStats();
 	}

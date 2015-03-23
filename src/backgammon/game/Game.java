@@ -263,7 +263,27 @@ public class Game implements Runnable{
 	}
 	
 	public GameStats getGameStats(){
-		return new GameStats(this);
+		
+		Individual gameVictor = null;
+		
+		double playerOneScore = 0;
+		double playerTwoScore = 0;
+		
+		if(liveBoard.hasPlayerWon(Player1.black)){
+			double reductions = liveBoard.howManyHasPlayerBore(Player2.black)*0.04;
+			if(getIndiv1()!=null){playerOneScore=1-reductions;}
+			if(getIndiv2()!=null){playerTwoScore = reductions;}
+			
+			gameVictor = getIndiv1();
+			
+		}else if(liveBoard.hasPlayerWon(Player2.black)){
+			double reductions = liveBoard.howManyHasPlayerBore(Player1.black)*0.04;
+			if(getIndiv2()!=null){playerTwoScore=1-reductions;}
+			if(getIndiv1()!=null){playerOneScore = reductions;}
+			
+			gameVictor = getIndiv2();
+		}
+		return new GameStats(gameVictor, playerOneScore, playerTwoScore);
 	}
 
 	public Individual getIndiv1() {

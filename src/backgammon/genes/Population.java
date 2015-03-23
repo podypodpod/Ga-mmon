@@ -33,8 +33,6 @@ public class Population {
 	 */
 	public Individual getFittest(){
 		
-		calculateFitness();
-		
 		Individual fittest = individuals[0];
 		
 		for(int x = 1;x<individuals.length; x++){

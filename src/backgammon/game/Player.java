@@ -103,7 +103,7 @@ public class Player {
 
 					//CHECK ITS A VALID MOVE/LENGTH
 
-					System.out.println("Bear wich piece?");
+					System.out.println("Bear which piece?");
 
 					int bearPeice = Scanner.nextInt();
 					if(movePiecePoss(bearPeice, -1, liveBoard)){
@@ -164,6 +164,7 @@ public class Player {
 						for(int x: movesLeft.movesLeft){
 							if( x == distanceBetween(from,to)){
 								validLength = true;
+								break;
 							}
 						}
 						if(validLength){
@@ -180,6 +181,7 @@ public class Player {
 						
 					//BEARING, if the player can bear (bearing is counted as point -1 or 26)
 					}else if(((to==-1 || to==26) && liveBoard.canPlayerBear((liveBoard.Points[from].getCol())))){
+
 												
 						int y;
 						
@@ -190,14 +192,10 @@ public class Player {
 						}
 						
 						//looping through the moves Left array to check against what they have asked for
-						boolean validLength = false;
 						for(int x: movesLeft.movesLeft){
-							if( x == distanceBetween(from,(to+y))){
-								validLength = true;
+							if( x >= distanceBetween(from,(to+y))){
+								return true;
 							}
-						}
-						if(validLength){
-							return true;
 						}
 					}
 				}

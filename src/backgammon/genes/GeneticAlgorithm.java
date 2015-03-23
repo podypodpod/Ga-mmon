@@ -45,10 +45,13 @@ public class GeneticAlgorithm {
 		}
 
 		// Mutate population
+		if(GenAlgSettings.isDisplayconsole()){System.out.println("------MUTATING-------------------");}
 		for (int i = elitismOffset; i < newPopulation.size(); i++) {
 			mutate(newPopulation.getIndividual(i));
 		}
 
+		newPopulation.calculateFitness();
+		
 		return newPopulation;
 	}
 
@@ -88,8 +91,6 @@ public class GeneticAlgorithm {
 	 * @param indiv the individual
 	 */
 	public static void mutate(Individual indiv) {
-
-		if(GenAlgSettings.isDisplayconsole()){System.out.println("------MUTATING-------------------");}
 		
 		// get the indivs string
 		char[] indivStr = indiv.getChromosome();
@@ -157,5 +158,7 @@ public class GeneticAlgorithm {
 			}
 		}
 		return tournamentVictor;
+		
+		
 	}
 }

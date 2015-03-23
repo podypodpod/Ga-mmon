@@ -1,10 +1,13 @@
 package backgammon.genes;
 
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
 import backgammon.game.GameManager;
 import backgammon.game.GameStats;
 import backgammon.settings.GenAlgSettings;
 
-public class FitnessCalculator {
+public class FitnessCalculator{
 	
 	private static GameManager gm;
 	private static int count =0;
@@ -37,7 +40,7 @@ public class FitnessCalculator {
 		
 		gm = new GameManager();
 		
-		if(GenAlgSettings.isDisplayconsole()){System.out.println("Playing 2 indivs against each other, Game number: "+count++);}
+		//if(GenAlgSettings.isDisplayconsole()){System.out.println("Playing 2 indivs against each other, Game number: "+count++);}
 		
 		GameStats gs = gm.playIndividualsVsEachOther(i1, i2);
 		
@@ -51,6 +54,10 @@ public class FitnessCalculator {
 	 */
 	public static void calculateFitnessOfPopulation(Population pop){
 		
+		Individual testSubject;
+		Individual oponent;
+		double tempFitness;
+		
 		gm = new GameManager();
 		if(GenAlgSettings.isDisplayconsole()){System.out.println("Round robin started");}
 		
@@ -60,20 +67,23 @@ public class FitnessCalculator {
 			if(GenAlgSettings.isDisplayconsole()){System.out.println("Testing Player: "+ x);}
 			 
 			//the one we are generating the fitness of
-			Individual testSubject = pop.individuals[x];
+			testSubject = pop.individuals[x];
 			
 			//will be added to over the course of the games
-			double tempFitness = 0;
+			tempFitness = 0;
 			
 			//looping the whole population, y is the one currently playing against x
 			for(int y = 0; y<pop.individuals.length; y++){
 				//make sure its not playing itself
 				if(y!=x){
-					//Opponent individual
-					Individual oponent = pop.individuals[y];
+					if(GenAlgSettings.isDisplayconsole()){System.out.println("\tagainst player: "+ (y+1)+"/"+pop.individuals.length);}
 					
-					//adding the result of the game to the temp fitness, so this will add all the games score together
+					//Opponent individual
+					oponent = pop.individuals[y];
+					
+					//adding the result of the game to the temp fitness, so this will add all the games score together	
 					GameStats gs = gm.playIndividualsVsEachOther(testSubject, oponent);
+					
 					tempFitness+=gs.getPlayerOneScore();
 				}
 			}
@@ -84,5 +94,4 @@ public class FitnessCalculator {
 			testSubject.setFitness(tempFitness);
 		}
 	}
-
 }

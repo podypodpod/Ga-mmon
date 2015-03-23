@@ -196,22 +196,6 @@ public class BoardList {
 
 		if(GameSettings.getDisplayConsole()){System.out.println("board list size: "+boardList.size());}
 
-		/*
-				new IndivAttribute("bearAPiece"), 					//0
-				new IndivAttribute("takeAPiece"), 					//1
-				new IndivAttribute("doubleUpAPiece"), 				//2
-				new IndivAttribute("blockAnOpponent"),				//3
-				new IndivAttribute("movingAPieceSolo"),				//4
-				new IndivAttribute("spreadAHomePiece"),				//5
-				new IndivAttribute("addACheckerToAStack"),			//6
-				new IndivAttribute("twoOneSplitPlayInitialMove"),	//7
-				new IndivAttribute("twoOneSlotPlayInitialMove"),	//8
-				new IndivAttribute("threeOneInitialMove"),			//9
-				new IndivAttribute("threeTwoSplitInitialMove"),		//10
-				new IndivAttribute("threeTwoOffenceInitialMove")	//11
-		 */
-
-
 		// END GAME
 		if(currentBoard.canPlayerBear(p.black)){
 
