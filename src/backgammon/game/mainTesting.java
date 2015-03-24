@@ -3,7 +3,7 @@ package backgammon.game;
 import backgammon.genes.Individual;
 
 
-public class main2 {
+public class mainTesting {
 
 	public static void main(String[] args) {
 		/*
@@ -39,21 +39,20 @@ public class main2 {
 		
 		Individual x = new Individual();
 		x.loadFromFile("PlayerFromGen0");
-		System.out.println(x.toString());
+		System.out.println("Individual from generation 1, stats: "+x.toString());
 		
 		Individual x2 = new Individual();
-		x2.loadFromFile("PlayerFromGen9");
-		System.out.println(x2.toString());
+		x2.loadFromFile("PlayerFromGen49");
+		System.out.println("Individual from generation 50, stats: "+x2.toString());
 		
-		for(int i=0;i<5;i++){
 			int num = 0;
-			for(int e = 0; e<10 ; e++){
+			for(int e = 0; e<10000 ; e++){
 				GameStats gs = gn.playIndividualsVsEachOther(x, x2);
 				if(gs.getVictor().equals(x2)){
 					num++;
 				}
 			}
-			System.out.println("X2 won "+ num + "/10 games");
-		}
+			System.out.println("Individual from gen 50 won "+ num + "/10000 games against player from generation 1");
+
 	}
 }

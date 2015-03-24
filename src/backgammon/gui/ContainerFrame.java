@@ -17,7 +17,6 @@ public class ContainerFrame extends JFrame implements Runnable{
 	
 	//GUI stuff
 	public BoardPanel bp;
-	ControlPanel cp;
 	JPanel mainPanel;
 	JFrame frame;
 	
