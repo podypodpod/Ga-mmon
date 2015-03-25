@@ -86,9 +86,11 @@ public class MovesLeft {
 	}
 	
 	/**
+	 * setTo
+	 * 
 	 * Sets the list to the same as the one passed in
 	 *
-	 * @param set the current list to contents of dicerolls
+	 * @param diceRolls - set the current list to contents of dicerolls
 	 */
 	public void setTo(List<Integer> diceRolls){
 		clear();

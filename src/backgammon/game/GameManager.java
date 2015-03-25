@@ -28,10 +28,11 @@ public class GameManager {
 		}
 	}
 	/**
+	 * playIndividualsVsEachOther
 	 * 
-	 * @param ip1
-	 * @param ip2
-	 * @return
+	 * @param ip1 indiv 1
+	 * @param ip2 indiv 2
+	 * @return GameStats result of game (winner, values)
 	 */
 	public GameStats playIndividualsVsEachOther(Individual ip1, Individual ip2){
 		

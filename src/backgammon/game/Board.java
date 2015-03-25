@@ -280,9 +280,10 @@ public class Board {
 		}
 	}
 	/**
+	 * getNumOfBlots
 	 * 
-	 * @param black
-	 * @return
+	 * @param black - player color
+	 * @return int - number of blots
 	 */
 	public int getNumOfBlots(boolean black) {
 		int num = 0;
@@ -295,9 +296,10 @@ public class Board {
 	}
 	
 	/**
+	 * getNumOfHomePointsCovered
 	 * 
-	 * @param black
-	 * @return
+	 * @param black - player color
+	 * @return int - num of points covered
 	 */
 	public int getNumOfHomePointsCovered(Boolean black) {
 		int num = 0;
@@ -320,9 +322,10 @@ public class Board {
 	}
 
 	/**
+	 * getNumberOfPiecesSurroundOpponent
 	 * 
-	 * @param black
-	 * @return
+	 * @param black player color
+	 * @return int - number of pieces
 	 */
 	public int getNumberOfPiecesSurroundOpponent(Boolean black) {
 		int num=0;
