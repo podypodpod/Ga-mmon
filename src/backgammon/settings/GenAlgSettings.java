@@ -12,10 +12,10 @@ public class GenAlgSettings {
     private static final double uniformRate = 0.5;
     
     /** The Constant mutationRate. */
-    private static final double mutationRate = 0.015;
+    private static final double mutationRate = 0.3;
     
     /** The Constant tournamentSize. Has to be a multiple of 4 for the tournament method to work correctly */
-    private static final int tournamentSize = 4;
+    private static final int tournamentSize = 8;
     
     /** The Constant elitism. */
     private static final boolean elitism = true;
@@ -24,9 +24,9 @@ public class GenAlgSettings {
     private static final int generations = 50;
     
     /** the constant population size */
-    private static final int populationSize = 20;
+    private static final int populationSize = 10;
     
-    private static final String savePath = "savedPlayers/Attempt3/";
+    private static final String savePath = "savedPlayers/Attempt5/";
     
     public static double getUniformrate() {
 		return uniformRate;

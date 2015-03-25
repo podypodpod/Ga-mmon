@@ -46,13 +46,13 @@ public class mainTesting {
 		System.out.println("Individual from generation 50, stats: "+x2.toString());
 		
 			int num = 0;
-			for(int e = 0; e<10000 ; e++){
+			for(int e = 0; e<1000 ; e++){
 				GameStats gs = gn.playIndividualsVsEachOther(x, x2);
 				if(gs.getVictor().equals(x2)){
 					num++;
 				}
 			}
-			System.out.println("Individual from gen 50 won "+ num + "/10000 games against player from generation 1");
+			System.out.println("Individual from gen 50 won "+ num + "/1000 games against player from generation 1");
 
 	}
 }
