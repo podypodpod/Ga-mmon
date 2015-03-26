@@ -25,12 +25,12 @@ public class mainTesting {
 		
 		//Playing 1 game
 		System.out.println("---------INDIV 1----------");
-		x.loadFromFile("PlayerFromGen14");
-		System.out.println(x.toString());
+		x.loadFromFile("PlayerFromGen0");
+		//System.out.println(x.toString());
 		
 		System.out.println("----------INDIV 2---------");
-		x2.loadFromFile("PlayerFromGen3");
-		System.out.println(x2.toString());
+		x2.loadFromFile("PlayerFromGen49");
+		//System.out.println(x2.toString());
 		
 		
 		GameStats gs = gn.playIndividualsVsEachOther(x, x2);

@@ -20,7 +20,7 @@ public class GameSettings {
 	/** The time delay on the GUI printing, 0 time delay wil not display the game well. */
 	private static int timeDelay = 0;
 	
-	/**  whether there actually is a GUI not. */
+	/**  whether there actually is a GUI not. turn off for GA running */
 	private static boolean displayGUI = false;
 	
 	/** whether to display console prints or not. */

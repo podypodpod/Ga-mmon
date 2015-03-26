@@ -41,7 +41,7 @@ public class FitnessCalculator{
 	 * 
 	 * calculates the fitness of every individual in the population.
 	 * 
-	 * requires playing a lot of games ((population-1)^2)
+	 * requires playing a large number of games ((population-1)^2)
 	 * 
 	 * @param pop - population we are measuring
 	 */

@@ -61,14 +61,14 @@ public class Util {
 		int[] nums = new int[numOfBlocks];
 		
 		int beginIndex =0;
-		int endIndex =lengthOfBlocks;
+		int endIndex =lengthOfBlocks; //blocks = size of binary chars per var
 		
+		//loop the string
 		for(int x=0; x<numOfBlocks; x++){
 			nums[x] = convertFromBinaryStrToInt(binaryStr.substring(beginIndex, endIndex));
 			beginIndex+=lengthOfBlocks;
 			endIndex+=lengthOfBlocks;
 		}
-		
 		return nums;
 	}
 }

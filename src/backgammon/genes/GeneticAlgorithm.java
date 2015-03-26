@@ -155,6 +155,7 @@ public class GeneticAlgorithm {
 			Individual[] winnersOfRound = new Individual[tournament.size()/2];
 
 			Individual winnerOfRound = null;
+			//test the individuals
 			int counter = 0;
 			for(int i = 0; i < tournament.size(); i+=2){
 				winnerOfRound = FitnessCalculator.getWinnerOf(tournament.getIndividual(i), tournament.getIndividual(i+1));
