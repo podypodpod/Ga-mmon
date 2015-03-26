@@ -2,8 +2,22 @@ package backgammon.genes;
 
 import backgammon.settings.GenAlgSettings;
 
+/**
+ * Main
+ * 
+ * The main class to run for the genetic algorithm to run
+ * 
+ * will run for the size and generations set in backgammon.settings/genalgsettings
+ * 
+ * @author David Lomas - 11035527
+ */
 public class Main {
 
+	/**
+	 * main
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		
 		System.out.println("Program running!");

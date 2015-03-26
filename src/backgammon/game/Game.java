@@ -9,6 +9,12 @@ import backgammon.settings.GameSettings;
  * The Class Game.
  * 
  * Contains the game loop and creates a new board, players etc
+ * 
+ * This class just needs two Individuals passed in to it to play a game, if null the player will pick random moves
+ * 
+ * To get a human player, in the backgammon.settings package change the gameSettings class, areBothAIs = false
+ * 
+ * @author David Lomas - 11035527
  */
 public class Game implements Runnable{
 
@@ -46,9 +52,10 @@ public class Game implements Runnable{
 	/**  initial rolls. */
 	private int p1Roll = 0, p2Roll = 0;
 
-	/** The indiv2. */
+	/** The individuals. */
 	private Individual indiv1, indiv2;
 	
+	/** The individual who won. */
 	private Individual gameVictor = null;
 	
 	

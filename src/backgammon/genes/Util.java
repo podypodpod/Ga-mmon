@@ -2,6 +2,8 @@ package backgammon.genes;
 
 /**
  * The Class Util.
+ * 
+ * @author David Lomas - 11035527
  */
 public class Util {
 	

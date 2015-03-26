@@ -4,14 +4,24 @@ import backgammon.settings.GenAlgSettings;
 
 /**
  * The Class GeneticAlgorithm.
+ * 
+ * Evolves populations using crossoever and mutation
+ * 
+ * selection by tournament
+ * 
+ * @author David Lomas - 11035527
  */
 public class GeneticAlgorithm {
 
 	/**
 	 * Evolve population.
 	 *
-	 * @param pop the pop
-	 * @return the population
+	 * advances the population by one generation
+	 * 
+	 * uses crossover and mutation to produce the new population
+	 *
+	 * @param pop the population to evolve
+	 * @return the new population evolved
 	 */
 	public static Population evolvePopulation(Population pop) {
 
@@ -69,9 +79,10 @@ public class GeneticAlgorithm {
 
 		if(GenAlgSettings.isDisplayconsole()){System.out.println("------CROSSOVER-------------------");}
 		
+		//new Individual
 		Individual newIndiv = new Individual();
-		// Crossover
 		
+		//loop the individuals attributes
 		for(int x = 0; x<indiv1.getNumOfAttributes(); x++){
 			if (Math.random() <= GenAlgSettings.getUniformRate()) {
 				newIndiv.setAttribute(x, indiv1.getAttribute(x));
@@ -84,9 +95,11 @@ public class GeneticAlgorithm {
 
 
 	/**
+	 * mutate
+	 * 
 	 * Mutate the individual.
 	 *
-	 * gets a random num, if its <= to the mutation rate then switch the bit
+	 * gets a random number, if its <= to the mutation rate then switch the bit
 	 *
 	 * @param indiv the individual
 	 */

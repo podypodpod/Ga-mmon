@@ -5,40 +5,44 @@ import backgammon.settings.GameSettings;
 /**
  * The Class Board.
  * 
+ * Essentially the board state class
+ * 
  * Holds all the data on the board, where all the peices are, if the player is in a position to move etc
+ * 
+ * @author David Lomas - 11035527
  */
 public class Board {
 
 	/**  The black and red bore amounts. */
 	int redBore, blackBore;
-	
+
 	/**  The Points array, where all the pieces are located on the board. */
 	public Point[] Points;
-	
+
 	boolean isInitialMove = false;
-	
+
 	/**
 	 * Board default Constructor
 	 * Instantiates a new board and sets the starting position to the default start pos.
 	 */
 	public Board(){
-		
+
 		//Creating 26 points
 		Points = new Point[26];
-		
+
 		//creating the blank objects
 		for(int x = 0; x<Points.length;x++){
 			Points[x] = new Point();
 		}
-		
+
 		//Resetting all to 0
 		setStartPosition();
-		
+
 		//setting the bore chips to 0
 		redBore = 0;
 		blackBore = 0;
 	}
-	
+
 	/**
 	 * Instantiates a new board, cloning the one passed in.
 	 *
@@ -47,7 +51,7 @@ public class Board {
 	public Board(Board copy){
 		//26 new points
 		this.Points = new Point[26];
-		
+
 		//coppying each one over in a loop
 		for(int i = 0; i<copy.Points.length; i++){
 			//copy
@@ -55,20 +59,20 @@ public class Board {
 			//add
 			this.Points[i] = x;
 		}
-		
+
 		//copying bored
 		this.redBore = copy.redBore;
 		this.blackBore = copy.blackBore;
 	}
-	
-	
+
+
 	/**
 	 * setStartPosition
 	 * 
 	 * Sets the start position in a standard game of backgammon.
 	 */
 	public void setStartPosition(){
-		
+
 		//Resetting all to 0
 		for(int x =0; x<Points.length;x++){
 			Points[x].setBlackCount(0);
@@ -87,7 +91,7 @@ public class Board {
 		Points[13].setBlackCount(5);
 		Points[24].setBlackCount(2);
 	}
-	
+
 	/**
 	 * Prints the board to console.
 	 * 
@@ -124,17 +128,19 @@ public class Board {
 		System.out.println("|  Red 0 = "+ Points[0].numEither()+"          |"+ "  Beared: "+redBore+"     |");
 		System.out.println("|---------------------------------------|");
 	}
-	
+
 	/**
-	 * Prints the board gui.
+	 * printBoardGUI
+	 * 
+	 * Prints the board GUI using the GUI package.
 	 */
 	public void printBoardGUI(){
 		if(GameSettings.getDisplayGUI()){
 			GameManager.containerFrame.bp.printCheckers(Points, redBore, blackBore);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Checks if is there zero.
 	 *
@@ -142,7 +148,7 @@ public class Board {
 	 * @return true, if is there zero
 	 */
 	public boolean isthereZero(boolean black){
-		
+
 		if(black){
 			if(Points[25].getBlackCount()>0){
 				return true;
@@ -156,10 +162,10 @@ public class Board {
 				return false;
 			}
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Can player bear.
 	 * 
@@ -169,7 +175,7 @@ public class Board {
 	 * @return true, if successful
 	 */
 	public boolean canPlayerBear(boolean black){
-		
+
 		//BLACK
 		if(black){
 			//looping all areas apart from the players own quarter
@@ -179,8 +185,8 @@ public class Board {
 					return false;
 				}
 			}
-			
-		//RED
+
+			//RED
 		}else{
 			//looping all areas apart from the players own quarter
 			for(int x = 1; x<18;x++){
@@ -191,7 +197,7 @@ public class Board {
 			}
 		}
 		return true;
-		
+
 	}
 
 	/**
@@ -218,18 +224,18 @@ public class Board {
 	 * @param black the player color
 	 */
 	public void bearPiece(int bearPeice, boolean black) {
-		
+
 		Points[bearPeice].removePiece(black);
 		addToBear(black);
 	}
-	
+
 	/**
 	 * Adds the to bear.
 	 *
 	 * @param black the player color
 	 */
 	public void addToBear(boolean black){
-		
+
 		if(black){
 			blackBore++;
 		}else
@@ -237,7 +243,7 @@ public class Board {
 			redBore++;
 		}
 	}
-	
+
 	/**
 	 * Equals.
 	 * 
@@ -247,25 +253,25 @@ public class Board {
 	 * @return true, if they are the same
 	 */
 	public boolean equals(Board b){
-		
+
 		boolean theSame = true;
-		
+
 		//checking beared points
 		if(this.redBore != b.redBore || this.blackBore != b.blackBore){
 			theSame=false;
 		}
-		
+
 		//checking points
 		for(int x = 0; x<this.Points.length; x++){
 			if(!(this.Points[x].equals(b.Points[x]))){
 				theSame = false;
 			}
 		}
-		
+
 		return theSame;
-		
+
 	}
-	
+
 	/**
 	 * How many has player bore.
 	 *
@@ -294,7 +300,7 @@ public class Board {
 		}
 		return num;
 	}
-	
+
 	/**
 	 * getNumOfHomePointsCovered
 	 * 
@@ -310,7 +316,7 @@ public class Board {
 					num++;
 				}
 			}
-		//RED
+			//RED
 		}else{
 			for(int x = 19; x<=24;x++){
 				if(Points[x].numEither()>0 && Points[x].getCol()==black){
@@ -345,13 +351,11 @@ public class Board {
 				}
 			}
 		}
-		
 		return num;
 	}
-
 	public int getNumberOfCheckersOnStacks(Boolean black) {
 		int num = 0;
-		
+
 		//loop points
 		for(int x = 0; x<Points.length;x++){
 			//if the current point has more than 2 checkers (a stack) and is ours
@@ -362,5 +366,5 @@ public class Board {
 		}
 		return num;
 	}
-	
+
 }

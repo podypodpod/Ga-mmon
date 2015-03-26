@@ -1,6 +1,14 @@
 package backgammon.game;
 /**
  * The Class Point.
+ * 
+ * represents the point on a backgammon board
+ * 
+ * contains pieces
+ * 
+ * Used by the board 24 times to create the board state
+ * 
+ * @author David Lomas - 11035527
  */
 public class Point {
 
@@ -144,7 +152,6 @@ public class Point {
 		}else{
 			removeRedPiece();
 		}
-		
 	}
 
 	/**

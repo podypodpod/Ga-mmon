@@ -2,6 +2,10 @@ package backgammon.game;
 
 /**
  * The Class Die.
+ * 
+ * Simply a dice roll class.
+ * 
+ * @author David Lomas - 11035527
  */
 public class Die {
 	
@@ -26,7 +30,6 @@ public class Die {
 		return value;
 	}
 	
-	
 	/**
 	 * Gets the die value.
 	 *
@@ -44,5 +47,4 @@ public class Die {
 	public void setDieValue(int x){
 		value = x;
 	}
-	
 }

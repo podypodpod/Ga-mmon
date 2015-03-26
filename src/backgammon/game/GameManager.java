@@ -4,6 +4,15 @@ import backgammon.gui.ContainerFrame;
 import backgammon.genes.Individual;
 import backgammon.settings.GameSettings;
 
+/**
+ * GameManager
+ * 
+ * Allows the starting of games and returns the results of games without having to deal with all the actual methods etc in the game class
+ * 
+ * this class will be called when testing players etc, you can just make an object and then pass it two individuals to the method to play a game and return results.
+  * 
+ * @author David Lomas - 11035527
+ */
 public class GameManager {
 
 	public static ContainerFrame containerFrame;
@@ -13,14 +22,18 @@ public class GameManager {
 		
 	}
 
-
-	public void startGui(){
+	/**
+	 * startGui
+	 * 
+	 * starts the GUI, shouldn't be called outside of this class
+	 */
+	private void startGui(){
 		//The Gui Thread
 		containerFrame = new ContainerFrame();
 		Thread guiThread = new Thread(containerFrame);
 		guiThread.start();
 
-		//Stops it multi-threading
+		//Stops it multi-threading,
 		try {
 			if(!GameSettings.getMultiThreading()){guiThread.join();};
 		} catch (InterruptedException e) {
@@ -43,7 +56,7 @@ public class GameManager {
 		//The Game Thread
 		currentGame = new Game(ip1, ip2);
 		
-		/*
+		/* THREADING NOT IMPLEMENTED YET
 		Thread gameThread = new Thread(currentGame);
 		gameThread.start();
 		//stops it multi-threading and ruining the GUI

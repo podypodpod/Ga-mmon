@@ -5,9 +5,11 @@ import java.util.Scanner;
 import backgammon.settings.GameSettings;
 
 /**
- * The Class Player.
+ * The Class Player. the base class for players and contains code that only covers human players.
  * 
- * 2 will be made, AI and you
+ * two players will always be made, the AI will extend this to use AIPlayers though
+ * 
+ * @author David Lomas - 11035527
  */
 public class Player {
 
@@ -25,7 +27,6 @@ public class Player {
 
 	/** The turn over. */
 	boolean turnOver;
-
 
 	/**
 	 * Instantiates a new player.
@@ -45,7 +46,7 @@ public class Player {
 	}
 
 	/**
-	 * Turn.
+	 * The players turn.
 	 *
 	 * @param liveBoard the live board
 	 */
@@ -177,19 +178,13 @@ public class Player {
 								return true;
 							}
 						}
-
-						
 					//BEARING, if the player can bear (bearing is counted as point -1 or 26)
 					}else if(((to==-1 || to==26) && liveBoard.canPlayerBear((liveBoard.Points[from].getCol())))){
-
-												
+				
 						int y;
-						
-						if(to==-1){
-							y=1;
-						}else{
-							y=-1;
-						}
+						if(to==-1)
+						{y=1;}
+						else{y=-1;}
 						
 						//looping through the moves Left array to check against what they have asked for
 						for(int x: movesLeft.movesLeft){

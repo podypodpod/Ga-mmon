@@ -12,7 +12,11 @@ import javax.swing.JPanel;
 
 import backgammon.game.Point;
 
-
+/**
+ * BoardPanel
+ * 
+ * @author David Lomas - 11035527
+ */
 public class BoardPanel extends JPanel{
 	
 	Point[] allPoints = null;
@@ -20,18 +24,20 @@ public class BoardPanel extends JPanel{
 	Image imgBG;
 	Graphics2D g2;
 
-	/**`
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Cons
+	 */
 	public BoardPanel(){
-		
 		setSize(1169,637);
-		
 	}
 	
-	
+	/**
+	 * paintComponent
+	 * 
+	 * paints the GUI
+	 */
 	public void paintComponent(Graphics g){
 		
 		super.paintComponent(g);
@@ -130,13 +136,18 @@ public class BoardPanel extends JPanel{
     		g2.setColor(Color.WHITE);
     		g2.drawOval(1050, 390, 50, 50);
     		g2.drawString(redBore+"", 1070, 420);
-	    }
-	    
-	    
-
-	    
+	    }  
 	}
 	
+	/**
+	 * printCheckers
+	 * 
+	 * method to call to print board
+	 * 
+	 * @param checkers
+	 * @param rb redbore
+	 * @param bb blackbore
+	 */
 	public void printCheckers(Point[] c, int rb, int bb){
 		allPoints = c;
 		redBore = rb;

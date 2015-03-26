@@ -1,4 +1,4 @@
-	package backgammon.genes;
+package backgammon.genes;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,6 +12,10 @@ import backgammon.settings.GenAlgSettings;
 
 /**
  * The Class Individual.
+ * 
+ * The AI behind a player, contains attributes which dictates which decisions they make
+ * 
+ * @author David Lomas - 11035527
  */
 public class Individual {
 	
@@ -216,11 +220,23 @@ public class Individual {
 		
 	}
 	
-	
+	/**
+	 * setAttribute
+	 * 
+	 * @param attr
+	 * @param data
+	 */
 	public void setAttribute(int attr, IndivAttribute data){
 		listOfAttributes[attr] = data;
 		updateToBinary();
 	}
+	
+	/**
+	 * getAttribute
+	 * 
+	 * @param pos
+	 * @return
+	 */
 	public IndivAttribute getAttribute(int pos){
 		return listOfAttributes[pos];
 	}

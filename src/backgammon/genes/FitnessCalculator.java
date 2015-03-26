@@ -1,34 +1,23 @@
 package backgammon.genes;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-
 import backgammon.game.GameManager;
 import backgammon.game.GameStats;
 import backgammon.settings.GenAlgSettings;
 
+/**
+ * FitnessCalculator
+ * 
+ * Allows the calculation of fitness of an indiviudal or population
+ * 
+ * @author David Lomas - 11035527
+ */
 public class FitnessCalculator{
 	
+	/** Game manager */
 	private static GameManager gm;
-	private static int count =0;
-	
 	
 	/**
-	 * measures how close to the target it is                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-	 * 
-	 * playing against a random picker
-	 * 
-	 * @param i the individual you are measuring
-	 * @return the fitness
-	 
-	public static void getFitneOf(Individual i1) {		
-		gm = new GameManager();
-		if(GenAlgSettings.isDisplayconsole()){System.out.println("Playing 1 indivs and 1 null against each other, Game: "+count++);}
-		gm.playIndividualsVsEachOther(i1, null);
-	}*/
-	
-
-	/**
+	 * getWinnerOf
 	 * 
 	 * Makes the 2 players play against each other and returns the winner
 	 * 
@@ -37,7 +26,6 @@ public class FitnessCalculator{
 	 * @return the winner
 	 */
 	public static Individual getWinnerOf(Individual i1, Individual i2) {
-		
 		gm = new GameManager();
 		
 		//if(GenAlgSettings.isDisplayconsole()){System.out.println("Playing 2 indivs against each other, Game number: "+count++);}
@@ -49,8 +37,13 @@ public class FitnessCalculator{
 	
 	
 	/**
+	 * calculateFitnessOfPopulation
 	 * 
-	 * @param pop
+	 * calculates the fitness of every individual in the population.
+	 * 
+	 * requires playing a lot of games ((population-1)^2)
+	 * 
+	 * @param pop - population we are measuring
 	 */
 	public static void calculateFitnessOfPopulation(Population pop){
 		
@@ -59,6 +52,7 @@ public class FitnessCalculator{
 		double tempFitness;
 		
 		gm = new GameManager();
+		
 		if(GenAlgSettings.isDisplayconsole()){System.out.println("Round robin started");}
 		
 		//looping the whole population, x is the one we are measuring

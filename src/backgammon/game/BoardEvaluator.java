@@ -6,25 +6,28 @@ import backgammon.settings.GameSettings;
  * The Class BoardEvaluator.
  * 
  * Useful methods for picking boards from the board list e.g. pick a board where it will take a piece
+ * 
+ * Allows the AI to loop through all the possible moves and pick a certain one
+ * 
+ * @author David Lomas - 11035527
  */
 public class BoardEvaluator {
-	
+
 	/** The live board. */
 	private Board liveBoard;
-	
+
 	/** The current player. */
 	public AIPlayer currentPlayer;
-	
+
 	/** The opponent zero positions. */
 	private int myZero, oponentZero;
-	
-	
+
+
 	/**
 	 * Board evaluator cons.
 	 */
 	public void BoardEvalutator(){}
-	
-	
+
 	/**
 	 * Checks for a piece being taken.
 	 *
@@ -39,7 +42,7 @@ public class BoardEvaluator {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Sets the board.
 	 *
@@ -48,7 +51,7 @@ public class BoardEvaluator {
 	public void setBoard(Board cb){
 		liveBoard = cb;
 	}
-	
+
 	/**
 	 * Sets the player.
 	 *
@@ -64,7 +67,7 @@ public class BoardEvaluator {
 			oponentZero=25;
 		}
 	}
-	
+
 	/**
 	 * Checks for a piece that has been bore.
 	 *
@@ -79,8 +82,6 @@ public class BoardEvaluator {
 			return false;
 		}
 	}
-	
-	
 
 
 	/**getMyZero
@@ -116,7 +117,7 @@ public class BoardEvaluator {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * hasAPieceBeenMovedSolo
 	 * 
@@ -185,7 +186,7 @@ public class BoardEvaluator {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * isTwoOneSplitPlayInitialMove
 	 * 
@@ -202,7 +203,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isTwoOneSplitPlayInitialMove");}
 				return true;
 			}
-		//red
+			//red
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,24,1) && ifPointHasPeices(newBoard,23,1) && ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,11,1)){
@@ -229,7 +230,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isTwoOneSlotPlayInitialMove");}
 				return true;
 			}
-		//red
+			//red
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,19,4) && ifPointHasPeices(newBoard,20,1) && ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,11,1)){
@@ -256,7 +257,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isThreeOneInitialMove");}
 				return true;
 			}
-		//red
+			//red
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,19,4) && ifPointHasPeices(newBoard,20,2) && ifPointHasPeices(newBoard,17,2)){
@@ -284,7 +285,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isThreeTwoSplitInitialMove");}
 				return true;
 			}
-		//red
+			//red
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,24,1) && ifPointHasPeices(newBoard,21,1) && ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,11,1)){
@@ -312,7 +313,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isThreeTwoOffenceInitialMove");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,12,3) && ifPointHasPeices(newBoard,14,1) && ifPointHasPeices(newBoard,15,1)){
@@ -340,7 +341,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFourOneInitialMove");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,2,1) && ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,16,1)){
@@ -367,7 +368,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFourOneInitialMoveAlt");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,19,4) && ifPointHasPeices(newBoard,20,1) && ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,16,1)){
@@ -394,7 +395,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFourTwoInitialMove");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,17,2) && ifPointHasPeices(newBoard,21,2) && ifPointHasPeices(newBoard,19,4)){
@@ -421,7 +422,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFourThreeInitialMoveSplit");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,4,1) && ifPointHasPeices(newBoard,13,4) && ifPointHasPeices(newBoard,16,1)){
@@ -448,7 +449,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFourThreeInitialMoveBlock");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,12,3) && ifPointHasPeices(newBoard,15,1) && ifPointHasPeices(newBoard,16,1)){
@@ -475,7 +476,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMove");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,2,1) && ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,17,4)){
@@ -502,7 +503,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,19,4) && ifPointHasPeices(newBoard,20,1) && ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,17,4)){
@@ -529,7 +530,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,14,1) && ifPointHasPeices(newBoard,12,3) && ifPointHasPeices(newBoard,17,4)){
@@ -556,7 +557,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
-		//red player	
+			//red player	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,3,1) && ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,17,4)){
@@ -583,7 +584,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,17,2) && ifPointHasPeices(newBoard,19,4) && ifPointHasPeices(newBoard,22,2)){
@@ -610,7 +611,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,12,3) && ifPointHasPeices(newBoard,16,1) && ifPointHasPeices(newBoard,17,4)){
@@ -637,7 +638,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,5,1) && ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,17,4)){
@@ -647,7 +648,7 @@ public class BoardEvaluator {
 		}
 		return false;
 	}
-	
+
 	public boolean ifPointHasPeices(Board newBoard, int point, int num){
 		if(newBoard.Points[point].numEither()==num){
 			return true;
@@ -672,7 +673,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,17,2) && ifPointHasPeices(newBoard,18,2) && ifPointHasPeices(newBoard,12,4)){
@@ -699,7 +700,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,7,1) && ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,14,1)){
@@ -726,7 +727,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,12,4) && ifPointHasPeices(newBoard,20,1)){
@@ -753,7 +754,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,10,1)){
@@ -780,7 +781,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,7,1) && ifPointHasPeices(newBoard,15,1) && ifPointHasPeices(newBoard,12,4)){
@@ -807,7 +808,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,11,1)){
@@ -835,7 +836,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,7,1) && ifPointHasPeices(newBoard,12,4)&& ifPointHasPeices(newBoard,16,1)){
@@ -862,7 +863,7 @@ public class BoardEvaluator {
 				if(GameSettings.getDisplayConsole()){System.out.println("isFiveOneInitialMoveAlt");}
 				return true;
 			}
-		//red	
+			//red	
 		}else{
 			//if it has performed the move
 			if(ifPointHasPeices(newBoard,1,1) && ifPointHasPeices(newBoard,12,6)){
@@ -872,7 +873,4 @@ public class BoardEvaluator {
 		}
 		return false;
 	}
-	
-	
-	
 }

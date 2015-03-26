@@ -4,6 +4,12 @@ import backgammon.genes.Individual;
 
 /**
  * The Class MoveGenerator.
+ * 
+ * generates all possible moves for the player at the current board state
+ * 
+ * adds them all to the board list collection
+ * 
+ * @author David Lomas - 11035527
  */
 public class MoveGenerator {
 

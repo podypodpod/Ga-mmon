@@ -7,6 +7,10 @@ import backgammon.genes.Individual;
 import backgammon.settings.GameSettings;
 /**
  * The Class BoardList.
+ * 
+ * Holds a collection of board states allowing the AI to then loop through them
+ * 
+ * @author David Lomas - 11035527
  */
 public class BoardList {
 
@@ -16,7 +20,7 @@ public class BoardList {
 	/**  The individual that will make the move. */
 	private Individual individual;
 
-	/** The b eval. */
+	/** The beval. */
 	private BoardEvaluator bEval;
 
 	/**
@@ -177,9 +181,9 @@ public class BoardList {
 	/**
 	 * Individual decision.
 	 * 
-	 * Is called by select board and it is where the individuals attributes influance the chosen board
+	 * Is called by select board and it is where the individuals attributes influence the chosen board
 	 * 
-	 * e.g. higher agression chance will produce more peices being taken
+	 * e.g. higher aggression chance will produce more pieces being taken
 	 *
 	 * @param currentBoard the current board
 	 * @param p the player

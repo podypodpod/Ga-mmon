@@ -3,10 +3,11 @@ package backgammon.settings;
 /**
  * GameSettings class
  * 
- * 
  * Only created this to simplify changing the settings of the game
  * 
  * Puts all settings for the actual game in one place..e.g. timeDelay for if it actually needs to be seen
+ * 
+ * @author David Lomas - 11035527
  */
 public class GameSettings {
 	
@@ -23,9 +24,9 @@ public class GameSettings {
 	private static boolean displayGUI = false;
 	
 	/** whether to display console prints or not. */
-	private static boolean displayConsole = false;
+	private static boolean displayConsole = true;
 	
-	/** The multi-threading. */
+	/** The multi-threading. currently not working */
 	private static boolean multiThreading = false;
 	
 	

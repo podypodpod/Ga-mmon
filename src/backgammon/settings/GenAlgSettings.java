@@ -2,6 +2,8 @@ package backgammon.settings;
 
 /**
  * The Class GenAlgSettings.
+ * 
+ * @author David Lomas - 11035527
  */
 public class GenAlgSettings {
 	

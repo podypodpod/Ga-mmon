@@ -6,7 +6,11 @@ import java.util.List;
 /**
  * The Class DiceList.
  * 
- * Container for the Dice
+ * Container for the Dice rolls, allows the looping through the moves left during possible move creation
+ * 
+ * could have created this code inside another class but I moved it out to make space.
+ * 
+ * @author David Lomas - 11035527
  */
 public class DiceList {
 	

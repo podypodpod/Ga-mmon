@@ -7,6 +7,8 @@ import java.util.List;
  * The Class MovesLeft.
  * 
  * used for loops checking which moves the player has left to use
+ * 
+ * @author David Lomas - 11035527
  */
 public class MovesLeft {
 

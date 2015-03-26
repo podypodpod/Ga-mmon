@@ -1,6 +1,10 @@
 package backgammon.genes;
 /**
  * The Class Population.
+ * 
+ * collection of individuals for the genetic algorithm to evolve
+ * 
+ * @author David Lomas - 11035527
  */
 public class Population {
 	
@@ -24,7 +28,6 @@ public class Population {
 			}
 		}
 	}
-	
 	
 	/**
 	 * Gets the fittest.
