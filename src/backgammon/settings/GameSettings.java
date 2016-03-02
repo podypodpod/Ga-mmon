@@ -1,3 +1,23 @@
+/**
+ * 	GNU General Public License
+ * 
+ *  This file is part of GA-mmon.
+ *  
+ *  GA-mmon is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *  
+ *  GA-mmon is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *  
+ *  You should have received a copy of the GNU General Public License
+ *  along with GA-mmon.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
 package backgammon.settings;
 
 /**
@@ -11,75 +31,37 @@ package backgammon.settings;
  */
 public class GameSettings {
 	
-	/** if player 1 is black, and therefore player 2 will be red. */
 	private static boolean isP1Black = true;
-
-	/** if both players are QI or one human. */
 	private static boolean areBothAIs = true;
-
-	/** The time delay on the GUI printing, 0 time delay wil not display the game well. */
 	private static int timeDelay = 0;
+	private static boolean displayGUI = true;
+	private static boolean displayConsole = false;
 	
-	/**  whether there actually is a GUI not. turn off for GA running */
-	private static boolean displayGUI = false;
-	
-	/** whether to display console prints or not. */
-	private static boolean displayConsole = true;
-	
-	/** The multi-threading. currently not working */
+	/** currently not working */
 	private static boolean multiThreading = false;
 	
 	
-	/**
-	 * Gets the time delay.
-	 *
-	 * @return the time delay
-	 */
 	public static int getTimeDelay(){
 		return timeDelay;
 	}
 	
-	/**
-	 * Gets the are both ai.
-	 *
-	 * @return the are both ai
-	 */
 	public static boolean getAreBothAI(){
 		return areBothAIs;
 	}
 	
-	/**
-	 * Checks if is p1 black.
-	 *
-	 * @return true, if is p1 black
-	 */
 	public static boolean isP1Black(){
 		return isP1Black;
 	}
 
-	/**
-	 * Gets the non gui mode.
-	 *
-	 * @return the non gui mode
-	 */
+
 	public static boolean getDisplayGUI() {
 		return displayGUI;
 	}
 	
-	/**
-	 * Gets the display console.
-	 *
-	 * @return the display console
-	 */
 	public static boolean getDisplayConsole(){
 		return displayConsole;
 	}
 
-	/**
-	 * Gets the multi threading.
-	 *
-	 * @return the multi threading
-	 */
 	public static boolean getMultiThreading() {
 		return multiThreading;
 	}

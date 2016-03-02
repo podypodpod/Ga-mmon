@@ -1,3 +1,22 @@
+/**
+ * 	GNU General Public License
+ * 
+ *  This file is part of GA-mmon.
+ *  
+ *  GA-mmon is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *  
+ *  GA-mmon is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *  
+ *  You should have received a copy of the GNU General Public License
+ *  along with GA-mmon.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package backgammon.game;
 
 import backgammon.genes.Individual;
@@ -12,43 +31,22 @@ import backgammon.settings.GameSettings;
  */
 public class AIPlayer extends Player{
 
-	/** The move generator for the player to use. */
 	MoveGenerator moveGen;
-
-	/**  player personality is just an appropriate name for the individual. */
 	private Individual individual;
 
-	/**
-	 * Instantiates a new AI player.
-	 *
-	 * @param b the color of the player, true = black
-	 * @param indiv the individual
-	 */
+
 	public AIPlayer(boolean b, Individual indiv) {
-		//super is the player class, the boolean is the color of the player
 		super(b);
 		individual = indiv;
 		moveGen = new MoveGenerator(individual);
 	}
 
-	/**
-	 * getIndividual
-	 * 
-	 * Gets the individual.
-	 *
-	 * @return the individual
-	 */
+
 	public Individual getIndividual(){
 		return individual;
 	}
 
-	/**
-	 * AIPlayer
-	 * 
-	 * Instantiates a new AI player, cloning the old one.
-	 *
-	 * @param p the player you are cloning
-	 */
+
 	public AIPlayer(AIPlayer p) {
 		super(p.black);
 
@@ -60,36 +58,21 @@ public class AIPlayer extends Player{
 		this.moveGen = p.moveGen;
 	}
 
-	/**
-	 * AI Player's turn.
-	 * 
-	 * Dice are rolled, all possible moves generated, best is selected, turn over.
-	 *
-	 * @param currentBoard the current board
-	 * @return the resulting board at the end
-	 */
 	public Board AIturn(Board currentBoard){
 
 		if(GameSettings.getDisplayConsole()){System.out.println("------------AI's Turn!-----------------");}
 
 		movesLeft = new MovesLeft();
-
-		//Rolling the dice
 		movesLeft.setTo(dice.RollDice());
-
 		if(GameSettings.getDisplayConsole()){System.out.println("Player has : "+movesLeft.toString());}
 
-
-		//get next board (could be null if there aren't any next moves)
 		Board newBoard = moveGen.getNextMoveBoard(currentBoard, this);
 
 		//if the board has not changed
 		if(newBoard == null){
-			//if null, just use the existing board
 			newBoard = currentBoard;
 		}
 
-		//return the new board, with the new moves implemented (or not if not possible, could be the same)
 		return newBoard;
 	}
 }

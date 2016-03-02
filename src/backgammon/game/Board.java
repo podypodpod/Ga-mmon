@@ -1,3 +1,22 @@
+/**
+ * 	GNU General Public License
+ * 
+ *  This file is part of GA-mmon.
+ *  
+ *  GA-mmon is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *  
+ *  GA-mmon is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *  
+ *  You should have received a copy of the GNU General Public License
+ *  along with GA-mmon.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package backgammon.game;
 
 import backgammon.settings.GameSettings;
@@ -8,46 +27,26 @@ import backgammon.settings.GameSettings;
  * Essentially the board state class
  * 
  * Holds all the data on the board, where all the peices are, if the player is in a position to move etc
- * 
- * @author David Lomas - 11035527
  */
 public class Board {
 
-	/**  The black and red bore amounts. */
 	int redBore, blackBore;
-
-	/**  The Points array, where all the pieces are located on the board. */
 	public Point[] Points;
-
 	boolean isInitialMove = false;
 
-	/**
-	 * Board default Constructor
-	 * Instantiates a new board and sets the starting position to the default start pos.
-	 */
 	public Board(){
 
-		//Creating 26 points
 		Points = new Point[26];
 
-		//creating the blank objects
 		for(int x = 0; x<Points.length;x++){
 			Points[x] = new Point();
 		}
-
-		//Resetting all to 0
 		setStartPosition();
 
-		//setting the bore chips to 0
 		redBore = 0;
 		blackBore = 0;
 	}
 
-	/**
-	 * Instantiates a new board, cloning the one passed in.
-	 *
-	 * @param copy the copy board
-	 */
 	public Board(Board copy){
 		//26 new points
 		this.Points = new Point[26];
@@ -66,19 +65,12 @@ public class Board {
 	}
 
 
-	/**
-	 * setStartPosition
-	 * 
-	 * Sets the start position in a standard game of backgammon.
-	 */
 	public void setStartPosition(){
-
 		//Resetting all to 0
 		for(int x =0; x<Points.length;x++){
 			Points[x].setBlackCount(0);
 			Points[x].setRedCount(0);
 		}
-
 		//completing the starting position of the checkers, the rest left at 0
 		//Red Checkers
 		Points[1].setRedCount(2);
@@ -92,11 +84,6 @@ public class Board {
 		Points[24].setBlackCount(2);
 	}
 
-	/**
-	 * Prints the board to console.
-	 * 
-	 * An actual Board resembling a BackGammon board and not just a list of values
-	 */
 	public void printBoard(){
 		System.out.println("|---------------------------------------|");
 		System.out.println("|  Black 0 = "+ Points[25].numEither()+"        |"+ "  Beared: "+blackBore+"     |");
@@ -129,11 +116,6 @@ public class Board {
 		System.out.println("|---------------------------------------|");
 	}
 
-	/**
-	 * printBoardGUI
-	 * 
-	 * Prints the board GUI using the GUI package.
-	 */
 	public void printBoardGUI(){
 		if(GameSettings.getDisplayGUI()){
 			GameManager.containerFrame.bp.printCheckers(Points, redBore, blackBore);
@@ -141,12 +123,6 @@ public class Board {
 	}
 
 
-	/**
-	 * Checks if is there zero.
-	 *
-	 * @param black the color of the player
-	 * @return true, if is there zero
-	 */
 	public boolean isthereZero(boolean black){
 
 		if(black){
@@ -164,7 +140,6 @@ public class Board {
 		}
 
 	}
-
 
 	/**
 	 * Can player bear.
