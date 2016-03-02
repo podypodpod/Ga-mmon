@@ -1,9 +1,9 @@
 # README #
 
-11035527 - David Lomas - Project
+ GA-mmon
 
-* Java project to generate intelligent backgammon players implementing a genetic algorithm and then test them.
-* Prototype 6
+ Java project to generate intelligent backgammon players implementing a genetic algorithm and then test them.
+
 
 ### How do I get set up? ###
 
@@ -25,3 +25,22 @@ The only libraries I imported and used were those for JUnitTesting that are incl
 ### Playing Games ###
 *Single/Groups of games,
 Running either a single game or a batch of games is done by running the mainTesting class within the backgammon.game package. Whether you want a human or an AI to play is decided via the settings in the backgammon.settings/GameSettings class, areBothAIs needs to be set to false and you will be set as player 2 and be asked in the console for next moves. the GameManager.playIndividualsVsEachOther(p1, p2) method is used for games, if p1 and p2 being the individuals. if either is null then a random picking individual will be used, otherwise it picks moves based on the attributes.
+
+/**
+ * 	GNU General Public License
+ * 
+ *  This file is part of GA-mmon.
+ *  
+ *  GA-mmon is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *  
+ *  GA-mmon is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *  
+ *  You should have received a copy of the GNU General Public License
+ *  along with GA-mmon.  If not, see <http://www.gnu.org/licenses/>.
+*/
