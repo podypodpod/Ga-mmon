@@ -191,7 +191,5 @@ public class GeneticAlgorithm {
 			}
 		}
 		return tournamentVictor;
-		
-		
 	}
 }

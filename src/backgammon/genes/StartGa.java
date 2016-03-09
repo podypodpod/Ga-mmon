@@ -30,14 +30,9 @@ import backgammon.settings.GenAlgSettings;
  * 
  * @author David Lomas - 11035527
  */
-public class Main {
+public class StartGa {
 
-	/**
-	 * main
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
+	public StartGa() {
 		
 		System.out.println("Program running!");
 

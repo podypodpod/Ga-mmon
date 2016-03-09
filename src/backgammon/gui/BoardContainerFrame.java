@@ -36,32 +36,19 @@ import javax.swing.JPanel;
  * 
  * @author David Lomas - 11035527
  */
-public class ContainerFrame extends JFrame implements Runnable{
+public class BoardContainerFrame extends JFrame implements Runnable{
 
 	private static final long serialVersionUID = 1L;
 	
-	
-	//GUI stuff
 	public BoardPanel bp;
 	JPanel mainPanel;
 	JFrame frame;
-	
-	/**
-	 * cons
-	 */
-	public ContainerFrame(){	
-		
-	}
-
 
 	@Override
 	public void run() {
 		createGUI();
 	}
 	
-	/**
-	 * Creates the gUI
-	 */
 	public void createGUI(){
 		
 		//Creating JFrame and panel

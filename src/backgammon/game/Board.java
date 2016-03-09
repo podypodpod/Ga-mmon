@@ -118,10 +118,9 @@ public class Board {
 
 	public void printBoardGUI(){
 		if(GameSettings.getDisplayGUI()){
-			GameManager.containerFrame.bp.printCheckers(Points, redBore, blackBore);
+			GameManager.boardContainerFrame.bp.printCheckers(Points, redBore, blackBore);
 		}
 	}
-
 
 	public boolean isthereZero(boolean black){
 
@@ -138,7 +137,6 @@ public class Board {
 				return false;
 			}
 		}
-
 	}
 
 	/**

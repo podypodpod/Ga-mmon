@@ -19,7 +19,7 @@
 
 package backgammon.game;
 
-import backgammon.gui.ContainerFrame;
+import backgammon.gui.BoardContainerFrame;
 import backgammon.genes.Individual;
 import backgammon.settings.GameSettings;
 
@@ -34,7 +34,7 @@ import backgammon.settings.GameSettings;
  */
 public class GameManager {
 
-	public static ContainerFrame containerFrame;
+	public static BoardContainerFrame boardContainerFrame;
 	private static Game currentGame;
 
 	public GameManager(){
@@ -48,8 +48,8 @@ public class GameManager {
 	 */
 	private void startGui(){
 		//The Gui Thread
-		containerFrame = new ContainerFrame();
-		Thread guiThread = new Thread(containerFrame);
+		boardContainerFrame = new BoardContainerFrame();
+		Thread guiThread = new Thread(boardContainerFrame);
 		guiThread.start();
 
 		//Stops it multi-threading,

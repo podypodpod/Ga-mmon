@@ -66,51 +66,22 @@ public class Population {
 		return fittest;
 	}
 	
-	/**
-	 * Size.
-	 *
-	 * @return the int
-	 */
 	public int size(){
 		return individuals.length;
 	}
 
-
-    /**
-     * Save individual.
-     *
-     * @param index the index
-     * @param indiv the indiv
-     */
     public void saveIndividual(int index, Individual indiv) {
         individuals[index] = indiv;
     }
 
-
-	/**
-	 * Gets the individual.
-	 *
-	 * @param i the i
-	 * @return the individual
-	 */
 	public Individual getIndividual(int i) {
 		return individuals[i];
 	}
-	
-	/**
-	 * Gets the population.
-	 *
-	 * @return the population
-	 */
+
 	public Individual[] getPopulation(){
 		return individuals;
 	}
-	
-	/**
-	 * Sets the array.
-	 *
-	 * @param indivs the new array
-	 */
+
 	public void setArray(Individual[] indivs){
 		individuals = indivs;
 	}
