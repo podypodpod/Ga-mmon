@@ -17,8 +17,11 @@
  *  along with GA-mmon.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 package backgammon.settings;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * GameSettings class
@@ -31,39 +34,46 @@ package backgammon.settings;
  */
 public class GameSettings {
 	
-	private static boolean isP1Black = true;
-	private static boolean areBothAIs = true;
-	private static int timeDelay = 0;
-	private static boolean displayGUI = true;
-	private static boolean displayConsole = false;
-	
-	/** currently not working */
-	private static boolean multiThreading = false;
-	
-	
+    public static String getPropertyFromFile(String propVar){
+		Properties properties = new Properties();
+		InputStream input = null;
+	 
+		try {
+			input = new FileInputStream("resources/settings/GameSettings.properties");
+			properties.load(input);
+			return properties.getProperty(propVar);
+	 
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
+    }
+
+	//GETTERS
 	public static int getTimeDelay(){
-		return timeDelay;
+		return Integer.valueOf(getPropertyFromFile("timeDelay"));
 	}
-	
 	public static boolean getAreBothAI(){
-		return areBothAIs;
+		return Boolean.valueOf(getPropertyFromFile("areBothAIs"));
 	}
-	
 	public static boolean isP1Black(){
-		return isP1Black;
+		return Boolean.valueOf(getPropertyFromFile("isP1Black"));
 	}
-
-
 	public static boolean getDisplayGUI() {
-		return displayGUI;
+		return Boolean.valueOf(getPropertyFromFile("displayGUI"));
 	}
-	
 	public static boolean getDisplayConsole(){
-		return displayConsole;
+		return Boolean.valueOf(getPropertyFromFile("displayConsole"));
 	}
-
 	public static boolean getMultiThreading() {
-		return multiThreading;
+		return Boolean.valueOf(getPropertyFromFile("multiThreading"));
 	}
-	
 }

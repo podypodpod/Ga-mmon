@@ -68,7 +68,7 @@ public class BoardPanel extends JPanel{
 		g2.setFont(new Font("default", Font.BOLD, 16));
 		
 		//Drawing background
-		imgBG = Toolkit.getDefaultToolkit().getImage("images/Backgammon blank board3.png");
+		imgBG = Toolkit.getDefaultToolkit().getImage("images/Backgammon blank board.png");
 	    g2.drawImage(imgBG, 0, 0, this);
 	    
 
