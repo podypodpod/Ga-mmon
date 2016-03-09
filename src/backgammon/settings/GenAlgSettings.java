@@ -26,6 +26,15 @@ import java.util.Properties;
 
 public class GenAlgSettings {
 	
+	private static Boolean displayConsoleCache = null;
+	private static double uniformRateCache = -1;
+	private static double mutationRateCache = -1;
+	private static int tournamentSizeCache = -1;
+	private static Boolean elitismCache = null;
+	private static int generationsCache = -1;
+	private static int populationSizeCache = -1;
+	private static String savePathCache = null;
+	
     public static String getPropertyFromFile(String propVar){
 		Properties properties = new Properties();
 		InputStream input = null;
@@ -49,40 +58,54 @@ public class GenAlgSettings {
 		return null;
     }
     
-    public static double getUniformrate() {
-		return Double.valueOf(getPropertyFromFile("uniformRate"));
-	}
-	public static double getMutationrate() {
-		return Double.valueOf(getPropertyFromFile("mutationRate"));
-	}
-	public static int getTournamentsize() {
-		return Integer.valueOf(getPropertyFromFile("tournamentSize"));
-	}
-	public static int getPopulationsize() {
-		return Integer.valueOf(getPropertyFromFile("populationSize"));
-	}
-	public static String getSavePath() {
-		return getPropertyFromFile("savePath");
-	}
     public static double getUniformRate() {
-		return Double.valueOf(getPropertyFromFile("uniformRate"));
+    	if(uniformRateCache==-1){
+    		uniformRateCache = Double.valueOf(getPropertyFromFile("uniformRate"));
+    	}
+		return uniformRateCache;
 	}
 	public static double getMutationRate() {
-		return Double.valueOf(getPropertyFromFile("mutationRate"));
+		if(mutationRateCache==-1){
+			mutationRateCache = Double.valueOf(getPropertyFromFile("mutationRate"));
+		}
+		return mutationRateCache;
 	}
 	public static int getTournamentSize() {
-		return Integer.valueOf(getPropertyFromFile("tournamentSize"));
-	}
-	public static boolean isElitism() {
-		return Boolean.valueOf(getPropertyFromFile("elitism"));
-	}
-	public static int getGenerations() {
-		return Integer.valueOf(getPropertyFromFile("generations"));
+		if(tournamentSizeCache==-1){
+			tournamentSizeCache = Integer.valueOf(getPropertyFromFile("tournamentSize"));
+		}
+		return tournamentSizeCache;
 	}
 	public static int getPopulationSize() {
-		return Integer.valueOf(getPropertyFromFile("populationSize"));
+		if(populationSizeCache==-1){
+			populationSizeCache = Integer.valueOf(getPropertyFromFile("populationSize"));
+		}
+		return populationSizeCache; 
+	}
+	public static String getSavePath() {
+		if(savePathCache==null){
+			savePathCache = getPropertyFromFile("savePath");
+		}
+		return savePathCache; 
+	}
+ 
+	public static boolean isElitism() {
+		if(elitismCache==null){
+			elitismCache = Boolean.valueOf(getPropertyFromFile("elitism"));
+		}
+		return elitismCache;
+	}
+	
+	public static int getGenerations() {
+		if(generationsCache==-1){
+			generationsCache = Integer.valueOf(getPropertyFromFile("generations")); 
+		}
+		return generationsCache;
 	}
 	public static boolean isDisplayconsole() {
-		return Boolean.valueOf(getPropertyFromFile("displayConsole"));
+		if(displayConsoleCache==null){
+			displayConsoleCache = Boolean.valueOf(getPropertyFromFile("displayConsole")); 
+		}
+		return displayConsoleCache;
 	}
 }

@@ -34,6 +34,13 @@ import java.util.Properties;
  */
 public class GameSettings {
 	
+	private static Boolean isP1BlackCache = null;
+	private static Boolean displayGUICache = null;
+	private static Boolean areBothAIsCache = null;
+	private static Boolean displayConsoleCache = null;
+	private static Boolean multiThreadingCache = null;
+	private static int timeDelayCache = -1;
+	
     public static String getPropertyFromFile(String propVar){
 		Properties properties = new Properties();
 		InputStream input = null;
@@ -59,21 +66,42 @@ public class GameSettings {
 
 	//GETTERS
 	public static int getTimeDelay(){
-		return Integer.valueOf(getPropertyFromFile("timeDelay"));
+		if(timeDelayCache==-1){
+			timeDelayCache = Integer.valueOf(getPropertyFromFile("timeDelay"));
+		}
+		return timeDelayCache;
 	}
+	
 	public static boolean getAreBothAI(){
-		return Boolean.valueOf(getPropertyFromFile("areBothAIs"));
+		if(areBothAIsCache==null){
+			areBothAIsCache = Boolean.valueOf(getPropertyFromFile("areBothAIs"));
+		}
+		return areBothAIsCache;
 	}
+	
 	public static boolean isP1Black(){
-		return Boolean.valueOf(getPropertyFromFile("isP1Black"));
+		if(isP1BlackCache==null){
+			isP1BlackCache = Boolean.valueOf(getPropertyFromFile("isP1Black"));
+		}
+		return isP1BlackCache;
 	}
+	
 	public static boolean getDisplayGUI() {
-		return Boolean.valueOf(getPropertyFromFile("displayGUI"));
+		if(displayGUICache==null){
+			displayGUICache = Boolean.valueOf(getPropertyFromFile("displayGUI"));
+		}
+		return displayGUICache;
 	}
 	public static boolean getDisplayConsole(){
-		return Boolean.valueOf(getPropertyFromFile("displayConsole"));
+		if(displayConsoleCache==null){
+			displayConsoleCache = Boolean.valueOf(getPropertyFromFile("displayConsole"));
+		}
+		return displayConsoleCache;
 	}
 	public static boolean getMultiThreading() {
-		return Boolean.valueOf(getPropertyFromFile("multiThreading"));
+		if(multiThreadingCache==null){
+			multiThreadingCache = Boolean.valueOf(getPropertyFromFile("multiThreading"));
+		}
+		return multiThreadingCache;
 	}
 }

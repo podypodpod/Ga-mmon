@@ -46,7 +46,6 @@ public class AIPlayer extends Player{
 		return individual;
 	}
 
-
 	public AIPlayer(AIPlayer p) {
 		super(p.black);
 
