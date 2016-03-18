@@ -150,18 +150,16 @@ public class Player {
 	 * @param liveBoard the live board
 	 * @return true, if successful
 	 */
-	public boolean movePiecePoss(int from, int to, Board liveBoard){
+	public boolean movePiecePoss(int to, int from, Board liveBoard){
 
 		//FROM piece
-
-		//simply checking if its within the array bounds, -1 = bear
-		if(from>=0 && from<=25 && to<=26 && to>=-1){
+		if(withinArrayBounds(to, from)){
 
 			//checking there is at least 1 chip at the starting position and it is their chip
-			if( (liveBoard.Points[from].numEither()>0) && (liveBoard.Points[from].getCol()==black) ){
+			if(hasAPeiceAtStart(from, liveBoard)){
 
 				//checking its going the right direction
-				if((black && to<from)||(!black && to>from)){
+				if(movingInTheRightDirection(to, from)){
 
 					//making sure if you have a piece at 0 then you have to move that first
 					if(liveBoard.isthereZero(black)){
@@ -172,8 +170,7 @@ public class Player {
 
 					//TO piece, -1 or 26 = bear
 
-					//checking it is not moving in to the 0 spaces
-					if(to!=0 && to!=25 && to!=-1 && to!=26){
+					if(notMovingToZeroPeices(to, from)){
 
 						//looping through the moves Left array to check against what they have asked for
 						boolean validLength = false;
@@ -183,6 +180,7 @@ public class Player {
 								break;
 							}
 						}
+						
 						if(validLength){
 
 							//need to check the destination point has only 1 enemy chip or less or empty or one of yours
@@ -265,5 +263,46 @@ public class Player {
 		}else{
 			return (b-a);
 		}
+	}
+	
+	
+	/**
+	 * returns if its within set array bounds
+	 */
+	public boolean withinArrayBounds(int to, int from){
+		if(from>=0 && from<=25 && to<=26 && to>=-1){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * returns true if not moving to a zero space
+	 */
+	public boolean notMovingToZeroPeices(int to, int from){
+		if(to!=0 && to!=25 && to!=-1 && to!=26){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * returns true if start position has a piece on it  
+	 */
+	public boolean hasAPeiceAtStart(int from, Board liveBoard){
+		if((liveBoard.Points[from].numEither()>0) && (liveBoard.Points[from].getCol()==black)){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * returns true if the piece is moving in the right direction
+	 */
+	public boolean movingInTheRightDirection(int to, int from){
+		if((black && to<from)||(!black && to>from)){
+			return true;
+		}
+		return false;
 	}
 }
