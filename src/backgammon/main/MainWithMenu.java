@@ -1,7 +1,6 @@
 package backgammon.main;
 
 import backgammon.gui.*;
-import backgammon.settings.GameSettings;
 
 public class MainWithMenu {
 

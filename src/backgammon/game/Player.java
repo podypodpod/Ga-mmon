@@ -155,13 +155,10 @@ public class Player {
 		//FROM piece
 		if(withinArrayBounds(to, from)){
 
-			//checking there is at least 1 chip at the starting position and it is their chip
 			if(hasAPeiceAtStart(from, liveBoard)){
 
-				//checking its going the right direction
 				if(movingInTheRightDirection(to, from)){
 
-					//making sure if you have a piece at 0 then you have to move that first
 					if(liveBoard.isthereZero(black)){
 						if(notMovingTheZero(from)){
 							return false;
@@ -169,7 +166,6 @@ public class Player {
 					}
 
 					//TO piece, -1 or 26 = bear
-
 					if(notMovingToZeroPeices(to, from)){
 
 						//looping through the moves Left array to check against what they have asked for
@@ -182,12 +178,8 @@ public class Player {
 						}
 						
 						if(validLength){
-
-							//need to check the destination point has only 1 enemy chip or less or empty or one of yours
-							if((liveBoard.Points[to].getCol()==black) || (liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()<=1)){
-
+							if(validDestination(to, from, liveBoard)){
 								//DONE CHECKING
-								//possible to move the piece
 								return true;
 							}
 						}
@@ -307,6 +299,16 @@ public class Player {
 	 */
 	public boolean notMovingTheZero(int from){
 		if((black && from!=25)||(!black && from!=0)){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * returns true if destination isnt filled or no more than 1 chip
+	 */
+	public boolean validDestination(int to, int from, Board liveBoard){
+		if((liveBoard.Points[to].getCol()==black) || (liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()<=1)){
 			return true;
 		}
 		return false;

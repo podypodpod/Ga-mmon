@@ -1,7 +1,6 @@
 package backgammon.main;
 
 import backgammon.genes.StartGa;
-import backgammon.gui.*;
 
 public class MainNoMenu {
 
