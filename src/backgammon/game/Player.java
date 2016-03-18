@@ -163,7 +163,7 @@ public class Player {
 
 					//making sure if you have a piece at 0 then you have to move that first
 					if(liveBoard.isthereZero(black)){
-						if((black && from!=25)||(!black && from!=0)){
+						if(notMovingTheZero(from)){
 							return false;
 						}
 					}
@@ -251,11 +251,7 @@ public class Player {
 	}
 
 	/**
-	 * Distance between.
-	 *
-	 * @param a the first point
-	 * @param b the seccond point
-	 * @return the int
+	 * returns the distance between the two points
 	 */
 	public int distanceBetween(int a, int b){
 		if(a>b){
@@ -301,6 +297,16 @@ public class Player {
 	 */
 	public boolean movingInTheRightDirection(int to, int from){
 		if((black && to<from)||(!black && to>from)){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * returns true if they are not moving the zero piece which needs to be moved (only legal move)
+	 */
+	public boolean notMovingTheZero(int from){
+		if((black && from!=25)||(!black && from!=0)){
 			return true;
 		}
 		return false;
