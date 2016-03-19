@@ -26,7 +26,8 @@ import backgammon.settings.GameSettings;
  * 
  * Essentially the board state class
  * 
- * Holds all the data on the board, where all the peices are, if the player is in a position to move etc
+ * Holds all the data on the board, where all the peices are, if the player is
+ * in a position to move etc
  */
 public class Board {
 
@@ -34,11 +35,11 @@ public class Board {
 	public Point[] Points;
 	boolean isInitialMove = false;
 
-	public Board(){
+	public Board() {
 
 		Points = new Point[26];
 
-		for(int x = 0; x<Points.length;x++){
+		for (int x = 0; x < Points.length; x++) {
 			Points[x] = new Point();
 		}
 		setStartPosition();
@@ -47,93 +48,93 @@ public class Board {
 		blackBore = 0;
 	}
 
-	public Board(Board copy){
-		//26 new points
+	public Board(Board copy) {
+		// 26 new points
 		this.Points = new Point[26];
 
-		//coppying each one over in a loop
-		for(int i = 0; i<copy.Points.length; i++){
-			//copy
+		// coppying each one over in a loop
+		for (int i = 0; i < copy.Points.length; i++) {
+			// copy
 			Point x = new Point(copy.Points[i]);
-			//add
+			// add
 			this.Points[i] = x;
 		}
 
-		//copying bored
+		// copying bored
 		this.redBore = copy.redBore;
 		this.blackBore = copy.blackBore;
 	}
 
-
-	public void setStartPosition(){
-		//Resetting all to 0
-		for(int x =0; x<Points.length;x++){
+	public void setStartPosition() {
+		// Resetting all to 0
+		for (int x = 0; x < Points.length; x++) {
 			Points[x].setBlackCount(0);
 			Points[x].setRedCount(0);
 		}
-		//completing the starting position of the checkers, the rest left at 0
-		//Red Checkers
+		// completing the starting position of the checkers, the rest left at 0
+		// Red Checkers
 		Points[1].setRedCount(2);
 		Points[12].setRedCount(5);
 		Points[17].setRedCount(3);
 		Points[19].setRedCount(5);
-		//Black Checkers
+		// Black Checkers
 		Points[6].setBlackCount(5);
 		Points[8].setBlackCount(3);
 		Points[13].setBlackCount(5);
 		Points[24].setBlackCount(2);
 	}
 
-	public void printBoard(){
+	public void printBoard() {
 		System.out.println("|---------------------------------------|");
-		System.out.println("|  Black 0 = "+ Points[25].numEither()+"        |"+ "  Beared: "+blackBore+"     |");
+		System.out
+				.println("|  Black 0 = " + Points[25].numEither() + "        |" + "  Beared: " + blackBore + "     |");
 		System.out.println("|---------------------------------------|");
 		System.out.println("|NUM| 1| 2| 3| 4| 5| 6| 7| 8| 9|10|11|12|");
 		System.out.print("|RED");
-		for(int x = 1; x<=12;x++){
-			System.out.print("| "+Points[x].getRedCount());
+		for (int x = 1; x <= 12; x++) {
+			System.out.print("| " + Points[x].getRedCount());
 		}
 		System.out.println("|");
 		System.out.print("|BLK");
-		for(int x = 1; x<=12;x++){
-			System.out.print("| "+Points[x].getBlackCount());
+		for (int x = 1; x <= 12; x++) {
+			System.out.print("| " + Points[x].getBlackCount());
 		}
 		System.out.println("|");
 		System.out.println("|---------------------------------------|");
 		System.out.println("|NUM|13|14|15|16|17|18|19|20|21|22|23|24|");
 		System.out.print("|RED");
-		for(int x = 13; x<=24;x++){
-			System.out.print("| "+Points[x].getRedCount());
+		for (int x = 13; x <= 24; x++) {
+			System.out.print("| " + Points[x].getRedCount());
 		}
 		System.out.println("|");
 		System.out.print("|BLK");
-		for(int x = 13; x<=24;x++){
-			System.out.print("| "+Points[x].getBlackCount());
+		for (int x = 13; x <= 24; x++) {
+			System.out.print("| " + Points[x].getBlackCount());
 		}
 		System.out.println("|");
 		System.out.println("|---------------------------------------|");
-		System.out.println("|  Red 0 = "+ Points[0].numEither()+"          |"+ "  Beared: "+redBore+"     |");
+		System.out.println("|  Red 0 = " + Points[0].numEither() + "          |" + "  Beared: " + redBore + "     |");
 		System.out.println("|---------------------------------------|");
 	}
 
-	public void printBoardGUI(){
-		if(GameSettings.getDisplayGUI()){
+	public void printBoardGUI() {
+		if (GameSettings.getDisplayGUI()) {
 			GameManager.boardContainerFrame.bp.printCheckers(Points, redBore, blackBore);
 		}
 	}
 
-	public boolean isthereZero(boolean black){
+	public boolean isthereZero(boolean black) {
 
-		if(black){
-			if(Points[25].getBlackCount()>0){
+		if (black) {
+			if (Points[25].getBlackCount() > 0) {
 				return true;
-			}else{
+			} else {
 				return false;
 			}
-		}else{
-			if(Points[0].getRedCount()>0){
+		} else {
+			if (Points[0].getRedCount() > 0) {
 				return true;
-			}else{
+			} else {
 				return false;
 			}
 		}
@@ -144,27 +145,28 @@ public class Board {
 	 * 
 	 * checks the board positions etc to check if the player can legally bear
 	 *
-	 * @param black the player color
+	 * @param black
+	 *            the player color
 	 * @return true, if successful
 	 */
-	public boolean canPlayerBear(boolean black){
+	public boolean canPlayerBear(boolean black) {
 
-		//BLACK
-		if(black){
-			//looping all areas apart from the players own quarter
-			for(int x = 7; x<25;x++){
-				//if any of them contain a black piece
-				if(Points[x].getBlackCount()>0){
+		// BLACK
+		if (black) {
+			// looping all areas apart from the players own quarter
+			for (int x = 7; x < 25; x++) {
+				// if any of them contain a black piece
+				if (Points[x].getBlackCount() > 0) {
 					return false;
 				}
 			}
 
-			//RED
-		}else{
-			//looping all areas apart from the players own quarter
-			for(int x = 1; x<18;x++){
-				//if any of them contain a red piece
-				if(Points[x].getRedCount()>0){
+			// RED
+		} else {
+			// looping all areas apart from the players own quarter
+			for (int x = 1; x < 18; x++) {
+				// if any of them contain a red piece
+				if (Points[x].getRedCount() > 0) {
 					return false;
 				}
 			}
@@ -176,16 +178,17 @@ public class Board {
 	/**
 	 * Checks for player winning.
 	 *
-	 * @param black the player color
+	 * @param black
+	 *            the player color
 	 * @return true, if they have won
 	 */
 	public boolean hasPlayerWon(Boolean black) {
-		//checking if the bore pieces = 15
-		if((black && blackBore == 15)||(!black && redBore == 15)){
-			//won
+		// checking if the bore pieces = 15
+		if ((black && blackBore == 15) || (!black && redBore == 15)) {
+			// won
 			return true;
-		}else{
-			//not won yet
+		} else {
+			// not won yet
 			return false;
 		}
 	}
@@ -193,8 +196,10 @@ public class Board {
 	/**
 	 * Bear piece.
 	 *
-	 * @param bearPeice the position to bear
-	 * @param black the player color
+	 * @param bearPeice
+	 *            the position to bear
+	 * @param black
+	 *            the player color
 	 */
 	public void bearPiece(int bearPeice, boolean black) {
 
@@ -205,14 +210,14 @@ public class Board {
 	/**
 	 * Adds the to bear.
 	 *
-	 * @param black the player color
+	 * @param black
+	 *            the player color
 	 */
-	public void addToBear(boolean black){
+	public void addToBear(boolean black) {
 
-		if(black){
+		if (black) {
 			blackBore++;
-		}else
-		{
+		} else {
 			redBore++;
 		}
 	}
@@ -222,21 +227,22 @@ public class Board {
 	 * 
 	 * Board comparison, if they are the same (same peice positions)
 	 *
-	 * @param b the board
+	 * @param b
+	 *            the board
 	 * @return true, if they are the same
 	 */
-	public boolean equals(Board b){
+	public boolean equals(Board b) {
 
 		boolean theSame = true;
 
-		//checking beared points
-		if(this.redBore != b.redBore || this.blackBore != b.blackBore){
-			theSame=false;
+		// checking beared points
+		if (this.redBore != b.redBore || this.blackBore != b.blackBore) {
+			theSame = false;
 		}
 
-		//checking points
-		for(int x = 0; x<this.Points.length; x++){
-			if(!(this.Points[x].equals(b.Points[x]))){
+		// checking points
+		for (int x = 0; x < this.Points.length; x++) {
+			if (!(this.Points[x].equals(b.Points[x]))) {
 				theSame = false;
 			}
 		}
@@ -248,26 +254,29 @@ public class Board {
 	/**
 	 * How many has player bore.
 	 *
-	 * @param black the blackBore
+	 * @param black
+	 *            the blackBore
 	 * @return the num of bore
 	 */
-	public int howManyHasPlayerBore(boolean black){
-		if(black){
+	public int howManyHasPlayerBore(boolean black) {
+		if (black) {
 			return blackBore;
-		}else{
+		} else {
 			return redBore;
 		}
 	}
+
 	/**
 	 * getNumOfBlots
 	 * 
-	 * @param black - player color
+	 * @param black
+	 *            - player color
 	 * @return int - number of blots
 	 */
 	public int getNumOfBlots(boolean black) {
 		int num = 0;
-		for(int x = 0; x<Points.length;x++){
-			if(Points[x].numEither()==1 && Points[x].getCol()==black){
+		for (int x = 0; x < Points.length; x++) {
+			if (Points[x].numEither() == 1 && Points[x].getCol() == black) {
 				num++;
 			}
 		}
@@ -277,22 +286,23 @@ public class Board {
 	/**
 	 * getNumOfHomePointsCovered
 	 * 
-	 * @param black - player color
+	 * @param black
+	 *            - player color
 	 * @return int - num of points covered
 	 */
 	public int getNumOfHomePointsCovered(Boolean black) {
 		int num = 0;
-		//BLACK
-		if(black){
-			for(int x = 1; x<=6;x++){
-				if(Points[x].numEither()>0 && Points[x].getCol()==black){
+		// BLACK
+		if (black) {
+			for (int x = 1; x <= 6; x++) {
+				if (Points[x].numEither() > 0 && Points[x].getCol() == black) {
 					num++;
 				}
 			}
-			//RED
-		}else{
-			for(int x = 19; x<=24;x++){
-				if(Points[x].numEither()>0 && Points[x].getCol()==black){
+			// RED
+		} else {
+			for (int x = 19; x <= 24; x++) {
+				if (Points[x].numEither() > 0 && Points[x].getCol() == black) {
 					num++;
 				}
 			}
@@ -303,22 +313,23 @@ public class Board {
 	/**
 	 * getNumberOfPiecesSurroundOpponent
 	 * 
-	 * @param black player color
+	 * @param black
+	 *            player color
 	 * @return int - number of pieces
 	 */
 	public int getNumberOfPiecesSurroundOpponent(Boolean black) {
-		int num=0;
-		//loop points
-		for(int x = 0; x<Points.length;x++){
-			//if there is an oposition peice
-			if(Points[x].numEither()>0 && Points[x].getCol()!=black){
-				if(x<25 && x>0){
-					//checking one before that
-					if(Points[x-1].numEither()>0 &&Points[x-1].getCol()==black){
+		int num = 0;
+		// loop points
+		for (int x = 0; x < Points.length; x++) {
+			// if there is an oposition peice
+			if (Points[x].numEither() > 0 && Points[x].getCol() != black) {
+				if (x < 25 && x > 0) {
+					// checking one before that
+					if (Points[x - 1].numEither() > 0 && Points[x - 1].getCol() == black) {
 						num++;
 					}
-					//checking the point after it
-					if(Points[x+1].numEither()>0 &&Points[x+1].getCol()==black){
+					// checking the point after it
+					if (Points[x + 1].numEither() > 0 && Points[x + 1].getCol() == black) {
 						num++;
 					}
 				}
@@ -326,14 +337,16 @@ public class Board {
 		}
 		return num;
 	}
+
 	public int getNumberOfCheckersOnStacks(Boolean black) {
 		int num = 0;
 
-		//loop points
-		for(int x = 0; x<Points.length;x++){
-			//if the current point has more than 2 checkers (a stack) and is ours
-			if(Points[x].numEither()>2 && Points[x].getCol()==black){
-				//Add the count of the stack to the int
+		// loop points
+		for (int x = 0; x < Points.length; x++) {
+			// if the current point has more than 2 checkers (a stack) and is
+			// ours
+			if (Points[x].numEither() > 2 && Points[x].getCol() == black) {
+				// Add the count of the stack to the int
 				num += Points[x].numEither();
 			}
 		}

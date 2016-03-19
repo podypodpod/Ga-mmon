@@ -24,9 +24,11 @@ import java.util.Scanner;
 import backgammon.settings.GameSettings;
 
 /**
- * The Class Player. the base class for players and contains code that only covers human players.
+ * The Class Player. the base class for players and contains code that only
+ * covers human players.
  * 
- * two players will always be made, the AI will extend this to use AIPlayers though
+ * two players will always be made, the AI will extend this to use AIPlayers
+ * though
  * 
  * @author David Lomas - 11035527
  */
@@ -46,14 +48,15 @@ public class Player {
 	/**
 	 * Instantiates a new player.
 	 *
-	 * @param b the b
+	 * @param b
+	 *            the b
 	 */
-	public Player(boolean b){
+	public Player(boolean b) {
 
 		black = b;
 
 		movesLeft = new MovesLeft();
-		
+
 		dice = new DiceList();
 
 		die1 = new Die();
@@ -63,25 +66,28 @@ public class Player {
 	/**
 	 * The players turn.
 	 *
-	 * @param liveBoard the live board
+	 * @param liveBoard
+	 *            the live board
 	 */
-	public void turn(Board liveBoard){
+	public void turn(Board liveBoard) {
 
 		turnOver = false;
 
-		if(GameSettings.getDisplayConsole()){System.out.println("------------Your Turn!-----------------");}
+		if (GameSettings.getDisplayConsole()) {
+			System.out.println("------------Your Turn!-----------------");
+		}
 
-		//Rolling the dice
+		// Rolling the dice
 		movesLeft.setTo(dice.RollDice());
-		
-		System.out.println("Player has : "+movesLeft.toString());
-		
-		//ASKING WHAT TO DO
-		while(!turnOver){
 
-			if(GameSettings.getDisplayConsole()){
-				System.out.println("What do you want to do?, "+movesLeft.size()+" moves left");
-	
+		System.out.println("Player has : " + movesLeft.toString());
+
+		// ASKING WHAT TO DO
+		while (!turnOver) {
+
+			if (GameSettings.getDisplayConsole()) {
+				System.out.println("What do you want to do?, " + movesLeft.size() + " moves left");
+
 				System.out.println("1) Move a piece");
 				System.out.println("2) Bear off a piece");
 				System.out.println("3) Skip or Finish go");
@@ -93,150 +99,144 @@ public class Player {
 
 			int option = Scanner.nextInt();
 
-			//MOVE A piece
-			if(option == 1){
+			// MOVE A piece
+			if (option == 1) {
 				System.out.println("from which point (1,2,3 etc): ");
 				int from = Scanner.nextInt();
 				System.out.println("to which point (1,2,3,bear=-1 etc)");
 				int to = Scanner.nextInt();
 
-				//IF ITS POSSIBLE
-				if(movePiecePoss(from, to, liveBoard)){
-					//MOVE THE PIECE
+				// IF ITS POSSIBLE
+				if (candidateMovePossible(from, to, liveBoard)) {
+					// MOVE THE PIECE
 					movePiece(from, to, liveBoard);
-					//REMOVE THE "MOVE"
+					// REMOVE THE "MOVE"
 					movesLeft.remove(Integer.valueOf((distanceBetween(from, to))));
 
-					if(movesLeft.size()==0){
+					if (movesLeft.size() == 0) {
 						turnOver = true;
 					}
-				}else{
+				} else {
 					System.out.println("invalid move");
 				}
-				//SKIP GO
-			}else if(option == 2){
-				if(liveBoard.canPlayerBear(this.black)){
+				// SKIP GO
+			} else if (option == 2) {
+				if (liveBoard.canPlayerBear(this.black)) {
 
-					//CHECK ITS A VALID MOVE/LENGTH
+					// CHECK ITS A VALID MOVE/LENGTH
 
 					System.out.println("Bear which piece?");
 
 					int bearPeice = Scanner.nextInt();
-					if(movePiecePoss(bearPeice, -1, liveBoard)){
+					if (candidateMovePossible(bearPeice, -1, liveBoard)) {
 						liveBoard.bearPiece(bearPeice, this.black);
 					}
-				}else{
+				} else {
 					System.out.println("Can not bear pieces yet");
 				}
-			}else if(option == 3){
+			} else if (option == 3) {
 				turnOver = true;
-				//CONCEEDING
-			}else if(option == 4){
+				// CONCEEDING
+			} else if (option == 4) {
 				turnOver = true;
 
 			}
 		}
 	}
 
-
-
 	/**
-	 * Move piece possible.
-	 * 
-	 * Whether the move is possible, doesn't actually move anything
-	 *
-	 * @param from point
-	 * @param to destination
-	 * @param liveBoard the live board
-	 * @return true, if successful
+	 * Returns true if the move suggested is a legal move
 	 */
-	public boolean movePiecePoss(int to, int from, Board liveBoard){
+	public boolean candidateMovePossible(int from, int to, Board liveBoard) {
 
-		//FROM piece
-		if(withinArrayBounds(to, from)){
+		if (!passesBasicChecks(to, from, liveBoard)) {
+			return false;
+		}
 
-			if(hasAPeiceAtStart(from, liveBoard)){
+		// TO piece, -1 or 26 = bear
+		if (!movingToZeroPeices(to, from)) {
 
-				if(movingInTheRightDirection(to, from)){
-
-					if(liveBoard.isthereZero(black)){
-						if(notMovingTheZero(from)){
-							return false;
-						}
-					}
-
-					//TO piece, -1 or 26 = bear
-					if(notMovingToZeroPeices(to, from)){
-
-						//looping through the moves Left array to check against what they have asked for
-						boolean validLength = false;
-						for(int x: movesLeft.movesLeft){
-							if( x == distanceBetween(from,to)){
-								validLength = true;
-								break;
-							}
-						}
-						
-						if(validLength){
-							if(validDestination(to, from, liveBoard)){
-								//DONE CHECKING
-								return true;
-							}
-						}
-					//BEARING, if the player can bear (bearing is counted as point -1 or 26)
-					}else if(((to==-1 || to==26) && liveBoard.canPlayerBear((liveBoard.Points[from].getCol())))){
-				
-						int y;
-						if(to==-1)
-						{y=1;}
-						else{y=-1;}
-						
-						//looping through the moves Left array to check against what they have asked for
-						for(int x: movesLeft.movesLeft){
-							if( x >= distanceBetween(from,(to+y))){
-								return true;
-							}
-						}
-					}
+			// looping through the moves Left array to check against
+			// what they have asked for
+			boolean validLength = false;
+			for (int x : movesLeft.movesLeft) {
+				if (x == distanceBetween(from, to)) {
+					validLength = true;
+					break;
 				}
 			}
-		}
-		//else the move is not possible
-		return false;
 
+			if (validLength) {
+				if (validDestination(to, from, liveBoard)) {
+					// DONE CHECKING
+					return true;
+				}
+			}
+
+			// BEARING, bearing is counted as point -1 or 26
+		} else if (tryingAndCanBear(to, from, liveBoard)) {
+
+			if (theyHaveThatMoveLeft(to, from)) {
+				return true;
+			}
+		}
+		// move is not possible
+		return false;
+	}
+
+	/**
+	 * returns true if it passes basic checks of backgammon rules
+	 */
+	public boolean passesBasicChecks(int to, int from, Board liveBoard) {
+
+		// FROM piece
+		if (!withinArrayBounds(to, from)) {
+			return false;
+		}
+
+		if (!hasAPeiceAtStart(from, liveBoard)) {
+			return false;
+		}
+
+		if (!movingInTheRightDirection(to, from)) {
+			return false;
+		}
+
+		if (liveBoard.isthereZero(black)) {
+			if (notMovingTheZero(from)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
 	 * Move piece.
-	 *
-	 * @param from the from
-	 * @param to the to
-	 * @param liveBoard the live board
 	 */
-	public void movePiece(int from, int to, Board liveBoard){
+	public void movePiece(int from, int to, Board liveBoard) {
 
-		//if there is an opposing piece there
-		if(to!=-1 && to!=26){
-			if(liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()==1){
+		// if there is an opposing piece there
+		if (to != -1 && to != 26) {
+			if (liveBoard.Points[to].getCol() != black && liveBoard.Points[to].numEither() == 1) {
 
 				liveBoard.Points[from].removePiece(black);
 				liveBoard.Points[to].removePiece(!black);
 				liveBoard.Points[to].addPiece(black);
 
-				if(black){
+				if (black) {
 					liveBoard.Points[0].addRedPiece();
-				}else{
+				} else {
 					liveBoard.Points[25].addBlackPiece();
 				}
 
-				//if its empty
-			}else{
+				// if its empty
+			} else {
 
 				liveBoard.Points[from].removePiece(black);
 				liveBoard.Points[to].addPiece(black);
 			}
-		//BEARING THE PEICE OFF
-		}else if(to==-1 || to==26){
+			// BEARING THE PEICE OFF
+		} else if (to == -1 || to == 26) {
 			liveBoard.Points[from].removePiece(black);
 			liveBoard.addToBear(black);
 		}
@@ -245,71 +245,105 @@ public class Player {
 	/**
 	 * returns the distance between the two points
 	 */
-	public int distanceBetween(int a, int b){
-		if(a>b){
-			return (a-b);
-		}else{
-			return (b-a);
+	public int distanceBetween(int a, int b) {
+		if (a > b) {
+			return (a - b);
+		} else {
+			return (b - a);
 		}
 	}
-	
-	
+
 	/**
 	 * returns if its within set array bounds
 	 */
-	public boolean withinArrayBounds(int to, int from){
-		if(from>=0 && from<=25 && to<=26 && to>=-1){
+	public boolean withinArrayBounds(int to, int from) {
+		if (from >= 0 && from <= 25 && to <= 26 && to >= -1) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * returns true if not moving to a zero space
 	 */
-	public boolean notMovingToZeroPeices(int to, int from){
-		if(to!=0 && to!=25 && to!=-1 && to!=26){
-			return true;
+	public boolean movingToZeroPeices(int to, int from) {
+		if (to != 0 && to != 25 && to != -1 && to != 26) {
+			return false;
 		}
-		return false;
+		return true;
 	}
-	
+
 	/**
-	 * returns true if start position has a piece on it  
+	 * returns true if start position has a piece on it
 	 */
-	public boolean hasAPeiceAtStart(int from, Board liveBoard){
-		if((liveBoard.Points[from].numEither()>0) && (liveBoard.Points[from].getCol()==black)){
+	public boolean hasAPeiceAtStart(int from, Board liveBoard) {
+		if ((liveBoard.Points[from].numEither() > 0) && (liveBoard.Points[from].getCol() == black)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * returns true if the piece is moving in the right direction
 	 */
-	public boolean movingInTheRightDirection(int to, int from){
-		if((black && to<from)||(!black && to>from)){
+	public boolean movingInTheRightDirection(int to, int from) {
+		if ((black && to < from) || (!black && to > from)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
-	 * returns true if they are not moving the zero piece which needs to be moved (only legal move)
+	 * returns true if they are not moving the zero piece which needs to be
+	 * moved (only legal move)
 	 */
-	public boolean notMovingTheZero(int from){
-		if((black && from!=25)||(!black && from!=0)){
+	public boolean notMovingTheZero(int from) {
+		if ((black && from != 25) || (!black && from != 0)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * returns true if destination isnt filled or no more than 1 chip
 	 */
-	public boolean validDestination(int to, int from, Board liveBoard){
-		if((liveBoard.Points[to].getCol()==black) || (liveBoard.Points[to].getCol()!=black && liveBoard.Points[to].numEither()<=1)){
+	public boolean validDestination(int to, int from, Board liveBoard) {
+		if ((liveBoard.Points[to].getCol() == black)
+				|| (liveBoard.Points[to].getCol() != black && liveBoard.Points[to].numEither() <= 1)) {
 			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * returns true if the player is trying to bear and he can bear at this time
+	 */
+	public boolean tryingAndCanBear(int to, int from, Board liveBoard) {
+		if (((to == -1 || to == 26) && liveBoard.canPlayerBear((liveBoard.Points[from].getCol())))) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * returns true if the distance between the two points matches the moves
+	 * left they have
+	 */
+	public boolean theyHaveThatMoveLeft(int to, int from) {
+		int y;
+
+		if (to == -1) {
+			y = 1;
+		} else {
+			y = -1;
+		}
+
+		// looping through the moves Left array to check against what they have
+		// asked for
+		for (int x : movesLeft.movesLeft) {
+			if (x >= distanceBetween(from, (to + y))) {
+				return true;
+			}
 		}
 		return false;
 	}

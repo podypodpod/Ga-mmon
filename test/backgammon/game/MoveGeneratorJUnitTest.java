@@ -19,72 +19,66 @@
 
 package backgammon.game;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import backgammon.game.AIPlayer;
-import backgammon.game.Board;
-import backgammon.game.MoveGenerator;
-
 public class MoveGeneratorJUnitTest {
-	
+
 	Board theBoard;
 	AIPlayer p1, p2;
 	MoveGenerator mg;
-	
+
 	@Before
 	public void setUp() throws Exception {
 
 		theBoard = new Board();
-		
+
 		p1 = new AIPlayer(true, null);
 		p2 = new AIPlayer(false, null);
-		
+
 		mg = new MoveGenerator(null);
-		
-		
 	}
-	
-	
+
 	@Test
 	public void testGenMoveActuallyGeneratesBoardsBlack() {
-		//Given
+		// Given
 		theBoard.setStartPosition();
 		p1.movesLeft.add(3);
 		p1.movesLeft.add(5);
-		
-		//When
+
+		// When
 		mg.generateMoves(theBoard, p1);
-		
-		//Then
+
+		// Then
 		assertTrue(mg.boardList.hasContents());
 	}
-	
+
 	@Test
 	public void testGenMoveActuallyGeneratesBoardsRed() {
-		//Given
+		// Given
 		theBoard.setStartPosition();
 		p2.movesLeft.add(1);
-		
-		//When
+
+		// When
 		mg.generateMoves(theBoard, p2);
-		
-		//Then
+
+		// Then
 		assertTrue(mg.boardList.hasContents());
 	}
-	
+
 	@Test
 	public void testMoveGenWithNoMoves() {
-		//Given
+		// Given
 		theBoard.setStartPosition();
 		p2.movesLeft.clear();
-		
-		//When
+
+		// When
 		mg.generateMoves(theBoard, p2);
-		
-		//Then
+
+		// Then
 		assertFalse(mg.boardList.hasContents());
 	}
 }
