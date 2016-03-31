@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,15 +34,25 @@ public class PlayerJUnitTest {
 
 	@Before
 	public void setUp() throws Exception {
-
 		p1 = new Player(false);
 		p2 = new Player(true);
-
 		b1 = new Board();
 	}
 
 	@Test
-	public void shouldReturnTheDifferenceBetweenThe2NumbersaGTb() {
+	public void shouldPassBasicChecks_passesBasicChecks() {
+		// given
+		int to = 3;
+		int from = 1;
+		b1.setStartPosition();
+		p1.movesLeft.add(2);
+
+		// then
+		Assert.assertTrue(p1.passesBasicChecks(to, from, b1));
+	}
+
+	@Test
+	public void shouldReturnTheDifferenceBetweenThe2NumbersAgtB_distanceBetween() {
 
 		// Given
 		int a = 4;
@@ -52,11 +63,10 @@ public class PlayerJUnitTest {
 
 		// Then
 		assertEquals(6, c);
-
 	}
 
 	@Test
-	public void shouldReturnTheDifferenceBetweenThe2NumbersbGTa() {
+	public void shouldReturnTheDifferenceBetweenThe2NumbersBgtA_distanceBetween() {
 
 		// Given
 		int a = 23;
@@ -67,11 +77,10 @@ public class PlayerJUnitTest {
 
 		// Then
 		assertEquals(18, c);
-
 	}
 
 	@Test
-	public void ShouldReturnTrueWhenIInputACorrectMoveASingleDiceRoll() {
+	public void shouldReturnTrueWhenIInputACorrectMoveASingleDiceRoll_distanceBetween() {
 
 		// Given
 		p1.movesLeft.add(1);
@@ -81,35 +90,11 @@ public class PlayerJUnitTest {
 		// Then
 
 		assertTrue(p1.candidateMovePossible(1, 3, b1));
-	}
-
-	/*
-	 * TODO: Should Return True When I Input A Correct Move Using Both Dice
-	 * Rolls, does not
-	 * 
-	 * In theory the game should let you do this, but at the moment it does not
-	 * if I have time adjust this
-	 * 
-	 * but not a big deal as technically it is 2 moves anyway, just done in one
-	 * click normally
-	 * 
-	 * and when using an AI player it will auto do this, when using manual
-	 * players it will be 2 moves anyway so really this will never be used
-	 */
-	@Test
-	public void ShouldReturnTrueWhenIInputACorrectMoveUsingBothDiceRolls() {
-		// Given
-		p1.movesLeft.add(1);
-		p1.movesLeft.add(2);
-
-		// When
-		// Then
-
-		assertTrue(p1.candidateMovePossible(1, 4, b1));
+		assertTrue(p1.candidateMovePossible(1, 2, b1));
 	}
 
 	@Test
-	public void testingMovePeiceFromDefaultBoardMovingToEmptySpace() {
+	public void fromDefaultBoardMovingToEmptySpace_movePiece() {
 
 		// Given
 		b1.setStartPosition();
@@ -118,13 +103,11 @@ public class PlayerJUnitTest {
 		p1.movePiece(1, 2, b1);
 
 		// Then
-
 		assertEquals(1, b1.Points[2].getRedCount());
-
 	}
 
 	@Test
-	public void testingMovePeiceFromBoardToANonEmptySpaceTakingBlack() {
+	public void fromBoardToANonEmptySpaceTakingBlack_movePiece() {
 
 		// Given
 		b1.setStartPosition();
@@ -137,11 +120,10 @@ public class PlayerJUnitTest {
 
 		assertEquals(1, b1.Points[2].getRedCount());
 		assertEquals(1, b1.Points[25].getBlackCount());
-
 	}
 
 	@Test
-	public void testingMovePeiceFromBoardToANonEmptySpaceTakingRed() {
+	public void fromBoardToANonEmptySpaceTakingRed_movePiece() {
 
 		// Given
 		b1.setStartPosition();
@@ -158,7 +140,7 @@ public class PlayerJUnitTest {
 	}
 
 	@Test
-	public void testingMovePeiceFromRed0PeiceBackOnBoard() {
+	public void fromRed0PeiceBackOnBoard_movePiece() {
 
 		// Given
 		b1.setStartPosition();
@@ -174,7 +156,7 @@ public class PlayerJUnitTest {
 	}
 
 	@Test
-	public void testingMovePeiceOnBoardWhenThereIsAZeroIIgnore() {
+	public void onBoardWhenThereIsAZeroIIgnore_movePiece() {
 
 		// Given
 		b1.setStartPosition();
@@ -190,13 +172,14 @@ public class PlayerJUnitTest {
 	}
 
 	@Test
-	public void testingMovePeicPossOnBoardWhenTakingAPeice() {
+	public void boardWhenTakingAPeice_candidateMovePossible() {
 
 		// p2 is black
 
 		// Given
 		b1.setStartPosition();
-		// leaving a peice on its own
+
+		// leaving a red peice on its own
 		p1.movePiece(12, 11, b1);
 
 		p2.movesLeft.movesLeft.add(2);
@@ -208,7 +191,28 @@ public class PlayerJUnitTest {
 		assertTrue(possible);
 	}
 
-	public void testingMovePeicPossonBoardWhenTakingAPeiceButWithAZero() {
+	@Test
+	public void onBoardWhenTakingAPeiceWithTwoOpponentsOn_candidateMovePossible() {
+
+		// p2 is black
+
+		// Given
+		b1.setStartPosition();
+
+		// putting 2 red peices on their own
+		p1.movePiece(12, 11, b1);
+		p1.movePiece(12, 11, b1);
+
+		p2.movesLeft.movesLeft.add(2);
+
+		// When
+		boolean possible = p2.candidateMovePossible(13, 11, b1);
+
+		// Then
+		assertFalse(possible);
+	}
+
+	public void onBoardWhenTakingAPeiceButWithAZero_candidateMovePossible() {
 
 		// p2 is black
 
@@ -227,23 +231,4 @@ public class PlayerJUnitTest {
 		assertFalse(possible);
 	}
 
-	@Test
-	public void testingMovePeicPossonBoardWhenTakingAPeiceThatHasMultple() {
-
-		// p2 is black
-
-		// Given
-		b1.setStartPosition();
-
-		p1.movePiece(12, 11, b1);
-		p1.movePiece(12, 11, b1);
-
-		p2.movesLeft.movesLeft.add(2);
-
-		// When
-		boolean possible = p2.candidateMovePossible(13, 11, b1);
-
-		// Then
-		assertFalse(possible);
-	}
 }
