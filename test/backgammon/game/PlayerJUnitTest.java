@@ -40,12 +40,86 @@ public class PlayerJUnitTest {
 	}
 
 	@Test
-	public void shouldPassBasicChecks_passesBasicChecks() {
+	public void shouldPass_passesBasicChecks() {
 		// given
 		int to = 3;
 		int from = 1;
 		b1.setStartPosition();
 		p1.movesLeft.add(2);
+
+		// then
+		Assert.assertTrue(p1.passesBasicChecks(to, from, b1));
+	}
+
+	@Test
+	public void outOfArrayBoundsTo_shouldFail_passesBasicChecks() {
+		// given
+		int to = 27;
+		int from = 1;
+		b1.setStartPosition();
+		p1.movesLeft.add(2);
+
+		// then
+		Assert.assertFalse(p1.passesBasicChecks(to, from, b1));
+	}
+
+	@Test
+	public void outOfArrayBoundsFrom_shouldFail_passesBasicChecks() {
+		// given
+		int to = 3;
+		int from = -5;
+		b1.setStartPosition();
+		p1.movesLeft.add(2);
+
+		// then
+		Assert.assertFalse(p1.passesBasicChecks(to, from, b1));
+	}
+
+	@Test
+	public void doesntHavePeiceAtStart_shouldFail_passesBasicChecks() {
+		// given
+		int to = 7;
+		int from = 5;
+		b1.setStartPosition();
+		p1.movesLeft.add(2);
+
+		// then
+		Assert.assertFalse(p1.passesBasicChecks(to, from, b1));
+	}
+
+	@Test
+	public void movingWrongDirection_shouldFail_passesBasicChecks() {
+		// given
+		int to = 10;
+		int from = 12;
+		b1.setStartPosition();
+		p1.movesLeft.add(2);
+
+		// then
+		Assert.assertFalse(p1.passesBasicChecks(to, from, b1));
+	}
+
+	@Test
+	public void thereIsZero_shouldFail_passesBasicChecks() {
+		// given
+		int to = 3;
+		int from = 1;
+		b1.setStartPosition();
+		p1.movesLeft.add(2);
+		b1.Points[0].addRedPiece();
+
+		// then
+		Assert.assertFalse(p1.passesBasicChecks(to, from, b1));
+	}
+
+	@Test
+	public void thereIsZeroOnOtherPlayer_shouldPass_passesBasicChecks() {
+		// given
+		int to = 3;
+		int from = 1;
+		b1.setStartPosition();
+		p1.movesLeft.add(2);
+		b1.Points[25].addBlackPiece();
 
 		// then
 		Assert.assertTrue(p1.passesBasicChecks(to, from, b1));
