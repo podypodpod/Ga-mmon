@@ -25,15 +25,15 @@ import backgammon.settings.GameSettings;
 /**
  * The Class AIPlayer.
  * 
- * extends the Player class and implements methods to allow the AI to choose the next move
+ * extends the Player class and implements methods to allow the AI to choose the
+ * next move
  * 
  * @author David Lomas - 11035527
  */
-public class AIPlayer extends Player{
+public class AIPlayer extends Player {
 
 	MoveGenerator moveGen;
 	private Individual individual;
-
 
 	public AIPlayer(boolean b, Individual indiv) {
 		super(b);
@@ -41,8 +41,7 @@ public class AIPlayer extends Player{
 		moveGen = new MoveGenerator(individual);
 	}
 
-
-	public Individual getIndividual(){
+	public Individual getIndividual() {
 		return individual;
 	}
 
@@ -57,18 +56,22 @@ public class AIPlayer extends Player{
 		this.moveGen = p.moveGen;
 	}
 
-	public Board AIturn(Board currentBoard){
+	public Board AIturn(Board currentBoard) {
 
-		if(GameSettings.getDisplayConsole()){System.out.println("------------AI's Turn!-----------------");}
+		if (GameSettings.getDisplayConsole()) {
+			System.out.println("------------AI's Turn!-----------------");
+		}
 
 		movesLeft = new MovesLeft();
 		movesLeft.setTo(dice.RollDice());
-		if(GameSettings.getDisplayConsole()){System.out.println("Player has : "+movesLeft.toString());}
+		if (GameSettings.getDisplayConsole()) {
+			System.out.println("Player has : " + movesLeft.toString());
+		}
 
 		Board newBoard = moveGen.getNextMoveBoard(currentBoard, this);
 
-		//if the board has not changed
-		if(newBoard == null){
+		// if the board has not changed
+		if (newBoard == null) {
 			newBoard = currentBoard;
 		}
 

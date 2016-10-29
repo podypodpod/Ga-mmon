@@ -24,17 +24,18 @@ import backgammon.genes.Individual;
 /**
  * GameStats
  * 
- * The game stats class is returned after a finished game and supplies the winning player as well as a score for the game.
+ * The game stats class is returned after a finished game and supplies the
+ * winning player as well as a score for the game.
  * 
  * @author David Lomas - 11035527
  */
 public class GameStats {
-	
+
 	Individual gameVictor = null;
-	
+
 	double playerOneScore = 0;
 	double playerTwoScore = 0;
-	
+
 	/**
 	 * GameStats default constructor
 	 * 
@@ -42,7 +43,7 @@ public class GameStats {
 	 * @param p1score
 	 * @param p2score
 	 */
-	public GameStats(Individual winner, double p1score, double p2score){
+	public GameStats(Individual winner, double p1score, double p2score) {
 		gameVictor = winner;
 		playerOneScore = p1score;
 		playerOneScore = p2score;
@@ -56,13 +57,13 @@ public class GameStats {
 	public Individual getVictor() {
 		return gameVictor;
 	}
-	
+
 	/**
 	 * getPlayerOneScore
 	 * 
 	 * @return individual
 	 */
-	public double getPlayerOneScore(){
+	public double getPlayerOneScore() {
 		return playerOneScore;
 	}
 }

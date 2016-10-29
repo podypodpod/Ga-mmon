@@ -29,15 +29,17 @@ import backgammon.settings.GameSettings;
  * 
  * Contains the game loop and creates a new board, players etc
  * 
- * This class just needs two Individuals passed in to it to play a game, if null the player will pick random moves
+ * This class just needs two Individuals passed in to it to play a game, if null
+ * the player will pick random moves
  * 
- * To get a human player, in the backgammon.settings package change the gameSettings class, areBothAIs = false
+ * To get a human player, in the backgammon.settings package change the
+ * gameSettings class, areBothAIs = false
  * 
  * @author David Lomas - 11035527
  */
-public class Game implements Runnable{
+public class Game implements Runnable {
 
-	/**  The Players created. */
+	/** The Players created. */
 	AIPlayer Player1, Player2;
 
 	/** The board. */
@@ -59,65 +61,66 @@ public class Game implements Runnable{
 
 	/** The is p1 black. */
 	private boolean isP1Black = GameSettings.isP1Black();
-	
+
 	/** The are both a is. */
 	private boolean areBothAIs = GameSettings.getAreBothAI();
-	
+
 	/** The time delay. */
 	private int timeDelay = GameSettings.getTimeDelay();
-	
+
 	private boolean displayConsole = GameSettings.getDisplayConsole();
 
-	/**  initial rolls. */
+	/** initial rolls. */
 	private int p1Roll = 0, p2Roll = 0;
 
 	/** The individuals. */
 	private Individual indiv1, indiv2;
-	
+
 	/** The individual who won. */
 	private Individual gameVictor = null;
-	
-	
+
 	/**
 	 * Instantiates a new game.
 	 *
-	 * @param i1 the i1
-	 * @param i2 the i2
+	 * @param i1
+	 *            the i1
+	 * @param i2
+	 *            the i2
 	 */
-	public Game(Individual i1, Individual i2){
+	public Game(Individual i1, Individual i2) {
 
 		liveBoard = new Board();
 		liveBoard.printBoardGUI();
 
-		//game active
+		// game active
 		setGameActive(true);
-		
+
 		setIndiv1(i1);
 		setIndiv2(i2);
-		
+
 		Player1 = new AIPlayer(isP1Black, getIndiv1());
 		Player2 = new AIPlayer(!isP1Black, getIndiv2());
 	}
-	
+
 	/**
 	 * Initial roll.
 	 * 
-	 * Keeps rolling the dice until both players have a different score and therefore a winner
+	 * Keeps rolling the dice until both players have a different score and
+	 * therefore a winner
 	 * 
 	 */
-	public void initialRoll(){
+	public void initialRoll() {
 
 		p1Roll = Player1.die1.RollDie();
 		p2Roll = Player2.die1.RollDie();
 
-		if(p1Roll==p2Roll){
+		if (p1Roll == p2Roll) {
 			initialRoll();
 		}
-		
+
 		liveBoard.isInitialMove = true;
 	}
-	
-	
+
 	/**
 	 * Run method
 	 * 
@@ -125,128 +128,151 @@ public class Game implements Runnable{
 	 */
 	@Override
 	public void run() {
-		
-		//Printing game info out to console
-		if(displayConsole){
+
+		// Printing game info out to console
+		if (displayConsole) {
 			System.out.print("Welcome! New game with two players");
-			
-			if(!areBothAIs){
+
+			if (!areBothAIs) {
 				System.out.println("You are Player 2");
 			}
-			
-			if(isP1Black){
+
+			if (isP1Black) {
 				System.out.println("Player 1 is BLACK, Player 2 is RED");
-			}else{
+			} else {
 				System.out.println("Player 1 is RED, Player 2 is BLACK");
 			}
 			System.out.println("Initial dice throw commencing..");
 		}
-		
-		
-		//initial roll method, decides who moves first
+
+		// initial roll method, decides who moves first
 		initialRoll();
 
-		if(displayConsole){System.out.println("Player 1 rolls: "+p1Roll+"     Player 2: "+p2Roll);}
-		//if player 1 has won
-		if(p1Roll>p2Roll){
-			if(displayConsole){System.out.println("Player 1(Black="+Player1.black+") Has won the roll");}
+		if (displayConsole) {
+			System.out.println("Player 1 rolls: " + p1Roll + "     Player 2: " + p2Roll);
+		}
+		// if player 1 has won
+		if (p1Roll > p2Roll) {
+			if (displayConsole) {
+				System.out.println("Player 1(Black=" + Player1.black + ") Has won the roll");
+			}
 			p1sTurn = true;
-		//if player 2 has won
-		}else{
-			if(displayConsole){System.out.println("Player 2(Black="+Player2.black+") Has won the roll");}
+			// if player 2 has won
+		} else {
+			if (displayConsole) {
+				System.out.println("Player 2(Black=" + Player2.black + ") Has won the roll");
+			}
 			p1sTurn = false;
 		}
-		
-		//The Game Loop, while boolean gameActive is true, keep going
-		while(isGameActive()){
-			
-			//Player1's Turn if the game is still active and it is now their turn
-			if(p1sTurn && isGameActive()){
-				
-				//creating the new board with the chosen moves etc
+
+		// The Game Loop, while boolean gameActive is true, keep going
+		while (isGameActive()) {
+
+			// Player1's Turn if the game is still active and it is now their
+			// turn
+			if (p1sTurn && isGameActive()) {
+
+				// creating the new board with the chosen moves etc
 				liveBoard = new Board(Player1.AIturn(liveBoard));
-				
-				//displaying new board
-				if(GameSettings.getDisplayGUI()){liveBoard.printBoardGUI();}
-								
-				//checking if the player has won yet
-				//if they have won, then set the gameActive to false and display the message
-				if(liveBoard.hasPlayerWon(Player1.black)){
+
+				// displaying new board
+				if (GameSettings.getDisplayGUI()) {
+					liveBoard.printBoardGUI();
+				}
+
+				// checking if the player has won yet
+				// if they have won, then set the gameActive to false and
+				// display the message
+				if (liveBoard.hasPlayerWon(Player1.black)) {
 					setGameActive(false);
 
-					if(displayConsole){System.out.println("Player 1 has won! (Black="+Player1.black+")");}
-					
-					gameOver();
-					
-				//if they haven't won then continue
-				}else{
+					if (displayConsole) {
+						System.out.println("Player 1 has won! (Black=" + Player1.black + ")");
+					}
 
-					if(GameSettings.getDisplayGUI()){
-						//just to slow the visual process down, needed if both are AI
+					gameOver();
+
+					// if they haven't won then continue
+				} else {
+
+					if (GameSettings.getDisplayGUI()) {
+						// just to slow the visual process down, needed if both
+						// are AI
 						try {
 							Thread.sleep(timeDelay);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
 					}
-					
-					//if the player has not won the game, change boolean to allow the other player to take his turn
+
+					// if the player has not won the game, change boolean to
+					// allow the other player to take his turn
 					p1sTurn = false;
 				}
 
-			//Player2's Turn (could also be an AI)
-			}else if(!p1sTurn && isGameActive()){
-				
-				//if you have selected them both to be AI's
-				if(areBothAIs){
-					
-					//get the new board with the selected moves in
+				// Player2's Turn (could also be an AI)
+			} else if (!p1sTurn && isGameActive()) {
+
+				// if you have selected them both to be AI's
+				if (areBothAIs) {
+
+					// get the new board with the selected moves in
 					liveBoard = new Board(Player2.AIturn(liveBoard));
-					
-					//displaying new board
-					if(GameSettings.getDisplayGUI()){liveBoard.printBoardGUI();}
-					
-					//checking if the player has now won, if they have then gaveActive is now false and they are told they have won
-					if(liveBoard.hasPlayerWon(Player2.black)){
-						
+
+					// displaying new board
+					if (GameSettings.getDisplayGUI()) {
+						liveBoard.printBoardGUI();
+					}
+
+					// checking if the player has now won, if they have then
+					// gaveActive is now false and they are told they have won
+					if (liveBoard.hasPlayerWon(Player2.black)) {
+
 						setGameActive(false);
 
-						if(displayConsole){System.out.println("Player 2 has won! (Black="+Player2.black+")");}
-						
-						gameOver();
-						
-					//if not, let the game loop contine
-					}else{
+						if (displayConsole) {
+							System.out.println("Player 2 has won! (Black=" + Player2.black + ")");
+						}
 
-						if(GameSettings.getDisplayGUI()){
-							//just to slow the visual process down, needed if both are AI
+						gameOver();
+
+						// if not, let the game loop contine
+					} else {
+
+						if (GameSettings.getDisplayGUI()) {
+							// just to slow the visual process down, needed if
+							// both are AI
 							try {
 								Thread.sleep(timeDelay);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
 						}
-						
-						//if the player has not won the game, change boolean to allow the other player to take his turn
+
+						// if the player has not won the game, change boolean to
+						// allow the other player to take his turn
 						p1sTurn = true;
 					}
-					
-				//Option for the human player
-				}else{
-					
-					//Running the turn method, waits for user input on selected move
+
+					// Option for the human player
+				} else {
+
+					// Running the turn method, waits for user input on selected
+					// move
 					Player2.turn(liveBoard);
-					
-					//displaying new board
-					if(GameSettings.getDisplayGUI()){liveBoard.printBoardGUI();}
-					
-					//checking if the player has now won
-					//gameActive is false if they have, and they are informed
-					if(liveBoard.hasPlayerWon(Player2.black)){
+
+					// displaying new board
+					if (GameSettings.getDisplayGUI()) {
+						liveBoard.printBoardGUI();
+					}
+
+					// checking if the player has now won
+					// gameActive is false if they have, and they are informed
+					if (liveBoard.hasPlayerWon(Player2.black)) {
 						setGameActive(false);
-						JOptionPane.showMessageDialog(null, "Player 2 has won! (Black="+Player2.black+")");
+						JOptionPane.showMessageDialog(null, "Player 2 has won! (Black=" + Player2.black + ")");
 						gameOver();
-					}else{
+					} else {
 						p1sTurn = true;
 					}
 				}
@@ -254,7 +280,7 @@ public class Game implements Runnable{
 			}
 		}
 	}
-	
+
 	/**
 	 * Game Over.
 	 * 
@@ -262,11 +288,11 @@ public class Game implements Runnable{
 	 * 
 	 * Working out the fitness of the game
 	 */
-	public void gameOver(){
-		
-		if(liveBoard.hasPlayerWon(Player1.black)){
+	public void gameOver() {
+
+		if (liveBoard.hasPlayerWon(Player1.black)) {
 			gameVictor = getIndiv1();
-		}else{
+		} else {
 			gameVictor = getIndiv2();
 		}
 	}
@@ -287,26 +313,34 @@ public class Game implements Runnable{
 	public void setGameActive(boolean gameActive) {
 		this.gameActive = gameActive;
 	}
-	
-	public GameStats getGameStats(){
-		
+
+	public GameStats getGameStats() {
+
 		Individual gameVictor = null;
-		
+
 		double playerOneScore = 0;
 		double playerTwoScore = 0;
-		
-		if(liveBoard.hasPlayerWon(Player1.black)){
-			double reductions = liveBoard.howManyHasPlayerBore(Player2.black)*0.04;
-			if(getIndiv1()!=null){playerOneScore=1-reductions;}
-			if(getIndiv2()!=null){playerTwoScore = reductions;}
-			
+
+		if (liveBoard.hasPlayerWon(Player1.black)) {
+			double reductions = liveBoard.howManyHasPlayerBore(Player2.black) * 0.04;
+			if (getIndiv1() != null) {
+				playerOneScore = 1 - reductions;
+			}
+			if (getIndiv2() != null) {
+				playerTwoScore = reductions;
+			}
+
 			gameVictor = getIndiv1();
-			
-		}else if(liveBoard.hasPlayerWon(Player2.black)){
-			double reductions = liveBoard.howManyHasPlayerBore(Player1.black)*0.04;
-			if(getIndiv2()!=null){playerTwoScore=1-reductions;}
-			if(getIndiv1()!=null){playerOneScore = reductions;}
-			
+
+		} else if (liveBoard.hasPlayerWon(Player2.black)) {
+			double reductions = liveBoard.howManyHasPlayerBore(Player1.black) * 0.04;
+			if (getIndiv2() != null) {
+				playerTwoScore = 1 - reductions;
+			}
+			if (getIndiv1() != null) {
+				playerOneScore = reductions;
+			}
+
 			gameVictor = getIndiv2();
 		}
 		return new GameStats(gameVictor, playerOneScore, playerTwoScore);

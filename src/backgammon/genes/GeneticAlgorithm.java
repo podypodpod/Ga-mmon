@@ -24,7 +24,7 @@ import backgammon.settings.GenAlgSettings;
 /**
  * The Class GeneticAlgorithm.
  * 
- * Evolves populations using crossoever and mutation
+ * Evolves populations using cross over and mutation
  * 
  * selection by tournament
  * 
@@ -39,13 +39,16 @@ public class GeneticAlgorithm {
 	 * 
 	 * uses crossover and mutation to produce the new population
 	 *
-	 * @param pop the population to evolve
+	 * @param pop
+	 *            the population to evolve
 	 * @return the new population evolved
 	 */
 	public static Population evolvePopulation(Population pop) {
 
-		if(GenAlgSettings.isDisplayconsole()){System.out.println("------EVOLVE POPULATION-------------------");}
-		
+		if (GenAlgSettings.isDisplayconsole()) {
+			System.out.println("------EVOLVE POPULATION-------------------");
+		}
+
 		Population newPopulation = new Population(pop.size(), false);
 
 		// Keep the best individual
@@ -61,8 +64,10 @@ public class GeneticAlgorithm {
 			elitismOffset = 0;
 		}
 
-		// Loop over the population size and create new individuals with the crossover function
-		// the two individuals that are crossed over are the winners of the tournament selection (should provide some of the best players)
+		// Loop over the population size and create new individuals with the
+		// crossover function
+		// the two individuals that are crossed over are the winners of the
+		// tournament selection (should provide some of the best players)
 		for (int i = elitismOffset; i < pop.size(); i++) {
 
 			Individual indiv1 = tournamentSelection(pop);
@@ -74,35 +79,41 @@ public class GeneticAlgorithm {
 		}
 
 		// Mutate population
-		if(GenAlgSettings.isDisplayconsole()){System.out.println("------MUTATING-------------------");}
+		if (GenAlgSettings.isDisplayconsole()) {
+			System.out.println("------MUTATING-------------------");
+		}
 		for (int i = elitismOffset; i < newPopulation.size(); i++) {
 			mutate(newPopulation.getIndividual(i));
 		}
 
 		newPopulation.calculateFitness();
-		
+
 		return newPopulation;
 	}
-
 
 	/**
 	 * Crossover.
 	 * 
-	 * Randomly takes one side or the others attributes according to the uniform rate
+	 * Randomly takes one side or the others attributes according to the uniform
+	 * rate
 	 *
-	 * @param indiv1 the indiv1
-	 * @param indiv2 the indiv2
+	 * @param indiv1
+	 *            the indiv1
+	 * @param indiv2
+	 *            the indiv2
 	 * @return the individual
 	 */
 	private static Individual crossover(Individual indiv1, Individual indiv2) {
 
-		if(GenAlgSettings.isDisplayconsole()){System.out.println("------CROSSOVER-------------------");}
-		
-		//new Individual
+		if (GenAlgSettings.isDisplayconsole()) {
+			System.out.println("------CROSSOVER-------------------");
+		}
+
+		// new Individual
 		Individual newIndiv = new Individual();
-		
-		//loop the individuals attributes
-		for(int x = 0; x<indiv1.getNumOfAttributes(); x++){
+
+		// loop the individuals attributes
+		for (int x = 0; x < indiv1.getNumOfAttributes(); x++) {
 			if (Math.random() <= GenAlgSettings.getUniformRate()) {
 				newIndiv.setAttribute(x, indiv1.getAttribute(x));
 			} else {
@@ -112,7 +123,6 @@ public class GeneticAlgorithm {
 		return newIndiv;
 	}
 
-
 	/**
 	 * mutate
 	 * 
@@ -120,22 +130,23 @@ public class GeneticAlgorithm {
 	 *
 	 * gets a random number, if its <= to the mutation rate then switch the bit
 	 *
-	 * @param indiv the individual
+	 * @param indiv
+	 *            the individual
 	 */
 	public static void mutate(Individual indiv) {
-		
+
 		// get the indivs string
 		char[] indivStr = indiv.getChromosome();
 
-		//loop through all bits
-		for(int x=0;x<indivStr.length;x++){
-			//random chance
-			if(Math.random() <= GenAlgSettings.getMutationRate()){
-				//swap the bit over
-				if(indivStr[x]=='0'){
-					indivStr[x]='1';
-				}else{
-					indivStr[x]='0';
+		// loop through all bits
+		for (int x = 0; x < indivStr.length; x++) {
+			// random chance
+			if (Math.random() <= GenAlgSettings.getMutationRate()) {
+				// swap the bit over
+				if (indivStr[x] == '0') {
+					indivStr[x] = '1';
+				} else {
+					indivStr[x] = '0';
 				}
 			}
 		}
@@ -144,15 +155,18 @@ public class GeneticAlgorithm {
 	/**
 	 * Tournament selection.
 	 * 
-	 * Selects the individuals for crossover
-	 * it does this by selecting a random population and playing them against each other until there is one victor
+	 * Selects the individuals for crossover it does this by selecting a random
+	 * population and playing them against each other until there is one victor
 	 *
-	 * @param pop the pop
+	 * @param pop
+	 *            the pop
 	 * @return the individual
 	 */
 	public static Individual tournamentSelection(Population pop) {
-		
-		if(GenAlgSettings.isDisplayconsole()){System.out.println("------TOURNAMENT SELECTION-------------------");}
+
+		if (GenAlgSettings.isDisplayconsole()) {
+			System.out.println("------TOURNAMENT SELECTION-------------------");
+		}
 
 		// Create a tournament population
 		Population tournament = new Population(GenAlgSettings.getTournamentSize(), false);
@@ -164,29 +178,31 @@ public class GeneticAlgorithm {
 			tournament.saveIndividual(i, pop.getIndividual(randomId));
 		}
 
-		//Get the fittest via battling against each other
+		// Get the fittest via battling against each other
 		Individual tournamentVictor = null;
 
-		//until there is a winner
-		while(tournamentVictor==null){
+		// until there is a winner
+		while (tournamentVictor == null) {
 
-			//create a population for the winner of the round
-			Individual[] winnersOfRound = new Individual[tournament.size()/2];
+			// create a population for the winner of the round
+			Individual[] winnersOfRound = new Individual[tournament.size() / 2];
 
 			Individual winnerOfRound = null;
-			//test the individuals
+			// test the individuals
 			int counter = 0;
-			for(int i = 0; i < tournament.size(); i+=2){
-				winnerOfRound = FitnessCalculator.getWinnerOf(tournament.getIndividual(i), tournament.getIndividual(i+1));
-				winnersOfRound[counter++]=winnerOfRound;
+			for (int i = 0; i < tournament.size(); i += 2) {
+				winnerOfRound = FitnessCalculator.getWinnerOf(tournament.getIndividual(i),
+						tournament.getIndividual(i + 1));
+				winnersOfRound[counter++] = winnerOfRound;
 			}
 
-			//if there is only 1 left, then it is the winner!
-			if(winnersOfRound.length==1){
+			// if there is only 1 left, then it is the winner!
+			if (winnersOfRound.length == 1) {
 				tournamentVictor = winnersOfRound[0];
 			}
-			//setting the tournament array to the winners of the round, so now only has the winners in
-			else{
+			// setting the tournament array to the winners of the round, so now
+			// only has the winners in
+			else {
 				tournament.setArray(winnersOfRound);
 			}
 		}

@@ -17,18 +17,16 @@
  *  along with GA-mmon.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 package backgammon.game;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import backgammon.game.Die;
-
 public class DieJUnitTest {
-	
+
 	Die d1;
 
 	@Before
@@ -38,27 +36,24 @@ public class DieJUnitTest {
 
 	@Test
 	public void RollingShouldProduceAnIntBetween1And6() {
-		//Given
+		// Given
 		int x = d1.RollDie();
 		boolean y;
-		
-		//When
-		//Then
-		
-		if(x>0.99 && x<6.01){
+
+		if (x > 0.99 && x < 6.01) {
 			y = true;
-		}else{
-			y=false;
+		} else {
+			y = false;
 		}
 		assertTrue(y);
 	}
-	
+
 	@Test
-	public void GetDieValueShouldEqualWhatIsSet(){
-		//when
+	public void GetDieValueShouldEqualWhatIsSet() {
+		// when
 		d1.setDieValue(4);
-		
-		//then
+
+		// then
 		assertEquals(4, d1.getDieValue());
 	}
 

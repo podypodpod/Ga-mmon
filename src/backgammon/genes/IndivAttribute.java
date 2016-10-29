@@ -22,7 +22,8 @@ package backgammon.genes;
 /**
  * IndivAttribute
  * 
- * attribute for the individual, each will have a number of these e.g. bear a piece
+ * attribute for the individual, each will have a number of these e.g. bear a
+ * piece
  * 
  * Controls the particular chance of doing a certain strategy
  * 
@@ -32,17 +33,18 @@ public class IndivAttribute {
 
 	private String name = "";
 	private int value = 0;
-	
+
 	/**
 	 * IndivAttribute
 	 * 
-	 * @param n - the name
+	 * @param n
+	 *            - the name
 	 */
-	public IndivAttribute(String n){
+	public IndivAttribute(String n) {
 		name = n;
-		value = (int) (Math.random()*100);
+		value = (int) (Math.random() * 100);
 	}
-	
+
 	/**
 	 * getName
 	 * 
@@ -69,6 +71,7 @@ public class IndivAttribute {
 	public int getValue() {
 		return value;
 	}
+
 	/**
 	 * setValue
 	 * 
@@ -77,9 +80,9 @@ public class IndivAttribute {
 	public void setValue(int value) {
 		this.value = value;
 	}
-	
+
 	@Override
-	public String toString(){
-		return name+": "+value;
+	public String toString() {
+		return name + ": " + value;
 	}
 }

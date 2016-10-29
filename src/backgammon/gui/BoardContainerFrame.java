@@ -17,7 +17,6 @@
  *  along with GA-mmon.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 package backgammon.gui;
 
 import java.awt.GridBagConstraints;
@@ -31,15 +30,16 @@ import javax.swing.JPanel;
  * 
  * contains the other frames
  * 
- * This is not currently needed, I could have put this in to the board panel class
- * but Its here for future changes if I add buttons to the GUI it will go in to another class
+ * This is not currently needed, I could have put this in to the board panel
+ * class but Its here for future changes if I add buttons to the GUI it will go
+ * in to another class
  * 
  * @author David Lomas - 11035527
  */
-public class BoardContainerFrame extends JFrame implements Runnable{
+public class BoardContainerFrame extends JFrame implements Runnable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public BoardPanel bp;
 	JPanel mainPanel;
 	JFrame frame;
@@ -48,17 +48,17 @@ public class BoardContainerFrame extends JFrame implements Runnable{
 	public void run() {
 		createGUI();
 	}
-	
-	public void createGUI(){
-		
-		//Creating JFrame and panel
+
+	public void createGUI() {
+
+		// Creating JFrame and panel
 		frame = new JFrame("GA-mmon");
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 
-		//creating and adding the Board Panel
+		// creating and adding the Board Panel
 		bp = new BoardPanel();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -67,7 +67,7 @@ public class BoardContainerFrame extends JFrame implements Runnable{
 		mainPanel.add(bp, c);
 
 		frame.add(mainPanel);
-		frame.setSize(1166,600);
+		frame.setSize(1166, 600);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
