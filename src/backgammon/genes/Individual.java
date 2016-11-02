@@ -42,7 +42,7 @@ public class Individual {
 	private int numOfAttributes;
 
 	// Attributes
-	private IndivAttribute[] listOfAttributes = null;
+	private IndividualAttribute[] listOfAttributes = null;
 
 	/** The chromosome. */
 	private char[] chromosome;
@@ -56,38 +56,38 @@ public class Individual {
 	public Individual() {
 
 		// add attributes to the array
-		listOfAttributes = new IndivAttribute[] { new IndivAttribute("bearAPiece"), // 0
-				new IndivAttribute("takeAPiece"), // 1
-				new IndivAttribute("doubleUpAPiece"), // 2
-				new IndivAttribute("blockAnOpponent"), // 3
-				new IndivAttribute("movingAPieceSolo"), // 4
-				new IndivAttribute("spreadAHomePiece"), // 5
-				new IndivAttribute("addACheckerToAStack"), // 6
-				new IndivAttribute("twoOneSplitPlayInitialMove"), // 7
-				new IndivAttribute("twoOneSlotPlayInitialMove"), // 8
-				new IndivAttribute("threeOneInitialMove"), // 9
-				new IndivAttribute("threeTwoSplitInitialMove"), // 10
-				new IndivAttribute("threeTwoOffenceInitialMove"), // 11
-				new IndivAttribute("fourOneInitialMove"), // 12
-				new IndivAttribute("fourOneInitialMoveAlt"), // 13
-				new IndivAttribute("fourTwoInitialMove"), // 14
-				new IndivAttribute("fourThreeInitialMoveSplit"), // 15
-				new IndivAttribute("fourThreeInitialMoveBlock"), // 16
-				new IndivAttribute("fiveOneInitialMove"), // 17
-				new IndivAttribute("fiveOneInitialMoveAlt"), // 18
-				new IndivAttribute("fiveTwoInitialMove"), // 19
-				new IndivAttribute("fiveTwoInitialMoveRisk"), // 20
-				new IndivAttribute("fiveThreeInitialMove"), // 21
-				new IndivAttribute("fiveFourInitialMoveAgr"), // 22
-				new IndivAttribute("fiveFourInitialMoveBal"), // 23
-				new IndivAttribute("sixOneInitialMove"), // 24
-				new IndivAttribute("sixTwoInitialMove"), // 25
-				new IndivAttribute("sixTwoInitialMoveAgr"), // 26
-				new IndivAttribute("sixThreeInitialMove"), // 27
-				new IndivAttribute("sixThreeInitialMoveSplit"), // 28
-				new IndivAttribute("sixFourInitialMove"), // 29
-				new IndivAttribute("sixFourInitialMoveSplit"), // 30
-				new IndivAttribute("sixFiveInitialMove") // 31
+		listOfAttributes = new IndividualAttribute[] { new IndividualAttribute("bearAPiece"), // 0
+				new IndividualAttribute("takeAPiece"), // 1
+				new IndividualAttribute("doubleUpAPiece"), // 2
+				new IndividualAttribute("blockAnOpponent"), // 3
+				new IndividualAttribute("movingAPieceSolo"), // 4
+				new IndividualAttribute("spreadAHomePiece"), // 5
+				new IndividualAttribute("addACheckerToAStack"), // 6
+				new IndividualAttribute("twoOneSplitPlayInitialMove"), // 7
+				new IndividualAttribute("twoOneSlotPlayInitialMove"), // 8
+				new IndividualAttribute("threeOneInitialMove"), // 9
+				new IndividualAttribute("threeTwoSplitInitialMove"), // 10
+				new IndividualAttribute("threeTwoOffenceInitialMove"), // 11
+				new IndividualAttribute("fourOneInitialMove"), // 12
+				new IndividualAttribute("fourOneInitialMoveAlt"), // 13
+				new IndividualAttribute("fourTwoInitialMove"), // 14
+				new IndividualAttribute("fourThreeInitialMoveSplit"), // 15
+				new IndividualAttribute("fourThreeInitialMoveBlock"), // 16
+				new IndividualAttribute("fiveOneInitialMove"), // 17
+				new IndividualAttribute("fiveOneInitialMoveAlt"), // 18
+				new IndividualAttribute("fiveTwoInitialMove"), // 19
+				new IndividualAttribute("fiveTwoInitialMoveRisk"), // 20
+				new IndividualAttribute("fiveThreeInitialMove"), // 21
+				new IndividualAttribute("fiveFourInitialMoveAgr"), // 22
+				new IndividualAttribute("fiveFourInitialMoveBal"), // 23
+				new IndividualAttribute("sixOneInitialMove"), // 24
+				new IndividualAttribute("sixTwoInitialMove"), // 25
+				new IndividualAttribute("sixTwoInitialMoveAgr"), // 26
+				new IndividualAttribute("sixThreeInitialMove"), // 27
+				new IndividualAttribute("sixThreeInitialMoveSplit"), // 28
+				new IndividualAttribute("sixFourInitialMove"), // 29
+				new IndividualAttribute("sixFourInitialMoveSplit"), // 30
+				new IndividualAttribute("sixFiveInitialMove") // 31
 		};
 
 		numOfAttributes = listOfAttributes.length;
@@ -219,7 +219,7 @@ public class Individual {
 			// set the properties value
 			properties.setProperty("chromosome", String.valueOf(chromosome));
 			properties.setProperty("fitness", getFitness() + "");
-			for (IndivAttribute x : listOfAttributes) {
+			for (IndividualAttribute x : listOfAttributes) {
 				properties.setProperty(x.getName(), x.getValue() + "");
 			}
 
@@ -247,7 +247,7 @@ public class Individual {
 	 * @param attr
 	 * @param data
 	 */
-	public void setAttribute(int attr, IndivAttribute data) {
+	public void setAttribute(int attr, IndividualAttribute data) {
 		listOfAttributes[attr] = data;
 		updateToBinary();
 	}
@@ -258,7 +258,7 @@ public class Individual {
 	 * @param pos
 	 * @return
 	 */
-	public IndivAttribute getAttribute(int pos) {
+	public IndividualAttribute getAttribute(int pos) {
 		return listOfAttributes[pos];
 	}
 }

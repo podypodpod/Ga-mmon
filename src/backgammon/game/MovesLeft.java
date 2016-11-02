@@ -1,21 +1,20 @@
 /**
- * 	GNU General Public License
+ * GNU General Public License
+ *
+ * This file is part of GA-mmon.
  * 
- *  This file is part of GA-mmon.
- *  
- *  GA-mmon is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  GA-mmon is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with GA-mmon.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * GA-mmon is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * GA-mmon is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package backgammon.game;
 
@@ -26,7 +25,7 @@ import java.util.List;
  * The Class MovesLeft.
  * 
  * used for loops checking which moves the player has left to use
- * 
+ *
  * @author David Lomas - 11035527
  */
 public class MovesLeft {
@@ -36,29 +35,29 @@ public class MovesLeft {
 
 	/**
 	 * MovesLeft default constructor
-	 * 
+	 *
 	 * Instantiates a new moves left.
 	 */
 	public MovesLeft() {
-		movesLeft = new ArrayList<Integer>();
+		movesLeft = new ArrayList<>();
 	}
 
 	/**
 	 * Clone constructor
-	 * 
+	 *
 	 * Instantiates a new moves left.
 	 *
 	 * @param movesLeftCopy
 	 *            the moves left copy
 	 */
-	public MovesLeft(MovesLeft movesLeftCopy) {
+	public MovesLeft(final MovesLeft movesLeftCopy) {
 
 		// create new list
-		this.movesLeft = new ArrayList<Integer>();
+		movesLeft = new ArrayList<>();
 
 		// copy old one
-		for (int x : movesLeftCopy.movesLeft) {
-			this.movesLeft.add(x);
+		for (final int x : movesLeftCopy.movesLeft) {
+			movesLeft.add(x);
 		}
 	}
 
@@ -68,27 +67,22 @@ public class MovesLeft {
 	 * @param value
 	 *            the int to be added
 	 */
-	void add(int value) {
+	void add(final int value) {
 		movesLeft.add(Integer.valueOf(value));
 	}
 
 	/**
-	 * Remove removes the value passed in
-	 *
-	 * @param value
-	 *            the value to be removed
+	 * Clear.
 	 */
-	void remove(int value) {
-		movesLeft.remove(Integer.valueOf(value));
+	void clear() {
+		movesLeft.clear();
 	}
 
-	/**
-	 * Size.
-	 *
-	 * @return the size of list
-	 */
-	int size() {
-		return movesLeft.size();
+	public boolean contains(final int i) {
+		if (movesLeft.contains(i)) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -101,25 +95,37 @@ public class MovesLeft {
 	}
 
 	/**
-	 * Clear.
+	 * Remove removes the value passed in
+	 *
+	 * @param value
+	 *            the value to be removed
 	 */
-	void clear() {
-		movesLeft.clear();
+	void remove(final int value) {
+		movesLeft.remove(Integer.valueOf(value));
 	}
 
 	/**
 	 * setTo
-	 * 
+	 *
 	 * Sets the list to the same as the one passed in
 	 *
 	 * @param diceRolls
 	 *            - set the current list to contents of dicerolls
 	 */
-	public void setTo(List<Integer> diceRolls) {
+	public void setTo(final List<Integer> diceRolls) {
 		clear();
-		for (int x : diceRolls) {
+		for (final int x : diceRolls) {
 			add(x);
 		}
+	}
+
+	/**
+	 * Size.
+	 *
+	 * @return the size of list
+	 */
+	int size() {
+		return movesLeft.size();
 	}
 
 	/*
@@ -135,13 +141,6 @@ public class MovesLeft {
 
 		return str;
 
-	}
-
-	public boolean contains(int i) {
-		if (movesLeft.contains(i)) {
-			return true;
-		}
-		return false;
 	}
 
 }

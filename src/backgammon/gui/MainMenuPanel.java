@@ -13,21 +13,21 @@ public class MainMenuPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	public MainMenuPanel() {
-		this.setLayout(new GridLayout());
+		setLayout(new GridLayout());
 
-		JButton startSearch = new JButton("Start Search");
+		final JButton startSearch = new JButton("Start Search");
 		startSearch.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				new StartGa();
 			}
 		});
 		this.add(startSearch);
 
-		JButton playBestTwo = new JButton("Play Best Two");
+		final JButton playBestTwo = new JButton("Play Best Two");
 		this.add(playBestTwo);
 
-		JButton changeSettings = new JButton("Change Settings");
+		final JButton changeSettings = new JButton("Change Settings");
 		this.add(changeSettings);
 
 	}

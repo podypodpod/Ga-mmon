@@ -1,21 +1,21 @@
 /**
- * 	GNU General public static License 
- * 
- *  This file is part of GA-mmon.
- *  
- *  GA-mmon is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General public static License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  GA-mmon is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General public static License for more details.
- *  
- *  You should have received a copy of the GNU General public static License
- *  along with GA-mmon.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * GNU General public static License
+ *
+ * This file is part of GA-mmon.
+ *
+ * GA-mmon is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General public static License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * GA-mmon is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General public static License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General public static License
+ * along with GA-mmon. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package backgammon.settings;
 
@@ -35,34 +35,11 @@ public class GenAlgSettings {
 	private static int populationSizeCache = -1;
 	private static String savePathCache = null;
 
-	public static String getPropertyFromFile(String propVar) {
-		Properties properties = new Properties();
-		InputStream input = null;
-
-		try {
-			input = new FileInputStream("resources/settings/GenAlgSettings.properties");
-			properties.load(input);
-			return properties.getProperty(propVar);
-
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+	public static int getGenerations() {
+		if (generationsCache == -1) {
+			generationsCache = Integer.valueOf(getPropertyFromFile("generations"));
 		}
-		return null;
-	}
-
-	public static double getUniformRate() {
-		if (uniformRateCache == -1) {
-			uniformRateCache = Double.valueOf(getPropertyFromFile("uniformRate"));
-		}
-		return uniformRateCache;
+		return generationsCache;
 	}
 
 	public static double getMutationRate() {
@@ -72,18 +49,34 @@ public class GenAlgSettings {
 		return mutationRateCache;
 	}
 
-	public static int getTournamentSize() {
-		if (tournamentSizeCache == -1) {
-			tournamentSizeCache = Integer.valueOf(getPropertyFromFile("tournamentSize"));
-		}
-		return tournamentSizeCache;
-	}
-
 	public static int getPopulationSize() {
 		if (populationSizeCache == -1) {
 			populationSizeCache = Integer.valueOf(getPropertyFromFile("populationSize"));
 		}
 		return populationSizeCache;
+	}
+
+	public static String getPropertyFromFile(final String propVar) {
+		final Properties properties = new Properties();
+		InputStream input = null;
+
+		try {
+			input = new FileInputStream("resources/settings/GenAlgSettings.properties");
+			properties.load(input);
+			return properties.getProperty(propVar);
+
+		} catch (final IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (final IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
 	}
 
 	public static String getSavePath() {
@@ -93,18 +86,18 @@ public class GenAlgSettings {
 		return savePathCache;
 	}
 
-	public static boolean isElitism() {
-		if (elitismCache == null) {
-			elitismCache = Boolean.valueOf(getPropertyFromFile("elitism"));
+	public static int getTournamentSize() {
+		if (tournamentSizeCache == -1) {
+			tournamentSizeCache = Integer.valueOf(getPropertyFromFile("tournamentSize"));
 		}
-		return elitismCache;
+		return tournamentSizeCache;
 	}
 
-	public static int getGenerations() {
-		if (generationsCache == -1) {
-			generationsCache = Integer.valueOf(getPropertyFromFile("generations"));
+	public static double getUniformRate() {
+		if (uniformRateCache == -1) {
+			uniformRateCache = Double.valueOf(getPropertyFromFile("uniformRate"));
 		}
-		return generationsCache;
+		return uniformRateCache;
 	}
 
 	public static boolean isDisplayconsole() {
@@ -112,5 +105,12 @@ public class GenAlgSettings {
 			displayConsoleCache = Boolean.valueOf(getPropertyFromFile("displayConsole"));
 		}
 		return displayConsoleCache;
+	}
+
+	public static boolean isElitism() {
+		if (elitismCache == null) {
+			elitismCache = Boolean.valueOf(getPropertyFromFile("elitism"));
+		}
+		return elitismCache;
 	}
 }

@@ -1,21 +1,20 @@
 /**
- * 	GNU General Public License
+ * GNU General Public License
+ *
+ * This file is part of GA-mmon.
  * 
- *  This file is part of GA-mmon.
- *  
- *  GA-mmon is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  GA-mmon is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with GA-mmon.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * GA-mmon is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * GA-mmon is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package backgammon.game;
 
@@ -35,22 +34,11 @@ public class MovesLeftJUnitTest {
 	}
 
 	@Test
-	public void testingMovesLeftAddIntFucntion() {
-
-		// When
-		testSubject.add(5);
-
-		// Then
-		assertEquals(5, testSubject.getNext());
-
-	}
-
-	@Test
 	public void testingCloneConstructor() {
 		// Given
-		this.testSubject.add(4);
-		this.testSubject.add(9);
-		this.testSubject.add(3);
+		testSubject.add(4);
+		testSubject.add(9);
+		testSubject.add(3);
 
 		MovesLeft newMovesLeft;
 
@@ -63,17 +51,13 @@ public class MovesLeftJUnitTest {
 	}
 
 	@Test
-	public void testingSizeMethod() {
-		// Given
-		this.testSubject.add(4);
-		this.testSubject.add(9);
-		this.testSubject.add(3);
+	public void testingMovesLeftAddIntFucntion() {
 
 		// When
-		int x = testSubject.size();
+		testSubject.add(5);
 
 		// Then
-		assertEquals(3, x);
+		assertEquals(5, testSubject.getNext());
 
 	}
 
@@ -81,15 +65,30 @@ public class MovesLeftJUnitTest {
 	public void testingRemoveMethodRemovingAnItemFromTheArray() {
 
 		// Given
-		this.testSubject.add(4);
-		this.testSubject.add(9);
+		testSubject.add(4);
+		testSubject.add(9);
 
 		// When
 		testSubject.remove(4);
-		int x = testSubject.getNext();
+		final int x = testSubject.getNext();
 
 		// Then
 		assertEquals(9, x);
+
+	}
+
+	@Test
+	public void testingSizeMethod() {
+		// Given
+		testSubject.add(4);
+		testSubject.add(9);
+		testSubject.add(3);
+
+		// When
+		final int x = testSubject.size();
+
+		// Then
+		assertEquals(3, x);
 
 	}
 

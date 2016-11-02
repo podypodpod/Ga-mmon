@@ -1,21 +1,20 @@
 /**
- * 	GNU General Public License
- * 
- *  This file is part of GA-mmon.
- *  
- *  GA-mmon is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  GA-mmon is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with GA-mmon.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * GNU General Public License
+ *
+ * This file is part of GA-mmon.
+ *
+ * GA-mmon is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * GA-mmon is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package backgammon.genes;
 
@@ -25,55 +24,32 @@ import backgammon.settings.GenAlgSettings;
 
 /**
  * FitnessCalculator
- * 
+ *
  * Allows the calculation of fitness of an indiviudal or population
- * 
+ *
  * @author David Lomas - 11035527
  */
 public class FitnessCalculator {
 
-	/** Game manager */
-	private static GameManager gm;
-
-	/**
-	 * getWinnerOf
-	 * 
-	 * Makes the 2 players play against each other and returns the winner
-	 * 
-	 * @param i1
-	 *            player 1
-	 * @param i2
-	 *            player 2
-	 * @return the winner
-	 */
-	public static Individual getWinnerOf(Individual i1, Individual i2) {
-		gm = new GameManager();
-
-		// if(GenAlgSettings.isDisplayconsole()){System.out.println("Playing 2
-		// indivs against each other, Game number: "+count++);}
-
-		GameStats gs = gm.playIndividualsVsEachOther(i1, i2);
-
-		return gs.getVictor();
-	}
+	private static GameManager gameManager;
 
 	/**
 	 * calculateFitnessOfPopulation
-	 * 
+	 *
 	 * calculates the fitness of every individual in the population.
-	 * 
+	 *
 	 * requires playing a large number of games ((population-1)^2)
-	 * 
+	 *
 	 * @param pop
 	 *            - population we are measuring
 	 */
-	public static void calculateFitnessOfPopulation(Population pop) {
+	public static void calculateFitnessOfPopulation(final Population pop) {
 
 		Individual testSubject;
 		Individual oponent;
 		double tempFitness;
 
-		gm = new GameManager();
+		gameManager = new GameManager();
 
 		if (GenAlgSettings.isDisplayconsole()) {
 			System.out.println("Round robin started");
@@ -106,7 +82,7 @@ public class FitnessCalculator {
 
 					// adding the result of the game to the temp fitness, so
 					// this will add all the games score together
-					GameStats gs = gm.playIndividualsVsEachOther(testSubject, oponent);
+					final GameStats gs = gameManager.playIndividualsVsEachOther(testSubject, oponent);
 
 					tempFitness += gs.getPlayerOneScore();
 				}
@@ -117,5 +93,27 @@ public class FitnessCalculator {
 			}
 			testSubject.setFitness(tempFitness);
 		}
+	}
+
+	/**
+	 * getWinnerOf
+	 *
+	 * Makes the 2 players play against each other and returns the winner
+	 *
+	 * @param i1
+	 *            player 1
+	 * @param i2
+	 *            player 2
+	 * @return the winner
+	 */
+	public static Individual getWinnerOf(final Individual i1, final Individual i2) {
+		gameManager = new GameManager();
+
+		// if(GenAlgSettings.isDisplayconsole()){System.out.println("Playing 2
+		// indivs against each other, Game number: "+count++);}
+
+		final GameStats gs = gameManager.playIndividualsVsEachOther(i1, i2);
+
+		return gs.getVictor();
 	}
 }

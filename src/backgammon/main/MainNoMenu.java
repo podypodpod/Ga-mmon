@@ -3,8 +3,7 @@ package backgammon.main;
 import backgammon.genes.StartGa;
 
 public class MainNoMenu {
-
-	public static void main(String args[]) {
+	public static void main(final String args[]) {
 		new StartGa();
 	}
 }

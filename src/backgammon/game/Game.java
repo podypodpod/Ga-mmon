@@ -1,21 +1,20 @@
 /**
- * 	GNU General Public License
+ * GNU General Public License
+ *
+ * This file is part of GA-mmon.
  * 
- *  This file is part of GA-mmon.
- *  
- *  GA-mmon is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  GA-mmon is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with GA-mmon.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * GA-mmon is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * GA-mmon is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package backgammon.game;
 
@@ -26,15 +25,15 @@ import backgammon.settings.GameSettings;
 
 /**
  * The Class Game.
- * 
+ *
  * Contains the game loop and creates a new board, players etc
  * 
  * This class just needs two Individuals passed in to it to play a game, if null
  * the player will pick random moves
- * 
+ *
  * To get a human player, in the backgammon.settings package change the
  * gameSettings class, areBothAIs = false
- * 
+ *
  * @author David Lomas - 11035527
  */
 public class Game implements Runnable {
@@ -45,14 +44,6 @@ public class Game implements Runnable {
 	/** The board. */
 	private Board liveBoard;
 
-	public Board getLiveBoard() {
-		return liveBoard;
-	}
-
-	public void setLiveBoard(Board liveBoard) {
-		this.liveBoard = liveBoard;
-	}
-
 	/** The AI turn. */
 	private boolean p1sTurn = false;
 
@@ -60,15 +51,15 @@ public class Game implements Runnable {
 	private boolean gameActive;
 
 	/** The is p1 black. */
-	private boolean isP1Black = GameSettings.isP1Black();
+	private final boolean isP1Black = GameSettings.isP1Black();
 
 	/** The are both a is. */
-	private boolean areBothAIs = GameSettings.getAreBothAI();
+	private final boolean areBothAIs = GameSettings.getAreBothAI();
 
 	/** The time delay. */
-	private int timeDelay = GameSettings.getTimeDelay();
+	private final int timeDelay = GameSettings.getTimeDelay();
 
-	private boolean displayConsole = GameSettings.getDisplayConsole();
+	private final boolean displayConsole = GameSettings.getDisplayConsole();
 
 	/** initial rolls. */
 	private int p1Roll = 0, p2Roll = 0;
@@ -87,7 +78,7 @@ public class Game implements Runnable {
 	 * @param i2
 	 *            the i2
 	 */
-	public Game(Individual i1, Individual i2) {
+	public Game(final Individual i1, final Individual i2) {
 
 		liveBoard = new Board();
 		liveBoard.printBoardGUI();
@@ -103,11 +94,80 @@ public class Game implements Runnable {
 	}
 
 	/**
+	 * Game Over.
+	 *
+	 * What happens when the game comes to a finish
+	 *
+	 * Working out the fitness of the game
+	 */
+	public void gameOver() {
+
+		if (liveBoard.hasPlayerWon(Player1.black)) {
+			gameVictor = getIndiv1();
+		} else {
+			gameVictor = getIndiv2();
+		}
+	}
+
+	public GameStats getGameStats() {
+
+		Individual gameVictor = null;
+
+		double playerOneScore = 0;
+		double playerTwoScore = 0;
+
+		if (liveBoard.hasPlayerWon(Player1.black)) {
+			final double reductions = liveBoard.howManyHasPlayerBore(Player2.black) * 0.04;
+			if (getIndiv1() != null) {
+				playerOneScore = 1 - reductions;
+			}
+			if (getIndiv2() != null) {
+				playerTwoScore = reductions;
+			}
+
+			gameVictor = getIndiv1();
+
+		} else if (liveBoard.hasPlayerWon(Player2.black)) {
+			final double reductions = liveBoard.howManyHasPlayerBore(Player1.black) * 0.04;
+			if (getIndiv2() != null) {
+				playerTwoScore = 1 - reductions;
+			}
+			if (getIndiv1() != null) {
+				playerOneScore = reductions;
+			}
+
+			gameVictor = getIndiv2();
+		}
+		return new GameStats(gameVictor, playerOneScore, playerTwoScore);
+	}
+
+	public Individual getIndiv1() {
+		return indiv1;
+	}
+
+	public Individual getIndiv2() {
+		return indiv2;
+	}
+
+	public Board getLiveBoard() {
+		return liveBoard;
+	}
+
+	/**
+	 * Gets the victor.
+	 *
+	 * @return the victor
+	 */
+	public Individual getVictor() {
+		return gameVictor;
+	}
+
+	/**
 	 * Initial roll.
-	 * 
+	 *
 	 * Keeps rolling the dice until both players have a different score and
 	 * therefore a winner
-	 * 
+	 *
 	 */
 	public void initialRoll() {
 
@@ -121,9 +181,13 @@ public class Game implements Runnable {
 		liveBoard.isInitialMove = true;
 	}
 
+	public boolean isGameActive() {
+		return gameActive;
+	}
+
 	/**
 	 * Run method
-	 * 
+	 *
 	 * Contains the game loop.
 	 */
 	@Override
@@ -200,7 +264,7 @@ public class Game implements Runnable {
 						// are AI
 						try {
 							Thread.sleep(timeDelay);
-						} catch (InterruptedException e) {
+						} catch (final InterruptedException e) {
 							e.printStackTrace();
 						}
 					}
@@ -244,7 +308,7 @@ public class Game implements Runnable {
 							// both are AI
 							try {
 								Thread.sleep(timeDelay);
-							} catch (InterruptedException e) {
+							} catch (final InterruptedException e) {
 								e.printStackTrace();
 							}
 						}
@@ -281,84 +345,19 @@ public class Game implements Runnable {
 		}
 	}
 
-	/**
-	 * Game Over.
-	 * 
-	 * What happens when the game comes to a finish
-	 * 
-	 * Working out the fitness of the game
-	 */
-	public void gameOver() {
-
-		if (liveBoard.hasPlayerWon(Player1.black)) {
-			gameVictor = getIndiv1();
-		} else {
-			gameVictor = getIndiv2();
-		}
-	}
-
-	/**
-	 * Gets the victor.
-	 *
-	 * @return the victor
-	 */
-	public Individual getVictor() {
-		return gameVictor;
-	}
-
-	public boolean isGameActive() {
-		return gameActive;
-	}
-
-	public void setGameActive(boolean gameActive) {
+	public void setGameActive(final boolean gameActive) {
 		this.gameActive = gameActive;
 	}
 
-	public GameStats getGameStats() {
-
-		Individual gameVictor = null;
-
-		double playerOneScore = 0;
-		double playerTwoScore = 0;
-
-		if (liveBoard.hasPlayerWon(Player1.black)) {
-			double reductions = liveBoard.howManyHasPlayerBore(Player2.black) * 0.04;
-			if (getIndiv1() != null) {
-				playerOneScore = 1 - reductions;
-			}
-			if (getIndiv2() != null) {
-				playerTwoScore = reductions;
-			}
-
-			gameVictor = getIndiv1();
-
-		} else if (liveBoard.hasPlayerWon(Player2.black)) {
-			double reductions = liveBoard.howManyHasPlayerBore(Player1.black) * 0.04;
-			if (getIndiv2() != null) {
-				playerTwoScore = 1 - reductions;
-			}
-			if (getIndiv1() != null) {
-				playerOneScore = reductions;
-			}
-
-			gameVictor = getIndiv2();
-		}
-		return new GameStats(gameVictor, playerOneScore, playerTwoScore);
-	}
-
-	public Individual getIndiv1() {
-		return indiv1;
-	}
-
-	public void setIndiv1(Individual indiv1) {
+	public void setIndiv1(final Individual indiv1) {
 		this.indiv1 = indiv1;
 	}
 
-	public Individual getIndiv2() {
-		return indiv2;
+	public void setIndiv2(final Individual indiv2) {
+		this.indiv2 = indiv2;
 	}
 
-	public void setIndiv2(Individual indiv2) {
-		this.indiv2 = indiv2;
+	public void setLiveBoard(final Board liveBoard) {
+		this.liveBoard = liveBoard;
 	}
 }

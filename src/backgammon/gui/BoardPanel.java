@@ -1,21 +1,20 @@
 /**
- * 	GNU General Public License
+ * GNU General Public License
+ *
+ * This file is part of GA-mmon.
  * 
- *  This file is part of GA-mmon.
- *  
- *  GA-mmon is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  GA-mmon is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with GA-mmon.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * GA-mmon is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * GA-mmon is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package backgammon.gui;
 
@@ -37,12 +36,12 @@ import backgammon.game.Point;
  */
 public class BoardPanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
 	Point[] allPoints = null;
 	int redBore, blackBore;
 	Image imgBG;
-	Graphics2D g2;
 
-	private static final long serialVersionUID = 1L;
+	Graphics2D g2;
 
 	/**
 	 * Cons
@@ -53,14 +52,14 @@ public class BoardPanel extends JPanel {
 
 	/**
 	 * paintComponent
-	 * 
+	 *
 	 * paints the GUI
 	 */
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(final Graphics g) {
 
 		super.paintComponent(g);
-		this.setBackground(Color.WHITE);
+		setBackground(Color.WHITE);
 		g2 = (Graphics2D) g;
 
 		// setting font for the drawn strings on the game
@@ -105,34 +104,34 @@ public class BoardPanel extends JPanel {
 					// print top right half checkers
 				} else if (i > 0 && i < 7) {
 
-					g2.fillOval(990 - (i * 70), 80, 50, 50);
+					g2.fillOval(990 - i * 70, 80, 50, 50);
 					g2.setColor(Color.WHITE);
-					g2.drawOval(990 - (i * 70), 80, 50, 50);
-					g2.drawString(allPoints[i].numEither() + "", 1010 - (i * 70), 110);
+					g2.drawOval(990 - i * 70, 80, 50, 50);
+					g2.drawString(allPoints[i].numEither() + "", 1010 - i * 70, 110);
 
 					// print top left half checkers
 				} else if (i > 6 && i < 13) {
 
-					g2.fillOval(500 - ((i - 6) * 70), 80, 50, 50);
+					g2.fillOval(500 - (i - 6) * 70, 80, 50, 50);
 					g2.setColor(Color.WHITE);
-					g2.drawOval(500 - ((i - 6) * 70), 80, 50, 50);
-					g2.drawString(allPoints[i].numEither() + "", 520 - ((i - 6) * 70), 110);
+					g2.drawOval(500 - (i - 6) * 70, 80, 50, 50);
+					g2.drawString(allPoints[i].numEither() + "", 520 - (i - 6) * 70, 110);
 
 					// print bottom left half checkers
 				} else if (i > 12 && i < 19) {
 
-					g2.fillOval(20 + ((i - 12) * 70), 430, 50, 50);
+					g2.fillOval(20 + (i - 12) * 70, 430, 50, 50);
 					g2.setColor(Color.WHITE);
-					g2.drawOval(20 + ((i - 12) * 70), 430, 50, 50);
-					g2.drawString(allPoints[i].numEither() + "", 40 + ((i - 12) * 70), 460);
+					g2.drawOval(20 + (i - 12) * 70, 430, 50, 50);
+					g2.drawString(allPoints[i].numEither() + "", 40 + (i - 12) * 70, 460);
 
 					// print bottom right half checkers
 				} else if (i > 18 && i < 25) {
 
-					g2.fillOval(500 + ((i - 18) * 70), 430, 50, 50);
+					g2.fillOval(500 + (i - 18) * 70, 430, 50, 50);
 					g2.setColor(Color.WHITE);
-					g2.drawOval(500 + ((i - 18) * 70), 430, 50, 50);
-					g2.drawString(allPoints[i].numEither() + "", (520 + (i - 18) * 70), 460);
+					g2.drawOval(500 + (i - 18) * 70, 430, 50, 50);
+					g2.drawString(allPoints[i].numEither() + "", 520 + (i - 18) * 70, 460);
 				}
 			}
 		}
@@ -157,16 +156,16 @@ public class BoardPanel extends JPanel {
 
 	/**
 	 * printCheckers
-	 * 
+	 *
 	 * method to call to print board
-	 * 
+	 *
 	 * @param checkers
 	 * @param rb
 	 *            redbore
 	 * @param bb
 	 *            blackbore
 	 */
-	public void printCheckers(Point[] c, int rb, int bb) {
+	public void printCheckers(final Point[] c, final int rb, final int bb) {
 		allPoints = c;
 		redBore = rb;
 		blackBore = bb;

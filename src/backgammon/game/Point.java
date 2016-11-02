@@ -1,41 +1,37 @@
 /**
- * 	GNU General Public License
- * 
- *  This file is part of GA-mmon.
- *  
- *  GA-mmon is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  GA-mmon is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with GA-mmon.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * GNU General Public License
+ *
+ * This file is part of GA-mmon.
+ *
+ * GA-mmon is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * GA-mmon is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package backgammon.game;
 
 /**
  * The Class Point.
- * 
+ *
  * represents the point on a backgammon board
- * 
+ *
  * contains pieces
- * 
+ *
  * Used by the board 24 times to create the board state
- * 
+ *
  * @author David Lomas - 11035527
  */
 public class Point {
 
-	/** The black count. */
 	private int blackCount;
-
-	/** The red count. */
 	private int redCount;
 
 	/**
@@ -52,43 +48,9 @@ public class Point {
 	 * @param p
 	 *            the point to copy
 	 */
-	public Point(Point p) {
-		this.blackCount = p.blackCount;
-		this.redCount = p.redCount;
-	}
-
-	/**
-	 * Sets the black count.
-	 *
-	 * @param bc
-	 *            the new black count
-	 */
-	public void setBlackCount(int bc) {
-		blackCount = bc;
-	}
-
-	/**
-	 * Sets the red count.
-	 *
-	 * @param rc
-	 *            the new red count
-	 */
-	public void setRedCount(int rc) {
-		redCount = rc;
-	}
-
-	/**
-	 * Removes the black piece.
-	 */
-	public void removeBlackPiece() {
-		blackCount--;
-	}
-
-	/**
-	 * Removes the red piece.
-	 */
-	public void removeRedPiece() {
-		redCount--;
+	public Point(final Point p) {
+		blackCount = p.blackCount;
+		redCount = p.redCount;
 	}
 
 	/**
@@ -99,10 +61,43 @@ public class Point {
 	}
 
 	/**
+	 * Adds the piece.
+	 *
+	 * @param black
+	 *            the black
+	 */
+	public void addPiece(final Boolean black) {
+		if (black) {
+			addBlackPiece();
+		} else {
+			addRedPiece();
+		}
+	}
+
+	/**
 	 * Adds the red piece.
 	 */
 	public void addRedPiece() {
 		redCount++;
+	}
+
+	/**
+	 * Equals.
+	 *
+	 * @param p
+	 *            the point
+	 * @return true, if successful
+	 */
+	public boolean equals(final Point p) {
+		boolean theSame = true;
+
+		if (redCount != p.redCount) {
+			theSame = false;
+		} else if (blackCount != p.blackCount) {
+			theSame = false;
+		}
+
+		return theSame;
 	}
 
 	/**
@@ -112,6 +107,19 @@ public class Point {
 	 */
 	public int getBlackCount() {
 		return blackCount;
+	}
+
+	/**
+	 * Gets the col.
+	 *
+	 * @return the col
+	 */
+	public boolean getCol() {
+		if (blackCount > redCount) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -150,16 +158,10 @@ public class Point {
 	}
 
 	/**
-	 * Gets the col.
-	 *
-	 * @return the col
+	 * Removes the black piece.
 	 */
-	public boolean getCol() {
-		if (blackCount > redCount) {
-			return true;
-		} else {
-			return false;
-		}
+	public void removeBlackPiece() {
+		blackCount--;
 	}
 
 	/**
@@ -168,7 +170,7 @@ public class Point {
 	 * @param black
 	 *            the black
 	 */
-	public void removePiece(Boolean black) {
+	public void removePiece(final Boolean black) {
 		if (black) {
 			removeBlackPiece();
 		} else {
@@ -177,35 +179,29 @@ public class Point {
 	}
 
 	/**
-	 * Adds the piece.
-	 *
-	 * @param black
-	 *            the black
+	 * Removes the red piece.
 	 */
-	public void addPiece(Boolean black) {
-		if (black) {
-			addBlackPiece();
-		} else {
-			addRedPiece();
-		}
+	public void removeRedPiece() {
+		redCount--;
 	}
 
 	/**
-	 * Equals.
+	 * Sets the black count.
 	 *
-	 * @param p
-	 *            the point
-	 * @return true, if successful
+	 * @param bc
+	 *            the new black count
 	 */
-	public boolean equals(Point p) {
-		boolean theSame = true;
+	public void setBlackCount(final int bc) {
+		blackCount = bc;
+	}
 
-		if (this.redCount != p.redCount) {
-			theSame = false;
-		} else if (this.blackCount != p.blackCount) {
-			theSame = false;
-		}
-
-		return theSame;
+	/**
+	 * Sets the red count.
+	 *
+	 * @param rc
+	 *            the new red count
+	 */
+	public void setRedCount(final int rc) {
+		redCount = rc;
 	}
 }

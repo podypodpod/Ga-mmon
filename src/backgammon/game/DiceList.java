@@ -1,21 +1,20 @@
 /**
- * 	GNU General Public License
+ * GNU General Public License
+ *
+ * This file is part of GA-mmon.
  * 
- *  This file is part of GA-mmon.
- *  
- *  GA-mmon is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  GA-mmon is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with GA-mmon.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * GA-mmon is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * GA-mmon is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package backgammon.game;
 
@@ -24,13 +23,13 @@ import java.util.List;
 
 /**
  * The Class DiceList.
- * 
+ *
  * Container for the Dice rolls, allows the looping through the moves left
  * during possible move creation
- * 
+ *
  * could have created this code inside another class but I moved it out to make
  * space.
- * 
+ *
  * @author David Lomas - 11035527
  */
 public class DiceList {
@@ -48,12 +47,12 @@ public class DiceList {
 
 	/**
 	 * Roll dice. Rolls two random dice and returns the results
-	 * 
+	 *
 	 * @return list of Dice rolls
 	 */
 	public List<Integer> RollDice() {
 
-		List<Integer> diceRolls = new ArrayList<Integer>();
+		final List<Integer> diceRolls = new ArrayList<>();
 
 		// roll dice
 		diceRolls.add(d1.RollDie());
