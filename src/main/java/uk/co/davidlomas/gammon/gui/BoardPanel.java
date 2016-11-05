@@ -23,8 +23,10 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Toolkit;
+import java.io.IOException;
+import java.io.InputStream;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import uk.co.davidlomas.gammon.game.Point;
@@ -32,29 +34,21 @@ import uk.co.davidlomas.gammon.game.Point;
 /**
  * BoardPanel
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class BoardPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	Point[] points = null;
-	int redBore, blackBore;
-	Image imgBG;
+	private Point[] points = null;
+	private int redBore, blackBore;
+	private Image backgroundImage;
 
 	Graphics2D g2;
 
-	/**
-	 * Cons
-	 */
 	public BoardPanel() {
 		setSize(1169, 637);
 	}
 
-	/**
-	 * paintComponent
-	 *
-	 * paints the GUI
-	 */
 	@Override
 	public void paintComponent(final Graphics g) {
 
@@ -66,8 +60,13 @@ public class BoardPanel extends JPanel {
 		g2.setFont(new Font("default", Font.BOLD, 16));
 
 		// Drawing background
-		imgBG = Toolkit.getDefaultToolkit().getImage("images/Backgammon blank board.png");
-		g2.drawImage(imgBG, 0, 0, this);
+		try {
+			final InputStream is = getClass().getResourceAsStream("/blank_board.png");
+			backgroundImage = ImageIO.read(is);
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+		g2.drawImage(backgroundImage, 0, 0, this);
 
 		// Drawing checkers on board
 		// loop through all points

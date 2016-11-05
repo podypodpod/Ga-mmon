@@ -16,12 +16,14 @@ public class MainMenuPanel extends JPanel {
 		setLayout(new GridLayout());
 
 		final JButton startSearch = new JButton("Start Search");
+
 		startSearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				new StartGa();
 			}
 		});
+
 		this.add(startSearch);
 
 		final JButton playBestTwo = new JButton("Play Best Two");
