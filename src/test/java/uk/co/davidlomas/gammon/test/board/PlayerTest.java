@@ -29,7 +29,7 @@ import org.junit.Test;
 import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.Player;
 
-public class PlayerJUnitTest {
+public class PlayerTest {
 
 	Player p1, p2;
 	Board b1;

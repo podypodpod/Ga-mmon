@@ -28,7 +28,7 @@ import uk.co.davidlomas.gammon.game.AIPlayer;
 import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.MoveGenerator;
 
-public class MoveGeneratorJUnitTest {
+public class MoveGeneratorTest {
 
 	Board board;
 	AIPlayer player1, player2;

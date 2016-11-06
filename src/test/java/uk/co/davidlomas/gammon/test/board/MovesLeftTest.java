@@ -25,7 +25,7 @@ import org.junit.Test;
 
 import uk.co.davidlomas.gammon.game.MovesLeft;
 
-public class MovesLeftJUnitTest {
+public class MovesLeftTest {
 
 	MovesLeft testSubject;
 

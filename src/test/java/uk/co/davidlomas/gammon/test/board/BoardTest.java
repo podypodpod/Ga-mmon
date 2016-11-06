@@ -26,7 +26,7 @@ import org.junit.Test;
 import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.Point;
 
-public class BoardJUnitTest {
+public class BoardTest {
 
 	Board board;
 

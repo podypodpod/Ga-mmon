@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import uk.co.davidlomas.gammon.game.Point;
 
-public class PointJUnitTest {
+public class PointTest {
 
 	private Point testSubject;
 

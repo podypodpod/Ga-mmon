@@ -24,7 +24,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 public class GenAlgSettings {
+
+	final static Logger logger = LogManager.getLogger(GenAlgSettings.class);
 
 	private static Boolean displayConsoleCache = null;
 	private static double uniformRateCache = -1;
@@ -33,7 +38,15 @@ public class GenAlgSettings {
 	private static Boolean elitismCache = null;
 	private static int generationsCache = -1;
 	private static int populationSizeCache = -1;
-	private static String savePathCache = null;
+	private static int attemptCount = -1;
+
+	public static int getAtemptCount() {
+		if (attemptCount == -1) {
+			attemptCount = Integer.valueOf(getPropertyFromFile("attemptCount"));
+		}
+		logger.trace("Getting attemptCount: " + attemptCount);
+		return attemptCount;
+	}
 
 	public static int getGenerations() {
 		if (generationsCache == -1) {
@@ -79,13 +92,6 @@ public class GenAlgSettings {
 		return null;
 	}
 
-	public static String getSavePath() {
-		if (savePathCache == null) {
-			savePathCache = getPropertyFromFile("savePath");
-		}
-		return savePathCache;
-	}
-
 	public static int getTournamentSize() {
 		if (tournamentSizeCache == -1) {
 			tournamentSizeCache = Integer.valueOf(getPropertyFromFile("tournamentSize"));
@@ -112,5 +118,9 @@ public class GenAlgSettings {
 			elitismCache = Boolean.valueOf(getPropertyFromFile("elitism"));
 		}
 		return elitismCache;
+	}
+
+	public static void setAtemptCount(final int atemptCount) {
+		GenAlgSettings.attemptCount = atemptCount;
 	}
 }

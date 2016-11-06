@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import uk.co.davidlomas.gammon.game.Die;
 
-public class DieJUnitTest {
+public class DieTest {
 
 	Die d1;
 
