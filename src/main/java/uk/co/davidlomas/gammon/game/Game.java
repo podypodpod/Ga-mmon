@@ -39,7 +39,7 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
 public class Game implements Runnable {
 
 	/** The Players created. */
-	AIPlayer Player1, Player2;
+	AiPlayer Player1, Player2;
 
 	/** The board. */
 	private Board liveBoard;
@@ -89,8 +89,8 @@ public class Game implements Runnable {
 		setIndiv1(i1);
 		setIndiv2(i2);
 
-		Player1 = new AIPlayer(isP1Black, getIndiv1());
-		Player2 = new AIPlayer(!isP1Black, getIndiv2());
+		Player1 = new AiPlayer(isP1Black, getIndiv1());
+		Player2 = new AiPlayer(!isP1Black, getIndiv2());
 	}
 
 	/**

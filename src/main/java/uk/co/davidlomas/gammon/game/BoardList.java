@@ -81,7 +81,7 @@ public class BoardList {
 	 * @param mg
 	 *            the move generator
 	 */
-	public void addBoard(final Board b, final int to, final int from, final AIPlayer p1, final MoveGenerator mg) {
+	public void addBoard(final Board b, final int to, final int from, final AiPlayer p1, final MoveGenerator mg) {
 
 		// move the piece on this new board
 		p1.movePiece(from, to, b);
@@ -147,7 +147,7 @@ public class BoardList {
 	 *            the player
 	 * @return the board chosen
 	 */
-	public Board individualDecision(final Board currentBoard, final AIPlayer p) {
+	public Board individualDecision(final Board currentBoard, final AiPlayer p) {
 
 		// if returned null it doesn't change
 		Board chosenBoard = null;
@@ -552,7 +552,7 @@ public class BoardList {
 	 *            the p
 	 * @return the board that has been selected
 	 */
-	public Board selectBoard(final Board currentBoard, final AIPlayer p) {
+	public Board selectBoard(final Board currentBoard, final AiPlayer p) {
 
 		// create a new board
 		Board chosenBoard = null;

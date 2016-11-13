@@ -16,22 +16,24 @@
  * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package uk.co.davidlomas.gammon.test.board;
+package uk.co.davidlomas.gammon.test.game;
 
 import static org.junit.Assert.assertEquals;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
 import uk.co.davidlomas.gammon.game.MovesLeft;
 
 public class MovesLeftTest {
+	final Logger logger = LogManager.getLogger(MovesLeftTest.class);
 
-	MovesLeft testSubject;
+	private MovesLeft testSubject;
 
 	@Before
 	public void setUp() throws Exception {
-
 		testSubject = new MovesLeft();
 	}
 

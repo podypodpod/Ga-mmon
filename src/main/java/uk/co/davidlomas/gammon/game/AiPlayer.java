@@ -29,12 +29,12 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
  *
  * @author David Lomas - 11035527
  */
-public class AIPlayer extends Player {
+public class AiPlayer extends Player {
 
 	private final MoveGenerator moveGenerator;
 	private Individual individual;
 
-	public AIPlayer(final AIPlayer p) {
+	public AiPlayer(final AiPlayer p) {
 		super(p.black);
 
 		movesLeft = new MovesLeft(p.movesLeft);
@@ -45,7 +45,7 @@ public class AIPlayer extends Player {
 		moveGenerator = p.moveGenerator;
 	}
 
-	public AIPlayer(final boolean b, final Individual individual) {
+	public AiPlayer(final boolean b, final Individual individual) {
 		super(b);
 		this.individual = individual;
 		moveGenerator = new MoveGenerator(individual);

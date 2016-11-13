@@ -50,7 +50,7 @@ public class MoveGenerator {
 	 * @param p
 	 *            the player
 	 */
-	public void generateMoves(final Board cb, final AIPlayer p) {
+	public void generateMoves(final Board cb, final AiPlayer p) {
 
 		// Loop all moves
 		for (final int currentMove : p.movesLeft.movesLeft) {
@@ -70,7 +70,7 @@ public class MoveGenerator {
 						if (p.candidateMovePossible(point, point - currentMove, cb)) {
 
 							// adding the new board to the list
-							boardList.addBoard(new Board(cb), point - currentMove, point, new AIPlayer(p), this);
+							boardList.addBoard(new Board(cb), point - currentMove, point, new AiPlayer(p), this);
 
 						}
 						// if the player is red
@@ -81,7 +81,7 @@ public class MoveGenerator {
 						if (p.candidateMovePossible(point, point + currentMove, cb)) {
 
 							// adding the new board to the list
-							boardList.addBoard(new Board(cb), point + currentMove, point, new AIPlayer(p), this);
+							boardList.addBoard(new Board(cb), point + currentMove, point, new AiPlayer(p), this);
 						}
 					}
 				}
@@ -108,7 +108,7 @@ public class MoveGenerator {
 	 *            the player
 	 * @return the next move board
 	 */
-	public Board getNextMoveBoard(final Board cb, final AIPlayer p) {
+	public Board getNextMoveBoard(final Board cb, final AiPlayer p) {
 
 		// Clear the list
 		boardList.clearList();

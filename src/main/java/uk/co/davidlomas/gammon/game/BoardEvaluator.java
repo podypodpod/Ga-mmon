@@ -36,7 +36,7 @@ public class BoardEvaluator {
 	private Board liveBoard;
 
 	/** The current player. */
-	public AIPlayer currentPlayer;
+	public AiPlayer currentPlayer;
 
 	/** The opponent zero positions. */
 	private int myZero, oponentZero;
@@ -1094,7 +1094,7 @@ public class BoardEvaluator {
 	 * @param p
 	 *            the new player
 	 */
-	public void setPlayer(final AIPlayer p) {
+	public void setPlayer(final AiPlayer p) {
 		currentPlayer = p;
 		if (p.black) {
 			setMyZero(25);

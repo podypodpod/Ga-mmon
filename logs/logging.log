@@ -67,3 +67,5 @@
 2016-11-13 22:06:50 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - b84f690a-b495-4ccd-a8f1-161d5ce480bf
 2016-11-13 22:06:50 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - ab941127-4135-499f-aec4-23522cfdff12
 2016-11-13 22:06:50 TRACE Individual:160 - Loading player from file: savedPlayers/test/testIndividual - ab941127-4135-499f-aec4-23522cfdff12
+2016-11-13 22:12:39 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - 56cbdf6b-3104-4d33-8f60-3141420f7d5e
+2016-11-13 22:12:39 TRACE Individual:160 - Loading player from file: savedPlayers/test/testIndividual - 56cbdf6b-3104-4d33-8f60-3141420f7d5e

@@ -16,10 +16,12 @@
  * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package uk.co.davidlomas.gammon.test.board;
+package uk.co.davidlomas.gammon.test.game;
 
 import static org.junit.Assert.assertEquals;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,12 +29,12 @@ import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.Point;
 
 public class BoardTest {
+	final Logger logger = LogManager.getLogger(BoardTest.class);
 
-	Board board;
+	private Board board;
 
 	@Before
 	public void setUp() throws Exception {
-
 		board = new Board();
 	}
 

@@ -10,15 +10,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uk.co.davidlomas.gammon.genes.Individual;
-import uk.co.davidlomas.gammon.genes.IndividualAttribute;
 
 public class IndividualTest {
-	final Logger logger = LogManager.getLogger(IndividualAttribute.class);
+
+	final Logger logger = LogManager.getLogger(IndividualTest.class);
 
 	private Individual individual1;
 	private Individual individual2;
-	UUID uuid;
-	String filePath;
+	private UUID uuid;
+	private String filePath;
 
 	@Before
 	public void setup() {
@@ -49,13 +49,4 @@ public class IndividualTest {
 			Assert.assertEquals(individual1.getAttribute(i).getValue(), individual2.getAttribute(i).getValue());
 		}
 	}
-
-	@Test
-	public void savingIndividualToFile() {
-		final UUID uuid = UUID.randomUUID();
-		final String filePath = "savedPlayers/test/testIndividual - " + uuid.toString();
-		individual1.saveToFile(filePath);
-		Assert.assertTrue(new File(filePath).exists());
-	}
-
 }

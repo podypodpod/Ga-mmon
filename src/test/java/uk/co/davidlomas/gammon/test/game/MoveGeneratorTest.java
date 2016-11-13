@@ -16,31 +16,34 @@
  * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package uk.co.davidlomas.gammon.test.board;
+package uk.co.davidlomas.gammon.test.game;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.co.davidlomas.gammon.game.AIPlayer;
+import uk.co.davidlomas.gammon.game.AiPlayer;
 import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.MoveGenerator;
 
 public class MoveGeneratorTest {
+	final Logger logger = LogManager.getLogger(MoveGeneratorTest.class);
 
-	Board board;
-	AIPlayer player1, player2;
-	MoveGenerator moveGenerator;
+	private Board board;
+	private AiPlayer player1, player2;
+	private MoveGenerator moveGenerator;
 
 	@Before
 	public void setUp() throws Exception {
 
 		board = new Board();
 
-		player1 = new AIPlayer(true, null);
-		player2 = new AIPlayer(false, null);
+		player1 = new AiPlayer(true, null);
+		player2 = new AiPlayer(false, null);
 
 		moveGenerator = new MoveGenerator(null);
 	}
