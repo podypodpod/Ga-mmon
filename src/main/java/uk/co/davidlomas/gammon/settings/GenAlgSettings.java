@@ -20,6 +20,7 @@
 package uk.co.davidlomas.gammon.settings;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -28,6 +29,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 public class GenAlgSettings {
+
+	private static final String FILE_PATH = "conf/GenAlgSettings.properties";
 
 	final static Logger logger = LogManager.getLogger(GenAlgSettings.class);
 
@@ -44,7 +47,6 @@ public class GenAlgSettings {
 		if (attemptCount == -1) {
 			attemptCount = Integer.valueOf(getPropertyFromFile("attemptCount"));
 		}
-		logger.trace("Getting attemptCount: " + attemptCount);
 		return attemptCount;
 	}
 
@@ -74,7 +76,7 @@ public class GenAlgSettings {
 		InputStream input = null;
 
 		try {
-			input = new FileInputStream("conf/GenAlgSettings.properties");
+			input = new FileInputStream(FILE_PATH);
 			properties.load(input);
 			return properties.getProperty(propVar);
 
@@ -122,5 +124,26 @@ public class GenAlgSettings {
 
 	public static void setAtemptCount(final int atemptCount) {
 		GenAlgSettings.attemptCount = atemptCount;
+		updateTofile("attemptCount", attemptCount + "");
+	}
+
+	public static void updateTofile(final String propertyName, final String value) {
+
+		try {
+			final FileInputStream in = new FileInputStream(FILE_PATH);
+			final Properties props = new Properties();
+			props.load(in);
+			in.close();
+
+			final FileOutputStream out = new FileOutputStream(FILE_PATH);
+			props.setProperty(propertyName, value);
+			props.store(out, null);
+			out.close();
+
+		} catch (final IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 }

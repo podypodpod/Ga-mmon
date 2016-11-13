@@ -2,16 +2,16 @@
  * GNU General Public License
  *
  * This file is part of GA-mmon.
- * 
+ *
  * GA-mmon is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * GA-mmon is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -22,7 +22,7 @@ import uk.co.davidlomas.gammon.genes.Individual;
 
 /**
  * mainTesting
- * 
+ *
  * A test class used for testing players etc.
  *
  * running this will start a game or group of games depending on what is
@@ -42,11 +42,11 @@ public class mainTesting {
 
 		// Playing 1 game
 		System.out.println("---------INDIV 1----------");
-		x.loadFromFile("PlayerFromGen0");
+		x.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen0");
 		// System.out.println(x.toString());
 
 		System.out.println("----------INDIV 2---------");
-		x2.loadFromFile("PlayerFromGen49");
+		x2.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen49");
 		// System.out.println(x2.toString());
 
 		final GameStats gs = gn.playIndividualsVsEachOther(x, x2);

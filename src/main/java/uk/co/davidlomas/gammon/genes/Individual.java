@@ -24,9 +24,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Properties;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 
@@ -39,8 +40,9 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
  * @author David Lomas - 11035527
  */
 public class Individual {
-
 	private static final String PLAYERS_FILE_PATH = "savedPlayers/Attempt - ";
+
+	final Logger logger = LogManager.getLogger(Individual.class);
 
 	// number of attributes
 	private final int numOfAttributes;
@@ -119,6 +121,16 @@ public class Individual {
 		return chromosome;
 	}
 
+	public String getFilePathForPlayers() {
+		final String savedPlayersDirectory = PLAYERS_FILE_PATH + GenAlgSettings.getAtemptCount();
+		final boolean directoryExists = new File(savedPlayersDirectory).exists();
+		if (!directoryExists) {
+			logger.trace("Directory " + savedPlayersDirectory + " does not exist, making it");
+			new File(savedPlayersDirectory).mkdir();
+		}
+		return savedPlayersDirectory;
+	}
+
 	/**
 	 * Gets the fitness.
 	 *
@@ -143,14 +155,15 @@ public class Individual {
 	 * @param fileName
 	 *            the file name
 	 */
-	public void loadFromFile(final String fileName) {
+	public void loadFromFile(final String fullFilePath) {
+
+		logger.trace("Loading player from file: " + fullFilePath);
 
 		final Properties properties = new Properties();
 		InputStream input = null;
 
 		try {
-			input = new FileInputStream(
-					PLAYERS_FILE_PATH + GenAlgSettings.getAtemptCount() + "/" + fileName + ".properties");
+			input = new FileInputStream(fullFilePath);
 
 			// load the file
 			properties.load(input);
@@ -180,22 +193,15 @@ public class Individual {
 	 * @param fileName
 	 *            the file name
 	 */
-	public void saveToFile(final String fileName) {
+	public void saveToFile(final String fullFilePath) {
+		logger.trace("Saving player to file: " + fullFilePath);
 
 		updateToBinary();
 		final Properties properties = new Properties();
 		OutputStream output = null;
 
 		try {
-			final Date date = new Date();
-			final SimpleDateFormat sdf = new SimpleDateFormat("MM:dd:yyyy h:mm:ss a");
-			final String formattedDate = sdf.format(date);
-			final String savedPlayersDirectory = PLAYERS_FILE_PATH + GenAlgSettings.getAtemptCount() + "- "
-					+ formattedDate;
-
-			new File(savedPlayersDirectory).mkdir();
-
-			output = new FileOutputStream(savedPlayersDirectory + "/" + fileName + ".properties");
+			output = new FileOutputStream(fullFilePath);
 
 			// set the properties value
 			properties.setProperty("chromosome", String.valueOf(chromosome));
@@ -206,8 +212,6 @@ public class Individual {
 
 			// save the file to the savedPlayers folder
 			properties.store(output, null);
-
-			GenAlgSettings.setAtemptCount(GenAlgSettings.getAtemptCount() + 1);
 
 		} catch (final IOException io) {
 			io.printStackTrace();
@@ -253,8 +257,8 @@ public class Individual {
 	public String toString() {
 		String result = "Indiviudal with chromosome string: " + String.valueOf(chromosome) + " and fitness of: "
 				+ fitness;
-		for (int x = 0; x < listOfAttributes.length; x++) {
-			result += "| " + listOfAttributes[x].getName() + ": " + listOfAttributes[x].getValue();
+		for (final IndividualAttribute listOfAttribute : listOfAttributes) {
+			result += "| " + listOfAttribute.getName() + ": " + listOfAttribute.getValue();
 		}
 		return result;
 	}
