@@ -20,8 +20,6 @@ package uk.co.davidlomas.gammon.test.game;
 
 import static org.junit.Assert.assertEquals;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,8 +27,6 @@ import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.Point;
 
 public class BoardTest {
-	final Logger logger = LogManager.getLogger(BoardTest.class);
-
 	private Board board;
 
 	@Before
@@ -40,66 +36,41 @@ public class BoardTest {
 
 	@Test
 	public void testingCloneBoardConstructor() {
-		// Given
-		Board newBoard;
 		board.setBlackBore(10);
-
-		// When
-		newBoard = new Board(board);
-
-		// Then
-		assertEquals(10, newBoard.getBlackBore());
+		final Board clonedBoard = new Board(board);
+		assertEquals(10, clonedBoard.getBlackBore());
 	}
 
 	@Test
-	public void testingIsThereZeroFunctionWhenSendingInColorBLACKtrueWithAZeroPeice() {
-		// Given
+	public void addingOneToBlack25SlotAndThenCallingIsThereZeroShouldReturnTrue() {
 		board.Points[25].addBlackPiece();
-
-		// When
-		final Boolean x = board.isthereZero(true);
-
-		// Then
-		assertEquals(true, x);
+		final Boolean isThereZero = board.isthereZero(true);
+		assertEquals(true, isThereZero);
 	}
 
 	@Test
-	public void testingIsThereZeroFunctionWhenSendingInColorBlackTRUEWithDefaultBoard() {
-		// When
-		final Boolean x = board.isthereZero(true);
-
-		// Then
-		assertEquals(false, x);
+	public void callingIsThereZeroOnADefaultBoardShouldReturnFalseForBlack() {
+		final Boolean isThereZero = board.isthereZero(true);
+		assertEquals(false, isThereZero);
 	}
 
 	@Test
-	public void testingIsThereZeroFunctionWhenSendingInColorREDFalseWithDefaultBoard() {
-		// When
-		final Boolean x = board.isthereZero(false);
-
-		// Then
-		assertEquals(false, x);
+	public void callingIsThereZeroOnADefaultBoardShouldReturnFalseForRed() {
+		final Boolean isThereZero = board.isthereZero(false);
+		assertEquals(false, isThereZero);
 	}
 
 	@Test
-	public void testingIsThereZeroFunctionWhenSendingInColorREDtrueWithAZeroPeice() {
-		// Given
+	public void addingOneToRed0SlotAndThenCallingIsThereZeroShouldReturnTrue() {
 		board.Points[0].addRedPiece();
-
-		// When
-		final Boolean x = board.isthereZero(false);
-
-		// Then
-		assertEquals(true, x);
+		final Boolean isThereZero = board.isthereZero(false);
+		assertEquals(true, isThereZero);
 	}
 
 	@Test
-	public void willReturnABoardInTheStandardBGStartPosition() {
+	public void givenADefaultBoardThePositionsShouldBeAsFollows() {
 
-		// Given
-		// standard BG start is applied
-
-		// When
+		// Given standard BG start is applied
 
 		// RED
 		final Point x1 = board.Points[1];
@@ -125,6 +96,5 @@ public class BoardTest {
 		assertEquals(3, x8.getBlackCount());
 		assertEquals(5, x13.getBlackCount());
 		assertEquals(2, x24.getBlackCount());
-
 	}
 }

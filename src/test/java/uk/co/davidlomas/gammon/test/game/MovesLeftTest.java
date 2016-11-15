@@ -19,16 +19,15 @@
 package uk.co.davidlomas.gammon.test.game;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
 import uk.co.davidlomas.gammon.game.MovesLeft;
 
 public class MovesLeftTest {
-	final Logger logger = LogManager.getLogger(MovesLeftTest.class);
 
 	private MovesLeft testSubject;
 
@@ -38,58 +37,60 @@ public class MovesLeftTest {
 	}
 
 	@Test
-	public void testingCloneConstructor() {
+	public void callingCloneConstructorOnMovesLeftShouldReturnaBoardWithTheSameContents() {
 		// Given
 		testSubject.add(4);
 		testSubject.add(9);
 		testSubject.add(3);
 
-		MovesLeft newMovesLeft;
+		MovesLeft clonedMovesLeft;
 
 		// When
-		newMovesLeft = new MovesLeft(testSubject);
+		clonedMovesLeft = new MovesLeft(testSubject);
 
 		// Then
-		assertEquals(4, newMovesLeft.getNext());
-
+		assertEquals(4, clonedMovesLeft.getNext());
+		assertTrue(clonedMovesLeft.movesLeft.contains(4));
+		assertTrue(clonedMovesLeft.movesLeft.contains(9));
+		assertTrue(clonedMovesLeft.movesLeft.contains(3));
 	}
 
 	@Test
-	public void testingMovesLeftAddIntFucntion() {
+	public void addingANumberToTheMovesLeftShouldStoreIt() {
 
 		// When
 		testSubject.add(5);
 
 		// Then
 		assertEquals(5, testSubject.getNext());
-
+		assertTrue(testSubject.contains(5));
 	}
 
 	@Test
-	public void testingRemoveMethodRemovingAnItemFromTheArray() {
+	public void removingMoveFromArrayAndThenCallingContainsShouldReturnFalse() {
 		// Given
 		testSubject.add(4);
 		testSubject.add(9);
 
 		// When
 		testSubject.remove(4);
-		final int x = testSubject.getNext();
 
 		// Then
-		assertEquals(9, x);
+		assertEquals(9, testSubject.getNext());
+		assertFalse(testSubject.contains(4));
 	}
 
 	@Test
-	public void testingSizeMethod() {
+	public void adding3ElementsToArrayAndCallingSizeShouldReturn3() {
 		// Given
 		testSubject.add(4);
 		testSubject.add(9);
 		testSubject.add(3);
 
 		// When
-		final int x = testSubject.size();
+		final int size = testSubject.size();
 
 		// Then
-		assertEquals(3, x);
+		assertEquals(3, size);
 	}
 }

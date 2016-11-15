@@ -21,44 +21,31 @@ package uk.co.davidlomas.gammon.test.game;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
 import uk.co.davidlomas.gammon.game.Die;
 
 public class DieTest {
-	final Logger logger = LogManager.getLogger(DieTest.class);
-
 	private Die d1;
-
-	@Test
-	public void GetDieValueShouldEqualWhatIsSet() {
-		// when
-		d1.setDieValue(4);
-
-		// then
-		assertEquals(4, d1.getDieValue());
-	}
-
-	@Test
-	public void RollingShouldProduceAnIntBetween1And6() {
-		// Given
-		final int x = d1.RollDie();
-		boolean y;
-
-		if (x > 0.99 && x < 6.01) {
-			y = true;
-		} else {
-			y = false;
-		}
-		assertTrue(y);
-	}
 
 	@Before
 	public void setUp() throws Exception {
 		d1 = new Die();
 	}
 
+	@Test
+	public void GetDieValueShouldEqualWhatIsSet() {
+		d1.setDieValue(4);
+		assertEquals(4, d1.getDieValue());
+	}
+
+	@Test
+	public void RollingShouldProduceAnIntBetween1And6() {
+		int roll;
+		for (int x = 0; x > 10; x++) {
+			roll = d1.RollDie();
+			assertTrue(roll >= 1 && roll <= 6);
+		}
+	}
 }

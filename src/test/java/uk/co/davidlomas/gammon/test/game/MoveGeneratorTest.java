@@ -21,8 +21,6 @@ package uk.co.davidlomas.gammon.test.game;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,8 +29,6 @@ import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.MoveGenerator;
 
 public class MoveGeneratorTest {
-	final Logger logger = LogManager.getLogger(MoveGeneratorTest.class);
-
 	private Board board;
 	private AiPlayer player1, player2;
 	private MoveGenerator moveGenerator;
@@ -41,15 +37,13 @@ public class MoveGeneratorTest {
 	public void setUp() throws Exception {
 
 		board = new Board();
-
 		player1 = new AiPlayer(true, null);
 		player2 = new AiPlayer(false, null);
-
 		moveGenerator = new MoveGenerator(null);
 	}
 
 	@Test
-	public void testGenMoveActuallyGeneratesBoardsBlack() {
+	public void callingGenerateMovesOnDefaultBoardWithValidMovesForBlackShouldReturnBoards() {
 		// Given
 		board.setStartPosition();
 		player1.movesLeft.add(3);
@@ -63,7 +57,7 @@ public class MoveGeneratorTest {
 	}
 
 	@Test
-	public void testGenMoveActuallyGeneratesBoardsRed() {
+	public void callingGenerateMovesOnDefaultBoardWithValidMovesForRedShouldReturnBoards() {
 		// Given
 		board.setStartPosition();
 		player2.movesLeft.add(1);
@@ -76,7 +70,7 @@ public class MoveGeneratorTest {
 	}
 
 	@Test
-	public void testMoveGenWithNoMoves() {
+	public void callingGenerateMovesOnABoardWithNoMovesShouldReturnAnEmptyList() {
 		// Given
 		board.setStartPosition();
 		player2.movesLeft.clear();

@@ -22,15 +22,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
 import uk.co.davidlomas.gammon.game.Point;
 
 public class PointTest {
-	final Logger logger = LogManager.getLogger(PointTest.class);
 
 	private Point testSubject;
 
