@@ -4,10 +4,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import testingCode.Settings;
 import uk.co.davidlomas.gammon.main.MainNoMenu;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
+import uk.co.davidlomas.gammon.test.helpers.Settings;
 
 public class MainNoMenuTest {
 

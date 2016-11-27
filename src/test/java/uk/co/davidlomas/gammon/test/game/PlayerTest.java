@@ -28,9 +28,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import testingCode.Settings;
 import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.Player;
+import uk.co.davidlomas.gammon.test.helpers.Settings;
 
 public class PlayerTest {
 

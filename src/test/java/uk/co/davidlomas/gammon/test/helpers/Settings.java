@@ -1,4 +1,4 @@
-package testingCode;
+package uk.co.davidlomas.gammon.test.helpers;
 
 import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;

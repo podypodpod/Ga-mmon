@@ -26,8 +26,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import testingCode.Settings;
 import uk.co.davidlomas.gammon.game.Die;
+import uk.co.davidlomas.gammon.test.helpers.Settings;
 
 public class DieTest {
 	@BeforeClass

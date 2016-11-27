@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import testingCode.Settings;
 import uk.co.davidlomas.gammon.settings.GameSettings;
+import uk.co.davidlomas.gammon.test.helpers.Settings;
 
 public class GameSettingsTest {
 

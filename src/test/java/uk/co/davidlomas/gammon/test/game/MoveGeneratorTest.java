@@ -26,10 +26,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import testingCode.Settings;
 import uk.co.davidlomas.gammon.game.AiPlayer;
 import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.MoveGenerator;
+import uk.co.davidlomas.gammon.test.helpers.Settings;
 
 public class MoveGeneratorTest {
 	private Board board;

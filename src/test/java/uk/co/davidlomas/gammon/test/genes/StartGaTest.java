@@ -5,9 +5,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import testingCode.Settings;
 import uk.co.davidlomas.gammon.genes.StartGa;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
+import uk.co.davidlomas.gammon.test.helpers.Settings;
 
 public class StartGaTest {
 	@BeforeClass

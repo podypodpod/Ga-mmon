@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import testingCode.Settings;
 import uk.co.davidlomas.gammon.genes.IndividualAttribute;
+import uk.co.davidlomas.gammon.test.helpers.Settings;
 
 public class IndividualAttributeTest {
 	private static final String NAME2 = "attribute2";
