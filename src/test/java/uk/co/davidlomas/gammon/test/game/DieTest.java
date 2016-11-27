@@ -21,12 +21,25 @@ package uk.co.davidlomas.gammon.test.game;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import testingCode.Settings;
 import uk.co.davidlomas.gammon.game.Die;
 
 public class DieTest {
+	@BeforeClass
+	public static void beforeClass() {
+		Settings.resettSettings();
+	}
+
+	@AfterClass
+	public static void afterClass() {
+		Settings.resettSettings();
+	}
+
 	private Die d1;
 
 	@Before

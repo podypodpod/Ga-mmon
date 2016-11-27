@@ -21,9 +21,12 @@ package uk.co.davidlomas.gammon.test.game;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import testingCode.Settings;
 import uk.co.davidlomas.gammon.game.AiPlayer;
 import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.MoveGenerator;
@@ -32,6 +35,16 @@ public class MoveGeneratorTest {
 	private Board board;
 	private AiPlayer player1, player2;
 	private MoveGenerator moveGenerator;
+
+	@BeforeClass
+	public static void beforeClass() {
+		Settings.resettSettings();
+	}
+
+	@AfterClass
+	public static void afterClass() {
+		Settings.resettSettings();
+	}
 
 	@Before
 	public void setUp() throws Exception {

@@ -22,7 +22,6 @@ package uk.co.davidlomas.gammon.settings;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.log4j.LogManager;
@@ -30,6 +29,14 @@ import org.apache.log4j.Logger;
 
 public class GenAlgSettings {
 
+	private static final String ELITISM = "elitism";
+	private static final String DISPLAY_CONSOLE = "displayConsole";
+	private static final String UNIFORM_RATE = "uniformRate";
+	private static final String TOURNAMENT_SIZE = "tournamentSize";
+	private static final String POPULATION_SIZE = "populationSize";
+	private static final String MUTATION_RATE = "mutationRate";
+	private static final String ATTEMPT_COUNT = "attemptCount";
+	private static final String GENERATIONS = "generations";
 	private static final String FILE_PATH = "conf/GenAlgSettings.properties";
 
 	final static Logger logger = LogManager.getLogger(GenAlgSettings.class);
@@ -67,28 +74,28 @@ public class GenAlgSettings {
 
 	public static int getAttemptCount() {
 		if (attemptCount == -1) {
-			attemptCount = Integer.valueOf(getPropertyFromFile("attemptCount"));
+			attemptCount = Integer.valueOf(getPropertyFromFile(ATTEMPT_COUNT));
 		}
 		return attemptCount;
 	}
 
 	public static int getGenerations() {
 		if (generations == -1) {
-			generations = Integer.valueOf(getPropertyFromFile("generations"));
+			generations = Integer.valueOf(getPropertyFromFile(GENERATIONS));
 		}
 		return generations;
 	}
 
 	public static double getMutationRate() {
 		if (mutationRate == -1) {
-			mutationRate = Double.valueOf(getPropertyFromFile("mutationRate"));
+			mutationRate = Double.valueOf(getPropertyFromFile(MUTATION_RATE));
 		}
 		return mutationRate;
 	}
 
 	public static int getPopulationSize() {
 		if (populationSize == -1) {
-			populationSize = Integer.valueOf(getPropertyFromFile("populationSize"));
+			populationSize = Integer.valueOf(getPropertyFromFile(POPULATION_SIZE));
 		}
 		return populationSize;
 	}
@@ -101,78 +108,76 @@ public class GenAlgSettings {
 		generations = gens;
 	}
 
-	public static String getPropertyFromFile(final String propVar) {
-		final Properties properties = new Properties();
-		InputStream input = null;
-
-		try {
-			input = new FileInputStream(FILE_PATH);
-			properties.load(input);
-			return properties.getProperty(propVar);
-
-		} catch (final IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (final IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return null;
-	}
-
 	public static int getTournamentSize() {
 		if (tournamentSize == -1) {
-			tournamentSize = Integer.valueOf(getPropertyFromFile("tournamentSize"));
+			tournamentSize = Integer.valueOf(getPropertyFromFile(TOURNAMENT_SIZE));
 		}
 		return tournamentSize;
 	}
 
 	public static double getUniformRate() {
 		if (uniformRate == -1) {
-			uniformRate = Double.valueOf(getPropertyFromFile("uniformRate"));
+			uniformRate = Double.valueOf(getPropertyFromFile(UNIFORM_RATE));
 		}
 		return uniformRate;
 	}
 
 	public static boolean isDisplayConsole() {
 		if (displayConsole == null) {
-			displayConsole = Boolean.valueOf(getPropertyFromFile("displayConsole"));
+			displayConsole = Boolean.valueOf(getPropertyFromFile(DISPLAY_CONSOLE));
 		}
 		return displayConsole;
 	}
 
 	public static boolean isElitism() {
 		if (elitism == null) {
-			elitism = Boolean.valueOf(getPropertyFromFile("elitism"));
+			elitism = Boolean.valueOf(getPropertyFromFile(ELITISM));
 		}
 		return elitism;
 	}
 
 	public static void setAttemptCount(final int atemptCount) {
 		GenAlgSettings.attemptCount = atemptCount;
-		updateTofile("attemptCount", attemptCount + "");
+		updateTofile(ATTEMPT_COUNT, attemptCount + "");
 	}
 
 	public static void updateTofile(final String propertyName, final String value) {
-
 		try {
-			final FileInputStream in = new FileInputStream(FILE_PATH);
-			final Properties props = new Properties();
-			props.load(in);
-			in.close();
-
-			final FileOutputStream out = new FileOutputStream(FILE_PATH);
-			props.setProperty(propertyName, value);
-			props.store(out, null);
-			out.close();
-
+			final Properties properties = getProperties();
+			if (properties.containsKey(propertyName)) {
+				final FileOutputStream out = new FileOutputStream(FILE_PATH);
+				properties.setProperty(propertyName, value);
+				properties.store(out, null);
+				out.close();
+			} else {
+				throw new NoSuchFieldError();
+			}
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
+	}
 
+	private static Properties getProperties() {
+		FileInputStream in;
+		try {
+			in = new FileInputStream(FILE_PATH);
+			final Properties props = new Properties();
+			props.load(in);
+			in.close();
+			return props;
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static String getPropertyFromFile(final String propVar) {
+
+		final Properties properties = getProperties();
+		final String result = properties.getProperty(propVar);
+		if (result != null) {
+			return result;
+		}
+		throw new NoSuchFieldError();
 	}
 }

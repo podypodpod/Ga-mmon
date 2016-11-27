@@ -1,5 +1,18 @@
 package uk.co.davidlomas.gammon.test.gui;
 
-public class BoardPanelTest {
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
+import testingCode.Settings;
+
+public class BoardPanelTest {
+	@BeforeClass
+	public static void beforeClass() {
+		Settings.resettSettings();
+	}
+
+	@AfterClass
+	public static void afterClass() {
+		Settings.resettSettings();
+	}
 }

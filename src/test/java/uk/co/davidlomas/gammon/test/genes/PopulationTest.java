@@ -3,23 +3,47 @@ package uk.co.davidlomas.gammon.test.genes;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import testingCode.Settings;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.genes.Population;
+import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 
 public class PopulationTest {
-	private static final int POPULATION_SIZE = 10;
+	private static final int POPULATION_SIZE = 2;
+
 	Population initPopulation;
 	Population population;
+
+	@BeforeClass
+	public static void beforeClass() {
+		Settings.resettSettings();
+	}
+
+	@AfterClass
+	public static void afterClass() {
+		Settings.resettSettings();
+	}
 
 	@Before
 	public void setup() {
 		initPopulation = new Population(POPULATION_SIZE, true);
 		population = new Population(POPULATION_SIZE, false);
 
+		GenAlgSettings.setElitism(true);
+		GenAlgSettings.setDisplayConsole(true);
+
+		GenAlgSettings.setGenerations(0);
+		GenAlgSettings.setPopulationSize(POPULATION_SIZE);
+		GenAlgSettings.setAttemptCount(9999);
+		GenAlgSettings.setTournamentSize(1);
+
+		GenAlgSettings.setUniformRate(1);
+		GenAlgSettings.setMutationRate(1);
 	}
 
 	@Test
@@ -33,7 +57,7 @@ public class PopulationTest {
 		final Individual[] individuals = initPopulation.getPopulation();
 		final Individual fitIndividual = new Individual();
 		fitIndividual.setFitness(99);
-		individuals[5] = fitIndividual;
+		individuals[1] = fitIndividual;
 		initPopulation.setIndividuals(individuals);
 
 		final Individual actual = initPopulation.getFittest();
@@ -41,8 +65,6 @@ public class PopulationTest {
 		assertEquals(fitIndividual, actual);
 	}
 
-	// too slow to always run
-	@Ignore
 	@Test
 	public void calculateFitnessChangesOrder() {
 		final double before = initPopulation.getFittest().getFitness();

@@ -4,9 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import testingCode.Settings;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 
 public class GenAlgSettingsTest {
@@ -36,6 +39,16 @@ public class GenAlgSettingsTest {
 
 		GenAlgSettings.setUniformRate(-1);
 		GenAlgSettings.setMutationRate(-1);
+	}
+
+	@BeforeClass
+	public static void beforeClass() {
+		Settings.resettSettings();
+	}
+
+	@AfterClass
+	public static void afterClass() {
+		Settings.resettSettings();
 	}
 
 	@Test
@@ -176,6 +189,16 @@ public class GenAlgSettingsTest {
 		final Boolean actualValue = GenAlgSettings.isElitism();
 
 		assertFalse(actualValue);
+	}
+
+	@Test(expected = NoSuchFieldError.class)
+	public void tryingToGetAMissingPropertyShouldThrowError() {
+		GenAlgSettings.getPropertyFromFile("missingProperty");
+	}
+
+	@Test(expected = NoSuchFieldError.class)
+	public void tryingToUpdateAMissingPropertyShouldThrowError() {
+		GenAlgSettings.updateTofile("missingProperty", "15");
 	}
 
 	private boolean doublesAreEqual(final double first, final double second) {

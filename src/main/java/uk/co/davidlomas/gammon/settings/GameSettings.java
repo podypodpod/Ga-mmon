@@ -40,7 +40,32 @@ public class GameSettings {
 	private static Boolean areBothAIsCache = null;
 	private static Boolean displayConsoleCache = null;
 	private static Boolean multiThreadingCache = null;
+
 	private static int timeDelayCache = -1;
+
+	public static void setIsP1BlackCache(final Boolean isP1BlackCache) {
+		GameSettings.isP1BlackCache = isP1BlackCache;
+	}
+
+	public static void setDisplayGUICache(final Boolean displayGUICache) {
+		GameSettings.displayGUICache = displayGUICache;
+	}
+
+	public static void setAreBothAIsCache(final Boolean areBothAIsCache) {
+		GameSettings.areBothAIsCache = areBothAIsCache;
+	}
+
+	public static void setDisplayConsoleCache(final Boolean displayConsoleCache) {
+		GameSettings.displayConsoleCache = displayConsoleCache;
+	}
+
+	public static void setMultiThreadingCache(final Boolean multiThreadingCache) {
+		GameSettings.multiThreadingCache = multiThreadingCache;
+	}
+
+	public static void setTimeDelayCache(final int timeDelayCache) {
+		GameSettings.timeDelayCache = timeDelayCache;
+	}
 
 	public static boolean getAreBothAI() {
 		if (areBothAIsCache == null) {

@@ -20,13 +20,27 @@ package uk.co.davidlomas.gammon.test.game;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import testingCode.Settings;
 import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.Point;
 
 public class BoardTest {
+
+	@BeforeClass
+	public static void beforeClass() {
+		Settings.resettSettings();
+	}
+
+	@AfterClass
+	public static void afterClass() {
+		Settings.resettSettings();
+	}
+
 	private Board board;
 
 	@Before

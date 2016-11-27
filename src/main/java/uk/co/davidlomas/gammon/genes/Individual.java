@@ -40,14 +40,12 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
  * @author David Lomas - 11035527
  */
 public class Individual {
+
 	private static final String PLAYERS_FILE_PATH = "savedPlayers/Attempt - ";
 
 	final Logger logger = LogManager.getLogger(Individual.class);
 
-	// number of attributes
 	private final int numOfAttributes;
-
-	// Attributes
 	private IndividualAttribute[] listOfAttributes = null;
 
 	/** The chromosome. */

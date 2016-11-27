@@ -8,9 +8,12 @@ import java.util.UUID;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import testingCode.Settings;
 import uk.co.davidlomas.gammon.genes.Individual;
 
 public class IndividualTest {
@@ -21,6 +24,16 @@ public class IndividualTest {
 	private Individual individual2;
 	private UUID uuid;
 	private String filePath;
+
+	@BeforeClass
+	public static void beforeClass() {
+		Settings.resettSettings();
+	}
+
+	@AfterClass
+	public static void afterClass() {
+		Settings.resettSettings();
+	}
 
 	@Before
 	public void setup() {
