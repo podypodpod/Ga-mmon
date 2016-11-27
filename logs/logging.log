@@ -1,0 +1,76 @@
+2016-11-19 15:50:45 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - 4e1e0330-2b24-442f-85d0-b15370d8479b
+2016-11-19 15:50:45 TRACE Individual:160 - Loading player from file: savedPlayers/test/testIndividual - 4e1e0330-2b24-442f-85d0-b15370d8479b
+2016-11-19 15:57:23 TRACE Individual:128 - Directory savedPlayers/Attempt - 12 does not exist, making it
+2016-11-19 15:57:23 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - 63d5e323-eb46-4d32-9591-43db03c39be3
+2016-11-19 15:57:23 TRACE Individual:160 - Loading player from file: savedPlayers/test/testIndividual - 63d5e323-eb46-4d32-9591-43db03c39be3
+2016-11-19 15:59:06 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - 32d2010a-f761-4174-b459-d2586dbfd602
+2016-11-19 15:59:06 TRACE Individual:160 - Loading player from file: savedPlayers/test/testIndividual - 32d2010a-f761-4174-b459-d2586dbfd602
+2016-11-19 16:01:03 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - c9fddfb1-5841-47d4-8ed5-8f9192050af6
+2016-11-19 16:01:03 TRACE Individual:160 - Loading player from file: savedPlayers/test/testIndividual - c9fddfb1-5841-47d4-8ed5-8f9192050af6
+2016-11-20 21:45:15 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - 07e0f5f2-07fb-4cc1-9271-c68c11a16268
+2016-11-20 21:45:15 TRACE Individual:160 - Loading player from file: savedPlayers/test/testIndividual - 07e0f5f2-07fb-4cc1-9271-c68c11a16268
+2016-11-25 17:37:00 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - a1cbb117-0f9d-41eb-8ec6-037645a64f03
+2016-11-25 17:37:00 TRACE Individual:160 - Loading player from file: savedPlayers/test/testIndividual - a1cbb117-0f9d-41eb-8ec6-037645a64f03
+2016-11-25 17:38:12 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - c007ea4c-12e3-4661-a22c-d4b05889d753
+2016-11-25 17:38:12 TRACE Individual:160 - Loading player from file: savedPlayers/test/testIndividual - c007ea4c-12e3-4661-a22c-d4b05889d753
+2016-11-25 18:02:30 TRACE Individual:128 - Directory savedPlayers/Attempt - 1 does not exist, making it
+2016-11-25 18:02:30 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 1FittestFromInitialPopulation
+2016-11-25 18:02:30 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 1PlayerFromGen0
+2016-11-25 18:03:26 TRACE Individual:128 - Directory savedPlayers/Attempt - 1 does not exist, making it
+2016-11-25 18:03:26 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 1FittestFromInitialPopulation
+2016-11-25 18:03:26 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 1PlayerFromGen0
+2016-11-25 18:03:52 TRACE Individual:128 - Directory savedPlayers/Attempt - 10000 does not exist, making it
+2016-11-25 18:03:52 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000FittestFromInitialPopulation
+2016-11-25 18:03:52 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000PlayerFromGen0
+2016-11-25 18:04:34 TRACE Individual:128 - Directory savedPlayers/Attempt - 10000 -  does not exist, making it
+2016-11-25 18:04:34 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000 - FittestFromInitialPopulation
+2016-11-25 18:04:34 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000 - PlayerFromGen0
+2016-11-25 18:08:43 TRACE Individual:128 - Directory savedPlayers/Attempt - 10000 does not exist, making it
+2016-11-25 18:08:43 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/FittestFromInitialPopulation
+2016-11-25 18:08:43 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/PlayerFromGen0
+2016-11-27 15:03:46 TRACE Individual:128 - Directory savedPlayers/Attempt - -1 does not exist, making it
+2016-11-27 15:03:46 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - 5e1bd014-8761-43cf-8ad2-824f6aac8b4a
+2016-11-27 15:03:46 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/FittestFromInitialPopulation
+2016-11-27 15:05:05 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/FittestFromInitialPopulation
+2016-11-27 15:05:22 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - 972a33b9-7d86-4498-aa11-7fa85ecd9142
+2016-11-27 15:05:22 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/FittestFromInitialPopulation
+2016-11-27 15:05:57 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - 1303cf2a-f663-4a92-a8ce-e8fb4acb301a
+2016-11-27 15:07:33 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - 1954b657-52b0-4e0e-8850-8779e108a3bf
+2016-11-27 15:09:36 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - 2a27dc7e-630d-42db-9f35-0a4cc37edfdd
+2016-11-27 15:09:36 TRACE Individual:160 - Loading player from file: savedPlayers/test/testIndividual - 2a27dc7e-630d-42db-9f35-0a4cc37edfdd
+2016-11-27 15:09:48 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - 607fb49e-9138-43e8-922f-d3d7c3ac193f
+2016-11-27 15:09:48 TRACE Individual:160 - Loading player from file: savedPlayers/test/testIndividual - 607fb49e-9138-43e8-922f-d3d7c3ac193f
+2016-11-27 15:09:48 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/FittestFromInitialPopulation
+2016-11-27 15:10:12 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/FittestFromInitialPopulation
+2016-11-27 15:10:27 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/FittestFromInitialPopulation
+2016-11-27 15:12:34 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/FittestFromInitialPopulation
+2016-11-27 15:12:34 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/PlayerFromGen0
+2016-11-27 15:12:39 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - 26365cd4-32c4-40b8-af01-9bebe2e59345
+2016-11-27 15:12:39 TRACE Individual:160 - Loading player from file: savedPlayers/test/testIndividual - 26365cd4-32c4-40b8-af01-9bebe2e59345
+2016-11-27 15:12:39 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/FittestFromInitialPopulation
+2016-11-27 15:12:39 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/PlayerFromGen0
+2016-11-27 15:34:35 TRACE Individual:128 - Directory savedPlayers/Attempt - 9999 does not exist, making it
+2016-11-27 15:34:35 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - 272a584b-84ba-422f-a4bd-cac1a01c54e0
+2016-11-27 15:34:35 TRACE Individual:160 - Loading player from file: savedPlayers/test/testIndividual - 272a584b-84ba-422f-a4bd-cac1a01c54e0
+2016-11-27 15:34:35 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/FittestFromInitialPopulation
+2016-11-27 15:34:35 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/PlayerFromGen0
+2016-11-27 15:35:05 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - 396eece6-17ac-489e-8b3e-c5ce6632c73e
+2016-11-27 15:35:05 TRACE Individual:160 - Loading player from file: savedPlayers/test/testIndividual - 396eece6-17ac-489e-8b3e-c5ce6632c73e
+2016-11-27 15:35:05 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/FittestFromInitialPopulation
+2016-11-27 15:35:05 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/PlayerFromGen0
+2016-11-27 15:35:15 TRACE Individual:197 - Saving player to file: savedPlayers/test/testIndividual - d6424450-f57e-4f15-b631-ade7efed48bb
+2016-11-27 15:35:15 TRACE Individual:160 - Loading player from file: savedPlayers/test/testIndividual - d6424450-f57e-4f15-b631-ade7efed48bb
+2016-11-27 15:35:15 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/FittestFromInitialPopulation
+2016-11-27 15:35:15 TRACE Individual:197 - Saving player to file: savedPlayers/Attempt - 10000/PlayerFromGen0
+2016-11-27 15:36:36 TRACE MainNoMenu:11 - Starting Ga-mmon
+2016-11-27 15:44:02 TRACE MainNoMenu:11 - Starting Ga-mmon
+2016-11-27 15:44:03 TRACE Individual:195 - Saving player to file: savedPlayers/Attempt - 9999/FittestFromInitialPopulation
+2016-11-27 15:57:35 TRACE MainNoMenu:11 - Starting Ga-mmon
+2016-11-27 15:57:38 TRACE Individual:195 - Saving player to file: savedPlayers/Attempt - 9999/FittestFromInitialPopulation
+2016-11-27 16:36:14 TRACE Individual:195 - Saving player to file: savedPlayers/Attempt - 10000/FittestFromInitialPopulation
+2016-11-27 16:36:14 TRACE Individual:195 - Saving player to file: savedPlayers/Attempt - 10000/PlayerFromGen0
+2016-11-27 16:36:51 TRACE Individual:195 - Saving player to file: savedPlayers/Attempt - 10000/FittestFromInitialPopulation
+2016-11-27 16:36:51 TRACE Individual:195 - Saving player to file: savedPlayers/Attempt - 10000/PlayerFromGen0
+2016-11-27 16:36:55 TRACE Individual:195 - Saving player to file: savedPlayers/test/testIndividual - 4eeb39e5-87ab-43bc-ab92-85c516774a72
+2016-11-27 16:36:55 TRACE Individual:158 - Loading player from file: savedPlayers/test/testIndividual - 4eeb39e5-87ab-43bc-ab92-85c516774a72
+2016-11-27 16:36:55 TRACE MainNoMenu:11 - Starting Ga-mmon
