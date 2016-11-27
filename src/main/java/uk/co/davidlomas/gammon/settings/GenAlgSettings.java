@@ -34,16 +34,38 @@ public class GenAlgSettings {
 
 	final static Logger logger = LogManager.getLogger(GenAlgSettings.class);
 
-	private static Boolean displayConsoleCache = null;
-	private static double uniformRateCache = -1;
-	private static double mutationRateCache = -1;
-	private static int tournamentSizeCache = -1;
-	private static Boolean elitismCache = null;
-	private static int generationsCache = -1;
-	private static int populationSizeCache = -1;
-	private static int attemptCount = -1;
+	private static Boolean elitism = null;
+	private static Boolean displayConsole = null;
 
-	public static int getAtemptCount() {
+	private static int generations = -1;
+	private static int populationSize = -1;
+	private static int attemptCount = -1;
+	private static int tournamentSize = -1;
+
+	private static double uniformRate = -1;
+	private static double mutationRate = -1;
+
+	public static void setDisplayConsole(final Boolean displayConsole) {
+		GenAlgSettings.displayConsole = displayConsole;
+	}
+
+	public static void setElitism(final Boolean elitism) {
+		GenAlgSettings.elitism = elitism;
+	}
+
+	public static void setUniformRate(final double uniformRate) {
+		GenAlgSettings.uniformRate = uniformRate;
+	}
+
+	public static void setMutationRate(final double mutationRate) {
+		GenAlgSettings.mutationRate = mutationRate;
+	}
+
+	public static void setTournamentSize(final int tournamentSize) {
+		GenAlgSettings.tournamentSize = tournamentSize;
+	}
+
+	public static int getAttemptCount() {
 		if (attemptCount == -1) {
 			attemptCount = Integer.valueOf(getPropertyFromFile("attemptCount"));
 		}
@@ -51,24 +73,32 @@ public class GenAlgSettings {
 	}
 
 	public static int getGenerations() {
-		if (generationsCache == -1) {
-			generationsCache = Integer.valueOf(getPropertyFromFile("generations"));
+		if (generations == -1) {
+			generations = Integer.valueOf(getPropertyFromFile("generations"));
 		}
-		return generationsCache;
+		return generations;
 	}
 
 	public static double getMutationRate() {
-		if (mutationRateCache == -1) {
-			mutationRateCache = Double.valueOf(getPropertyFromFile("mutationRate"));
+		if (mutationRate == -1) {
+			mutationRate = Double.valueOf(getPropertyFromFile("mutationRate"));
 		}
-		return mutationRateCache;
+		return mutationRate;
 	}
 
 	public static int getPopulationSize() {
-		if (populationSizeCache == -1) {
-			populationSizeCache = Integer.valueOf(getPropertyFromFile("populationSize"));
+		if (populationSize == -1) {
+			populationSize = Integer.valueOf(getPropertyFromFile("populationSize"));
 		}
-		return populationSizeCache;
+		return populationSize;
+	}
+
+	public static void setPopulationSize(final int size) {
+		populationSize = size;
+	}
+
+	public static void setGenerations(final int gens) {
+		generations = gens;
 	}
 
 	public static String getPropertyFromFile(final String propVar) {
@@ -95,34 +125,34 @@ public class GenAlgSettings {
 	}
 
 	public static int getTournamentSize() {
-		if (tournamentSizeCache == -1) {
-			tournamentSizeCache = Integer.valueOf(getPropertyFromFile("tournamentSize"));
+		if (tournamentSize == -1) {
+			tournamentSize = Integer.valueOf(getPropertyFromFile("tournamentSize"));
 		}
-		return tournamentSizeCache;
+		return tournamentSize;
 	}
 
 	public static double getUniformRate() {
-		if (uniformRateCache == -1) {
-			uniformRateCache = Double.valueOf(getPropertyFromFile("uniformRate"));
+		if (uniformRate == -1) {
+			uniformRate = Double.valueOf(getPropertyFromFile("uniformRate"));
 		}
-		return uniformRateCache;
+		return uniformRate;
 	}
 
-	public static boolean isDisplayconsole() {
-		if (displayConsoleCache == null) {
-			displayConsoleCache = Boolean.valueOf(getPropertyFromFile("displayConsole"));
+	public static boolean isDisplayConsole() {
+		if (displayConsole == null) {
+			displayConsole = Boolean.valueOf(getPropertyFromFile("displayConsole"));
 		}
-		return displayConsoleCache;
+		return displayConsole;
 	}
 
 	public static boolean isElitism() {
-		if (elitismCache == null) {
-			elitismCache = Boolean.valueOf(getPropertyFromFile("elitism"));
+		if (elitism == null) {
+			elitism = Boolean.valueOf(getPropertyFromFile("elitism"));
 		}
-		return elitismCache;
+		return elitism;
 	}
 
-	public static void setAtemptCount(final int atemptCount) {
+	public static void setAttemptCount(final int atemptCount) {
 		GenAlgSettings.attemptCount = atemptCount;
 		updateTofile("attemptCount", attemptCount + "");
 	}
@@ -141,7 +171,6 @@ public class GenAlgSettings {
 			out.close();
 
 		} catch (final IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

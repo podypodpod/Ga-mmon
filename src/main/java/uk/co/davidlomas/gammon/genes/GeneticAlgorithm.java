@@ -45,7 +45,7 @@ public class GeneticAlgorithm {
 	 */
 	private static Individual crossover(final Individual indiv1, final Individual indiv2) {
 
-		if (GenAlgSettings.isDisplayconsole()) {
+		if (GenAlgSettings.isDisplayConsole()) {
 			System.out.println("------CROSSOVER-------------------");
 		}
 
@@ -76,7 +76,7 @@ public class GeneticAlgorithm {
 	 */
 	public static Population evolvePopulation(final Population pop) {
 
-		if (GenAlgSettings.isDisplayconsole()) {
+		if (GenAlgSettings.isDisplayConsole()) {
 			System.out.println("------EVOLVE POPULATION-------------------");
 		}
 
@@ -110,7 +110,7 @@ public class GeneticAlgorithm {
 		}
 
 		// Mutate population
-		if (GenAlgSettings.isDisplayconsole()) {
+		if (GenAlgSettings.isDisplayConsole()) {
 			System.out.println("------MUTATING-------------------");
 		}
 		for (int i = elitismOffset; i < newPopulation.size(); i++) {
@@ -164,7 +164,7 @@ public class GeneticAlgorithm {
 	 */
 	public static Individual tournamentSelection(final Population pop) {
 
-		if (GenAlgSettings.isDisplayconsole()) {
+		if (GenAlgSettings.isDisplayConsole()) {
 			System.out.println("------TOURNAMENT SELECTION-------------------");
 		}
 
@@ -203,7 +203,7 @@ public class GeneticAlgorithm {
 			// setting the tournament array to the winners of the round, so now
 			// only has the winners in
 			else {
-				tournament.setArray(winnersOfRound);
+				tournament.setIndividuals(winnersOfRound);
 			}
 		}
 		return tournamentVictor;

@@ -51,14 +51,14 @@ public class FitnessCalculator {
 
 		gameManager = new GameManager();
 
-		if (GenAlgSettings.isDisplayconsole()) {
+		if (GenAlgSettings.isDisplayConsole()) {
 			System.out.println("Round robin started");
 		}
 
 		// looping the whole population, x is the one we are measuring
 		for (int x = 0; x < pop.individuals.length; x++) {
 
-			if (GenAlgSettings.isDisplayconsole()) {
+			if (GenAlgSettings.isDisplayConsole()) {
 				System.out.println("Testing Player: " + x);
 			}
 
@@ -73,7 +73,7 @@ public class FitnessCalculator {
 			for (int y = 0; y < pop.individuals.length; y++) {
 				// make sure its not playing itself
 				if (y != x) {
-					if (GenAlgSettings.isDisplayconsole()) {
+					if (GenAlgSettings.isDisplayConsole()) {
 						System.out.println("\tagainst player: " + (y + 1) + "/" + pop.individuals.length);
 					}
 
@@ -108,12 +108,7 @@ public class FitnessCalculator {
 	 */
 	public static Individual getWinnerOf(final Individual i1, final Individual i2) {
 		gameManager = new GameManager();
-
-		// if(GenAlgSettings.isDisplayconsole()){System.out.println("Playing 2
-		// indivs against each other, Game number: "+count++);}
-
 		final GameStats gs = gameManager.playIndividualsVsEachOther(i1, i2);
-
 		return gs.getVictor();
 	}
 }

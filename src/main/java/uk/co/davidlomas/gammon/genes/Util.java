@@ -75,7 +75,7 @@ public class Util {
 	 *            the numbers to convert
 	 * @return the char[]
 	 */
-	public static char[] convertFromIntToBinaryCharAry(final IndividualAttribute[] numbersToConvert) {
+	public static char[] convertFromIntArrayToBinaryCharAry(final IndividualAttribute[] numbersToConvert) {
 		final StringBuffer binaryString = new StringBuffer();
 		for (int x = 0; x < numbersToConvert.length; x++) {
 			binaryString.append(convertFromIntToBinaryStr(numbersToConvert[x].getValue()));

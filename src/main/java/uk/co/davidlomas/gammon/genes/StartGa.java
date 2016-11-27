@@ -33,7 +33,7 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 public class StartGa {
 
 	public StartGa() {
-		GenAlgSettings.setAtemptCount(GenAlgSettings.getAtemptCount() + 1);
+		GenAlgSettings.setAttemptCount(GenAlgSettings.getAttemptCount() + 1);
 
 		System.out.println("Program running!");
 
@@ -45,14 +45,14 @@ public class StartGa {
 		System.out.println("Calculating fittest of initial pop");
 		pop.calculateFitness();
 		Individual fittest = pop.getFittest();
-		fittest.saveToFile(fittest.getFilePathForPlayers() + "FittestFromInitialPopulation");
+		fittest.saveToFile(fittest.getFilePathForPlayers() + "/FittestFromInitialPopulation");
 
 		// evolve once
 		System.out.println("-------------------------");
 		System.out.println("Evolving population");
 		pop = GeneticAlgorithm.evolvePopulation(pop);
 		fittest = pop.getFittest();
-		fittest.saveToFile(fittest.getFilePathForPlayers() + "PlayerFromGen" + 0);
+		fittest.saveToFile(fittest.getFilePathForPlayers() + "/PlayerFromGen" + 0);
 		System.out.println("--------Evolved!--------- this was population 0");
 
 		for (int x = 0; x < GenAlgSettings.getGenerations() - 1; x++) {
@@ -61,7 +61,7 @@ public class StartGa {
 			pop = GeneticAlgorithm.evolvePopulation(pop);
 			System.out.println("Calculating fitness");
 			fittest = pop.getFittest();
-			fittest.saveToFile(fittest.getFilePathForPlayers() + "PlayerFromGen" + (x + 1));
+			fittest.saveToFile(fittest.getFilePathForPlayers() + "/PlayerFromGen" + (x + 1));
 			System.out.println("--------Evolved!--------- this was population " + (x + 1));
 		}
 

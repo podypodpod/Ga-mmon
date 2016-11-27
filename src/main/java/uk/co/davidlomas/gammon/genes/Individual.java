@@ -99,7 +99,7 @@ public class Individual {
 		numOfAttributes = listOfAttributes.length;
 
 		// convert to binary string
-		chromosome = Util.convertFromIntToBinaryCharAry(listOfAttributes);
+		chromosome = Util.convertFromIntArrayToBinaryCharAry(listOfAttributes);
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class Individual {
 	}
 
 	public String getFilePathForPlayers() {
-		final String savedPlayersDirectory = PLAYERS_FILE_PATH + GenAlgSettings.getAtemptCount();
+		final String savedPlayersDirectory = PLAYERS_FILE_PATH + GenAlgSettings.getAttemptCount();
 		final boolean directoryExists = new File(savedPlayersDirectory).exists();
 		if (!directoryExists) {
 			logger.trace("Directory " + savedPlayersDirectory + " does not exist, making it");
@@ -277,6 +277,6 @@ public class Individual {
 	 * Update to binary.
 	 */
 	public void updateToBinary() {
-		chromosome = Util.convertFromIntToBinaryCharAry(listOfAttributes);
+		chromosome = Util.convertFromIntArrayToBinaryCharAry(listOfAttributes);
 	}
 }

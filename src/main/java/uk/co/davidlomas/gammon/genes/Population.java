@@ -27,7 +27,7 @@ package uk.co.davidlomas.gammon.genes;
  */
 public class Population {
 
-	Individual[] individuals;
+	public Individual[] individuals;
 
 	/**
 	 * Instantiates a new population.
@@ -87,7 +87,7 @@ public class Population {
 		individuals[index] = indiv;
 	}
 
-	public void setArray(final Individual[] indivs) {
+	public void setIndividuals(final Individual[] indivs) {
 		individuals = indivs;
 	}
 
