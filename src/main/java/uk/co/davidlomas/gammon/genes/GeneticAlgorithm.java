@@ -18,6 +18,9 @@
 
 package uk.co.davidlomas.gammon.genes;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 
 /**
@@ -27,7 +30,7 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
  *
  * selection by tournament
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class GeneticAlgorithm {
 
@@ -70,23 +73,32 @@ public class GeneticAlgorithm {
 	 *
 	 * uses crossover and mutation to produce the new population
 	 *
-	 * @param pop
+	 * @param currentPopulation
 	 *            the population to evolve
 	 * @return the new population evolved
 	 */
-	public static Population evolvePopulation(final Population pop) {
+	public static Population evolvePopulation(final Population currentPopulation) {
 
 		if (GenAlgSettings.isDisplayConsole()) {
 			System.out.println("------EVOLVE POPULATION-------------------");
 		}
+		final Population newPopulation = new Population(currentPopulation.size(), false);
+		elitism(currentPopulation, newPopulation);
+		final int elitismOffset = crossover(currentPopulation, newPopulation);
+		mutate(newPopulation, elitismOffset);
+		newPopulation.calculateFitness();
 
-		final Population newPopulation = new Population(pop.size(), false);
+		return newPopulation;
+	}
 
+	private static void elitism(final Population currentPopulation, final Population newPopulation) {
 		// Keep the best individual
 		if (GenAlgSettings.isElitism()) {
-			newPopulation.saveIndividual(0, pop.getFittest());
+			newPopulation.saveIndividual(0, currentPopulation.getFittest());
 		}
+	}
 
+	private static int crossover(final Population currentPopulation, final Population newPopulation) {
 		// Crossover population
 		int elitismOffset;
 		if (GenAlgSettings.isElitism()) {
@@ -99,16 +111,19 @@ public class GeneticAlgorithm {
 		// crossover function
 		// the two individuals that are crossed over are the winners of the
 		// tournament selection (should provide some of the best players)
-		for (int i = elitismOffset; i < pop.size(); i++) {
+		for (int i = elitismOffset; i < currentPopulation.size(); i++) {
 
-			final Individual indiv1 = tournamentSelection(pop);
-			final Individual indiv2 = tournamentSelection(pop);
+			final Individual indiv1 = tournamentSelection(currentPopulation);
+			final Individual indiv2 = tournamentSelection(currentPopulation);
 
 			final Individual newIndiv = crossover(indiv1, indiv2);
 
 			newPopulation.saveIndividual(i, newIndiv);
 		}
+		return elitismOffset;
+	}
 
+	private static void mutate(final Population newPopulation, final int elitismOffset) {
 		// Mutate population
 		if (GenAlgSettings.isDisplayConsole()) {
 			System.out.println("------MUTATING-------------------");
@@ -116,10 +131,6 @@ public class GeneticAlgorithm {
 		for (int i = elitismOffset; i < newPopulation.size(); i++) {
 			mutate(newPopulation.getIndividual(i));
 		}
-
-		newPopulation.calculateFitness();
-
-		return newPopulation;
 	}
 
 	/**
@@ -135,7 +146,7 @@ public class GeneticAlgorithm {
 	 */
 	public static void mutate(final Individual indiv) {
 
-		// get the indivs string
+		// get the individuals string
 		final char[] indivStr = indiv.getChromosome();
 
 		// loop through all bits
@@ -159,7 +170,6 @@ public class GeneticAlgorithm {
 	 * population and playing them against each other until there is one victor
 	 *
 	 * @param pop
-	 *            the pop
 	 * @return the individual
 	 */
 	public static Individual tournamentSelection(final Population pop) {
@@ -171,14 +181,13 @@ public class GeneticAlgorithm {
 		// Create a tournament population
 		final Population tournament = new Population(GenAlgSettings.getTournamentSize(), false);
 
-		// For each place in the tournament get a random individual
-		for (int i = 0; i < GenAlgSettings.getTournamentSize(); i++) {
-
-			final int randomId = (int) (Math.random() * pop.size());
-			tournament.saveIndividual(i, pop.getIndividual(randomId));
+		if (GenAlgSettings.getTournamentSize() >= pop.size()) {
+			addTournamentPlayers(pop, tournament);
+		} else {
+			// TODO: error
 		}
 
-		// Get the fittest via battling against each other
+		// Get the fitest via battling against each other
 		Individual tournamentVictor = null;
 
 		// until there is a winner
@@ -207,5 +216,20 @@ public class GeneticAlgorithm {
 			}
 		}
 		return tournamentVictor;
+	}
+
+	/**
+	 * For each place in the tournament get a random individual
+	 */
+	private static void addTournamentPlayers(final Population initialPopulation,
+			final Population tournamentPopulation) {
+		final ArrayList<Integer> list = new ArrayList<>();
+		for (int i = 1; i < initialPopulation.size(); i++) {
+			list.add(new Integer(i));
+		}
+		Collections.shuffle(list);
+		for (int i = 0; i < GenAlgSettings.getTournamentSize(); i++) {
+			tournamentPopulation.saveIndividual(i, initialPopulation.getIndividual(i));
+		}
 	}
 }

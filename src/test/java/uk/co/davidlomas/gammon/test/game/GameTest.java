@@ -8,11 +8,11 @@ import uk.co.davidlomas.gammon.test.helpers.Settings;
 public class GameTest {
 	@BeforeClass
 	public static void beforeClass() {
-		Settings.resettSettings();
+		Settings.resetSettings();
 	}
 
 	@AfterClass
 	public static void afterClass() {
-		Settings.resettSettings();
+		Settings.resetSettings();
 	}
 }

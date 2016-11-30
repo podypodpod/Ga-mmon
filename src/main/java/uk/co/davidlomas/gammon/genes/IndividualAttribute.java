@@ -33,48 +33,23 @@ public class IndividualAttribute {
 	private String name = "";
 	private int value = 0;
 
-	/**
-	 * IndivAttribute
-	 *
-	 * @param name
-	 */
 	public IndividualAttribute(final String name) {
 		this.name = name;
 		value = (int) (Math.random() * 100);
 	}
 
-	/**
-	 * getName
-	 *
-	 * @return name
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * getValue
-	 *
-	 * @return value
-	 */
 	public int getValue() {
 		return value;
 	}
 
-	/**
-	 * setName
-	 *
-	 * @param name
-	 */
 	public void setName(final String name) {
 		this.name = name;
 	}
 
-	/**
-	 * setValue
-	 *
-	 * @param value
-	 */
 	public void setValue(final int value) {
 		this.value = value;
 	}

@@ -4,7 +4,7 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 
 public class Settings {
-	public static void resettSettings() {
+	public static void resetSettings() {
 		// GAME
 		GameSettings.setAreBothAIsCache(null);
 		GameSettings.setDisplayConsoleCache(null);

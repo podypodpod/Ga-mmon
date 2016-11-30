@@ -8,11 +8,11 @@ import uk.co.davidlomas.gammon.test.helpers.Settings;
 public class FitnessCalculatorTest {
 	@BeforeClass
 	public static void setup() {
-		Settings.resettSettings();
+		Settings.resetSettings();
 	}
 
 	@AfterClass
 	public static void afterClass() {
-		Settings.resettSettings();
+		Settings.resetSettings();
 	}
 }

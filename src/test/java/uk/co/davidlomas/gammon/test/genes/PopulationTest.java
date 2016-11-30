@@ -21,12 +21,12 @@ public class PopulationTest {
 
 	@BeforeClass
 	public static void beforeClass() {
-		Settings.resettSettings();
+		Settings.resetSettings();
 	}
 
 	@AfterClass
 	public static void afterClass() {
-		Settings.resettSettings();
+		Settings.resetSettings();
 	}
 
 	@Before

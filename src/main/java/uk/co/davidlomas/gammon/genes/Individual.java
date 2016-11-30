@@ -37,7 +37,7 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
  * The AI behind a player, contains attributes which dictates which decisions
  * they make
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class Individual {
 

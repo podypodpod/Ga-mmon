@@ -32,7 +32,8 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
  */
 public class StartGa {
 
-	public StartGa() {
+	public static void main(final String args[]) {
+
 		GenAlgSettings.setAttemptCount(GenAlgSettings.getAttemptCount() + 1);
 
 		System.out.println("Program running!");

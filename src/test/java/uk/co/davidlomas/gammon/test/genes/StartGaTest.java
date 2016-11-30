@@ -12,12 +12,12 @@ import uk.co.davidlomas.gammon.test.helpers.Settings;
 public class StartGaTest {
 	@BeforeClass
 	public static void beforeClass() {
-		Settings.resettSettings();
+		Settings.resetSettings();
 	}
 
 	@AfterClass
 	public static void afterClass() {
-		Settings.resettSettings();
+		Settings.resetSettings();
 	}
 
 	@Before
@@ -25,7 +25,7 @@ public class StartGaTest {
 		GenAlgSettings.setElitism(true);
 		GenAlgSettings.setDisplayConsole(true);
 
-		GenAlgSettings.setGenerations(0);
+		GenAlgSettings.setGenerations(2);
 		GenAlgSettings.setPopulationSize(1);
 		GenAlgSettings.setAttemptCount(9999);
 		GenAlgSettings.setTournamentSize(1);
@@ -36,7 +36,7 @@ public class StartGaTest {
 
 	@Test
 	public void createStartGa() {
-		new StartGa();
+		StartGa.main(null);
 	}
 
 }
