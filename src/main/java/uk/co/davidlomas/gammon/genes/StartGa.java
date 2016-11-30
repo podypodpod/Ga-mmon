@@ -18,6 +18,9 @@
 
 package uk.co.davidlomas.gammon.genes;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 
 /**
@@ -26,48 +29,68 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
  * The main class to run for the genetic algorithm to run
  *
  * will run for the size and generations set in
- * backgammon.settings/genalgsettings
+ * backgammon.settings/GenAlgSettings
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class StartGa {
+
+	final static Logger logger = LoggerFactory.getLogger(StartGa.class);
 
 	public static void main(final String args[]) {
 
 		GenAlgSettings.setAttemptCount(GenAlgSettings.getAttemptCount() + 1);
 
-		System.out.println("Program running!");
+		logger.info("Program running!");
 
-		Population pop = new Population(GenAlgSettings.getPopulationSize(), true);
-		System.out.println("Initial Population created, size: " + GenAlgSettings.getPopulationSize() + ", generations: "
-				+ GenAlgSettings.getGenerations());
+		Population pop = createInitialPopulation();
+		saveInitialFitest(pop);
+		pop = initialEvolution(pop);
+		pop = restOfEvolutions(pop);
 
-		// save initial fitest
-		System.out.println("Calculating fittest of initial pop");
-		pop.calculateFitness();
-		Individual fittest = pop.getFittest();
-		fittest.saveToFile(fittest.getFilePathForPlayers() + "/FittestFromInitialPopulation");
+		logger.info("------------Finished Evolving-------");
+		logger.info("Solution:");
+		logger.info(pop.getFittest().toString());
+	}
 
-		// evolve once
-		System.out.println("-------------------------");
-		System.out.println("Evolving population");
-		pop = GeneticAlgorithm.evolvePopulation(pop);
-		fittest = pop.getFittest();
-		fittest.saveToFile(fittest.getFilePathForPlayers() + "/PlayerFromGen" + 0);
-		System.out.println("--------Evolved!--------- this was population 0");
+	private static Population createInitialPopulation() {
+		final Population pop = new Population(GenAlgSettings.getPopulationSize(), true);
 
+		logger.info("Initial Population created size={} generations={}", GenAlgSettings.getPopulationSize(),
+				GenAlgSettings.getGenerations());
+		return pop;
+	}
+
+	private static Population restOfEvolutions(Population pop) {
+		Individual fittest;
 		for (int x = 0; x < GenAlgSettings.getGenerations() - 1; x++) {
-			System.out.println("-------------------------");
-			System.out.println("Evolving population");
+			logger.info("-------------------------");
+			logger.info("Started evolving population");
 			pop = GeneticAlgorithm.evolvePopulation(pop);
 			System.out.println("Calculating fitness");
 			fittest = pop.getFittest();
 			fittest.saveToFile(fittest.getFilePathForPlayers() + "/PlayerFromGen" + (x + 1));
-			System.out.println("--------Evolved!--------- this was population " + (x + 1));
+			logger.info("Finished evolving population, evolution {}", x + 1);
 		}
+		return pop;
+	}
 
-		System.out.println("------------Finished-------");
-		System.out.println("Solution:");
-		System.out.println(pop.getFittest().toString());
+	private static Population initialEvolution(Population pop) {
+		Individual fittest;
+		logger.info("-------------------------");
+		logger.info("Started evolving population");
+		pop = GeneticAlgorithm.evolvePopulation(pop);
+		fittest = pop.getFittest();
+		fittest.saveToFile(fittest.getFilePathForPlayers() + "/PlayerFromGen" + 0);
+		logger.info("Finished evolving population, evolution 0");
+		return pop;
+	}
+
+	private static void saveInitialFitest(final Population pop) {
+		// save initial fitest
+		logger.info("Calculating fittest of initial pop");
+		pop.calculateFitness();
+		final Individual fittest = pop.getFittest();
+		fittest.saveToFile(fittest.getFilePathForPlayers() + "/FittestFromInitialPopulation");
 	}
 }

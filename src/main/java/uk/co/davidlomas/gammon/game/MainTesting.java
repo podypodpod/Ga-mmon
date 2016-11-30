@@ -31,7 +31,7 @@ import uk.co.davidlomas.gammon.genes.Individual;
  *
  * @author David Lomas - 11035527
  */
-public class mainTesting {
+public class MainTesting {
 
 	public static void main(final String[] args) {
 
