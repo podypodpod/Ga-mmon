@@ -26,18 +26,12 @@ import java.util.List;
  *
  * used for loops checking which moves the player has left to use
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class MovesLeft {
 
-	/** The moves left. */
 	public List<Integer> movesLeft;
 
-	/**
-	 * MovesLeft default constructor
-	 *
-	 * Instantiates a new moves left.
-	 */
 	public MovesLeft() {
 		movesLeft = new ArrayList<>();
 	}

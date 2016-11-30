@@ -23,8 +23,6 @@ public class StartGaTest {
 	@Before
 	public void setup() {
 		GenAlgSettings.setElitism(true);
-		GenAlgSettings.setDisplayConsole(true);
-
 		GenAlgSettings.setGenerations(2);
 		GenAlgSettings.setPopulationSize(1);
 		GenAlgSettings.setAttemptCount(9999);

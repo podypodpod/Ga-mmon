@@ -30,7 +30,6 @@ import org.apache.log4j.Logger;
 public class GenAlgSettings {
 
 	private static final String ELITISM = "elitism";
-	private static final String DISPLAY_CONSOLE = "displayConsole";
 	private static final String UNIFORM_RATE = "uniformRate";
 	private static final String TOURNAMENT_SIZE = "tournamentSize";
 	private static final String POPULATION_SIZE = "populationSize";
@@ -42,7 +41,6 @@ public class GenAlgSettings {
 	final static Logger logger = LogManager.getLogger(GenAlgSettings.class);
 
 	private static Boolean elitism = null;
-	private static Boolean displayConsole = null;
 
 	private static int generations = -1;
 	private static int populationSize = -1;
@@ -51,10 +49,6 @@ public class GenAlgSettings {
 
 	private static double uniformRate = -1;
 	private static double mutationRate = -1;
-
-	public static void setDisplayConsole(final Boolean displayConsole) {
-		GenAlgSettings.displayConsole = displayConsole;
-	}
 
 	public static void setElitism(final Boolean elitism) {
 		GenAlgSettings.elitism = elitism;
@@ -120,13 +114,6 @@ public class GenAlgSettings {
 			uniformRate = Double.valueOf(getPropertyFromFile(UNIFORM_RATE));
 		}
 		return uniformRate;
-	}
-
-	public static boolean isDisplayConsole() {
-		if (displayConsole == null) {
-			displayConsole = Boolean.valueOf(getPropertyFromFile(DISPLAY_CONSOLE));
-		}
-		return displayConsole;
 	}
 
 	public static boolean isElitism() {

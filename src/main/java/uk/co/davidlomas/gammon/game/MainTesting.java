@@ -18,6 +18,9 @@
 
 package uk.co.davidlomas.gammon.game;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.davidlomas.gammon.genes.Individual;
 
 /**
@@ -29,45 +32,46 @@ import uk.co.davidlomas.gammon.genes.Individual;
  * un-commented If you want the GUI visable/not visable then use the variables
  * in the backgammon.settings file
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class MainTesting {
+
+	final static Logger logger = LoggerFactory.getLogger(MainTesting.class);
 
 	public static void main(final String[] args) {
 
 		// Creating the game manager and two players
 		final GameManager gn = new GameManager();
-		final Individual x = new Individual();
-		final Individual x2 = new Individual();
+		final Individual individual1 = new Individual();
+		final Individual individual2 = new Individual();
 
 		// Playing 1 game
-		System.out.println("---------INDIV 1----------");
-		x.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen0");
-		// System.out.println(x.toString());
+		logger.trace("---------INDIV 1----------");
+		individual1.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen0");
+		// logger.trace(x.toString());
 
-		System.out.println("----------INDIV 2---------");
-		x2.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen49");
-		// System.out.println(x2.toString());
+		logger.trace("----------INDIV 2---------");
+		individual2.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen49");
+		// logger.trace(x2.toString());
 
-		final GameStats gs = gn.playIndividualsVsEachOther(x, x2);
+		final GameStats gs = gn.playIndividualsVsEachOther(individual1, individual2);
 
-		System.out.println("Player who won the game: " + gs.getVictor());
+		logger.trace("Player who won the game: " + gs.getVictor());
 
 		// For testing a large number of games between 2 players
 		/*
 		 *
 		 * x.loadFromFile("PlayerFromGen0");
-		 * System.out.println("Individual from generation 1, stats: "+x.toString
-		 * ());
+		 * logger.trace("Individual from generation 1, stats: "+x.toString ());
 		 *
 		 *
 		 * x2.loadFromFile("PlayerFromGen49");
-		 * System.out.println("Individual from generation 50, stats: "+x2.
+		 * logger.trace("Individual from generation 50, stats: "+x2.
 		 * toString());
 		 *
 		 * int num = 0; for(int e = 0; e<1000 ; e++){ GameStats gs =
 		 * gn.playIndividualsVsEachOther(x, x2); if(gs.getVictor().equals(x2)){
-		 * num++; } } System.out.println("Individual from gen 50 won "+ num +
+		 * num++; } } logger.trace("Individual from gen 50 won "+ num +
 		 * "/1000 games against player from generation 1");
 		 *
 		 */

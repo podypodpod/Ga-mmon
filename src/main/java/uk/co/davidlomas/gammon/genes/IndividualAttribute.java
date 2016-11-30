@@ -26,7 +26,7 @@ package uk.co.davidlomas.gammon.genes;
  *
  * Controls the particular chance of doing a certain strategy
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class IndividualAttribute {
 

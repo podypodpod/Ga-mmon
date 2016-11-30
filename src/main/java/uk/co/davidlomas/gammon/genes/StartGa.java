@@ -54,23 +54,22 @@ public class StartGa {
 	}
 
 	private static Population createInitialPopulation() {
-		final Population pop = new Population(GenAlgSettings.getPopulationSize(), true);
-
-		logger.info("Initial Population created size={} generations={}", GenAlgSettings.getPopulationSize(),
+		logger.info("Creating Initial Population with size={} generations={}", GenAlgSettings.getPopulationSize(),
 				GenAlgSettings.getGenerations());
-		return pop;
+
+		return new Population(GenAlgSettings.getPopulationSize(), true);
 	}
 
 	private static Population restOfEvolutions(Population pop) {
 		Individual fittest;
-		for (int x = 0; x < GenAlgSettings.getGenerations() - 1; x++) {
+		for (int generation = 0; generation < GenAlgSettings.getGenerations() - 1; generation++) {
 			logger.info("-------------------------");
 			logger.info("Started evolving population");
 			pop = GeneticAlgorithm.evolvePopulation(pop);
-			System.out.println("Calculating fitness");
+			logger.trace("Calculating fitness");
 			fittest = pop.getFittest();
-			fittest.saveToFile(fittest.getFilePathForPlayers() + "/PlayerFromGen" + (x + 1));
-			logger.info("Finished evolving population, evolution {}", x + 1);
+			fittest.saveToFile(fittest.getFilePathForPlayers() + "/PlayerFromGen" + (generation + 1));
+			logger.info("Finished evolving population, evolution {}", generation + 1);
 		}
 		return pop;
 	}

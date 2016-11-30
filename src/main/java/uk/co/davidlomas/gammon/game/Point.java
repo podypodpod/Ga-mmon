@@ -27,7 +27,7 @@ package uk.co.davidlomas.gammon.game;
  *
  * Used by the board 24 times to create the board state
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class Point {
 

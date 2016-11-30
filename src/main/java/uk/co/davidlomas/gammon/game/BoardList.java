@@ -2,16 +2,16 @@
  * GNU General Public License
  *
  * This file is part of GA-mmon.
- * 
+ *
  * GA-mmon is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * GA-mmon is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,17 +21,21 @@ package uk.co.davidlomas.gammon.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.davidlomas.gammon.genes.Individual;
-import uk.co.davidlomas.gammon.settings.GameSettings;
 
 /**
  * The Class BoardList.
  *
  * Holds a collection of board states allowing the AI to then loop through them
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class BoardList {
+
+	final static Logger logger = LoggerFactory.getLogger(BoardList.class);
 
 	/** The all possible moves. */
 	private final List<Board> boardList;
@@ -156,9 +160,7 @@ public class BoardList {
 		bEval.setBoard(currentBoard);
 		bEval.setPlayer(p);
 
-		if (GameSettings.getDisplayConsole()) {
-			System.out.println("board list size: " + boardList.size());
-		}
+		logger.trace("board list size: " + boardList.size());
 
 		// END GAME
 		if (currentBoard.canPlayerBear(p.black)) {
@@ -521,9 +523,7 @@ public class BoardList {
 		if (chosenBoard == null) {
 			final int x = (int) (Math.random() * boardList.size());
 			chosenBoard = boardList.get(x);
-			if (GameSettings.getDisplayConsole()) {
-				System.out.println("Random move chosen");
-			}
+			logger.trace("Random move chosen");
 		}
 		return chosenBoard;
 	}
@@ -533,12 +533,12 @@ public class BoardList {
 	 */
 	public void printBoardList() {
 		int counter = 0;
-		for (final Board x : boardList) {
+		for (final Board board : boardList) {
 			counter++;
-			System.out.println("----------------------------");
-			System.out.println("Board num " + counter);
-			x.printBoard();
-			System.out.println("----------------------------");
+			logger.trace("----------------------------");
+			logger.trace("Board num {}", counter);
+			board.printBoard();
+			logger.trace("----------------------------");
 		}
 	}
 
@@ -569,22 +569,16 @@ public class BoardList {
 				// if the player personality = null then just pick at random, as
 				// this means its the basic opposition to test against
 			} else {
+
 				final int x = (int) (Math.random() * boardList.size());
-
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("board list size: " + boardList.size());
-				}
-
+				logger.trace("board list size: {} ", boardList.size());
 				chosenBoard = boardList.get(x);
-
 				return chosenBoard;
 			}
 		} else {
 			// if there are no possible new boards(no possible moves) return
 			// null
-			if (GameSettings.getDisplayConsole()) {
-				System.out.println("No possible moves");
-			}
+			logger.trace("No possible moves");
 			return null;
 		}
 
@@ -599,8 +593,8 @@ public class BoardList {
 	 * @return true, if there is a duplicate
 	 */
 	public boolean thereIsADuplicate(final Board b) {
-		for (final Board x : boardList) {
-			if (x.equals(b)) {
+		for (final Board board : boardList) {
+			if (board.equals(b)) {
 				return true;
 			}
 		}

@@ -20,7 +20,8 @@ package uk.co.davidlomas.gammon.game;
 
 import java.util.Scanner;
 
-import uk.co.davidlomas.gammon.settings.GameSettings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The Class Player. the base class for players and contains code that only
@@ -29,9 +30,11 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
  * two players will always be made, the AI will extend this to use AIPlayers
  * though
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class Player {
+
+	final static Logger logger = LoggerFactory.getLogger(Player.class);
 
 	/** The moves left. */
 	public MovesLeft movesLeft;
@@ -47,12 +50,12 @@ public class Player {
 	/**
 	 * Instantiates a new player.
 	 *
-	 * @param b
-	 *            the b
+	 * @param black
+	 *            the color
 	 */
-	public Player(final boolean b) {
+	public Player(final boolean black) {
 
-		black = b;
+		this.black = black;
 
 		movesLeft = new MovesLeft();
 
@@ -82,8 +85,8 @@ public class Player {
 			// looping through the moves Left array to check against
 			// what they have asked for
 			boolean validLength = false;
-			for (final int x : movesLeft.movesLeft) {
-				if (x == distanceBetween(from, to)) {
+			for (final int move : movesLeft.movesLeft) {
+				if (move == distanceBetween(from, to)) {
 					validLength = true;
 					break;
 				}
@@ -259,26 +262,22 @@ public class Player {
 
 		turnOver = false;
 
-		if (GameSettings.getDisplayConsole()) {
-			System.out.println("------------Your Turn!-----------------");
-		}
+		logger.trace("------------Your Turn!-----------------");
 
 		// Rolling the dice
 		movesLeft.setTo(dice.RollDice());
 
-		System.out.println("Player has : " + movesLeft.toString());
+		logger.trace("Player has : " + movesLeft.toString());
 
 		// ASKING WHAT TO DO
 		while (!turnOver) {
 
-			if (GameSettings.getDisplayConsole()) {
-				System.out.println("What do you want to do?, " + movesLeft.size() + " moves left");
+			logger.trace("What do you want to do?, " + movesLeft.size() + " moves left");
 
-				System.out.println("1) Move a piece");
-				System.out.println("2) Bear off a piece");
-				System.out.println("3) Skip or Finish go");
-				System.out.println("4) Concede");
-			}
+			logger.trace("1) Move a piece");
+			logger.trace("2) Bear off a piece");
+			logger.trace("3) Skip or Finish go");
+			logger.trace("4) Concede");
 
 			@SuppressWarnings("resource")
 			final Scanner Scanner = new Scanner(System.in);
@@ -287,9 +286,9 @@ public class Player {
 
 			// MOVE A piece
 			if (option == 1) {
-				System.out.println("from which point (1,2,3 etc): ");
+				logger.trace("from which point (1,2,3 etc): ");
 				final int from = Scanner.nextInt();
-				System.out.println("to which point (1,2,3,bear=-1 etc)");
+				logger.trace("to which point (1,2,3,bear=-1 etc)");
 				final int to = Scanner.nextInt();
 
 				// IF ITS POSSIBLE
@@ -303,7 +302,7 @@ public class Player {
 						turnOver = true;
 					}
 				} else {
-					System.out.println("invalid move");
+					logger.trace("invalid move");
 				}
 				// SKIP GO
 			} else if (option == 2) {
@@ -311,14 +310,14 @@ public class Player {
 
 					// CHECK ITS A VALID MOVE/LENGTH
 
-					System.out.println("Bear which piece?");
+					logger.trace("Bear which piece?");
 
 					final int bearPeice = Scanner.nextInt();
 					if (candidateMovePossible(bearPeice, -1, liveBoard)) {
 						liveBoard.bearPiece(bearPeice, black);
 					}
 				} else {
-					System.out.println("Can not bear pieces yet");
+					logger.trace("Can not bear pieces yet");
 				}
 			} else if (option == 3) {
 				turnOver = true;

@@ -18,18 +18,22 @@
 
 package uk.co.davidlomas.gammon.genes;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.davidlomas.gammon.game.GameManager;
 import uk.co.davidlomas.gammon.game.GameStats;
-import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 
 /**
  * FitnessCalculator
  *
  * Allows the calculation of fitness of an indiviudal or population
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class FitnessCalculator {
+
+	final static Logger logger = LoggerFactory.getLogger(FitnessCalculator.class);
 
 	private static GameManager gameManager;
 
@@ -51,19 +55,15 @@ public class FitnessCalculator {
 
 		gameManager = new GameManager();
 
-		if (GenAlgSettings.isDisplayConsole()) {
-			System.out.println("Round robin started");
-		}
+		logger.trace("Round robin started");
 
 		// looping the whole population, x is the one we are measuring
-		for (int x = 0; x < pop.individuals.length; x++) {
+		for (int playerCount = 0; playerCount < pop.individuals.length; playerCount++) {
 
-			if (GenAlgSettings.isDisplayConsole()) {
-				System.out.println("Testing Player: " + x);
-			}
+			logger.trace("Testing Player: {} ", playerCount);
 
 			// the one we are generating the fitness of
-			testSubject = pop.individuals[x];
+			testSubject = pop.individuals[playerCount];
 
 			// will be added to over the course of the games
 			tempFitness = 0;
@@ -72,10 +72,8 @@ public class FitnessCalculator {
 			// against x
 			for (int y = 0; y < pop.individuals.length; y++) {
 				// make sure its not playing itself
-				if (y != x) {
-					if (GenAlgSettings.isDisplayConsole()) {
-						System.out.println("\tagainst player: " + (y + 1) + "/" + pop.individuals.length);
-					}
+				if (y != playerCount) {
+					logger.trace("\tagainst player: {}/{}", y + 1, pop.individuals.length);
 
 					// Opponent individual
 					oponent = pop.individuals[y];

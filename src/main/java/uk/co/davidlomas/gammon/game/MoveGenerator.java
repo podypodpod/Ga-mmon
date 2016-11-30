@@ -18,6 +18,9 @@
 
 package uk.co.davidlomas.gammon.game;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.davidlomas.gammon.genes.Individual;
 
 /**
@@ -27,9 +30,11 @@ import uk.co.davidlomas.gammon.genes.Individual;
  *
  * adds them all to the board list collection
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class MoveGenerator {
+
+	final static Logger logger = LoggerFactory.getLogger(MoveGenerator.class);
 
 	private final BoardList boardList;
 	private final Individual individual;

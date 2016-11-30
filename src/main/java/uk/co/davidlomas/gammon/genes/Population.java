@@ -23,7 +23,7 @@ package uk.co.davidlomas.gammon.genes;
  *
  * collection of individuals for the genetic algorithm to evolve
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class Population {
 

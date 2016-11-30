@@ -26,8 +26,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 
@@ -43,7 +43,7 @@ public class Individual {
 
 	private static final String PLAYERS_FILE_PATH = "savedPlayers/Attempt - ";
 
-	final Logger logger = LogManager.getLogger(Individual.class);
+	final static Logger logger = LoggerFactory.getLogger(Individual.class);
 
 	private final int numOfAttributes;
 	private IndividualAttribute[] listOfAttributes = null;

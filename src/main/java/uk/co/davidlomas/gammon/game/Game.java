@@ -2,16 +2,16 @@
  * GNU General Public License
  *
  * This file is part of GA-mmon.
- * 
+ *
  * GA-mmon is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * GA-mmon is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,6 +20,9 @@ package uk.co.davidlomas.gammon.game;
 
 import javax.swing.JOptionPane;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 
@@ -27,19 +30,21 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
  * The Class Game.
  *
  * Contains the game loop and creates a new board, players etc
- * 
+ *
  * This class just needs two Individuals passed in to it to play a game, if null
  * the player will pick random moves
  *
  * To get a human player, in the backgammon.settings package change the
  * gameSettings class, areBothAIs = false
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class Game implements Runnable {
 
+	final static Logger logger = LoggerFactory.getLogger(Game.class);
+
 	/** The Players created. */
-	AiPlayer Player1, Player2;
+	AiPlayer player1, player2;
 
 	/** The board. */
 	private Board liveBoard;
@@ -58,8 +63,6 @@ public class Game implements Runnable {
 
 	/** The time delay. */
 	private final int timeDelay = GameSettings.getTimeDelay();
-
-	private final boolean displayConsole = GameSettings.getDisplayConsole();
 
 	/** initial rolls. */
 	private int p1Roll = 0, p2Roll = 0;
@@ -89,8 +92,8 @@ public class Game implements Runnable {
 		setIndiv1(i1);
 		setIndiv2(i2);
 
-		Player1 = new AiPlayer(isP1Black, getIndiv1());
-		Player2 = new AiPlayer(!isP1Black, getIndiv2());
+		player1 = new AiPlayer(isP1Black, getIndiv1());
+		player2 = new AiPlayer(!isP1Black, getIndiv2());
 	}
 
 	/**
@@ -102,7 +105,7 @@ public class Game implements Runnable {
 	 */
 	public void gameOver() {
 
-		if (liveBoard.hasPlayerWon(Player1.black)) {
+		if (liveBoard.hasPlayerWon(player1.black)) {
 			gameVictor = getIndiv1();
 		} else {
 			gameVictor = getIndiv2();
@@ -116,8 +119,8 @@ public class Game implements Runnable {
 		double playerOneScore = 0;
 		double playerTwoScore = 0;
 
-		if (liveBoard.hasPlayerWon(Player1.black)) {
-			final double reductions = liveBoard.howManyHasPlayerBore(Player2.black) * 0.04;
+		if (liveBoard.hasPlayerWon(player1.black)) {
+			final double reductions = liveBoard.howManyHasPlayerBore(player2.black) * 0.04;
 			if (getIndiv1() != null) {
 				playerOneScore = 1 - reductions;
 			}
@@ -127,8 +130,8 @@ public class Game implements Runnable {
 
 			gameVictor = getIndiv1();
 
-		} else if (liveBoard.hasPlayerWon(Player2.black)) {
-			final double reductions = liveBoard.howManyHasPlayerBore(Player1.black) * 0.04;
+		} else if (liveBoard.hasPlayerWon(player2.black)) {
+			final double reductions = liveBoard.howManyHasPlayerBore(player1.black) * 0.04;
 			if (getIndiv2() != null) {
 				playerTwoScore = 1 - reductions;
 			}
@@ -171,8 +174,8 @@ public class Game implements Runnable {
 	 */
 	public void initialRoll() {
 
-		p1Roll = Player1.die1.RollDie();
-		p2Roll = Player2.die1.RollDie();
+		p1Roll = player1.die1.RollDie();
+		p2Roll = player2.die1.RollDie();
 
 		if (p1Roll == p2Roll) {
 			initialRoll();
@@ -194,38 +197,31 @@ public class Game implements Runnable {
 	public void run() {
 
 		// Printing game info out to console
-		if (displayConsole) {
-			System.out.print("Welcome! New game with two players");
+		logger.trace("Welcome! New game with two players");
 
-			if (!areBothAIs) {
-				System.out.println("You are Player 2");
-			}
-
-			if (isP1Black) {
-				System.out.println("Player 1 is BLACK, Player 2 is RED");
-			} else {
-				System.out.println("Player 1 is RED, Player 2 is BLACK");
-			}
-			System.out.println("Initial dice throw commencing..");
+		if (!areBothAIs) {
+			logger.trace("You are Player 2");
 		}
+
+		if (isP1Black) {
+			logger.trace("Player 1 is BLACK, Player 2 is RED");
+		} else {
+			logger.trace("Player 1 is RED, Player 2 is BLACK");
+		}
+		logger.trace("Initial dice throw commencing..");
 
 		// initial roll method, decides who moves first
 		initialRoll();
 
-		if (displayConsole) {
-			System.out.println("Player 1 rolls: " + p1Roll + "     Player 2: " + p2Roll);
-		}
+		logger.trace("Player 1 rolls: {} Player 2: {}", p1Roll, p2Roll);
+
 		// if player 1 has won
 		if (p1Roll > p2Roll) {
-			if (displayConsole) {
-				System.out.println("Player 1(Black=" + Player1.black + ") Has won the roll");
-			}
+			logger.trace("Player 1(Black={}) Has won the roll", player1.black);
 			p1sTurn = true;
 			// if player 2 has won
 		} else {
-			if (displayConsole) {
-				System.out.println("Player 2(Black=" + Player2.black + ") Has won the roll");
-			}
+			logger.trace("Player 2(Black={}) Has won the roll", player2.black);
 			p1sTurn = false;
 		}
 
@@ -237,7 +233,7 @@ public class Game implements Runnable {
 			if (p1sTurn && isGameActive()) {
 
 				// creating the new board with the chosen moves etc
-				liveBoard = new Board(Player1.AIturn(liveBoard));
+				liveBoard = new Board(player1.AIturn(liveBoard));
 
 				// displaying new board
 				if (GameSettings.getDisplayGUI()) {
@@ -247,12 +243,10 @@ public class Game implements Runnable {
 				// checking if the player has won yet
 				// if they have won, then set the gameActive to false and
 				// display the message
-				if (liveBoard.hasPlayerWon(Player1.black)) {
+				if (liveBoard.hasPlayerWon(player1.black)) {
 					setGameActive(false);
 
-					if (displayConsole) {
-						System.out.println("Player 1 has won! (Black=" + Player1.black + ")");
-					}
+					logger.trace("Player 1 has won! (Black={})", player1.black);
 
 					gameOver();
 
@@ -281,7 +275,7 @@ public class Game implements Runnable {
 				if (areBothAIs) {
 
 					// get the new board with the selected moves in
-					liveBoard = new Board(Player2.AIturn(liveBoard));
+					liveBoard = new Board(player2.AIturn(liveBoard));
 
 					// displaying new board
 					if (GameSettings.getDisplayGUI()) {
@@ -290,13 +284,11 @@ public class Game implements Runnable {
 
 					// checking if the player has now won, if they have then
 					// gaveActive is now false and they are told they have won
-					if (liveBoard.hasPlayerWon(Player2.black)) {
+					if (liveBoard.hasPlayerWon(player2.black)) {
 
 						setGameActive(false);
 
-						if (displayConsole) {
-							System.out.println("Player 2 has won! (Black=" + Player2.black + ")");
-						}
+						logger.trace("Player 2 has won! (Black={})", player2.black);
 
 						gameOver();
 
@@ -323,7 +315,7 @@ public class Game implements Runnable {
 
 					// Running the turn method, waits for user input on selected
 					// move
-					Player2.turn(liveBoard);
+					player2.turn(liveBoard);
 
 					// displaying new board
 					if (GameSettings.getDisplayGUI()) {
@@ -332,9 +324,9 @@ public class Game implements Runnable {
 
 					// checking if the player has now won
 					// gameActive is false if they have, and they are informed
-					if (liveBoard.hasPlayerWon(Player2.black)) {
+					if (liveBoard.hasPlayerWon(player2.black)) {
 						setGameActive(false);
-						JOptionPane.showMessageDialog(null, "Player 2 has won! (Black=" + Player2.black + ")");
+						JOptionPane.showMessageDialog(null, "Player 2 has won! (Black=" + player2.black + ")");
 						gameOver();
 					} else {
 						p1sTurn = true;

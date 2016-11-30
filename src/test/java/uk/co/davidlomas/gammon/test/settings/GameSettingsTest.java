@@ -17,7 +17,6 @@ public class GameSettingsTest {
 	private final Boolean newIsP1BlackCache = true;
 	private final Boolean newDisplayGUICache = false;
 	private final Boolean newAreBothAIsCache = false;
-	private final Boolean newDisplayConsoleCache = false;
 	private final Boolean newMultiThreadingCache = true;
 
 	private final int newTimeDelayCache = 4;
@@ -38,7 +37,6 @@ public class GameSettingsTest {
 		// Influence each other
 
 		GameSettings.setAreBothAIsCache(null);
-		GameSettings.setDisplayConsoleCache(null);
 		GameSettings.setDisplayGUICache(null);
 		GameSettings.setIsP1BlackCache(null);
 		GameSettings.setMultiThreadingCache(null);
@@ -62,12 +60,6 @@ public class GameSettingsTest {
 	public void settingAreBothAIsThenGettingReturnsExpected() {
 		GameSettings.setAreBothAIsCache(newAreBothAIsCache);
 		assertFalse(GameSettings.getAreBothAI());
-	}
-
-	@Test
-	public void settingDisplayConsoleThenGettingReturnsExpected() {
-		GameSettings.setDisplayConsoleCache(newDisplayConsoleCache);
-		assertFalse(GameSettings.getDisplayConsole());
 	}
 
 	@Test

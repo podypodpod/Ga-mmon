@@ -35,7 +35,6 @@ public class PopulationTest {
 		population = new Population(POPULATION_SIZE, false);
 
 		GenAlgSettings.setElitism(true);
-		GenAlgSettings.setDisplayConsole(true);
 
 		GenAlgSettings.setGenerations(0);
 		GenAlgSettings.setPopulationSize(POPULATION_SIZE);

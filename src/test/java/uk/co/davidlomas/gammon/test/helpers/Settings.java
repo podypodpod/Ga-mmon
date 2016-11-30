@@ -7,7 +7,6 @@ public class Settings {
 	public static void resetSettings() {
 		// GAME
 		GameSettings.setAreBothAIsCache(null);
-		GameSettings.setDisplayConsoleCache(null);
 		GameSettings.setDisplayGUICache(null);
 		GameSettings.setIsP1BlackCache(null);
 		GameSettings.setMultiThreadingCache(null);
@@ -15,7 +14,6 @@ public class Settings {
 
 		// GEN ALG
 		GenAlgSettings.setElitism(null);
-		GenAlgSettings.setDisplayConsole(null);
 		GenAlgSettings.setGenerations(-1);
 		GenAlgSettings.setPopulationSize(-1);
 		GenAlgSettings.setAttemptCount(-1);

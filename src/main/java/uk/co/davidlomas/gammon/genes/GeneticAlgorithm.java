@@ -21,6 +21,9 @@ package uk.co.davidlomas.gammon.genes;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 
 /**
@@ -33,6 +36,8 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
  * @author David Lomas
  */
 public class GeneticAlgorithm {
+
+	final static Logger logger = LoggerFactory.getLogger(GeneticAlgorithm.class);
 
 	/**
 	 * Crossover.
@@ -48,9 +53,7 @@ public class GeneticAlgorithm {
 	 */
 	private static Individual crossover(final Individual indiv1, final Individual indiv2) {
 
-		if (GenAlgSettings.isDisplayConsole()) {
-			System.out.println("------CROSSOVER-------------------");
-		}
+		logger.trace("------CROSSOVER-------------------");
 
 		// new Individual
 		final Individual newIndiv = new Individual();
@@ -78,10 +81,8 @@ public class GeneticAlgorithm {
 	 * @return the new population evolved
 	 */
 	public static Population evolvePopulation(final Population currentPopulation) {
+		logger.trace("------EVOLVE POPULATION-------------------");
 
-		if (GenAlgSettings.isDisplayConsole()) {
-			System.out.println("------EVOLVE POPULATION-------------------");
-		}
 		final Population newPopulation = new Population(currentPopulation.size(), false);
 		elitism(currentPopulation, newPopulation);
 		final int elitismOffset = crossover(currentPopulation, newPopulation);
@@ -125,9 +126,7 @@ public class GeneticAlgorithm {
 
 	private static void mutate(final Population newPopulation, final int elitismOffset) {
 		// Mutate population
-		if (GenAlgSettings.isDisplayConsole()) {
-			System.out.println("------MUTATING-------------------");
-		}
+		logger.trace("------MUTATING-------------------");
 		for (int i = elitismOffset; i < newPopulation.size(); i++) {
 			mutate(newPopulation.getIndividual(i));
 		}
@@ -174,9 +173,7 @@ public class GeneticAlgorithm {
 	 */
 	public static Individual tournamentSelection(final Population pop) {
 
-		if (GenAlgSettings.isDisplayConsole()) {
-			System.out.println("------TOURNAMENT SELECTION-------------------");
-		}
+		logger.trace("------TOURNAMENT SELECTION-------------------");
 
 		// Create a tournament population
 		final Population tournament = new Population(GenAlgSettings.getTournamentSize(), false);
@@ -184,7 +181,8 @@ public class GeneticAlgorithm {
 		if (GenAlgSettings.getTournamentSize() >= pop.size()) {
 			addTournamentPlayers(pop, tournament);
 		} else {
-			// TODO: error
+			logger.error("Tournament Size {} cannot be larger than the population size {}",
+					GenAlgSettings.getTournamentSize(), GenAlgSettings.getPopulationSize());
 		}
 
 		// Get the fitest via battling against each other

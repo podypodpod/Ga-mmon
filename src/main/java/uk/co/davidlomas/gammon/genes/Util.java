@@ -2,16 +2,16 @@
  * GNU General Public License
  *
  * This file is part of GA-mmon.
- * 
+ *
  * GA-mmon is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * GA-mmon is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,8 +20,8 @@ package uk.co.davidlomas.gammon.genes;
 
 /**
  * The Class Util.
- * 
- * @author David Lomas - 11035527
+ *
+ * @author David Lomas
  */
 public class Util {
 
@@ -77,8 +77,8 @@ public class Util {
 	 */
 	public static char[] convertFromIntArrayToBinaryCharAry(final IndividualAttribute[] numbersToConvert) {
 		final StringBuffer binaryString = new StringBuffer();
-		for (int x = 0; x < numbersToConvert.length; x++) {
-			binaryString.append(convertFromIntToBinaryStr(numbersToConvert[x].getValue()));
+		for (final IndividualAttribute element : numbersToConvert) {
+			binaryString.append(convertFromIntToBinaryStr(element.getValue()));
 		}
 		return binaryString.toString().toCharArray();
 	}

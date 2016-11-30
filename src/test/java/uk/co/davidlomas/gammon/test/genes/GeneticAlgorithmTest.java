@@ -88,8 +88,9 @@ public class GeneticAlgorithmTest {
 	}
 
 	@Test
-	public void evolvePopulation() {
+	public void evolvePopulationWithElitsm() {
 		GenAlgSettings.setTournamentSize(2);
+		GenAlgSettings.setPopulationSize(3);
 		GenAlgSettings.setElitism(true);
 
 		final Population initialPopulation = new Population(3, true);

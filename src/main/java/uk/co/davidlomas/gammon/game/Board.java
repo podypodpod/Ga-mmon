@@ -18,6 +18,9 @@
 
 package uk.co.davidlomas.gammon.game;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.davidlomas.gammon.settings.GameSettings;
 
 /**
@@ -29,6 +32,7 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
  * in a position to move etc
  */
 public class Board {
+	final static Logger logger = LoggerFactory.getLogger(Board.class);
 
 	private int redBore, blackBore;
 
@@ -163,12 +167,12 @@ public class Board {
 		int num = 0;
 
 		// loop points
-		for (int x = 0; x < Points.length; x++) {
+		for (final Point point : Points) {
 			// if the current point has more than 2 checkers (a stack) and is
 			// ours
-			if (Points[x].numEither() > 2 && Points[x].getCol() == black) {
+			if (point.numEither() > 2 && point.getCol() == black) {
 				// Add the count of the stack to the int
-				num += Points[x].numEither();
+				num += point.numEither();
 			}
 		}
 		return num;
@@ -211,8 +215,8 @@ public class Board {
 	 */
 	public int getNumOfBlots(final boolean black) {
 		int num = 0;
-		for (int x = 0; x < Points.length; x++) {
-			if (Points[x].numEither() == 1 && Points[x].getCol() == black) {
+		for (final Point point : Points) {
+			if (point.numEither() == 1 && point.getCol() == black) {
 				num++;
 			}
 		}
@@ -349,9 +353,9 @@ public class Board {
 
 	public void setStartPosition() {
 		// Resetting all to 0
-		for (int x = 0; x < Points.length; x++) {
-			Points[x].setBlackCount(0);
-			Points[x].setRedCount(0);
+		for (final Point point : Points) {
+			point.setBlackCount(0);
+			point.setRedCount(0);
 		}
 		// completing the starting position of the checkers, the rest left at 0
 		// Red Checkers

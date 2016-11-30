@@ -18,7 +18,8 @@
 
 package uk.co.davidlomas.gammon.game;
 
-import uk.co.davidlomas.gammon.settings.GameSettings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The Class BoardEvaluator.
@@ -28,24 +29,16 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
  *
  * Allows the AI to loop through all the possible moves and pick a certain one
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class BoardEvaluator {
 
-	/** The live board. */
+	final static Logger logger = LoggerFactory.getLogger(BoardEvaluator.class);
+
 	private Board liveBoard;
-
-	/** The current player. */
 	public AiPlayer currentPlayer;
-
-	/** The opponent zero positions. */
 	private int myZero, oponentZero;
 
-	/**
-	 * getMyZero
-	 *
-	 * @return the value of myZero
-	 */
 	public int getMyZero() {
 		return myZero;
 	}
@@ -62,9 +55,7 @@ public class BoardEvaluator {
 	 */
 	public boolean hasABlotBeenDoubled(final Board newBoard) {
 		if (liveBoard.getNumOfBlots(currentPlayer.black) > newBoard.getNumOfBlots(currentPlayer.black)) {
-			if (GameSettings.getDisplayConsole()) {
-				System.out.println("Blot doubled");
-			}
+			logger.trace("Blot doubled");
 			return true;
 		} else {
 			return false;
@@ -80,9 +71,7 @@ public class BoardEvaluator {
 	 */
 	public boolean hasAPeiceBeenBore(final Board newBoard) {
 		if (liveBoard.howManyHasPlayerBore(currentPlayer.black) < newBoard.howManyHasPlayerBore(currentPlayer.black)) {
-			if (GameSettings.getDisplayConsole()) {
-				System.out.println("Peice has been BORE");
-			}
+			logger.trace("Peice has been BORE");
 			return true;
 		} else {
 			return false;
@@ -98,9 +87,7 @@ public class BoardEvaluator {
 	 */
 	public boolean hasAPeiceBeenTaken(final Board newBoard) {
 		if (liveBoard.Points[oponentZero].numEither() < newBoard.Points[oponentZero].numEither()) {
-			if (GameSettings.getDisplayConsole()) {
-				System.out.println("Peice has been taken.");
-			}
+			logger.trace("Peice has been taken.");
 			return true;
 		} else {
 			return false;
@@ -119,9 +106,7 @@ public class BoardEvaluator {
 	 */
 	public boolean hasAPieceBeenMovedSolo(final Board newBoard) {
 		if (liveBoard.getNumOfBlots(currentPlayer.black) < newBoard.getNumOfBlots(currentPlayer.black)) {
-			if (GameSettings.getDisplayConsole()) {
-				System.out.println("Piece moved solo");
-			}
+			logger.trace("Piece moved solo");
 			return true;
 		} else {
 			return false;
@@ -141,9 +126,7 @@ public class BoardEvaluator {
 	public boolean hasAPieceBeenSpread(final Board newBoard) {
 		if (liveBoard.getNumOfHomePointsCovered(currentPlayer.black) < newBoard
 				.getNumOfHomePointsCovered(currentPlayer.black)) {
-			if (GameSettings.getDisplayConsole()) {
-				System.out.println("piece spread");
-			}
+			logger.trace("Piece spread");
 			return true;
 		} else {
 			return false;
@@ -163,9 +146,7 @@ public class BoardEvaluator {
 	public boolean hasAStackBeenAddedTo(final Board newBoard) {
 		if (liveBoard.getNumberOfCheckersOnStacks(currentPlayer.black) < newBoard
 				.getNumberOfCheckersOnStacks(currentPlayer.black)) {
-			if (GameSettings.getDisplayConsole()) {
-				System.out.println("added to stack");
-			}
+			logger.trace("Added to stack");
 			return true;
 		} else {
 			return false;
@@ -185,9 +166,7 @@ public class BoardEvaluator {
 	public boolean hasTheOponentBeenBlocked(final Board newBoard) {
 		if (liveBoard.getNumberOfPiecesSurroundOpponent(currentPlayer.black) < newBoard
 				.getNumberOfPiecesSurroundOpponent(currentPlayer.black)) {
-			if (GameSettings.getDisplayConsole()) {
-				System.out.println("blocking oponent");
-			}
+			logger.trace("Blocking oponent");
 			return true;
 		} else {
 			return false;
@@ -218,9 +197,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 13, 3) && ifPointHasPeices(newBoard, 9, 1)
 					&& ifPointHasPeices(newBoard, 8, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 			// red
@@ -228,9 +205,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 12, 3) && ifPointHasPeices(newBoard, 16, 1)
 					&& ifPointHasPeices(newBoard, 17, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 		}
@@ -253,9 +228,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 24, 1) && ifPointHasPeices(newBoard, 20, 1)
 					&& ifPointHasPeices(newBoard, 13, 4) && ifPointHasPeices(newBoard, 8, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 			// red
@@ -263,9 +236,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 1, 1) && ifPointHasPeices(newBoard, 5, 1)
 					&& ifPointHasPeices(newBoard, 12, 4) && ifPointHasPeices(newBoard, 17, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 		}
@@ -288,9 +259,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 24, 1) && ifPointHasPeices(newBoard, 23, 1)
 					&& ifPointHasPeices(newBoard, 13, 4) && ifPointHasPeices(newBoard, 8, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMove");
-				}
+				logger.trace("isFiveOneInitialMove");
 				return true;
 			}
 			// red
@@ -298,9 +267,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 1, 1) && ifPointHasPeices(newBoard, 2, 1)
 					&& ifPointHasPeices(newBoard, 12, 4) && ifPointHasPeices(newBoard, 17, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMove");
-				}
+				logger.trace("isFiveOneInitialMove");
 				return true;
 			}
 		}
@@ -323,9 +290,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 6, 4) && ifPointHasPeices(newBoard, 5, 1)
 					&& ifPointHasPeices(newBoard, 13, 4) && ifPointHasPeices(newBoard, 8, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 			// red
@@ -333,9 +298,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 19, 4) && ifPointHasPeices(newBoard, 20, 1)
 					&& ifPointHasPeices(newBoard, 12, 4) && ifPointHasPeices(newBoard, 17, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 		}
@@ -358,9 +321,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 8, 2) && ifPointHasPeices(newBoard, 6, 4)
 					&& ifPointHasPeices(newBoard, 3, 2)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 			// red
@@ -368,9 +329,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 17, 2) && ifPointHasPeices(newBoard, 19, 4)
 					&& ifPointHasPeices(newBoard, 22, 2)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 		}
@@ -393,9 +352,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 11, 1) && ifPointHasPeices(newBoard, 13, 3)
 					&& ifPointHasPeices(newBoard, 8, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 			// red
@@ -403,9 +360,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 14, 1) && ifPointHasPeices(newBoard, 12, 3)
 					&& ifPointHasPeices(newBoard, 17, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 		}
@@ -428,9 +383,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 24, 1) && ifPointHasPeices(newBoard, 22, 1)
 					&& ifPointHasPeices(newBoard, 13, 4) && ifPointHasPeices(newBoard, 8, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 			// red player
@@ -438,9 +391,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 1, 1) && ifPointHasPeices(newBoard, 3, 1)
 					&& ifPointHasPeices(newBoard, 12, 4) && ifPointHasPeices(newBoard, 17, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 		}
@@ -463,9 +414,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 24, 1) && ifPointHasPeices(newBoard, 23, 1)
 					&& ifPointHasPeices(newBoard, 13, 4) && ifPointHasPeices(newBoard, 9, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFourOneInitialMove");
-				}
+				logger.trace("isFourOneInitialMove");
 				return true;
 			}
 			// red
@@ -473,9 +422,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 1, 1) && ifPointHasPeices(newBoard, 2, 1)
 					&& ifPointHasPeices(newBoard, 12, 4) && ifPointHasPeices(newBoard, 16, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFourOneInitialMove");
-				}
+				logger.trace("isFourOneInitialMove");
 				return true;
 			}
 		}
@@ -498,9 +445,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 6, 4) && ifPointHasPeices(newBoard, 5, 1)
 					&& ifPointHasPeices(newBoard, 13, 4) && ifPointHasPeices(newBoard, 9, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFourOneInitialMoveAlt");
-				}
+				logger.trace("isFourOneInitialMoveAlt");
 				return true;
 			}
 			// red
@@ -508,9 +453,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 19, 4) && ifPointHasPeices(newBoard, 20, 1)
 					&& ifPointHasPeices(newBoard, 12, 4) && ifPointHasPeices(newBoard, 16, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFourOneInitialMoveAlt");
-				}
+				logger.trace("isFourOneInitialMoveAlt");
 				return true;
 			}
 		}
@@ -533,9 +476,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 13, 3) && ifPointHasPeices(newBoard, 10, 1)
 					&& ifPointHasPeices(newBoard, 9, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFourThreeInitialMoveBlock");
-				}
+				logger.trace("isFourThreeInitialMoveBlock");
 				return true;
 			}
 			// red
@@ -543,9 +484,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 12, 3) && ifPointHasPeices(newBoard, 15, 1)
 					&& ifPointHasPeices(newBoard, 16, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFourThreeInitialMoveBlock");
-				}
+				logger.trace("isFourThreeInitialMoveBlock");
 				return true;
 			}
 		}
@@ -568,9 +507,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 24, 1) && ifPointHasPeices(newBoard, 21, 1)
 					&& ifPointHasPeices(newBoard, 6, 4) && ifPointHasPeices(newBoard, 9, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFourThreeInitialMoveSplit");
-				}
+				logger.trace("isFourThreeInitialMoveSplit");
 				return true;
 			}
 			// red
@@ -578,9 +515,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 1, 1) && ifPointHasPeices(newBoard, 4, 1)
 					&& ifPointHasPeices(newBoard, 13, 4) && ifPointHasPeices(newBoard, 16, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFourThreeInitialMoveSplit");
-				}
+				logger.trace("isFourThreeInitialMoveSplit");
 				return true;
 			}
 		}
@@ -603,9 +538,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 8, 2) && ifPointHasPeices(newBoard, 4, 2)
 					&& ifPointHasPeices(newBoard, 6, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFourTwoInitialMove");
-				}
+				logger.trace("isFourTwoInitialMove");
 				return true;
 			}
 			// red
@@ -613,9 +546,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 17, 2) && ifPointHasPeices(newBoard, 21, 2)
 					&& ifPointHasPeices(newBoard, 19, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFourTwoInitialMove");
-				}
+				logger.trace("isFourTwoInitialMove");
 				return true;
 			}
 		}
@@ -637,18 +568,14 @@ public class BoardEvaluator {
 		if (currentPlayer.black) {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 24, 1) && ifPointHasPeices(newBoard, 13, 6)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 			// red
 		} else {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 1, 1) && ifPointHasPeices(newBoard, 12, 6)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 		}
@@ -670,18 +597,14 @@ public class BoardEvaluator {
 		if (currentPlayer.black) {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 24, 1) && ifPointHasPeices(newBoard, 14, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 			// red
 		} else {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 1, 1) && ifPointHasPeices(newBoard, 11, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 		}
@@ -704,9 +627,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 24, 1) && ifPointHasPeices(newBoard, 18, 1)
 					&& ifPointHasPeices(newBoard, 13, 4) && ifPointHasPeices(newBoard, 9, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 			// red
@@ -714,9 +635,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 1, 1) && ifPointHasPeices(newBoard, 7, 1)
 					&& ifPointHasPeices(newBoard, 12, 4) && ifPointHasPeices(newBoard, 16, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 		}
@@ -739,9 +658,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 7, 2) && ifPointHasPeices(newBoard, 8, 2)
 					&& ifPointHasPeices(newBoard, 13, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 			// red
@@ -749,9 +666,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 17, 2) && ifPointHasPeices(newBoard, 18, 2)
 					&& ifPointHasPeices(newBoard, 12, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 		}
@@ -773,18 +688,14 @@ public class BoardEvaluator {
 		if (currentPlayer.black) {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 24, 1) && ifPointHasPeices(newBoard, 15, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 			// red
 		} else {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 1, 1) && ifPointHasPeices(newBoard, 10, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 		}
@@ -807,9 +718,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 24, 1) && ifPointHasPeices(newBoard, 18, 1)
 					&& ifPointHasPeices(newBoard, 10, 1) && ifPointHasPeices(newBoard, 13, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 			// red
@@ -817,9 +726,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 1, 1) && ifPointHasPeices(newBoard, 7, 1)
 					&& ifPointHasPeices(newBoard, 15, 1) && ifPointHasPeices(newBoard, 12, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 		}
@@ -842,9 +749,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 24, 1) && ifPointHasPeices(newBoard, 18, 1)
 					&& ifPointHasPeices(newBoard, 13, 4) && ifPointHasPeices(newBoard, 1, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 			// red
@@ -852,9 +757,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 1, 1) && ifPointHasPeices(newBoard, 7, 1)
 					&& ifPointHasPeices(newBoard, 12, 4) && ifPointHasPeices(newBoard, 14, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 		}
@@ -876,18 +779,14 @@ public class BoardEvaluator {
 		if (currentPlayer.black) {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 13, 4) && ifPointHasPeices(newBoard, 5, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 			// red
 		} else {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 12, 4) && ifPointHasPeices(newBoard, 20, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isFiveOneInitialMoveAlt");
-				}
+				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
 		}
@@ -910,9 +809,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 6, 4) && ifPointHasPeices(newBoard, 5, 2)
 					&& ifPointHasPeices(newBoard, 8, 2)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isThreeOneInitialMove");
-				}
+				logger.trace("isThreeOneInitialMove");
 				return true;
 			}
 			// red
@@ -920,9 +817,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 19, 4) && ifPointHasPeices(newBoard, 20, 2)
 					&& ifPointHasPeices(newBoard, 17, 2)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isThreeOneInitialMove");
-				}
+				logger.trace("isThreeOneInitialMove");
 				return true;
 			}
 		}
@@ -945,9 +840,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 13, 3) && ifPointHasPeices(newBoard, 11, 1)
 					&& ifPointHasPeices(newBoard, 10, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isThreeTwoOffenceInitialMove");
-				}
+				logger.trace("isThreeTwoOffenceInitialMove");
 				return true;
 			}
 			// red
@@ -955,9 +848,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 12, 3) && ifPointHasPeices(newBoard, 14, 1)
 					&& ifPointHasPeices(newBoard, 15, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isThreeTwoOffenceInitialMove");
-				}
+				logger.trace("isThreeTwoOffenceInitialMove");
 				return true;
 			}
 		}
@@ -980,9 +871,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 4, 1) && ifPointHasPeices(newBoard, 1, 1)
 					&& ifPointHasPeices(newBoard, 12, 4) && ifPointHasPeices(newBoard, 14, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isThreeTwoSplitInitialMove");
-				}
+				logger.trace("isThreeTwoSplitInitialMove");
 				return true;
 			}
 			// red
@@ -990,9 +879,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 24, 1) && ifPointHasPeices(newBoard, 21, 1)
 					&& ifPointHasPeices(newBoard, 13, 4) && ifPointHasPeices(newBoard, 11, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isThreeTwoSplitInitialMove");
-				}
+				logger.trace("isThreeTwoSplitInitialMove");
 				return true;
 			}
 		}
@@ -1015,9 +902,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 6, 4) && ifPointHasPeices(newBoard, 5, 1)
 					&& ifPointHasPeices(newBoard, 14, 1) && ifPointHasPeices(newBoard, 12, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isTwoOneSlotPlayInitialMove");
-				}
+				logger.trace("isTwoOneSlotPlayInitialMove");
 				return true;
 			}
 			// red
@@ -1025,9 +910,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 19, 4) && ifPointHasPeices(newBoard, 20, 1)
 					&& ifPointHasPeices(newBoard, 13, 4) && ifPointHasPeices(newBoard, 11, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isTwoOneSlotPlayInitialMove");
-				}
+				logger.trace("isTwoOneSlotPlayInitialMove");
 				return true;
 			}
 		}
@@ -1050,9 +933,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 2, 1) && ifPointHasPeices(newBoard, 1, 1)
 					&& ifPointHasPeices(newBoard, 14, 1) && ifPointHasPeices(newBoard, 12, 4)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isTwoOneSplitPlayInitialMove");
-				}
+				logger.trace("isTwoOneSplitPlayInitialMove");
 				return true;
 			}
 			// red
@@ -1060,9 +941,7 @@ public class BoardEvaluator {
 			// if it has performed the move
 			if (ifPointHasPeices(newBoard, 24, 1) && ifPointHasPeices(newBoard, 23, 1)
 					&& ifPointHasPeices(newBoard, 13, 4) && ifPointHasPeices(newBoard, 11, 1)) {
-				if (GameSettings.getDisplayConsole()) {
-					System.out.println("isTwoOneSplitPlayInitialMove");
-				}
+				logger.trace("isTwoOneSplitPlayInitialMove");
 				return true;
 			}
 		}

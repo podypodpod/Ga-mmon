@@ -31,14 +31,13 @@ import java.util.Properties;
  * Puts all settings for the actual game in one place..e.g. timeDelay for if it
  * actually needs to be seen
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class GameSettings {
 
 	private static Boolean isP1BlackCache = null;
 	private static Boolean displayGUICache = null;
 	private static Boolean areBothAIsCache = null;
-	private static Boolean displayConsoleCache = null;
 	private static Boolean multiThreadingCache = null;
 
 	private static int timeDelayCache = -1;
@@ -55,10 +54,6 @@ public class GameSettings {
 		GameSettings.areBothAIsCache = areBothAIsCache;
 	}
 
-	public static void setDisplayConsoleCache(final Boolean displayConsoleCache) {
-		GameSettings.displayConsoleCache = displayConsoleCache;
-	}
-
 	public static void setMultiThreadingCache(final Boolean multiThreadingCache) {
 		GameSettings.multiThreadingCache = multiThreadingCache;
 	}
@@ -72,13 +67,6 @@ public class GameSettings {
 			areBothAIsCache = Boolean.valueOf(getPropertyFromFile("areBothAIs"));
 		}
 		return areBothAIsCache;
-	}
-
-	public static boolean getDisplayConsole() {
-		if (displayConsoleCache == null) {
-			displayConsoleCache = Boolean.valueOf(getPropertyFromFile("displayConsole"));
-		}
-		return displayConsoleCache;
 	}
 
 	public static boolean getDisplayGUI() {

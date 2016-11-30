@@ -14,9 +14,7 @@ import uk.co.davidlomas.gammon.test.helpers.Settings;
 
 public class GenAlgSettingsTest {
 
-	private final Boolean newDisplayConsole = true;
 	private final Boolean newElitism = false;
-
 	private final double newUniformRate = 2;
 	private final double newMutationRate = 3;
 	private final int newTournamentSize = 4;
@@ -30,8 +28,6 @@ public class GenAlgSettingsTest {
 		// Influence each other
 
 		GenAlgSettings.setElitism(null);
-		GenAlgSettings.setDisplayConsole(null);
-
 		GenAlgSettings.setGenerations(-1);
 		GenAlgSettings.setPopulationSize(-1);
 		GenAlgSettings.setAttemptCount(-1);
@@ -91,12 +87,6 @@ public class GenAlgSettingsTest {
 	public void settingElitismThenGettingReturnsExpected() {
 		GenAlgSettings.setElitism(newElitism);
 		assertEquals(newElitism, GenAlgSettings.isElitism());
-	}
-
-	@Test
-	public void settingDisplayConsoleThenGettingReturnsExpected() {
-		GenAlgSettings.setDisplayConsole(newDisplayConsole);
-		assertEquals(newDisplayConsole, GenAlgSettings.isDisplayConsole());
 	}
 
 	@Test
@@ -169,16 +159,6 @@ public class GenAlgSettingsTest {
 		final double actualValue = GenAlgSettings.getUniformRate();
 
 		assertTrue(doublesAreEqual(expectedValue, actualValue));
-	}
-
-	@Test
-	public void leavingDisplayConsoleAsDefaultValueAndGettingItShouldReturnValueFromPropertiesFile() {
-		final boolean expectedValue = true;
-
-		GenAlgSettings.updateTofile("displayConsole", expectedValue + "");
-		final Boolean actualValue = GenAlgSettings.isDisplayConsole();
-
-		assertTrue(actualValue);
 	}
 
 	@Test

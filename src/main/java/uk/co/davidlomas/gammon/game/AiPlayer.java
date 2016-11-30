@@ -18,8 +18,10 @@
 
 package uk.co.davidlomas.gammon.game;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.davidlomas.gammon.genes.Individual;
-import uk.co.davidlomas.gammon.settings.GameSettings;
 
 /**
  * The Class AIPlayer.
@@ -27,9 +29,10 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
  * extends the Player class and implements methods to allow the AI to choose the
  * next move
  *
- * @author David Lomas - 11035527
+ * @author David Lomas
  */
 public class AiPlayer extends Player {
+	final static Logger logger = LoggerFactory.getLogger(AiPlayer.class);
 
 	private final MoveGenerator moveGenerator;
 	private Individual individual;
@@ -53,15 +56,12 @@ public class AiPlayer extends Player {
 
 	public Board AIturn(final Board currentBoard) {
 
-		if (GameSettings.getDisplayConsole()) {
-			System.out.println("------------AI's Turn!-----------------");
-		}
+		logger.trace("------------AI's Turn!-----------------");
 
 		movesLeft = new MovesLeft();
 		movesLeft.setTo(dice.RollDice());
-		if (GameSettings.getDisplayConsole()) {
-			System.out.println("Player has : " + movesLeft.toString());
-		}
+
+		logger.trace("Player has {}", movesLeft.toString());
 
 		Board newBoard = moveGenerator.getNextMoveBoard(currentBoard, this);
 
