@@ -6,19 +6,19 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 public class Settings {
 	public static void resetSettings() {
 		// GAME
-		GameSettings.setAreBothAIsCache(null);
-		GameSettings.setDisplayGUICache(null);
-		GameSettings.setIsP1BlackCache(null);
-		GameSettings.setMultiThreadingCache(null);
-		GameSettings.setTimeDelayCache(-1);
+		GameSettings.setAreBothAIsCache(true);
+		GameSettings.setDisplayGUICache(false);
+		GameSettings.setIsP1BlackCache(true);
+		GameSettings.setMultiThreadingCache(false);
+		GameSettings.setTimeDelayCache(0);
 
 		// GEN ALG
-		GenAlgSettings.setElitism(null);
-		GenAlgSettings.setGenerations(-1);
-		GenAlgSettings.setPopulationSize(-1);
-		GenAlgSettings.setAttemptCount(-1);
-		GenAlgSettings.setTournamentSize(-1);
-		GenAlgSettings.setUniformRate(-1);
-		GenAlgSettings.setMutationRate(-1);
+		GenAlgSettings.setElitism(true);
+		GenAlgSettings.setGenerations(0);
+		GenAlgSettings.setPopulationSize(2);
+		GenAlgSettings.setAttemptCount(9999);
+		GenAlgSettings.setTournamentSize(2);
+		GenAlgSettings.setUniformRate(632.0);
+		GenAlgSettings.setMutationRate(0.1);
 	}
 }

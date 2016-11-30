@@ -51,9 +51,9 @@ public class GeneticAlgorithm {
 	 *            the indiv2
 	 * @return the individual
 	 */
-	private static Individual crossover(final Individual indiv1, final Individual indiv2) {
+	private static Individual crossoverInidividuals(final Individual indiv1, final Individual indiv2) {
 
-		logger.trace("------CROSSOVER-------------------");
+		logger.trace("Crossing individuals");
 
 		// new Individual
 		final Individual newIndiv = new Individual();
@@ -81,26 +81,32 @@ public class GeneticAlgorithm {
 	 * @return the new population evolved
 	 */
 	public static Population evolvePopulation(final Population currentPopulation) {
-		logger.trace("------EVOLVE POPULATION-------------------");
+		logger.info("------EVOLVE POPULATION-------------------");
 
 		final Population newPopulation = new Population(currentPopulation.size(), false);
 		elitism(currentPopulation, newPopulation);
-		final int elitismOffset = crossover(currentPopulation, newPopulation);
-		mutate(newPopulation, elitismOffset);
+		final int elitismOffset = crossoverPopulation(currentPopulation, newPopulation);
+		mutatePopulation(newPopulation, elitismOffset);
 		newPopulation.calculateFitness();
 
 		return newPopulation;
 	}
 
+	/**
+	 * Keeping the best individual
+	 *
+	 * @param currentPopulation
+	 * @param newPopulation
+	 */
 	private static void elitism(final Population currentPopulation, final Population newPopulation) {
-		// Keep the best individual
 		if (GenAlgSettings.isElitism()) {
 			newPopulation.saveIndividual(0, currentPopulation.getFittest());
 		}
 	}
 
-	private static int crossover(final Population currentPopulation, final Population newPopulation) {
-		// Crossover population
+	private static int crossoverPopulation(final Population currentPopulation, final Population newPopulation) {
+		logger.info("Crossover started");
+
 		int elitismOffset;
 		if (GenAlgSettings.isElitism()) {
 			elitismOffset = 1;
@@ -117,16 +123,17 @@ public class GeneticAlgorithm {
 			final Individual indiv1 = tournamentSelection(currentPopulation);
 			final Individual indiv2 = tournamentSelection(currentPopulation);
 
-			final Individual newIndiv = crossover(indiv1, indiv2);
+			final Individual newIndiv = crossoverInidividuals(indiv1, indiv2);
 
 			newPopulation.saveIndividual(i, newIndiv);
 		}
+
+		logger.info("Crossover finished");
 		return elitismOffset;
 	}
 
-	private static void mutate(final Population newPopulation, final int elitismOffset) {
-		// Mutate population
-		logger.trace("------MUTATING-------------------");
+	private static void mutatePopulation(final Population newPopulation, final int elitismOffset) {
+		logger.info("Mutating population");
 		for (int i = elitismOffset; i < newPopulation.size(); i++) {
 			mutate(newPopulation.getIndividual(i));
 		}
@@ -173,12 +180,12 @@ public class GeneticAlgorithm {
 	 */
 	public static Individual tournamentSelection(final Population pop) {
 
-		logger.trace("------TOURNAMENT SELECTION-------------------");
+		logger.trace("Tournament selection starting");
 
 		// Create a tournament population
 		final Population tournament = new Population(GenAlgSettings.getTournamentSize(), false);
 
-		if (GenAlgSettings.getTournamentSize() >= pop.size()) {
+		if (GenAlgSettings.getTournamentSize() <= pop.size()) {
 			addTournamentPlayers(pop, tournament);
 		} else {
 			logger.error("Tournament Size {} cannot be larger than the population size {}",
@@ -213,6 +220,7 @@ public class GeneticAlgorithm {
 				tournament.setIndividuals(winnersOfRound);
 			}
 		}
+		logger.trace("Tournament selection ended");
 		return tournamentVictor;
 	}
 

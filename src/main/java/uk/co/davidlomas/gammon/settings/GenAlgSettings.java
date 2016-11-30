@@ -46,7 +46,6 @@ public class GenAlgSettings {
 	private static int populationSize = -1;
 	private static int attemptCount = -1;
 	private static int tournamentSize = -1;
-
 	private static double uniformRate = -1;
 	private static double mutationRate = -1;
 
