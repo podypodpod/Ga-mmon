@@ -28,12 +28,12 @@ import java.util.List;
  *
  * @author David Lomas
  */
-public class MovesLeft {
+public class MovesList {
 
-	public List<Integer> movesLeft;
+	public final List<Integer> moves;
 
-	public MovesLeft() {
-		movesLeft = new ArrayList<>();
+	public MovesList() {
+		moves = new ArrayList<>();
 	}
 
 	/**
@@ -41,17 +41,12 @@ public class MovesLeft {
 	 *
 	 * Instantiates a new moves left.
 	 *
-	 * @param movesLeftCopy
-	 *            the moves left copy
+	 * @param movesListCopy
 	 */
-	public MovesLeft(final MovesLeft movesLeftCopy) {
-
-		// create new list
-		movesLeft = new ArrayList<>();
-
-		// copy old one
-		for (final int x : movesLeftCopy.movesLeft) {
-			movesLeft.add(x);
+	public MovesList(final MovesList movesListCopy) {
+		moves = new ArrayList<>();
+		for (final int move : movesListCopy.moves) {
+			moves.add(move);
 		}
 	}
 
@@ -59,21 +54,17 @@ public class MovesLeft {
 	 * Add adds the param passed in to the list
 	 *
 	 * @param value
-	 *            the int to be added
 	 */
 	public void add(final int value) {
-		movesLeft.add(Integer.valueOf(value));
+		moves.add(Integer.valueOf(value));
 	}
 
-	/**
-	 * Clear.
-	 */
 	public void clear() {
-		movesLeft.clear();
+		moves.clear();
 	}
 
 	public boolean contains(final int i) {
-		if (movesLeft.contains(i)) {
+		if (moves.contains(i)) {
 			return true;
 		}
 		return false;
@@ -85,17 +76,16 @@ public class MovesLeft {
 	 * @return the next
 	 */
 	public int getNext() {
-		return movesLeft.get(0);
+		return moves.get(0);
 	}
 
 	/**
 	 * Remove removes the value passed in
 	 *
 	 * @param value
-	 *            the value to be removed
 	 */
 	public void remove(final int value) {
-		movesLeft.remove(Integer.valueOf(value));
+		moves.remove(Integer.valueOf(value));
 	}
 
 	/**
@@ -104,12 +94,11 @@ public class MovesLeft {
 	 * Sets the list to the same as the one passed in
 	 *
 	 * @param diceRolls
-	 *            - set the current list to contents of dicerolls
 	 */
 	public void setTo(final List<Integer> diceRolls) {
 		clear();
-		for (final int x : diceRolls) {
-			add(x);
+		for (final int roll : diceRolls) {
+			add(roll);
 		}
 	}
 
@@ -119,10 +108,10 @@ public class MovesLeft {
 	 * @return the size of list
 	 */
 	public int size() {
-		return movesLeft.size();
+		return moves.size();
 	}
 
-	/*
+	/**
 	 * toString method
 	 */
 	@Override
@@ -130,11 +119,8 @@ public class MovesLeft {
 		String str = size() + " moves Left, with Rolls: ";
 
 		for (int x = 0; x < size(); x++) {
-			str += movesLeft.get(x) + ", ";
+			str += moves.get(x) + ", ";
 		}
-
 		return str;
-
 	}
-
 }

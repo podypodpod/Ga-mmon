@@ -35,10 +35,9 @@ public class GameStats {
 
 	final static Logger logger = LoggerFactory.getLogger(GameStats.class);
 
-	Individual gameVictor = null;
-
-	double playerOneScore = 0;
-	double playerTwoScore = 0;
+	private Individual gameVictor = null;
+	private double playerOneScore = 0;
+	private double playerTwoScore = 0;
 
 	/**
 	 * GameStats default constructor
@@ -47,10 +46,10 @@ public class GameStats {
 	 * @param p1score
 	 * @param p2score
 	 */
-	public GameStats(final Individual winner, final double p1score, final double p2score) {
-		gameVictor = winner;
-		playerOneScore = p1score;
-		playerOneScore = p2score;
+	public GameStats(final Individual gameVictor, final double playerOneScore, final double playerTwoScore) {
+		this.gameVictor = gameVictor;
+		this.playerOneScore = playerOneScore;
+		this.playerOneScore = playerTwoScore;
 	}
 
 	/**
@@ -69,5 +68,13 @@ public class GameStats {
 	 */
 	public Individual getVictor() {
 		return gameVictor;
+	}
+
+	public double getPlayerTwoScore() {
+		return playerTwoScore;
+	}
+
+	public void setPlayerTwoScore(final double playerTwoScore) {
+		this.playerTwoScore = playerTwoScore;
 	}
 }

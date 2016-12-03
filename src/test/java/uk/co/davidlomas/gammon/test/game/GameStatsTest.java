@@ -15,4 +15,5 @@ public class GameStatsTest {
 	public static void afterClass() {
 		Settings.resetSettings();
 	}
+
 }

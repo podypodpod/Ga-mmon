@@ -91,10 +91,10 @@ public class BoardList {
 		p1.movePiece(from, to, b);
 
 		if (p1.movesLeft.size() > 1) {
-			p1.movesLeft.movesLeft.remove(Integer.valueOf(p1.distanceBetween(from, to)));
+			p1.movesLeft.moves.remove(Integer.valueOf(p1.distanceBetween(from, to)));
 		} else {
-			p1.movesLeft.movesLeft.remove(0);
-			p1.movesLeft.movesLeft.add(Integer.valueOf(0));
+			p1.movesLeft.moves.remove(0);
+			p1.movesLeft.moves.add(Integer.valueOf(0));
 		}
 
 		// check if any further moves can be made

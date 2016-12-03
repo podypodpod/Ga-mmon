@@ -36,16 +36,10 @@ public class Player {
 
 	final static Logger logger = LoggerFactory.getLogger(Player.class);
 
-	/** The moves left. */
-	public MovesLeft movesLeft;
-
-	/** The players color */
-	Boolean black;
-
-	Die die1, die2;
-	DiceList dice;
-
-	boolean turnOver;
+	public MovesList movesLeft;
+	protected Boolean black;
+	protected DiceList dice;
+	protected boolean turnOver;
 
 	/**
 	 * Instantiates a new player.
@@ -54,15 +48,9 @@ public class Player {
 	 *            the color
 	 */
 	public Player(final boolean black) {
-
 		this.black = black;
-
-		movesLeft = new MovesLeft();
-
+		movesLeft = new MovesList();
 		dice = new DiceList();
-
-		die1 = new Die();
-		die2 = new Die();
 	}
 
 	/**
@@ -85,7 +73,7 @@ public class Player {
 			// looping through the moves Left array to check against
 			// what they have asked for
 			boolean validLength = false;
-			for (final int move : movesLeft.movesLeft) {
+			for (final int move : movesLeft.moves) {
 				if (move == distanceBetween(from, to)) {
 					validLength = true;
 					break;
@@ -235,7 +223,7 @@ public class Player {
 
 		// looping through the moves Left array to check against what they have
 		// asked for
-		for (final int x : movesLeft.movesLeft) {
+		for (final int x : movesLeft.moves) {
 			if (x >= distanceBetween(from, to + y)) {
 				return true;
 			}
@@ -265,7 +253,7 @@ public class Player {
 		logger.trace("------------Your Turn!-----------------");
 
 		// Rolling the dice
-		movesLeft.setTo(dice.RollDice());
+		movesLeft.setTo(dice.RollTwoDice());
 
 		logger.trace("Player has : " + movesLeft.toString());
 

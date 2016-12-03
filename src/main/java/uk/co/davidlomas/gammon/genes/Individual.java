@@ -41,17 +41,12 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
  */
 public class Individual {
 
+	final static Logger logger = LoggerFactory.getLogger(Individual.class);
 	private static final String PLAYERS_FILE_PATH = "savedPlayers/Attempt - ";
 
-	final static Logger logger = LoggerFactory.getLogger(Individual.class);
-
+	private final IndividualAttribute[] listOfAttributes;
 	private final int numOfAttributes;
-	private IndividualAttribute[] listOfAttributes = null;
-
-	/** The chromosome. */
 	private char[] chromosome;
-
-	/** The fitness. */
 	private double fitness = 0;
 
 	/**
@@ -229,11 +224,11 @@ public class Individual {
 	/**
 	 * setAttribute
 	 *
-	 * @param attr
-	 * @param data
+	 * @param index
+	 * @param individualAttribute
 	 */
-	public void setAttribute(final int attr, final IndividualAttribute data) {
-		listOfAttributes[attr] = data;
+	public void setAttribute(final int index, final IndividualAttribute individualAttribute) {
+		listOfAttributes[index] = individualAttribute;
 		updateToBinary();
 	}
 

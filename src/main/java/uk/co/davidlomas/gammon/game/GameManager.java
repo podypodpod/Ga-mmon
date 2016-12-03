@@ -44,27 +44,21 @@ public class GameManager {
 	public static BoardContainerFrame boardContainerFrame;
 	private static Game currentGame;
 
-	public GameManager() {
-
-	}
-
 	/**
 	 * playIndividualsVsEachOther
 	 *
-	 * @param ip1
-	 *            indiv 1
-	 * @param ip2
-	 *            indiv 2
+	 * @param invdividual1
+	 * @param invdividual2
 	 * @return GameStats result of game (winner, values)
 	 */
-	public GameStats playIndividualsVsEachOther(final Individual ip1, final Individual ip2) {
+	public GameStats playIndividualsVsEachOther(final Individual invdividual1, final Individual invdividual2) {
 
 		if (GameSettings.getDisplayGUI()) {
 			startGui();
 		}
 
 		// The Game Thread
-		currentGame = new Game(ip1, ip2);
+		currentGame = new Game(invdividual1, invdividual2);
 
 		/*
 		 * THREADING NOT IMPLEMENTED YET Thread gameThread = new

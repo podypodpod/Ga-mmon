@@ -27,12 +27,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import uk.co.davidlomas.gammon.game.MovesLeft;
+import uk.co.davidlomas.gammon.game.MovesList;
 import uk.co.davidlomas.gammon.test.helpers.Settings;
 
 public class MovesLeftTest {
 
-	private MovesLeft testSubject;
+	private MovesList testSubject;
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -46,7 +46,7 @@ public class MovesLeftTest {
 
 	@Before
 	public void setUp() throws Exception {
-		testSubject = new MovesLeft();
+		testSubject = new MovesList();
 	}
 
 	@Test
@@ -56,16 +56,16 @@ public class MovesLeftTest {
 		testSubject.add(9);
 		testSubject.add(3);
 
-		MovesLeft clonedMovesLeft;
+		MovesList clonedMovesLeft;
 
 		// When
-		clonedMovesLeft = new MovesLeft(testSubject);
+		clonedMovesLeft = new MovesList(testSubject);
 
 		// Then
 		assertEquals(4, clonedMovesLeft.getNext());
-		assertTrue(clonedMovesLeft.movesLeft.contains(4));
-		assertTrue(clonedMovesLeft.movesLeft.contains(9));
-		assertTrue(clonedMovesLeft.movesLeft.contains(3));
+		assertTrue(clonedMovesLeft.moves.contains(4));
+		assertTrue(clonedMovesLeft.moves.contains(9));
+		assertTrue(clonedMovesLeft.moves.contains(3));
 	}
 
 	@Test

@@ -50,12 +50,16 @@ public class DiceList {
 		d2 = new Die();
 	}
 
+	public int rollOneDie() {
+		return d1.RollDie();
+	}
+
 	/**
 	 * Roll dice. Rolls two random dice and returns the results
 	 *
 	 * @return list of Dice rolls
 	 */
-	public List<Integer> RollDice() {
+	public List<Integer> RollTwoDice() {
 
 		final List<Integer> diceRolls = new ArrayList<>();
 

@@ -39,11 +39,8 @@ public class AiPlayer extends Player {
 
 	public AiPlayer(final AiPlayer p) {
 		super(p.black);
-
-		movesLeft = new MovesLeft(p.movesLeft);
+		movesLeft = new MovesList(p.movesLeft);
 		black = p.black;
-		die1 = p.die1;
-		die2 = p.die2;
 		turnOver = p.turnOver;
 		moveGenerator = p.moveGenerator;
 	}
@@ -58,8 +55,8 @@ public class AiPlayer extends Player {
 
 		logger.trace("------------AI's Turn!-----------------");
 
-		movesLeft = new MovesLeft();
-		movesLeft.setTo(dice.RollDice());
+		movesLeft = new MovesList();
+		movesLeft.setTo(dice.RollTwoDice());
 
 		logger.trace("Player has {}", movesLeft.toString());
 

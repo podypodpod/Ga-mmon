@@ -60,7 +60,7 @@ public class PlayerTest {
 	public void settingBoardPositionAndValidMovesLeftAndCallingMovePossibleWithASimple2PositionMoveShouldReturnTrue() {
 		// leaving a red piece on its own
 		player1.movePiece(12, 11, board);
-		player2.movesLeft.movesLeft.add(2);
+		player2.movesLeft.moves.add(2);
 
 		// When
 		final boolean possible = player2.candidateMovePossible(13, 11, board);
@@ -121,7 +121,7 @@ public class PlayerTest {
 	public void whenMovingARedPieceFrom0SlotBackOnBoardShouldActLikeAnyOtherMove() {
 		// Given
 		player1.movePiece(19, 0, board);// move a piece to 0 place
-		player1.movesLeft.movesLeft.add(2);// give it a move of 2
+		player1.movesLeft.moves.add(2);// give it a move of 2
 
 		// Then
 		assertTrue(player1.candidateMovePossible(0, 2, board));// moving back to
@@ -147,7 +147,7 @@ public class PlayerTest {
 		// moving piece to zero
 		player2.movePiece(13, 25, board);
 		// give 2 move
-		player2.movesLeft.movesLeft.add(2);
+		player2.movesLeft.moves.add(2);
 
 		// Then
 		assertFalse(player2.candidateMovePossible(13, 11, board));
@@ -160,7 +160,7 @@ public class PlayerTest {
 		player1.movePiece(12, 11, board);
 		player1.movePiece(12, 11, board);
 
-		player2.movesLeft.movesLeft.add(2);
+		player2.movesLeft.moves.add(2);
 
 		// Then
 		assertFalse(player2.candidateMovePossible(13, 11, board));
@@ -171,7 +171,7 @@ public class PlayerTest {
 
 		// Given
 		player1.movePiece(19, 0, board);
-		player1.movesLeft.movesLeft.add(2);
+		player1.movesLeft.moves.add(2);
 
 		// Then
 		assertFalse(player1.candidateMovePossible(19, 21, board));

@@ -2921,3 +2921,1669 @@
 2016-11-30 23:10:59 TRACE AiPlayer:59 - ------------AI's Turn!-----------------
 2016-11-30 23:10:59 TRACE AiPlayer:64 - Player has 4 moves Left, with Rolls: 1, 1, 1, 1, 
 2016-11-30 23:11:14 ERROR GeneticAlgorithm:184 - Tournament Size 2 cannot be larger than the population size 2
+2016-11-30 23:15:41 ERROR GeneticAlgorithm:184 - Tournament Size 2 cannot be larger than the population size 3
+2016-11-30 23:22:12 ERROR GeneticAlgorithm:184 - Tournament Size 2 cannot be larger than the population size 3
+2016-11-30 23:22:27 ERROR GeneticAlgorithm:184 - Tournament Size 2 cannot be larger than the population size 3
+2016-11-30 23:22:40 ERROR GeneticAlgorithm:184 - Tournament Size 2 cannot be larger than the population size 3
+2016-11-30 23:25:04 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2016-11-30 23:25:04 INFO  GeneticAlgorithm:108 - crossover
+2016-11-30 23:25:04 INFO  GeneticAlgorithm:181 - ------TOURNAMENT SELECTION-------------------
+2016-11-30 23:25:05 INFO  GeneticAlgorithm:181 - ------TOURNAMENT SELECTION-------------------
+2016-11-30 23:25:05 INFO  GeneticAlgorithm:181 - ------TOURNAMENT SELECTION-------------------
+2016-11-30 23:25:06 INFO  GeneticAlgorithm:181 - ------TOURNAMENT SELECTION-------------------
+2016-11-30 23:25:06 INFO  GeneticAlgorithm:134 - ------MUTATING-------------------
+2016-11-30 23:26:58 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2016-11-30 23:26:58 INFO  GeneticAlgorithm:108 - crossover
+2016-11-30 23:27:27 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2016-11-30 23:27:27 INFO  GeneticAlgorithm:108 - Crossover started
+2016-11-30 23:30:03 INFO  GeneticAlgorithm:131 - Crossover finished
+2016-11-30 23:30:03 INFO  GeneticAlgorithm:136 - Mutating population
+2016-12-03 12:44:34 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2016-12-03 12:44:34 INFO  GeneticAlgorithm:108 - Crossover started
+2016-12-03 12:44:46 INFO  GeneticAlgorithm:131 - Crossover finished
+2016-12-03 12:44:46 INFO  GeneticAlgorithm:136 - Mutating population
+2016-12-03 12:44:58 INFO  StartGa:44 - Program running!
+2016-12-03 12:44:58 INFO  StartGa:57 - Creating Initial Population with size=1 generations=2
+2016-12-03 12:44:58 INFO  StartGa:90 - Calculating fittest of initial pop
+2016-12-03 12:44:58 INFO  StartGa:79 - -------------------------
+2016-12-03 12:44:58 INFO  StartGa:80 - Started evolving population
+2016-12-03 12:44:58 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2016-12-03 12:44:58 INFO  GeneticAlgorithm:108 - Crossover started
+2016-12-03 12:44:58 INFO  GeneticAlgorithm:131 - Crossover finished
+2016-12-03 12:44:58 INFO  GeneticAlgorithm:136 - Mutating population
+2016-12-03 12:44:58 INFO  StartGa:84 - Finished evolving population, evolution 0
+2016-12-03 12:44:58 INFO  StartGa:66 - -------------------------
+2016-12-03 12:44:58 INFO  StartGa:67 - Started evolving population
+2016-12-03 12:44:58 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2016-12-03 12:44:58 INFO  GeneticAlgorithm:108 - Crossover started
+2016-12-03 12:44:58 INFO  GeneticAlgorithm:131 - Crossover finished
+2016-12-03 12:44:58 INFO  GeneticAlgorithm:136 - Mutating population
+2016-12-03 12:44:58 INFO  StartGa:72 - Finished evolving population, evolution 1
+2016-12-03 12:44:58 INFO  StartGa:51 - ------------Finished Evolving-------
+2016-12-03 12:44:58 INFO  StartGa:52 - Solution:
+2016-12-03 12:44:58 INFO  StartGa:53 - Indiviudal with chromosome string: 10001100100111101001000011101000001000010110111000000110100010010001010101001101110101110110101110101101001101000100110100011101011101011101000101110101000101111011001101000010001001110000010000011100010101110010000100001010 and fitness of: 0.0| bearAPiece: 70| takeAPiece: 39| doubleUpAPiece: 82| blockAnOpponent: 14| movingAPieceSolo: 65| spreadAHomePiece: 5| addACheckerToAStack: 92| twoOneSplitPlayInitialMove: 6| twoOneSlotPlayInitialMove: 68| threeOneInitialMove: 69| threeTwoSplitInitialMove: 41| threeTwoOffenceInitialMove: 93| fourOneInitialMove: 59| fourOneInitialMoveAlt: 46| fourTwoInitialMove: 90| fourThreeInitialMoveSplit: 52| fourThreeInitialMoveBlock: 38| fiveOneInitialMove: 71| fiveOneInitialMoveAlt: 46| fiveTwoInitialMove: 93| fiveTwoInitialMoveRisk: 11| fiveThreeInitialMove: 84| fiveFourInitialMoveAgr: 47| fiveFourInitialMoveBal: 51| sixOneInitialMove: 33| sixTwoInitialMove: 9| sixTwoInitialMoveAgr: 96| sixThreeInitialMove: 65| sixThreeInitialMoveSplit: 98| sixFourInitialMove: 92| sixFourInitialMoveSplit: 66| sixFiveInitialMove: 10
+2016-12-03 14:46:09 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2016-12-03 14:46:09 INFO  GeneticAlgorithm:108 - Crossover started
+2016-12-03 14:46:21 INFO  GeneticAlgorithm:131 - Crossover finished
+2016-12-03 14:46:21 INFO  GeneticAlgorithm:136 - Mutating population
+2016-12-03 14:46:24 INFO  StartGa:44 - Program running!
+2016-12-03 14:46:24 INFO  StartGa:57 - Creating Initial Population with size=1 generations=2
+2016-12-03 14:46:24 INFO  StartGa:90 - Calculating fittest of initial pop
+2016-12-03 14:46:24 INFO  StartGa:79 - -------------------------
+2016-12-03 14:46:24 INFO  StartGa:80 - Started evolving population
+2016-12-03 14:46:24 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2016-12-03 14:46:24 INFO  GeneticAlgorithm:108 - Crossover started
+2016-12-03 14:46:24 INFO  GeneticAlgorithm:131 - Crossover finished
+2016-12-03 14:46:24 INFO  GeneticAlgorithm:136 - Mutating population
+2016-12-03 14:46:24 INFO  StartGa:84 - Finished evolving population, evolution 0
+2016-12-03 14:46:24 INFO  StartGa:66 - -------------------------
+2016-12-03 14:46:24 INFO  StartGa:67 - Started evolving population
+2016-12-03 14:46:24 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2016-12-03 14:46:24 INFO  GeneticAlgorithm:108 - Crossover started
+2016-12-03 14:46:24 INFO  GeneticAlgorithm:131 - Crossover finished
+2016-12-03 14:46:24 INFO  GeneticAlgorithm:136 - Mutating population
+2016-12-03 14:46:24 INFO  StartGa:72 - Finished evolving population, evolution 1
+2016-12-03 14:46:24 INFO  StartGa:51 - ------------Finished Evolving-------
+2016-12-03 14:46:24 INFO  StartGa:52 - Solution:
+2016-12-03 14:46:24 INFO  StartGa:53 - Indiviudal with chromosome string: 01101101011010001111110001110010000101100000111110111001010011000101000101001000101010111010110010000101100110000111100101101110010010110011101111100110110011011010111010011110110011101011001001110011000100011110110101100000 and fitness of: 0.0| bearAPiece: 54| takeAPiece: 90| doubleUpAPiece: 31| blockAnOpponent: 71| movingAPieceSolo: 16| spreadAHomePiece: 88| addACheckerToAStack: 31| twoOneSplitPlayInitialMove: 57| twoOneSlotPlayInitialMove: 38| threeOneInitialMove: 20| threeTwoSplitInitialMove: 41| threeTwoOffenceInitialMove: 10| fourOneInitialMove: 93| fourOneInitialMoveAlt: 50| fourTwoInitialMove: 11| fourThreeInitialMoveSplit: 24| fourThreeInitialMoveBlock: 60| fiveOneInitialMove: 91| fiveOneInitialMoveAlt: 73| fiveTwoInitialMove: 51| fiveTwoInitialMoveRisk: 95| fiveThreeInitialMove: 27| fiveFourInitialMoveAgr: 27| fiveFourInitialMoveBal: 46| sixOneInitialMove: 79| sixTwoInitialMove: 51| sixTwoInitialMoveAgr: 86| sixThreeInitialMove: 39| sixThreeInitialMoveSplit: 24| sixFourInitialMove: 71| sixFourInitialMoveSplit: 90| sixFiveInitialMove: 96
+2016-12-03 15:13:10 TRACE GameStatsTest:34 - ---------Player 1----------
+2016-12-03 15:13:10 TRACE Individual:158 - Loading player from file: savedPlayers/Attempt - 2014 - 1/PlayerFromGen0.properties
+2016-12-03 15:13:10 TRACE GameStatsTest:36 - Indiviudal with chromosome string: 01011100111010100100110011110110010011100101110100010110010110110101101000111011001010010110101010110001110101000100110010001000100010001110101010101101111100000011111110010100110100011100110111110011111001110100010110110110 and fitness of: 0.0| bearAPiece: 46| takeAPiece: 58| doubleUpAPiece: 73| blockAnOpponent: 79| movingAPieceSolo: 50| spreadAHomePiece: 57| addACheckerToAStack: 58| twoOneSplitPlayInitialMove: 22| twoOneSlotPlayInitialMove: 45| threeOneInitialMove: 86| threeTwoSplitInitialMove: 71| threeTwoOffenceInitialMove: 50| fourOneInitialMove: 75| fourOneInitialMoveAlt: 42| fourTwoInitialMove: 99| fourThreeInitialMoveSplit: 84| fourThreeInitialMoveBlock: 38| fiveOneInitialMove: 34| fiveOneInitialMoveAlt: 17| fiveTwoInitialMove: 14| fiveTwoInitialMoveRisk: 85| fiveThreeInitialMove: 55| fiveFourInitialMoveAgr: 96| fiveFourInitialMoveBal: 63| sixOneInitialMove: 74| sixTwoInitialMove: 52| sixTwoInitialMoveAgr: 57| sixThreeInitialMove: 95| sixThreeInitialMoveSplit: 31| sixFourInitialMove: 29| sixFourInitialMoveSplit: 11| sixFiveInitialMove: 54
+2016-12-03 15:13:10 TRACE GameStatsTest:38 - ----------Player 2---------
+2016-12-03 15:13:10 TRACE Individual:158 - Loading player from file: savedPlayers/Attempt - 2014 - 1/PlayerFromGen9.properties
+2016-12-03 15:13:10 TRACE GameStatsTest:40 - Indiviudal with chromosome string: 10111111010100100100110100001000000011100101100100110010101010010100100100011011011010010110001010110001110100011001000001011000111100001110001110000010111100000011111111000000100001011100100011110111011101010110001010110110 and fitness of: 0.0| bearAPiece: 95| takeAPiece: 84| doubleUpAPiece: 73| blockAnOpponent: 80| movingAPieceSolo: 64| spreadAHomePiece: 57| addACheckerToAStack: 50| twoOneSplitPlayInitialMove: 50| twoOneSlotPlayInitialMove: 84| threeOneInitialMove: 82| threeTwoSplitInitialMove: 35| threeTwoOffenceInitialMove: 54| fourOneInitialMove: 75| fourOneInitialMoveAlt: 10| fourTwoInitialMove: 99| fourThreeInitialMoveSplit: 81| fourThreeInitialMoveBlock: 72| fiveOneInitialMove: 22| fiveOneInitialMoveAlt: 30| fiveTwoInitialMove: 14| fiveTwoInitialMoveRisk: 28| fiveThreeInitialMove: 11| fiveFourInitialMoveAgr: 96| fiveFourInitialMoveBal: 63| sixOneInitialMove: 96| sixTwoInitialMove: 33| sixTwoInitialMoveAgr: 57| sixThreeInitialMove: 15| sixThreeInitialMoveSplit: 59| sixFourInitialMove: 85| sixFourInitialMoveSplit: 69| sixFiveInitialMove: 54
+2016-12-03 15:13:10 TRACE Game:200 - Welcome! New game with two players
+2016-12-03 15:13:10 TRACE Game:207 - Player 1 is BLACK, Player 2 is RED
+2016-12-03 15:13:10 TRACE Game:211 - Initial dice throw commencing..
+2016-12-03 15:13:10 TRACE Game:216 - Player 1 rolls: 4 Player 2: 5
+2016-12-03 15:13:10 TRACE Game:224 - Player 2(Black=false) Has won the roll
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 2, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 21
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 6, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 12
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 45
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 5, 5, 5, 5, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 20
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 1, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 32
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 2, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 19
+2016-12-03 15:13:10 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 5, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 29
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 5, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 4, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 13
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 5, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 11
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 39
+2016-12-03 15:13:10 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 3
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 1, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 27
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 18
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 1, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 6, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 6
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 2, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 11
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 2, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 14
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 5, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 12
+2016-12-03 15:13:10 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 1, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 47
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 2, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 10
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 6, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 6
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 41
+2016-12-03 15:13:10 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 51
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 1, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:10 TRACE BoardEvaluator:169 - Blocking oponent
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 6, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 43
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 5, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 1, 
+2016-12-03 15:13:10 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 35
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 3
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 4, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 14
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 6, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 13
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 5, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 11
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 5, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 13
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 1, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 34
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 1, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 2, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 33
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 3, 3, 3, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 1, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 11
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 1, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 6, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 36
+2016-12-03 15:13:10 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 6, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 40
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 4, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 22
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 6, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 10
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 1, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 11
+2016-12-03 15:13:10 TRACE BoardEvaluator:169 - Blocking oponent
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 5, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 37
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 1, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:10 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 5, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 40
+2016-12-03 15:13:10 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 2, 2, 2, 2, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 79
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 1, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 5, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 24
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 6, 6, 6, 6, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 90
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:10 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 5, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 22
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 17
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 2, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 10
+2016-12-03 15:13:10 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 53
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 12
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 13
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 4
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 4, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 13
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 6, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 4
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 13
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 4, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 5, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 13
+2016-12-03 15:13:10 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 5, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 13
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 45
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 2, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 5
+2016-12-03 15:13:10 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 68
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 1, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 6
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 6, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 54
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 2, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 16
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 69
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 6, 6, 6, 6, 
+2016-12-03 15:13:10 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 2, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 66
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 6
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 2, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 68
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 2, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 13
+2016-12-03 15:13:10 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 1, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 70
+2016-12-03 15:13:10 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 6, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 20
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 12
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 1, 1, 1, 1, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 22
+2016-12-03 15:13:10 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 3, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 52
+2016-12-03 15:13:10 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 5, 
+2016-12-03 15:13:10 TRACE BoardList:163 - board list size: 6
+2016-12-03 15:13:10 TRACE BoardEvaluator:169 - Blocking oponent
+2016-12-03 15:13:10 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:10 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:11 TRACE BoardList:163 - board list size: 178
+2016-12-03 15:13:11 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:11 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:11 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 2, 
+2016-12-03 15:13:11 TRACE BoardList:163 - board list size: 6
+2016-12-03 15:13:11 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:11 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:11 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 6, 6, 6, 6, 
+2016-12-03 15:13:11 TRACE BoardList:163 - board list size: 56
+2016-12-03 15:13:11 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:11 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:11 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 3, 3, 3, 3, 
+2016-12-03 15:13:11 TRACE BoardList:163 - board list size: 18
+2016-12-03 15:13:11 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:11 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:11 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 6, 
+2016-12-03 15:13:11 TRACE BoardList:163 - board list size: 13
+2016-12-03 15:13:11 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:11 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:11 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:11 TRACE BoardList:163 - board list size: 17
+2016-12-03 15:13:11 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:11 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:11 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 6, 6, 6, 6, 
+2016-12-03 15:13:11 TRACE BoardList:163 - board list size: 209
+2016-12-03 15:13:11 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:11 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:11 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:11 TRACE BoardList:163 - board list size: 5
+2016-12-03 15:13:11 TRACE BoardEvaluator:169 - Blocking oponent
+2016-12-03 15:13:11 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:11 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 6, 
+2016-12-03 15:13:11 TRACE BoardList:163 - board list size: 57
+2016-12-03 15:13:11 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:11 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:11 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 3, 
+2016-12-03 15:13:11 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:11 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:11 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:11 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 2, 
+2016-12-03 15:13:11 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:11 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:11 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:11 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:11 TRACE BoardList:163 - board list size: 5
+2016-12-03 15:13:11 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:11 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:11 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 2, 2, 2, 2, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 398
+2016-12-03 15:13:12 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 5, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 5
+2016-12-03 15:13:12 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 6, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 18
+2016-12-03 15:13:12 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 3, 3, 3, 3, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 36
+2016-12-03 15:13:12 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 1, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 11
+2016-12-03 15:13:12 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 6, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 5
+2016-12-03 15:13:12 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 17
+2016-12-03 15:13:12 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 5, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 6
+2016-12-03 15:13:12 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 2, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 113
+2016-12-03 15:13:12 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 5, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 11
+2016-12-03 15:13:12 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 6, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 52
+2016-12-03 15:13:12 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 4, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 12
+2016-12-03 15:13:12 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 5, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 86
+2016-12-03 15:13:12 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 1, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 6
+2016-12-03 15:13:12 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 3, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 17
+2016-12-03 15:13:12 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 2, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 15
+2016-12-03 15:13:12 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 2, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 79
+2016-12-03 15:13:12 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 1, 1, 1, 1, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 21
+2016-12-03 15:13:12 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 86
+2016-12-03 15:13:12 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 6, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 16
+2016-12-03 15:13:12 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 3, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 17
+2016-12-03 15:13:12 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 6, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 6
+2016-12-03 15:13:12 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 6, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 13
+2016-12-03 15:13:12 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 1, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 31
+2016-12-03 15:13:12 TRACE BoardEvaluator:169 - Blocking oponent
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 1, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 80
+2016-12-03 15:13:12 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 6, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 6
+2016-12-03 15:13:12 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 2, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 55
+2016-12-03 15:13:12 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 5, 5, 5, 5, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 32
+2016-12-03 15:13:12 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 2, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:12 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 6, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 21
+2016-12-03 15:13:12 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 6, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 56
+2016-12-03 15:13:12 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 5, 
+2016-12-03 15:13:12 TRACE BoardList:163 - board list size: 3
+2016-12-03 15:13:12 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:12 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:12 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 1, 1, 1, 1, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 356
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 2, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 3
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 1, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 69
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 29
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 2, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 16
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 6, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:13 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 39
+2016-12-03 15:13:13 TRACE BoardEvaluator:169 - Blocking oponent
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 6, 6, 6, 6, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 188
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 3, 3, 3, 3, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 77
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 14
+2016-12-03 15:13:13 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 6, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 39
+2016-12-03 15:13:13 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 1, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 50
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 6, 6, 6, 6, 
+2016-12-03 15:13:13 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 2, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 60
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 6, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 1, 1, 1, 1, 
+2016-12-03 15:13:13 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 6
+2016-12-03 15:13:13 TRACE BoardEvaluator:169 - Blocking oponent
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 1, 1, 1, 1, 
+2016-12-03 15:13:13 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 35
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 10
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 3, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 67
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 2, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 14
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 6, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 73
+2016-12-03 15:13:13 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 10
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 6, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 26
+2016-12-03 15:13:13 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 2, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 47
+2016-12-03 15:13:13 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 20
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 1, 1, 1, 1, 
+2016-12-03 15:13:13 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 27
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 6, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 14
+2016-12-03 15:13:13 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 30
+2016-12-03 15:13:13 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 37
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 6, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 6
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 6, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 14
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 12
+2016-12-03 15:13:13 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 190
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 2, 2, 2, 2, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 38
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 45
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 6, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 25
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 6, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 3
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 27
+2016-12-03 15:13:13 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 6, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 16
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 6
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 6, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 86
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 6
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 1, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 10
+2016-12-03 15:13:13 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 1, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 74
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 20
+2016-12-03 15:13:13 TRACE BoardEvaluator:169 - Blocking oponent
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 23
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 3, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 16
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 13
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 2, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 26
+2016-12-03 15:13:13 TRACE BoardEvaluator:169 - Blocking oponent
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 2, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 1, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 1, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 75
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 1, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 20
+2016-12-03 15:13:13 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 61
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 1, 1, 1, 1, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 40
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 15
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 1, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 22
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 68
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 55
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 1, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 26
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 14
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 1, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 2, 2, 2, 2, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 126
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 11
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 2, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 61
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:13 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 66
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 6, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:13 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 5, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 71
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 3, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 1, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:13 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 2, 
+2016-12-03 15:13:13 TRACE BoardList:163 - board list size: 5
+2016-12-03 15:13:13 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:13 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:13 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 1, 1, 1, 1, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 226
+2016-12-03 15:13:14 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 3, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 5
+2016-12-03 15:13:14 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 2, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 38
+2016-12-03 15:13:14 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 6, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 13
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 3, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 11
+2016-12-03 15:13:14 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 5, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 12
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 2, 2, 2, 2, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 23
+2016-12-03 15:13:14 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 3, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 41
+2016-12-03 15:13:14 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 3, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 11
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 2, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 12
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 6, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 130
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 6, 6, 6, 6, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 19
+2016-12-03 15:13:14 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 6, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 75
+2016-12-03 15:13:14 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 1, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 15
+2016-12-03 15:13:14 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 3, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 66
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 1, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 10
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 2, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 18
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 1, 1, 1, 1, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 39
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 2, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 3
+2016-12-03 15:13:14 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 6, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 16
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 5, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 18
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 3, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 10
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 6, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 18
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 3, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 3, 3, 3, 3, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 128
+2016-12-03 15:13:14 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 4, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 17
+2016-12-03 15:13:14 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 6, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 69
+2016-12-03 15:13:14 TRACE BoardEvaluator:169 - Blocking oponent
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 11
+2016-12-03 15:13:14 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 4, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 96
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 4, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 2, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 23
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 5, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:14 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 5, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 123
+2016-12-03 15:13:14 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 3, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 14
+2016-12-03 15:13:14 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 3, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 19
+2016-12-03 15:13:14 TRACE BoardEvaluator:169 - Blocking oponent
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 6, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 5
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 2, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 11
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 6, 6, 6, 6, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:14 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 2, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 86
+2016-12-03 15:13:14 TRACE BoardEvaluator:169 - Blocking oponent
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 5, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 10
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 3, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 3
+2016-12-03 15:13:14 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 5, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 16
+2016-12-03 15:13:14 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 3, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:14 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 5, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 5
+2016-12-03 15:13:14 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 6, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 47
+2016-12-03 15:13:14 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 6, 6, 6, 6, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:14 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 6, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:14 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 3, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:14 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 6, 
+2016-12-03 15:13:14 TRACE BoardList:163 - board list size: 79
+2016-12-03 15:13:14 TRACE BoardEvaluator:169 - Blocking oponent
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 5, 
+2016-12-03 15:13:14 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:14 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:14 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 2, 2, 2, 2, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 557
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 2, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 3, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 86
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 5, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 3
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 17
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 2, 2, 2, 2, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 4
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 62
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 1, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 4
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 1, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 2, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:16 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 2, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 79
+2016-12-03 15:13:16 TRACE BoardEvaluator:169 - Blocking oponent
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 5, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 2
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 4, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 18
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 3, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 3
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 2, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 59
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 3, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 3
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 5, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 54
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 6, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 5
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 3, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 56
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 1, 1, 1, 1, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 4
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 5, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 18
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 1, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 4
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 4, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 17
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 6, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 17
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 4, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 3, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 19
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 1, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 14
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 6, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 76
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 3, 3, 3, 3, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 23
+2016-12-03 15:13:16 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 4, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 5
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 1, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 77
+2016-12-03 15:13:16 TRACE BoardEvaluator:109 - Piece moved solo
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 1, 1, 1, 1, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 20
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 6, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 3
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 5, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 14
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 2, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 3
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 3, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:16 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 6, 6, 6, 6, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 172
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 2, 2, 2, 2, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 2, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 9
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 3, 3, 3, 3, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 5, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 80
+2016-12-03 15:13:16 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 6, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 2
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 2, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 14
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 6, 6, 6, 6, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 4
+2016-12-03 15:13:16 TRACE BoardEvaluator:169 - Blocking oponent
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 5, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 7
+2016-12-03 15:13:16 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 2, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 5
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 6, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 40
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 6, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 4
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 50
+2016-12-03 15:13:16 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 6, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 2
+2016-12-03 15:13:16 TRACE BoardEvaluator:90 - Peice has been taken.
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 4, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 11
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 5, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 2
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 3, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 48
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 1, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 2
+2016-12-03 15:13:16 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 5, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 48
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 6, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 2
+2016-12-03 15:13:16 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 3, 
+2016-12-03 15:13:16 TRACE BoardList:163 - board list size: 77
+2016-12-03 15:13:16 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 3, 
+2016-12-03 15:13:16 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:16 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:16 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 3, 3, 3, 3, 
+2016-12-03 15:13:19 TRACE BoardList:163 - board list size: 604
+2016-12-03 15:13:19 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:19 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:19 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 1, 
+2016-12-03 15:13:19 TRACE BoardList:163 - board list size: 4
+2016-12-03 15:13:19 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:19 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:19 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 2, 
+2016-12-03 15:13:19 TRACE BoardList:163 - board list size: 53
+2016-12-03 15:13:19 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:19 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:19 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 2, 
+2016-12-03 15:13:19 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:19 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:19 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:19 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 1, 1, 1, 1, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 445
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 4, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 3, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 66
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 3, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 5, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 59
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 4, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 56
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 3, 3, 3, 3, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 6, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 73
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 5, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 5, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 38
+2016-12-03 15:13:21 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 6, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 5, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 58
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 1, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 4, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 53
+2016-12-03 15:13:21 TRACE BoardEvaluator:58 - Blot doubled
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 3, 3, 3, 3, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 1, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 33
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 1, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 2, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 45
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 5, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 4, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 48
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 5, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 3, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 44
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 6, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 43
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 5, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 5, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 26
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 4, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 5, 5, 5, 5, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 39
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 5, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 11
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 5, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 33
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 5, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 6, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 14
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 5, 5, 5, 5, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 2, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 27
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 4, 4, 4, 4, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 5, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 13
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 3, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 4, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 10
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 1, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 14
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 1, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 4, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 3
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 2, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 2, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 6
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 2, 2, 2, 2, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 8
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 2, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 4, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 3, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 4, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 1, 1, 1, 1, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 4, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 5, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 4, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 1, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 5, 5, 5, 5, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 2, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 6, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 6, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 1, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 3
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 5, 4, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 6, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 6, 3, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 6, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 5, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 4 moves Left, with Rolls: 6, 6, 6, 6, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 4, 2, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:21 TRACE BoardList:526 - Random move chosen
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 1, 2, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 3
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 3, 1, 
+2016-12-03 15:13:21 TRACE BoardList:581 - No possible moves
+2016-12-03 15:13:21 TRACE AiPlayer:56 - ------------AI's Turn!-----------------
+2016-12-03 15:13:21 TRACE AiPlayer:61 - Player has 2 moves Left, with Rolls: 2, 4, 
+2016-12-03 15:13:21 TRACE BoardList:163 - board list size: 1
+2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
+2016-12-03 15:13:21 TRACE Game:291 - Player 2 has won! (Black=false)
+2016-12-03 15:13:21 TRACE GameStatsTest:44 - Player who won the game: Indiviudal with chromosome string: 10111111010100100100110100001000000011100101100100110010101010010100100100011011011010010110001010110001110100011001000001011000111100001110001110000010111100000011111111000000100001011100100011110111011101010110001010110110 and fitness of: 0.0| bearAPiece: 95| takeAPiece: 84| doubleUpAPiece: 73| blockAnOpponent: 80| movingAPieceSolo: 64| spreadAHomePiece: 57| addACheckerToAStack: 50| twoOneSplitPlayInitialMove: 50| twoOneSlotPlayInitialMove: 84| threeOneInitialMove: 82| threeTwoSplitInitialMove: 35| threeTwoOffenceInitialMove: 54| fourOneInitialMove: 75| fourOneInitialMoveAlt: 10| fourTwoInitialMove: 99| fourThreeInitialMoveSplit: 81| fourThreeInitialMoveBlock: 72| fiveOneInitialMove: 22| fiveOneInitialMoveAlt: 30| fiveTwoInitialMove: 14| fiveTwoInitialMoveRisk: 28| fiveThreeInitialMove: 11| fiveFourInitialMoveAgr: 96| fiveFourInitialMoveBal: 63| sixOneInitialMove: 96| sixTwoInitialMove: 33| sixTwoInitialMoveAgr: 57| sixThreeInitialMove: 15| sixThreeInitialMoveSplit: 59| sixFourInitialMove: 85| sixFourInitialMoveSplit: 69| sixFiveInitialMove: 54

@@ -58,7 +58,7 @@ public class MoveGenerator {
 	public void generateMoves(final Board cb, final AiPlayer p) {
 
 		// Loop all moves
-		for (final int currentMove : p.movesLeft.movesLeft) {
+		for (final int currentMove : p.movesLeft.moves) {
 
 			// check the current move doesn't = 0, this would mean it has been
 			// removed and a new board has been created

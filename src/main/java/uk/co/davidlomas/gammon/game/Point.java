@@ -68,9 +68,9 @@ public class Point {
 	 */
 	public void addPiece(final Boolean black) {
 		if (black) {
-			addBlackPiece();
+			blackCount++;
 		} else {
-			addRedPiece();
+			redCount++;
 		}
 	}
 
@@ -89,15 +89,10 @@ public class Point {
 	 * @return true, if successful
 	 */
 	public boolean equals(final Point p) {
-		boolean theSame = true;
-
-		if (redCount != p.redCount) {
-			theSame = false;
-		} else if (blackCount != p.blackCount) {
-			theSame = false;
+		if (redCount == p.redCount && blackCount == p.blackCount) {
+			return true;
 		}
-
-		return theSame;
+		return false;
 	}
 
 	/**
@@ -172,9 +167,9 @@ public class Point {
 	 */
 	public void removePiece(final Boolean black) {
 		if (black) {
-			removeBlackPiece();
+			blackCount--;
 		} else {
-			removeRedPiece();
+			redCount--;
 		}
 	}
 
