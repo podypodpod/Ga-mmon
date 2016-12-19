@@ -45,7 +45,6 @@ public class Player {
 	 * Instantiates a new player.
 	 *
 	 * @param black
-	 *            the color
 	 */
 	public Player(final boolean black) {
 		this.black = black;
@@ -61,28 +60,15 @@ public class Player {
 	 * @param liveBoard
 	 * @return
 	 */
-	public boolean candidateMovePossible(final int from, final int to, final Board liveBoard) {
+	public boolean isMovePossible(final int from, final int to, final Board liveBoard) {
 
 		if (!passesBasicChecks(to, from, liveBoard)) {
 			return false;
 		}
 
-		// TO piece, -1 or 26 = bear
 		if (!movingToZeroPeices(to, from)) {
-
-			// looping through the moves Left array to check against
-			// what they have asked for
-			boolean validLength = false;
-			for (final int move : movesLeft.moves) {
-				if (move == distanceBetween(from, to)) {
-					validLength = true;
-					break;
-				}
-			}
-
-			if (validLength) {
+			if (isValidLength(from, to)) {
 				if (validDestination(to, from, liveBoard)) {
-					// DONE CHECKING
 					return true;
 				}
 			}
@@ -90,11 +76,19 @@ public class Player {
 			// BEARING, bearing is counted as point -1 or 26
 		} else if (tryingAndCanBear(to, from, liveBoard)) {
 
-			if (theyHaveThatMoveLeft(to, from)) {
+			if (moveRequiredIsAvailable(to, from)) {
 				return true;
 			}
 		}
-		// move is not possible
+		return false;
+	}
+
+	private boolean isValidLength(final int from, final int to) {
+		for (final int move : movesLeft.moves) {
+			if (move == distanceBetween(from, to)) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -124,8 +118,10 @@ public class Player {
 	 */
 	public void movePiece(final int from, final int to, final Board liveBoard) {
 
-		// if there is an opposing piece there
+		// if not bearing positions
 		if (to != -1 && to != 26) {
+
+			// if there is an opposing piece there
 			if (liveBoard.Points[to].getCol() != black && liveBoard.Points[to].numEither() == 1) {
 
 				liveBoard.Points[from].removePiece(black);
@@ -138,16 +134,15 @@ public class Player {
 					liveBoard.Points[25].addBlackPiece();
 				}
 
-				// if its empty
-			} else {
-
+			} else {// if its empty
 				liveBoard.Points[from].removePiece(black);
 				liveBoard.Points[to].addPiece(black);
+
 			}
-			// BEARING THE PEICE OFF
-		} else if (to == -1 || to == 26) {
+		} else if (to == -1 || to == 26) {// BEARING THE PEICE OFF
 			liveBoard.Points[from].removePiece(black);
 			liveBoard.addToBear(black);
+
 		}
 	}
 
@@ -212,9 +207,9 @@ public class Player {
 	 * returns true if the distance between the two points matches the moves
 	 * left they have
 	 */
-	public boolean theyHaveThatMoveLeft(final int to, final int from) {
-		int y;
+	public boolean moveRequiredIsAvailable(final int to, final int from) {
 
+		int y;
 		if (to == -1) {
 			y = 1;
 		} else {
@@ -223,8 +218,8 @@ public class Player {
 
 		// looping through the moves Left array to check against what they have
 		// asked for
-		for (final int x : movesLeft.moves) {
-			if (x >= distanceBetween(from, to + y)) {
+		for (final int move : movesLeft.moves) {
+			if (move >= distanceBetween(from, to + y)) {
 				return true;
 			}
 		}
@@ -280,7 +275,7 @@ public class Player {
 				final int to = Scanner.nextInt();
 
 				// IF ITS POSSIBLE
-				if (candidateMovePossible(from, to, liveBoard)) {
+				if (isMovePossible(from, to, liveBoard)) {
 					// MOVE THE PIECE
 					movePiece(from, to, liveBoard);
 					// REMOVE THE "MOVE"
@@ -296,12 +291,10 @@ public class Player {
 			} else if (option == 2) {
 				if (liveBoard.canPlayerBear(black)) {
 
-					// CHECK ITS A VALID MOVE/LENGTH
-
 					logger.trace("Bear which piece?");
 
 					final int bearPeice = Scanner.nextInt();
-					if (candidateMovePossible(bearPeice, -1, liveBoard)) {
+					if (isMovePossible(bearPeice, -1, liveBoard)) {
 						liveBoard.bearPiece(bearPeice, black);
 					}
 				} else {

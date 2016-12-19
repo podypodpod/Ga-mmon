@@ -63,7 +63,7 @@ public class PlayerTest {
 		player2.movesLeft.moves.add(2);
 
 		// When
-		final boolean possible = player2.candidateMovePossible(13, 11, board);
+		final boolean possible = player2.isMovePossible(13, 11, board);
 
 		// Then
 		assertTrue(possible);
@@ -124,7 +124,7 @@ public class PlayerTest {
 		player1.movesLeft.moves.add(2);// give it a move of 2
 
 		// Then
-		assertTrue(player1.candidateMovePossible(0, 2, board));// moving back to
+		assertTrue(player1.isMovePossible(0, 2, board));// moving back to
 																// board
 	}
 
@@ -150,7 +150,7 @@ public class PlayerTest {
 		player2.movesLeft.moves.add(2);
 
 		// Then
-		assertFalse(player2.candidateMovePossible(13, 11, board));
+		assertFalse(player2.isMovePossible(13, 11, board));
 	}
 
 	@Test
@@ -163,7 +163,7 @@ public class PlayerTest {
 		player2.movesLeft.moves.add(2);
 
 		// Then
-		assertFalse(player2.candidateMovePossible(13, 11, board));
+		assertFalse(player2.isMovePossible(13, 11, board));
 	}
 
 	@Test
@@ -174,7 +174,7 @@ public class PlayerTest {
 		player1.movesLeft.moves.add(2);
 
 		// Then
-		assertFalse(player1.candidateMovePossible(19, 21, board));
+		assertFalse(player1.isMovePossible(19, 21, board));
 
 	}
 
@@ -247,8 +247,8 @@ public class PlayerTest {
 		player1.movesLeft.add(2);
 
 		// Then
-		assertTrue(player1.candidateMovePossible(1, 3, board));
-		assertTrue(player1.candidateMovePossible(1, 2, board));
+		assertTrue(player1.isMovePossible(1, 3, board));
+		assertTrue(player1.isMovePossible(1, 2, board));
 	}
 
 	@Test

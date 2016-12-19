@@ -72,7 +72,7 @@ public class MoveGenerator {
 
 						// if the current point can move the current move,
 						// create new board of it
-						if (p.candidateMovePossible(point, point - currentMove, cb)) {
+						if (p.isMovePossible(point, point - currentMove, cb)) {
 
 							// adding the new board to the list
 							boardList.addBoard(new Board(cb), point - currentMove, point, new AiPlayer(p), this);
@@ -83,7 +83,7 @@ public class MoveGenerator {
 
 						// if the current point can move the current move,
 						// create new board of it
-						if (p.candidateMovePossible(point, point + currentMove, cb)) {
+						if (p.isMovePossible(point, point + currentMove, cb)) {
 
 							// adding the new board to the list
 							boardList.addBoard(new Board(cb), point + currentMove, point, new AiPlayer(p), this);
