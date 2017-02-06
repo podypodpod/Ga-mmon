@@ -4587,3 +4587,126 @@
 2016-12-03 15:13:21 TRACE BoardEvaluator:74 - Peice has been BORE
 2016-12-03 15:13:21 TRACE Game:291 - Player 2 has won! (Black=false)
 2016-12-03 15:13:21 TRACE GameStatsTest:44 - Player who won the game: Indiviudal with chromosome string: 10111111010100100100110100001000000011100101100100110010101010010100100100011011011010010110001010110001110100011001000001011000111100001110001110000010111100000011111111000000100001011100100011110111011101010110001010110110 and fitness of: 0.0| bearAPiece: 95| takeAPiece: 84| doubleUpAPiece: 73| blockAnOpponent: 80| movingAPieceSolo: 64| spreadAHomePiece: 57| addACheckerToAStack: 50| twoOneSplitPlayInitialMove: 50| twoOneSlotPlayInitialMove: 84| threeOneInitialMove: 82| threeTwoSplitInitialMove: 35| threeTwoOffenceInitialMove: 54| fourOneInitialMove: 75| fourOneInitialMoveAlt: 10| fourTwoInitialMove: 99| fourThreeInitialMoveSplit: 81| fourThreeInitialMoveBlock: 72| fiveOneInitialMove: 22| fiveOneInitialMoveAlt: 30| fiveTwoInitialMove: 14| fiveTwoInitialMoveRisk: 28| fiveThreeInitialMove: 11| fiveFourInitialMoveAgr: 96| fiveFourInitialMoveBal: 63| sixOneInitialMove: 96| sixTwoInitialMove: 33| sixTwoInitialMoveAgr: 57| sixThreeInitialMove: 15| sixThreeInitialMoveSplit: 59| sixFourInitialMove: 85| sixFourInitialMoveSplit: 69| sixFiveInitialMove: 54
+2017-01-14 20:03:46 INFO  StartGa:44 - Program running!
+2017-01-14 20:03:46 INFO  StartGa:57 - Creating Initial Population with size=544 generations=123
+2017-01-14 20:03:46 INFO  StartGa:90 - Calculating fittest of initial pop
+2017-01-14 20:07:30 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2017-01-14 20:07:30 INFO  GeneticAlgorithm:108 - Crossover started
+2017-01-14 20:07:31 INFO  GeneticAlgorithm:131 - Crossover finished
+2017-01-14 20:07:31 INFO  GeneticAlgorithm:136 - Mutating population
+2017-01-14 20:07:35 INFO  StartGa:44 - Program running!
+2017-01-14 20:07:35 INFO  StartGa:57 - Creating Initial Population with size=1 generations=2
+2017-01-14 20:07:35 INFO  StartGa:90 - Calculating fittest of initial pop
+2017-01-14 20:07:35 INFO  StartGa:79 - -------------------------
+2017-01-14 20:07:35 INFO  StartGa:80 - Started evolving population
+2017-01-14 20:07:35 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2017-01-14 20:07:35 INFO  GeneticAlgorithm:108 - Crossover started
+2017-01-14 20:07:35 INFO  GeneticAlgorithm:131 - Crossover finished
+2017-01-14 20:07:35 INFO  GeneticAlgorithm:136 - Mutating population
+2017-01-14 20:07:35 INFO  StartGa:84 - Finished evolving population, evolution 0
+2017-01-14 20:07:35 INFO  StartGa:66 - -------------------------
+2017-01-14 20:07:35 INFO  StartGa:67 - Started evolving population
+2017-01-14 20:07:35 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2017-01-14 20:07:35 INFO  GeneticAlgorithm:108 - Crossover started
+2017-01-14 20:07:35 INFO  GeneticAlgorithm:131 - Crossover finished
+2017-01-14 20:07:35 INFO  GeneticAlgorithm:136 - Mutating population
+2017-01-14 20:07:35 INFO  StartGa:72 - Finished evolving population, evolution 1
+2017-01-14 20:07:35 INFO  StartGa:51 - ------------Finished Evolving-------
+2017-01-14 20:07:35 INFO  StartGa:52 - Solution:
+2017-01-14 20:07:35 INFO  StartGa:53 - Indiviudal with chromosome string: 01010100010001011010111000101000011100011001110000010101010001001101110101000010010101110010101110000111100101101010000001101110111010110011101011100001001010000011101000100101011101000101110001101011011001001010001110111011 and fitness of: 0.0| bearAPiece: 42| takeAPiece: 17| doubleUpAPiece: 53| blockAnOpponent: 98| movingAPieceSolo: 67| spreadAHomePiece: 70| addACheckerToAStack: 56| twoOneSplitPlayInitialMove: 21| twoOneSlotPlayInitialMove: 34| threeOneInitialMove: 55| threeTwoSplitInitialMove: 40| threeTwoOffenceInitialMove: 37| fourOneInitialMove: 57| fourOneInitialMoveAlt: 46| fourTwoInitialMove: 15| fourThreeInitialMoveSplit: 22| fourThreeInitialMoveBlock: 80| fiveOneInitialMove: 27| fiveOneInitialMoveAlt: 93| fiveTwoInitialMove: 51| fiveTwoInitialMoveRisk: 87| fiveThreeInitialMove: 4| fiveFourInitialMoveAgr: 80| fiveFourInitialMoveBal: 58| sixOneInitialMove: 18| sixTwoInitialMove: 93| sixTwoInitialMoveAgr: 11| sixThreeInitialMove: 70| sixThreeInitialMoveSplit: 91| sixFourInitialMove: 18| sixFourInitialMoveSplit: 71| sixFiveInitialMove: 59
+2017-02-06 21:24:40 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2017-02-06 21:24:40 INFO  GeneticAlgorithm:108 - Crossover started
+2017-02-06 21:24:53 INFO  GeneticAlgorithm:131 - Crossover finished
+2017-02-06 21:24:53 INFO  GeneticAlgorithm:136 - Mutating population
+2017-02-06 21:25:09 INFO  StartGa:44 - Program running!
+2017-02-06 21:25:09 INFO  StartGa:57 - Creating Initial Population with size=1 generations=2
+2017-02-06 21:25:09 INFO  StartGa:90 - Calculating fittest of initial pop
+2017-02-06 21:25:09 INFO  StartGa:79 - -------------------------
+2017-02-06 21:25:09 INFO  StartGa:80 - Started evolving population
+2017-02-06 21:25:09 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2017-02-06 21:25:09 INFO  GeneticAlgorithm:108 - Crossover started
+2017-02-06 21:25:09 INFO  GeneticAlgorithm:131 - Crossover finished
+2017-02-06 21:25:09 INFO  GeneticAlgorithm:136 - Mutating population
+2017-02-06 21:25:09 INFO  StartGa:84 - Finished evolving population, evolution 0
+2017-02-06 21:25:09 INFO  StartGa:66 - -------------------------
+2017-02-06 21:25:09 INFO  StartGa:67 - Started evolving population
+2017-02-06 21:25:09 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2017-02-06 21:25:09 INFO  GeneticAlgorithm:108 - Crossover started
+2017-02-06 21:25:09 INFO  GeneticAlgorithm:131 - Crossover finished
+2017-02-06 21:25:09 INFO  GeneticAlgorithm:136 - Mutating population
+2017-02-06 21:25:09 INFO  StartGa:72 - Finished evolving population, evolution 1
+2017-02-06 21:25:09 INFO  StartGa:51 - ------------Finished Evolving-------
+2017-02-06 21:25:09 INFO  StartGa:52 - Solution:
+2017-02-06 21:25:09 INFO  StartGa:53 - Indiviudal with chromosome string: 10010010011000000000110110001000100100010000111111100010010001101111101100010101111100110111001000100111100101101010011101000000010010101110100100101111101001111000110000000000001111010001101001100001000010101001110110110001 and fitness of: 0.0| bearAPiece: 73| takeAPiece: 24| doubleUpAPiece: 1| blockAnOpponent: 88| movingAPieceSolo: 68| spreadAHomePiece: 68| addACheckerToAStack: 31| twoOneSplitPlayInitialMove: 98| twoOneSlotPlayInitialMove: 35| threeOneInitialMove: 62| threeTwoSplitInitialMove: 98| threeTwoOffenceInitialMove: 95| fourOneInitialMove: 27| fourOneInitialMoveAlt: 72| fourTwoInitialMove: 79| fourThreeInitialMoveSplit: 22| fourThreeInitialMoveBlock: 83| fiveOneInitialMove: 80| fiveOneInitialMoveAlt: 9| fiveTwoInitialMove: 46| fiveTwoInitialMoveRisk: 73| fiveThreeInitialMove: 62| fiveFourInitialMoveAgr: 79| fiveFourInitialMoveBal: 12| sixOneInitialMove: 0| sixTwoInitialMove: 15| sixTwoInitialMoveAgr: 35| sixThreeInitialMove: 38| sixThreeInitialMoveSplit: 8| sixFourInitialMove: 42| sixFourInitialMoveSplit: 59| sixFiveInitialMove: 49
+2017-02-06 22:17:49 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2017-02-06 22:17:49 INFO  GeneticAlgorithm:108 - Crossover started
+2017-02-06 22:17:51 INFO  GeneticAlgorithm:131 - Crossover finished
+2017-02-06 22:17:51 INFO  GeneticAlgorithm:136 - Mutating population
+2017-02-06 22:18:11 INFO  StartGa:44 - Program running!
+2017-02-06 22:18:11 INFO  StartGa:57 - Creating Initial Population with size=1 generations=2
+2017-02-06 22:18:11 INFO  StartGa:90 - Calculating fittest of initial pop
+2017-02-06 22:18:11 INFO  StartGa:79 - -------------------------
+2017-02-06 22:18:11 INFO  StartGa:80 - Started evolving population
+2017-02-06 22:18:11 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2017-02-06 22:18:11 INFO  GeneticAlgorithm:108 - Crossover started
+2017-02-06 22:18:11 INFO  GeneticAlgorithm:131 - Crossover finished
+2017-02-06 22:18:11 INFO  GeneticAlgorithm:136 - Mutating population
+2017-02-06 22:18:11 INFO  StartGa:84 - Finished evolving population, evolution 0
+2017-02-06 22:18:11 INFO  StartGa:66 - -------------------------
+2017-02-06 22:18:11 INFO  StartGa:67 - Started evolving population
+2017-02-06 22:18:11 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2017-02-06 22:18:11 INFO  GeneticAlgorithm:108 - Crossover started
+2017-02-06 22:18:11 INFO  GeneticAlgorithm:131 - Crossover finished
+2017-02-06 22:18:11 INFO  GeneticAlgorithm:136 - Mutating population
+2017-02-06 22:18:11 INFO  StartGa:72 - Finished evolving population, evolution 1
+2017-02-06 22:18:11 INFO  StartGa:51 - ------------Finished Evolving-------
+2017-02-06 22:18:11 INFO  StartGa:52 - Solution:
+2017-02-06 22:18:11 INFO  StartGa:53 - Indiviudal with chromosome string: 00110010110011101001010111010010110011111001111000010011101011110100111001100001001001001000101011101111000000100011100001001110100011001010001110000100010100100100010101000000101110001001101010100010001011111100101110001011 and fitness of: 0.0| bearAPiece: 25| takeAPiece: 51| doubleUpAPiece: 82| blockAnOpponent: 93| movingAPieceSolo: 22| spreadAHomePiece: 62| addACheckerToAStack: 60| twoOneSplitPlayInitialMove: 19| twoOneSlotPlayInitialMove: 87| threeOneInitialMove: 83| threeTwoSplitInitialMove: 76| threeTwoOffenceInitialMove: 18| fourOneInitialMove: 36| fourOneInitialMoveAlt: 43| fourTwoInitialMove: 94| fourThreeInitialMoveSplit: 2| fourThreeInitialMoveBlock: 28| fiveOneInitialMove: 19| fiveOneInitialMoveAlt: 81| fiveTwoInitialMove: 74| fiveTwoInitialMoveRisk: 28| fiveThreeInitialMove: 17| fiveFourInitialMoveAgr: 36| fiveFourInitialMoveBal: 69| sixOneInitialMove: 32| sixTwoInitialMove: 46| sixTwoInitialMoveAgr: 19| sixThreeInitialMove: 42| sixThreeInitialMoveSplit: 17| sixFourInitialMove: 63| sixFourInitialMoveSplit: 23| sixFiveInitialMove: 11
+2017-02-06 22:32:15 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2017-02-06 22:32:15 INFO  GeneticAlgorithm:108 - Crossover started
+2017-02-06 22:32:38 INFO  GeneticAlgorithm:131 - Crossover finished
+2017-02-06 22:32:38 INFO  GeneticAlgorithm:136 - Mutating population
+2017-02-06 22:33:20 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2017-02-06 22:33:20 INFO  GeneticAlgorithm:108 - Crossover started
+2017-02-06 22:33:23 INFO  GeneticAlgorithm:131 - Crossover finished
+2017-02-06 22:33:23 INFO  GeneticAlgorithm:136 - Mutating population
+2017-02-06 22:33:53 INFO  StartGa:44 - Program running!
+2017-02-06 22:33:53 INFO  StartGa:57 - Creating Initial Population with size=1 generations=2
+2017-02-06 22:33:53 INFO  StartGa:90 - Calculating fittest of initial pop
+2017-02-06 22:33:53 INFO  StartGa:79 - -------------------------
+2017-02-06 22:33:53 INFO  StartGa:80 - Started evolving population
+2017-02-06 22:33:53 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2017-02-06 22:33:53 INFO  GeneticAlgorithm:108 - Crossover started
+2017-02-06 22:33:53 INFO  GeneticAlgorithm:131 - Crossover finished
+2017-02-06 22:33:53 INFO  GeneticAlgorithm:136 - Mutating population
+2017-02-06 22:33:53 INFO  StartGa:84 - Finished evolving population, evolution 0
+2017-02-06 22:33:53 INFO  StartGa:66 - -------------------------
+2017-02-06 22:33:53 INFO  StartGa:67 - Started evolving population
+2017-02-06 22:33:53 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2017-02-06 22:33:53 INFO  GeneticAlgorithm:108 - Crossover started
+2017-02-06 22:33:53 INFO  GeneticAlgorithm:131 - Crossover finished
+2017-02-06 22:33:53 INFO  GeneticAlgorithm:136 - Mutating population
+2017-02-06 22:33:53 INFO  StartGa:72 - Finished evolving population, evolution 1
+2017-02-06 22:33:53 INFO  StartGa:51 - ------------Finished Evolving-------
+2017-02-06 22:33:53 INFO  StartGa:52 - Solution:
+2017-02-06 22:33:53 INFO  StartGa:53 - Individual with chromosome string: 01000111001011000001001000101010000100100000000100110000001011000000010110110101110110110111001011011100010010100111100001000000010001010111101101000101011010011101011110100000010010011011100111011000101100110001101111010011 and fitness of: 0.0| bearAPiece: 35| takeAPiece: 75| doubleUpAPiece: 2| blockAnOpponent: 34| movingAPieceSolo: 80| spreadAHomePiece: 72| addACheckerToAStack: 2| twoOneSplitPlayInitialMove: 48| twoOneSlotPlayInitialMove: 22| threeOneInitialMove: 1| threeTwoSplitInitialMove: 54| threeTwoOffenceInitialMove: 93| fourOneInitialMove: 91| fourOneInitialMoveAlt: 75| fourTwoInitialMove: 56| fourThreeInitialMoveSplit: 74| fourThreeInitialMoveBlock: 60| fiveOneInitialMove: 16| fiveOneInitialMoveAlt: 8| fiveTwoInitialMove: 87| fiveTwoInitialMoveRisk: 90| fiveThreeInitialMove: 21| fiveFourInitialMoveAgr: 83| fiveFourInitialMoveBal: 87| sixOneInitialMove: 80| sixTwoInitialMove: 18| sixTwoInitialMoveAgr: 55| sixThreeInitialMove: 29| sixThreeInitialMoveSplit: 69| sixFourInitialMove: 76| sixFourInitialMoveSplit: 55| sixFiveInitialMove: 83
+2017-02-06 22:34:49 INFO  StartGa:44 - Program running!
+2017-02-06 22:34:49 INFO  StartGa:57 - Creating Initial Population with size=1 generations=2
+2017-02-06 22:34:49 INFO  StartGa:90 - Calculating fittest of initial pop
+2017-02-06 22:34:49 INFO  StartGa:79 - -------------------------
+2017-02-06 22:34:49 INFO  StartGa:80 - Started evolving population
+2017-02-06 22:34:49 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2017-02-06 22:34:49 INFO  GeneticAlgorithm:108 - Crossover started
+2017-02-06 22:34:49 INFO  GeneticAlgorithm:131 - Crossover finished
+2017-02-06 22:34:49 INFO  GeneticAlgorithm:136 - Mutating population
+2017-02-06 22:34:49 INFO  StartGa:84 - Finished evolving population, evolution 0
+2017-02-06 22:34:49 INFO  StartGa:66 - -------------------------
+2017-02-06 22:34:49 INFO  StartGa:67 - Started evolving population
+2017-02-06 22:34:49 INFO  GeneticAlgorithm:84 - ------EVOLVE POPULATION-------------------
+2017-02-06 22:34:49 INFO  GeneticAlgorithm:108 - Crossover started
+2017-02-06 22:34:49 INFO  GeneticAlgorithm:131 - Crossover finished
+2017-02-06 22:34:49 INFO  GeneticAlgorithm:136 - Mutating population
+2017-02-06 22:34:49 INFO  StartGa:72 - Finished evolving population, evolution 1
+2017-02-06 22:34:49 INFO  StartGa:51 - ------------Finished Evolving-------
+2017-02-06 22:34:49 INFO  StartGa:52 - Solution:
+2017-02-06 22:34:49 INFO  StartGa:53 - Individual with chromosome string: 10011110000000011101111000000100010011101001101010101111100000101111110011000100000000111101010001000001000011101000011010011010111011001011010101001100010110111011011110111111100011000011101101101000010001101001010100111001 and fitness of: 0.0| bearAPiece: 79| takeAPiece: 0| doubleUpAPiece: 59| blockAnOpponent: 96| movingAPieceSolo: 34| spreadAHomePiece: 58| addACheckerToAStack: 53| twoOneSplitPlayInitialMove: 47| twoOneSlotPlayInitialMove: 65| threeOneInitialMove: 63| threeTwoSplitInitialMove: 24| threeTwoOffenceInitialMove: 64| fourOneInitialMove: 30| fourOneInitialMoveAlt: 81| fourTwoInitialMove: 2| fourThreeInitialMoveSplit: 14| fourThreeInitialMoveBlock: 67| fiveOneInitialMove: 38| fiveOneInitialMoveAlt: 93| fiveTwoInitialMove: 75| fiveTwoInitialMoveRisk: 42| fiveThreeInitialMove: 49| fiveFourInitialMoveAgr: 55| fiveFourInitialMoveBal: 55| sixOneInitialMove: 95| sixTwoInitialMove: 99| sixTwoInitialMoveAgr: 7| sixThreeInitialMove: 54| sixThreeInitialMoveSplit: 66| sixFourInitialMove: 26| sixFourInitialMoveSplit: 42| sixFiveInitialMove: 57

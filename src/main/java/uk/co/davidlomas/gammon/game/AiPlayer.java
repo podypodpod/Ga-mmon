@@ -66,7 +66,6 @@ public class AiPlayer extends Player {
 		if (newBoard == null) {
 			newBoard = currentBoard;
 		}
-
 		return newBoard;
 	}
 

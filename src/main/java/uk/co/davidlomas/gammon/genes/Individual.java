@@ -1,4 +1,4 @@
-/**
+/*
  * GNU General Public License
  *
  * This file is part of GA-mmon.
@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License along with
  * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package uk.co.davidlomas.gammon.genes;
 
 import java.io.File;
@@ -24,252 +23,244 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Properties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 
 /**
  * The Class Individual.
  *
- * The AI behind a player, contains attributes which dictates which decisions
+ * The AI behind a player, contains AVAILABLE_ATTRIBUTES which dictates which decisions
  * they make
  *
  * @author David Lomas
  */
 public class Individual {
 
-	final static Logger logger = LoggerFactory.getLogger(Individual.class);
-	private static final String PLAYERS_FILE_PATH = "savedPlayers/Attempt - ";
+  private final static Logger logger = LoggerFactory.getLogger(Individual.class);
+  private static final String PLAYERS_FILE_PATH = "savedPlayers/Attempt - ";
 
-	private final IndividualAttribute[] listOfAttributes;
-	private final int numOfAttributes;
-	private char[] chromosome;
-	private double fitness = 0;
 
-	/**
-	 * Instantiates a new individual.
-	 */
-	public Individual() {
+  private final static String[] AVAILABLE_ATTRIBUTES = {"bearAPiece", "takeAPiece", "doubleUpAPiece", "blockAnOpponent", "movingAPieceSolo",
+      "spreadAHomePiece",
+      "addACheckerToAStack", "twoOneSplitPlayInitialMove", "twoOneSlotPlayInitialMove", "threeOneInitialMove", "threeTwoSplitInitialMove",
+      "threeTwoOffenceInitialMove", "fourOneInitialMove", "fourOneInitialMoveAlt", "fourTwoInitialMove", "fourThreeInitialMoveSplit",
+      "fourThreeInitialMoveBlock", "fiveOneInitialMove", "fiveOneInitialMoveAlt", "fiveTwoInitialMove", "fiveTwoInitialMoveRisk",
+      "fiveThreeInitialMove", "fiveFourInitialMoveAgr", "fiveFourInitialMoveBal", "sixOneInitialMove", "sixTwoInitialMove", "sixTwoInitialMoveAgr",
+      "sixThreeInitialMove", "sixThreeInitialMoveSplit", "sixFourInitialMove", "sixFourInitialMoveSplit", "sixFiveInitialMove"};
 
-		// add attributes to the array
-		listOfAttributes = new IndividualAttribute[] { new IndividualAttribute("bearAPiece"), // 0
-				new IndividualAttribute("takeAPiece"), // 1
-				new IndividualAttribute("doubleUpAPiece"), // 2
-				new IndividualAttribute("blockAnOpponent"), // 3
-				new IndividualAttribute("movingAPieceSolo"), // 4
-				new IndividualAttribute("spreadAHomePiece"), // 5
-				new IndividualAttribute("addACheckerToAStack"), // 6
-				new IndividualAttribute("twoOneSplitPlayInitialMove"), // 7
-				new IndividualAttribute("twoOneSlotPlayInitialMove"), // 8
-				new IndividualAttribute("threeOneInitialMove"), // 9
-				new IndividualAttribute("threeTwoSplitInitialMove"), // 10
-				new IndividualAttribute("threeTwoOffenceInitialMove"), // 11
-				new IndividualAttribute("fourOneInitialMove"), // 12
-				new IndividualAttribute("fourOneInitialMoveAlt"), // 13
-				new IndividualAttribute("fourTwoInitialMove"), // 14
-				new IndividualAttribute("fourThreeInitialMoveSplit"), // 15
-				new IndividualAttribute("fourThreeInitialMoveBlock"), // 16
-				new IndividualAttribute("fiveOneInitialMove"), // 17
-				new IndividualAttribute("fiveOneInitialMoveAlt"), // 18
-				new IndividualAttribute("fiveTwoInitialMove"), // 19
-				new IndividualAttribute("fiveTwoInitialMoveRisk"), // 20
-				new IndividualAttribute("fiveThreeInitialMove"), // 21
-				new IndividualAttribute("fiveFourInitialMoveAgr"), // 22
-				new IndividualAttribute("fiveFourInitialMoveBal"), // 23
-				new IndividualAttribute("sixOneInitialMove"), // 24
-				new IndividualAttribute("sixTwoInitialMove"), // 25
-				new IndividualAttribute("sixTwoInitialMoveAgr"), // 26
-				new IndividualAttribute("sixThreeInitialMove"), // 27
-				new IndividualAttribute("sixThreeInitialMoveSplit"), // 28
-				new IndividualAttribute("sixFourInitialMove"), // 29
-				new IndividualAttribute("sixFourInitialMoveSplit"), // 30
-				new IndividualAttribute("sixFiveInitialMove") // 31
-		};
 
-		numOfAttributes = listOfAttributes.length;
+  private final IndividualAttribute[] attributes;
+  private final int numOfAttributes;
+  private char[] chromosome;
+  private double fitness = 0;
 
-		// convert to binary string
-		chromosome = Util.convertFromIntArrayToBinaryCharAry(listOfAttributes);
-	}
+  /**
+   * Default Constructor
+   *
+   * Instantiates a new individual.
+   */
+  public Individual() {
+    numOfAttributes = AVAILABLE_ATTRIBUTES.length;
+    attributes = new IndividualAttribute[numOfAttributes];
+    for (int x = 0; x < numOfAttributes; x++) {
+      attributes[x] = new IndividualAttribute(AVAILABLE_ATTRIBUTES[x]);
+    }
 
-	/**
-	 * getAttribute
-	 *
-	 * @param pos
-	 * @return
-	 */
-	public IndividualAttribute getAttribute(final int pos) {
-		return listOfAttributes[pos];
-	}
+    // convert to binary string
+    chromosome = Util.convertFromIntArrayToBinaryCharAry(attributes);
+  }
 
-	/**
-	 * Gets the chromosome.
-	 *
-	 * @return the chromosome
-	 */
-	public char[] getChromosome() {
-		return chromosome;
-	}
+  /**
+   * getAttribute
+   */
+  public IndividualAttribute getAttribute(final int pos) {
+    return attributes[pos];
+  }
 
-	public String getFilePathForPlayers() {
-		final String savedPlayersDirectory = PLAYERS_FILE_PATH + GenAlgSettings.getAttemptCount();
-		final boolean directoryExists = new File(savedPlayersDirectory).exists();
-		if (!directoryExists) {
-			logger.trace("Directory " + savedPlayersDirectory + " does not exist, making it");
-			new File(savedPlayersDirectory).mkdir();
-		}
-		return savedPlayersDirectory;
-	}
+  /**
+   * Gets the chromosome.
+   *
+   * @return the chromosome
+   */
+  public char[] getChromosome() {
+    return chromosome;
+  }
 
-	/**
-	 * Gets the fitness.
-	 *
-	 * @return the fitness
-	 */
-	public double getFitness() {
-		return fitness;
-	}
+  /**
+   * Gets file path for the players directory from the properties
+   *
+   * If it doesn't exist create the directory
+   */
+  public String getFilePathForPlayers() {
+    final String savedPlayersDirectory = PLAYERS_FILE_PATH + GenAlgSettings.getAttemptCount();
+    final boolean directoryExists = new File(savedPlayersDirectory).exists();
+    if (!directoryExists) {
+      logger.trace("Directory " + savedPlayersDirectory + " does not exist, making it");
+      new File(savedPlayersDirectory).mkdir();
+    }
+    return savedPlayersDirectory;
+  }
 
-	/**
-	 * Gets the number of attributes.
-	 *
-	 * @return the number of attributes
-	 */
-	public int getNumOfAttributes() {
-		return numOfAttributes;
-	}
+  /**
+   * Gets the fitness.
+   *
+   * @return the fitness
+   */
+  public double getFitness() {
+    return fitness;
+  }
 
-	/**
-	 * Load from file.
-	 *
-	 * @param fileName
-	 *            the file name
-	 */
-	public void loadFromFile(final String fullFilePath) {
+  /**
+   * Gets the number of AVAILABLE_ATTRIBUTES.
+   *
+   * @return the number of AVAILABLE_ATTRIBUTES
+   */
+  public int getNumOfAttributes() {
+    return numOfAttributes;
+  }
 
-		logger.trace("Loading player from file: " + fullFilePath);
+  /**
+   * Load from file.
+   *
+   * @param fullFilePath the file name
+   */
+  public void loadFromFile(final String fullFilePath) {
+    logger.trace("Loading player from file: " + fullFilePath);
+    final Properties properties = new Properties();
 
-		final Properties properties = new Properties();
-		InputStream input = null;
+    try (InputStream input = new FileInputStream(fullFilePath)) {
+      // load the file
+      properties.load(input);
 
-		try {
-			input = new FileInputStream(fullFilePath);
+      // get the chromosome value
+      chromosome = properties.getProperty("chromosome").toCharArray();
 
-			// load the file
-			properties.load(input);
+      // update to the rest of the AVAILABLE_ATTRIBUTES
+      updateFromBinary();
 
-			// get the chromosome value
-			chromosome = properties.getProperty("chromosome").toCharArray();
+    } catch (final IOException ex) {
+      logger.error("Failed trying to load from file", ex);
+    }
+  }
 
-			// update to the rest of the attributes
-			updateFromBinary();
+  /**
+   * Save to file.
+   *
+   * @param fullFilePath the file name
+   */
+  public void saveToFile(final String fullFilePath) {
+    logger.trace("Saving player to file: " + fullFilePath);
 
-		} catch (final IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (final IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+    updateToBinary();
+    final Properties properties = new Properties();
 
-	/**
-	 * Save to file.
-	 *
-	 * @param fileName
-	 *            the file name
-	 */
-	public void saveToFile(final String fullFilePath) {
-		logger.trace("Saving player to file: " + fullFilePath);
+    try (OutputStream output = new FileOutputStream(fullFilePath)) {
 
-		updateToBinary();
-		final Properties properties = new Properties();
-		OutputStream output = null;
+      // set the properties value
+      properties.setProperty("chromosome", String.valueOf(chromosome));
+      properties.setProperty("fitness", getFitness() + "");
 
-		try {
-			output = new FileOutputStream(fullFilePath);
+      for (final IndividualAttribute individualAttribute : attributes) {
+        properties.setProperty(individualAttribute.getName(), individualAttribute.getValue() + "");
+      }
 
-			// set the properties value
-			properties.setProperty("chromosome", String.valueOf(chromosome));
-			properties.setProperty("fitness", getFitness() + "");
-			for (final IndividualAttribute indivAtribute : listOfAttributes) {
-				properties.setProperty(indivAtribute.getName(), indivAtribute.getValue() + "");
-			}
+      // save the file to the savedPlayers folder
+      properties.store(output, null);
 
-			// save the file to the savedPlayers folder
-			properties.store(output, null);
+    } catch (final IOException io) {
+      logger.error("Failed trying to Save to file", io);
+    }
+  }
 
-		} catch (final IOException io) {
-			io.printStackTrace();
-		} finally {
-			if (output != null) {
-				try {
-					output.close();
-				} catch (final IOException e) {
-					e.printStackTrace();
-				}
-			}
+  /**
+   * setAttribute
+   */
+  public void setAttribute(final int index, final IndividualAttribute individualAttribute) {
+    attributes[index] = individualAttribute;
+    updateToBinary();
+  }
 
-		}
+  /**
+   * overridden equals method
+   *
+   * @param otherObject other object
+   * @returns result
+   */
+  @Override
+  public boolean equals(final Object otherObject) {
+    if (this == otherObject) {
+      return true;
+    }
+    if (otherObject == null || getClass() != otherObject.getClass()) {
+      return false;
+    }
 
-	}
+    final Individual that = (Individual) otherObject;
 
-	/**
-	 * setAttribute
-	 *
-	 * @param index
-	 * @param individualAttribute
-	 */
-	public void setAttribute(final int index, final IndividualAttribute individualAttribute) {
-		listOfAttributes[index] = individualAttribute;
-		updateToBinary();
-	}
+    if (Double.compare(that.fitness, fitness) != 0) {
+      return false;
+    }
+    return Arrays.equals(chromosome, that.chromosome);
+  }
 
-	/**
-	 * Sets the fitness.
-	 *
-	 * @param fit
-	 *            the new fitness
-	 */
-	public void setFitness(final double fit) {
-		fitness = fit;
-	}
+  /**
+   * overridden hashcode
+   *
+   * auto-generated
+   */
+  @Override
+  public int hashCode() {
+    int result;
+    final long temp;
+    result = Arrays.hashCode(chromosome);
+    temp = Double.doubleToLongBits(fitness);
+    result = 31 * result + (int) (temp ^ (temp >>> 32));
+    return result;
+  }
 
-	/**
-	 *
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		String result = "Indiviudal with chromosome string: " + String.valueOf(chromosome) + " and fitness of: "
-				+ fitness;
-		for (final IndividualAttribute listOfAttribute : listOfAttributes) {
-			result += "| " + listOfAttribute.getName() + ": " + listOfAttribute.getValue();
-		}
-		return result;
-	}
+  /**
+   * Sets the fitness.
+   *
+   * @param fit the new fitness
+   */
+  public void setFitness(final double fit) {
+    fitness = fit;
+  }
 
-	/**
-	 * Update from binary.
-	 */
-	private void updateFromBinary() {
-		final int[] values = Util.convertFromBinaryStringsToIntAr(String.valueOf(chromosome), numOfAttributes, 7);
-		for (int x = 0; x < values.length; x++) {
-			listOfAttributes[x].setValue(values[x]);
-		}
-	}
+  /**
+   * overridden tostring
+   *
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    String result = "Individual with chromosome string: " + String.valueOf(chromosome) + " and fitness of: "
+        + fitness;
+    for (final IndividualAttribute listOfAttribute : attributes) {
+      result += "| " + listOfAttribute.getName() + ": " + listOfAttribute.getValue();
+    }
+    return result;
+  }
 
-	/**
-	 * Update to binary.
-	 */
-	public void updateToBinary() {
-		chromosome = Util.convertFromIntArrayToBinaryCharAry(listOfAttributes);
-	}
+  /**
+   * Update from binary to values.
+   */
+  private void updateFromBinary() {
+    final int[] values = Util.convertFromBinaryStringsToIntAr(String.valueOf(chromosome), numOfAttributes, 7);
+    for (int x = 0; x < values.length; x++) {
+      attributes[x].setValue(values[x]);
+    }
+  }
+
+  /**
+   * Update from values to binary.
+   */
+  public void updateToBinary() {
+    chromosome = Util.convertFromIntArrayToBinaryCharAry(attributes);
+  }
+
+
 }

@@ -18,9 +18,6 @@
 
 package uk.co.davidlomas.gammon.game;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.gui.BoardContainerFrame;
 import uk.co.davidlomas.gammon.settings.GameSettings;
@@ -39,58 +36,44 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
  */
 public class GameManager {
 
-	final static Logger logger = LoggerFactory.getLogger(GameManager.class);
+  static BoardContainerFrame boardContainerFrame;
 
-	public static BoardContainerFrame boardContainerFrame;
-	private static Game currentGame;
+  /**
+   * play Individuals Vs Each Other
+   *
+   * @param individual1 individual 1
+   * @param individual2 individual 2
+   * @return GameStats result of game (winner, values)
+   */
+  public GameStats playIndividualsVsEachOther(final Individual individual1,
+      final Individual individual2) {
 
-	/**
-	 * playIndividualsVsEachOther
-	 *
-	 * @param invdividual1
-	 * @param invdividual2
-	 * @return GameStats result of game (winner, values)
-	 */
-	public GameStats playIndividualsVsEachOther(final Individual invdividual1, final Individual invdividual2) {
+    if (GameSettings.getDisplayGUI()) {
+      startGui();
+    }
 
-		if (GameSettings.getDisplayGUI()) {
-			startGui();
-		}
+    // The Game Thread
+    final Game currentGame = new Game(individual1, individual2);
+    currentGame.run();
+    return currentGame.getGameStats();
+  }
 
-		// The Game Thread
-		currentGame = new Game(invdividual1, invdividual2);
+  /**
+   * start the Gui
+   */
+  private void startGui() {
+    // The Gui Thread
+    boardContainerFrame = new BoardContainerFrame();
+    final Thread guiThread = new Thread(boardContainerFrame);
+    guiThread.start();
 
-		/*
-		 * THREADING NOT IMPLEMENTED YET Thread gameThread = new
-		 * Thread(currentGame); gameThread.start(); //stops it multi-threading
-		 * and ruining the GUI try {
-		 * if(!GameSettings.getMultiThreading()){gameThread.join();}; } catch
-		 * (InterruptedException e) { e.printStackTrace(); }
-		 */
-
-		currentGame.run();
-		return currentGame.getGameStats();
-	}
-
-	/**
-	 * startGui
-	 *
-	 * starts the GUI, shouldn't be called outside of this class
-	 */
-	private void startGui() {
-		// The Gui Thread
-		boardContainerFrame = new BoardContainerFrame();
-		final Thread guiThread = new Thread(boardContainerFrame);
-		guiThread.start();
-
-		// Stops it multi-threading,
-		try {
-			if (!GameSettings.getMultiThreading()) {
-				guiThread.join();
-			}
-			;
-		} catch (final InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+    // Stops it multi-threading,
+    try {
+      if (!GameSettings.getMultiThreading()) {
+        guiThread.join();
+      }
+    } catch (final InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
 }

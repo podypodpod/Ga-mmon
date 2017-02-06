@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Ga-mmon.iml" filepath="$PROJECT_DIR$/.idea/modules/Ga-mmon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Ga-mmon_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Ga-mmon_main.iml" group="Ga-mmon" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Ga-mmon_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Ga-mmon_test.iml" group="Ga-mmon" />
+    </modules>
+  </component>
+</project>
