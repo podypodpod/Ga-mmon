@@ -183,11 +183,12 @@ public class Individual {
     updateToBinary();
   }
 
+
   /**
    * overridden equals method
    *
    * @param otherObject other object
-   * @returns result
+   * @return the result
    */
   @Override
   public boolean equals(final Object otherObject) {
@@ -200,10 +201,7 @@ public class Individual {
 
     final Individual that = (Individual) otherObject;
 
-    if (Double.compare(that.fitness, fitness) != 0) {
-      return false;
-    }
-    return Arrays.equals(chromosome, that.chromosome);
+    return Double.compare(that.fitness, fitness) == 0 && Arrays.equals(chromosome, that.chromosome);
   }
 
   /**

@@ -1,19 +1,19 @@
-/**
- * GNU General Public License
- *
- * This file is part of GA-mmon.
- *
- * GA-mmon is free software: you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * GA-mmon is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * GA-mmon. If not, see <http://www.gnu.org/licenses/>.
+/*
+  GNU General Public License
+
+  This file is part of GA-mmon.
+
+  GA-mmon is free software: you can redistribute it and/or modify it under the
+  terms of the GNU General Public License as published by the Free Software
+  Foundation, either version 3 of the License, or (at your option) any later
+  version.
+
+  GA-mmon is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+  A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License along with
+  GA-mmon. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package uk.co.davidlomas.gammon.test.game;
@@ -25,73 +25,73 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import uk.co.davidlomas.gammon.game.AiPlayer;
 import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.MoveGenerator;
 import uk.co.davidlomas.gammon.test.helpers.Settings;
 
 public class MoveGeneratorTest {
-	private Board board;
-	private AiPlayer player1, player2;
-	private MoveGenerator moveGenerator;
 
-	@BeforeClass
-	public static void beforeClass() {
-		Settings.resetSettings();
-	}
+  private Board board;
+  private AiPlayer player1, player2;
+  private MoveGenerator moveGenerator;
 
-	@AfterClass
-	public static void afterClass() {
-		Settings.resetSettings();
-	}
+  @BeforeClass
+  public static void beforeClass() {
+    Settings.resetSettings();
+  }
 
-	@Before
-	public void setUp() throws Exception {
+  @AfterClass
+  public static void afterClass() {
+    Settings.resetSettings();
+  }
 
-		board = new Board();
-		player1 = new AiPlayer(true, null);
-		player2 = new AiPlayer(false, null);
-		moveGenerator = new MoveGenerator(null);
-	}
+  @Before
+  public void setUp() throws Exception {
 
-	@Test
-	public void callingGenerateMovesOnDefaultBoardWithValidMovesForBlackShouldReturnBoards() {
-		// Given
-		board.setStartPosition();
-		player1.movesLeft.add(3);
-		player1.movesLeft.add(5);
+    board = new Board();
+    player1 = new AiPlayer(true, null);
+    player2 = new AiPlayer(false, null);
+    moveGenerator = new MoveGenerator(null);
+  }
 
-		// When
-		moveGenerator.generateMoves(board, player1);
+  @Test
+  public void callingGenerateMovesOnDefaultBoardWithValidMovesForBlackShouldReturnBoards() {
+    // Given
+    board.setStartPosition();
+    player1.movesLeft.add(3);
+    player1.movesLeft.add(5);
 
-		// Then
-		assertTrue(moveGenerator.getBoardList().hasContents());
-	}
+    // When
+    moveGenerator.generateMoves(board, player1);
 
-	@Test
-	public void callingGenerateMovesOnDefaultBoardWithValidMovesForRedShouldReturnBoards() {
-		// Given
-		board.setStartPosition();
-		player2.movesLeft.add(1);
+    // Then
+    assertTrue(moveGenerator.getBoardList().hasContents());
+  }
 
-		// When
-		moveGenerator.generateMoves(board, player2);
+  @Test
+  public void callingGenerateMovesOnDefaultBoardWithValidMovesForRedShouldReturnBoards() {
+    // Given
+    board.setStartPosition();
+    player2.movesLeft.add(1);
 
-		// Then
-		assertTrue(moveGenerator.getBoardList().hasContents());
-	}
+    // When
+    moveGenerator.generateMoves(board, player2);
 
-	@Test
-	public void callingGenerateMovesOnABoardWithNoMovesShouldReturnAnEmptyList() {
-		// Given
-		board.setStartPosition();
-		player2.movesLeft.clear();
+    // Then
+    assertTrue(moveGenerator.getBoardList().hasContents());
+  }
 
-		// When
-		moveGenerator.generateMoves(board, player2);
+  @Test
+  public void callingGenerateMovesOnABoardWithNoMovesShouldReturnAnEmptyList() {
+    // Given
+    board.setStartPosition();
+    player2.movesLeft.clear();
 
-		// Then
-		assertFalse(moveGenerator.getBoardList().hasContents());
-	}
+    // When
+    moveGenerator.generateMoves(board, player2);
+
+    // Then
+    assertFalse(moveGenerator.getBoardList().hasContents());
+  }
 }

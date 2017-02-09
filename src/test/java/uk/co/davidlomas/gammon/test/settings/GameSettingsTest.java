@@ -8,70 +8,63 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.test.helpers.Settings;
 
 public class GameSettingsTest {
 
-	private final Boolean newIsP1BlackCache = true;
-	private final Boolean newDisplayGUICache = false;
-	private final Boolean newAreBothAIsCache = false;
-	private final Boolean newMultiThreadingCache = true;
+  @BeforeClass
+  public static void beforeClass() {
+    Settings.resetSettings();
+  }
 
-	private final int newTimeDelayCache = 4;
+  @AfterClass
+  public static void afterClass() {
+    Settings.resetSettings();
+  }
 
-	@BeforeClass
-	public static void beforeClass() {
-		Settings.resetSettings();
-	}
+  @Before
+  public void setup() {
+    // reset all values to default as its static and the tests can therefore
+    // Influence each other
 
-	@AfterClass
-	public static void afterClass() {
-		Settings.resetSettings();
-	}
+    GameSettings.setAreBothAIsCache(null);
+    GameSettings.setDisplayGUICache(null);
+    GameSettings.setIsP1BlackCache(null);
+    GameSettings.setMultiThreadingCache(null);
 
-	@Before
-	public void setup() {
-		// reset all values to default as its static and the tests can therefore
-		// Influence each other
+    GameSettings.setTimeDelayCache(-1);
+  }
 
-		GameSettings.setAreBothAIsCache(null);
-		GameSettings.setDisplayGUICache(null);
-		GameSettings.setIsP1BlackCache(null);
-		GameSettings.setMultiThreadingCache(null);
+  @Test
+  public void settingP1BlackThenGettingReturnsExpected() {
+    GameSettings.setIsP1BlackCache(true);
+    assertTrue(GameSettings.isP1Black());
+  }
 
-		GameSettings.setTimeDelayCache(-1);
-	}
+  @Test
+  public void settingDisplayGuiThenGettingReturnsExpected() {
+    GameSettings.setDisplayGUICache(false);
+    assertFalse(GameSettings.getDisplayGUI());
+  }
 
-	@Test
-	public void settingP1BlackThenGettingReturnsExpected() {
-		GameSettings.setIsP1BlackCache(newIsP1BlackCache);
-		assertTrue(GameSettings.isP1Black());
-	}
+  @Test
+  public void settingAreBothAIsThenGettingReturnsExpected() {
+    GameSettings.setAreBothAIsCache(false);
+    assertFalse(GameSettings.getAreBothAI());
+  }
 
-	@Test
-	public void settingDisplayGuiThenGettingReturnsExpected() {
-		GameSettings.setDisplayGUICache(newDisplayGUICache);
-		assertFalse(GameSettings.getDisplayGUI());
-	}
+  @Test
+  public void settingMultiThreadingThenGettingReturnsExpected() {
+    GameSettings.setMultiThreadingCache(true);
+    assertTrue(GameSettings.getMultiThreading());
+  }
 
-	@Test
-	public void settingAreBothAIsThenGettingReturnsExpected() {
-		GameSettings.setAreBothAIsCache(newAreBothAIsCache);
-		assertFalse(GameSettings.getAreBothAI());
-	}
-
-	@Test
-	public void settingMultiThreadingThenGettingReturnsExpected() {
-		GameSettings.setMultiThreadingCache(newMultiThreadingCache);
-		assertTrue(GameSettings.getMultiThreading());
-	}
-
-	@Test
-	public void settingTimeDelayThenGettingReturnsExpected() {
-		GameSettings.setTimeDelayCache(newTimeDelayCache);
-		assertEquals(newTimeDelayCache, GameSettings.getTimeDelay());
-	}
+  @Test
+  public void settingTimeDelayThenGettingReturnsExpected() {
+    final int newTimeDelayCache = 4;
+    GameSettings.setTimeDelayCache(newTimeDelayCache);
+    assertEquals(newTimeDelayCache, GameSettings.getTimeDelay());
+  }
 
 }

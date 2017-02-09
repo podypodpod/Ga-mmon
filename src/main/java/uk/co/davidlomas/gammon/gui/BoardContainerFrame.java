@@ -1,4 +1,4 @@
-/**
+/*
  * GNU General Public License
  *
  * This file is part of GA-mmon.
@@ -20,9 +20,9 @@ package uk.co.davidlomas.gammon.gui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 /**
  * ContainerFrame
@@ -37,37 +37,35 @@ import javax.swing.JPanel;
  */
 public class BoardContainerFrame extends JFrame implements Runnable {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public BoardPanel bp;
-	JPanel mainPanel;
-	JFrame frame;
+  public BoardPanel bp;
 
-	public void createGUI() {
+  private void createGUI() {
 
-		// Creating JFrame and panel
-		frame = new JFrame("GA-mmon");
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new GridBagLayout());
-		final GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.BOTH;
+    // Creating JFrame and panel
+    final JFrame frame = new JFrame("GA-mmon");
+    final JPanel mainPanel = new JPanel();
+    mainPanel.setLayout(new GridBagLayout());
+    final GridBagConstraints c = new GridBagConstraints();
+    c.fill = GridBagConstraints.BOTH;
 
-		// creating and adding the Board Panel
-		bp = new BoardPanel();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.weightx = 1.0;
-		c.weighty = 1.0;
-		mainPanel.add(bp, c);
+    // creating and adding the Board Panel
+    bp = new BoardPanel();
+    c.gridx = 0;
+    c.gridy = 0;
+    c.weightx = 1.0;
+    c.weighty = 1.0;
+    mainPanel.add(bp, c);
 
-		frame.add(mainPanel);
-		frame.setSize(1166, 600);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
+    frame.add(mainPanel);
+    frame.setSize(1166, 600);
+    frame.setVisible(true);
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+  }
 
-	@Override
-	public void run() {
-		createGUI();
-	}
+  @Override
+  public void run() {
+    createGUI();
+  }
 }

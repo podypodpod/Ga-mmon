@@ -37,6 +37,7 @@ public class IndividualAttribute {
     value = (int) (Math.random() * 100);
   }
 
+  @SuppressWarnings("SameParameterValue")
   public IndividualAttribute(final String name, final int value) {
     this.name = name;
     this.value = value;

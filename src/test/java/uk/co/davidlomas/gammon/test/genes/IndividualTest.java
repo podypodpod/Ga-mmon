@@ -5,8 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.UUID;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -16,11 +14,8 @@ import uk.co.davidlomas.gammon.test.helpers.Settings;
 
 public class IndividualTest {
 
-  final Logger logger = LogManager.getLogger(IndividualTest.class);
-
   private Individual individual1;
   private Individual individual2;
-  private UUID uuid;
   private String filePath;
 
   @BeforeClass
@@ -37,12 +32,11 @@ public class IndividualTest {
   public void setup() {
     individual1 = new Individual();
     individual2 = new Individual();
-    uuid = UUID.randomUUID();
-    filePath = "savedPlayers/test/testIndividual - " + uuid.toString();
+    filePath = "savedPlayers/test/testIndividual - " + UUID.randomUUID().toString();
   }
 
   @Test
-  public void getFilePathForPlayersComaparedToActualStringShouldBeTrue() {
+  public void getFilePathForPlayersComparedToActualStringShouldBeTrue() {
     final String actual = individual1.getFilePathForPlayers();
     final String expected = "savedPlayers/Attempt - ";
     assertTrue(actual.startsWith(expected));
@@ -60,7 +54,7 @@ public class IndividualTest {
     individual2 = new Individual();
     individual2.loadFromFile(filePath);
 
-    //thebn
+    //then
     // check num of attributes is same
     assertEquals(individual1.getNumOfAttributes(), individual2.getNumOfAttributes());
 
