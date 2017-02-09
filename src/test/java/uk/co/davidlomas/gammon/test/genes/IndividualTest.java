@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
+import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -24,8 +26,10 @@ public class IndividualTest {
   }
 
   @AfterClass
-  public static void afterClass() {
+  public static void afterClass() throws IOException {
     Settings.resetSettings();
+    final File directory = new File("savedPlayers/Attempt - 9999");
+    FileUtils.deleteDirectory(directory);
   }
 
   @Before
@@ -68,4 +72,5 @@ public class IndividualTest {
           individual1.getAttribute(i).getValue(), individual2.getAttribute(i).getValue());
     }
   }
+
 }
