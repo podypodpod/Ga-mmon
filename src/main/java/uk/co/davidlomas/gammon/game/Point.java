@@ -86,10 +86,7 @@ public class Point {
    * @return true, if successful
    */
   public boolean equals(final Point p) {
-    if (redCount == p.redCount && blackCount == p.blackCount) {
-      return true;
-    }
-    return false;
+    return redCount == p.redCount && blackCount == p.blackCount;
   }
 
   /**
@@ -107,11 +104,7 @@ public class Point {
    * @return the col
    */
   public boolean getCol() {
-    if (blackCount > redCount) {
-      return true;
-    } else {
-      return false;
-    }
+    return blackCount > redCount;
   }
 
   /**
@@ -129,11 +122,7 @@ public class Point {
    * @return true, if is empty
    */
   public boolean isEmpty() {
-    if (blackCount == 0 && redCount == 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return blackCount == 0 && redCount == 0;
   }
 
   /**

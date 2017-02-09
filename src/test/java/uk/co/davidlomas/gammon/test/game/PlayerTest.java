@@ -69,7 +69,7 @@ public class PlayerTest {
   }
 
   @Test
-  public void whenCallingPassesBasicChecksWhenThereIsNoPeiceOnTheStartItShouldFail() {
+  public void whenCallingPassesBasicChecksWhenThereIsNoPieceOnTheStartItShouldFail() {
     // given
     final int to = 7;
     final int from = 5;
@@ -138,6 +138,7 @@ public class PlayerTest {
     Assert.assertFalse(player1.passesBasicChecks(to, from, board));
   }
 
+  @Test
   public void callingMovePossibleOnTakingAPieceWhenYouAlreadyHaveAZeroShouldReturnFalse() {
 
     // leaving a piece on its own
@@ -153,9 +154,9 @@ public class PlayerTest {
   }
 
   @Test
-  public void callingMovePossibleWhenTryingToTakeAnOponentPieceWith2MarkersOnShouldReturnFalse() {
+  public void callingMovePossibleWhenTryingToTakeAnOpponentPieceWith2MarkersOnShouldReturnFalse() {
 
-    // putting 2 red peices on their own
+    // putting 2 red pieces on their own
     player1.movePiece(12, 11, board);
     player1.movePiece(12, 11, board);
 
@@ -264,13 +265,13 @@ public class PlayerTest {
   }
 
   @Test
-  public void callingPassesBasicChecksWhenThereIsAZeroOnTheSideOfTheOpositionShouldReturnTrue() {
+  public void callingPassesBasicChecksWhenThereIsAZeroOnTheSideOfTheOppositionShouldReturnTrue() {
     // given
     final int to = 3;
     final int from = 1;
 
     player1.movesLeft.add(2);
-    board.Points[25].addBlackPiece();// adding oponent zero
+    board.Points[25].addBlackPiece();// adding opponent zero
 
     // then
     Assert.assertTrue(player1.passesBasicChecks(to, from, board));

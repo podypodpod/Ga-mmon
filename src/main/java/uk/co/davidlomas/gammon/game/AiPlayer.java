@@ -36,16 +36,21 @@ public class AiPlayer extends Player {
   private final MoveGenerator moveGenerator;
   private Individual individual;
 
-  AiPlayer(final AiPlayer p) {
-    super(p.black);
-    movesLeft = new MovesList(p.movesLeft);
-    black = p.black;
-    turnOver = p.turnOver;
-    moveGenerator = p.moveGenerator;
+  /**
+   * Clone constructor
+   *
+   * @param playerToClone the player
+   */
+  AiPlayer(final AiPlayer playerToClone) {
+    super(playerToClone.black);
+    movesLeft = new MovesList(playerToClone.movesLeft);
+    black = playerToClone.black;
+    turnOver = playerToClone.turnOver;
+    moveGenerator = playerToClone.moveGenerator;
   }
 
-  public AiPlayer(final boolean b, final Individual individual) {
-    super(b);
+  public AiPlayer(final boolean black, final Individual individual) {
+    super(black);
     this.individual = individual;
     moveGenerator = new MoveGenerator(individual);
   }

@@ -18,7 +18,7 @@
 package uk.co.davidlomas.gammon.genes;
 
 /**
- * IndivAttribute
+ * IndividualAttribute
  *
  * attribute for the individual, each will have a number of these e.g. bear a
  * piece

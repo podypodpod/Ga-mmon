@@ -23,8 +23,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 public class GenAlgSettings {
 
@@ -36,8 +34,6 @@ public class GenAlgSettings {
   private static final String ATTEMPT_COUNT = "attemptCount";
   private static final String GENERATIONS = "generations";
   private static final String FILE_PATH = "conf/GenAlgSettings.properties";
-
-  final static Logger logger = LogManager.getLogger(GenAlgSettings.class);
 
   private static Boolean elitism = null;
 
@@ -121,14 +117,16 @@ public class GenAlgSettings {
     return elitism;
   }
 
-  public static void setAttemptCount(final int atemptCount) {
-    GenAlgSettings.attemptCount = atemptCount;
-    updateTofile(ATTEMPT_COUNT, attemptCount + "");
+  public static void setAttemptCount(final int attemptCount) {
+    GenAlgSettings.attemptCount = attemptCount;
+    updateToFile(ATTEMPT_COUNT, GenAlgSettings.attemptCount + "");
   }
 
-  public static void updateTofile(final String propertyName, final String value) {
+  public static void updateToFile(final String propertyName, final String value) {
     try {
       final Properties properties = getProperties();
+      assert properties != null;
+
       if (properties.containsKey(propertyName)) {
         final FileOutputStream out = new FileOutputStream(FILE_PATH);
         properties.setProperty(propertyName, value);
@@ -159,6 +157,7 @@ public class GenAlgSettings {
   public static String getPropertyFromFile(final String propVar) {
 
     final Properties properties = getProperties();
+    assert properties != null;
     final String result = properties.getProperty(propVar);
     if (result != null) {
       return result;

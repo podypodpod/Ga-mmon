@@ -37,7 +37,7 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
  *
  * @author David Lomas
  */
-public class Game implements Runnable {
+class Game implements Runnable {
 
   private final static Logger logger = LoggerFactory.getLogger(Game.class);
   private static final double BORE_PIECE_SCORE_MULTIPLIER = 0.04;

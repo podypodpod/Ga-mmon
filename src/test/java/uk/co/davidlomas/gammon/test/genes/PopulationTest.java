@@ -7,69 +7,67 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.genes.Population;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.Settings;
 
 public class PopulationTest {
-	private static final int POPULATION_SIZE = 2;
 
-	Population initPopulation;
-	Population population;
+  private static final int POPULATION_SIZE = 2;
 
-	@BeforeClass
-	public static void beforeClass() {
-		Settings.resetSettings();
-	}
+  private Population initPopulation;
 
-	@AfterClass
-	public static void afterClass() {
-		Settings.resetSettings();
-	}
+  @BeforeClass
+  public static void beforeClass() {
+    Settings.resetSettings();
+  }
 
-	@Before
-	public void setup() {
-		initPopulation = new Population(POPULATION_SIZE, true);
-		population = new Population(POPULATION_SIZE, false);
+  @AfterClass
+  public static void afterClass() {
+    Settings.resetSettings();
+  }
 
-		GenAlgSettings.setElitism(true);
+  @Before
+  public void setup() {
+    initPopulation = new Population(POPULATION_SIZE, true);
 
-		GenAlgSettings.setGenerations(0);
-		GenAlgSettings.setPopulationSize(POPULATION_SIZE);
-		GenAlgSettings.setAttemptCount(9999);
-		GenAlgSettings.setTournamentSize(1);
+    GenAlgSettings.setElitism(true);
 
-		GenAlgSettings.setUniformRate(1);
-		GenAlgSettings.setMutationRate(1);
-	}
+    GenAlgSettings.setGenerations(0);
+    GenAlgSettings.setPopulationSize(POPULATION_SIZE);
+    GenAlgSettings.setAttemptCount(9999);
+    GenAlgSettings.setTournamentSize(1);
 
-	@Test
-	public void checkPopulationSizeIsRight() {
-		assertEquals(POPULATION_SIZE, initPopulation.getPopulation().length);
-	}
+    GenAlgSettings.setUniformRate(1);
+    GenAlgSettings.setMutationRate(1);
+  }
 
-	@Test
-	public void checkGetFittestGetsIndiviudalWithHighestFitness() {
+  @Test
+  public void checkPopulationSizeIsRight() {
+    assertEquals(POPULATION_SIZE, initPopulation.getPopulation().length);
+  }
 
-		final Individual[] individuals = initPopulation.getPopulation();
-		final Individual fitIndividual = new Individual();
-		fitIndividual.setFitness(99);
-		individuals[1] = fitIndividual;
-		initPopulation.setIndividuals(individuals);
+  @Test
+  public void checkGetFittestGetsIndividualWithHighestFitness() {
 
-		final Individual actual = initPopulation.getFittest();
+    final Individual[] individuals = initPopulation.getPopulation();
+    final Individual fitIndividual = new Individual();
+    fitIndividual.setFitness(99);
+    individuals[1] = fitIndividual;
+    initPopulation.setIndividuals(individuals);
 
-		assertEquals(fitIndividual, actual);
-	}
+    final Individual actual = initPopulation.getFittest();
 
-	@Test
-	public void calculateFitnessChangesOrder() {
-		final double before = initPopulation.getFittest().getFitness();
-		initPopulation.calculateFitness();
-		final double after = initPopulation.getFittest().getFitness();
-		assertNotEquals(before, after);
-	}
+    assertEquals(fitIndividual, actual);
+  }
+
+  @Test
+  public void calculateFitnessChangesOrder() {
+    final double before = initPopulation.getFittest().getFitness();
+    initPopulation.calculateFitness();
+    final double after = initPopulation.getFittest().getFitness();
+    assertNotEquals(before, after);
+  }
 
 }

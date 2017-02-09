@@ -34,8 +34,13 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
  */
 public class StartGa {
 
-  final static Logger logger = LoggerFactory.getLogger(StartGa.class);
+  private final static Logger logger = LoggerFactory.getLogger(StartGa.class);
 
+  /**
+   * The main for starting the genetic algorithm
+   *
+   * @param args command line arguments
+   */
   public static void main(final String args[]) {
 
     GenAlgSettings.setAttemptCount(GenAlgSettings.getAttemptCount() + 1);
@@ -43,7 +48,7 @@ public class StartGa {
     logger.info("Program running!");
 
     Population pop = createInitialPopulation();
-    saveInitialFitest(pop);
+    saveInitialFittestToFile(pop);
     pop = initialEvolution(pop);
     pop = restOfEvolutions(pop);
 
@@ -84,8 +89,8 @@ public class StartGa {
     return pop;
   }
 
-  private static void saveInitialFitest(final Population pop) {
-    // save initial fitest
+  private static void saveInitialFittestToFile(final Population pop) {
+    // save initial fittest
     logger.info("Calculating fittest of initial pop");
     pop.calculateFitness();
     final Individual fittest = pop.getFittest();

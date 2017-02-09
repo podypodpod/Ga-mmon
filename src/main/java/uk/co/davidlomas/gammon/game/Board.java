@@ -33,7 +33,7 @@ public class Board {
 
   private int redBore, blackBore;
 
-  public Point[] Points;
+  public final Point[] Points;
 
   boolean isInitialMove = false;
 

@@ -37,7 +37,7 @@ public class Player {
 
   public MovesList movesLeft;
   protected Boolean black;
-  DiceList dice;
+  final DiceList dice;
   boolean turnOver;
 
   /**
@@ -58,9 +58,9 @@ public class Player {
       return false;
     }
 
-    if (!movingToZeroPeices(to, from)) {
+    if (!movingToZeroPieces(to)) {
       if (isValidLength(from, to)) {
-        if (validDestination(to, from, liveBoard)) {
+        if (validDestination(to, liveBoard)) {
           return true;
         }
       }
@@ -99,10 +99,7 @@ public class Player {
    * returns true if start position has a piece on it
    */
   private boolean hasAPieceAtStart(final int from, final Board liveBoard) {
-    if (liveBoard.Points[from].numEither() > 0 && liveBoard.Points[from].getCol() == black) {
-      return true;
-    }
-    return false;
+    return liveBoard.Points[from].numEither() > 0 && liveBoard.Points[from].getCol() == black;
   }
 
   /**
@@ -148,11 +145,8 @@ public class Player {
   /**
    * returns true if not moving to a zero space
    */
-  private boolean movingToZeroPeices(final int to, final int from) {
-    if (to != 0 && to != 25 && to != -1 && to != 26) {
-      return false;
-    }
-    return true;
+  private boolean movingToZeroPieces(final int to) {
+    return !(to != 0 && to != 25 && to != -1 && to != 26);
   }
 
   /**
@@ -216,10 +210,7 @@ public class Player {
    * returns true if the player is trying to bear and he can bear at this time
    */
   private boolean tryingAndCanBear(final int to, final int from, final Board liveBoard) {
-    if ((to == -1 || to == 26) && liveBoard.canPlayerBear(liveBoard.Points[from].getCol())) {
-      return true;
-    }
-    return false;
+    return (to == -1 || to == 26) && liveBoard.canPlayerBear(liveBoard.Points[from].getCol());
   }
 
   /**
@@ -276,16 +267,16 @@ public class Player {
 
           logger.trace("Bear which piece?");
 
-          final int bearPeice = Scanner.nextInt();
-          if (isMovePossible(bearPeice, -1, liveBoard)) {
-            liveBoard.bearPiece(bearPeice, black);
+          final int bearPiece = Scanner.nextInt();
+          if (isMovePossible(bearPiece, -1, liveBoard)) {
+            liveBoard.bearPiece(bearPiece, black);
           }
         } else {
           logger.trace("Can not bear pieces yet");
         }
       } else if (option == 3) {
         turnOver = true;
-        // CONCEEDING
+        // CONCEDING
       } else if (option == 4) {
         turnOver = true;
 
@@ -294,14 +285,11 @@ public class Player {
   }
 
   /**
-   * returns true if destination isnt filled or no more than 1 chip
+   * returns true if destination isn't filled or no more than 1 chip
    */
-  private boolean validDestination(final int to, final int from, final Board liveBoard) {
-    if (liveBoard.Points[to].getCol() == black
-        || liveBoard.Points[to].getCol() != black && liveBoard.Points[to].numEither() <= 1) {
-      return true;
-    }
-    return false;
+  private boolean validDestination(final int to, final Board liveBoard) {
+    return liveBoard.Points[to].getCol() == black
+        || liveBoard.Points[to].getCol() != black && liveBoard.Points[to].numEither() <= 1;
   }
 
   /**

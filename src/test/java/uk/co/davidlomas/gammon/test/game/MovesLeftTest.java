@@ -49,7 +49,7 @@ public class MovesLeftTest {
   }
 
   @Test
-  public void callingCloneConstructorOnMovesLeftShouldReturnaBoardWithTheSameContents() {
+  public void callingCloneConstructorOnMovesLeftShouldReturnABoardWithTheSameContents() {
     // Given
     testSubject.add(4);
     testSubject.add(9);

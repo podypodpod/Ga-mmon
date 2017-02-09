@@ -18,8 +18,6 @@
 
 package uk.co.davidlomas.gammon.game;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.co.davidlomas.gammon.genes.Individual;
 
 /**
@@ -33,17 +31,15 @@ import uk.co.davidlomas.gammon.genes.Individual;
  */
 public class MoveGenerator {
 
-  final static Logger logger = LoggerFactory.getLogger(MoveGenerator.class);
-
   private final BoardList boardList;
   private final Individual individual;
 
   /**
    * Instantiates a new move generator.
    */
-  public MoveGenerator(final Individual indiv) {
-    individual = indiv;
-    boardList = new BoardList(individual);
+  public MoveGenerator(final Individual individual) {
+    this.individual = individual;
+    boardList = new BoardList(this.individual);
   }
 
   /**
@@ -72,7 +68,7 @@ public class MoveGenerator {
             if (p.isMovePossible(point, point - currentMove, cb)) {
 
               // adding the new board to the list
-              boardList.addBoard(new Board(cb), point - currentMove, point, new AiPlayer(p), this);
+              boardList.addBoardWithNextMove(new Board(cb), point - currentMove, point, new AiPlayer(p), this);
 
             }
             // if the player is red
@@ -83,7 +79,7 @@ public class MoveGenerator {
             if (p.isMovePossible(point, point + currentMove, cb)) {
 
               // adding the new board to the list
-              boardList.addBoard(new Board(cb), point + currentMove, point, new AiPlayer(p), this);
+              boardList.addBoardWithNextMove(new Board(cb), point + currentMove, point, new AiPlayer(p), this);
             }
           }
         }
@@ -108,7 +104,7 @@ public class MoveGenerator {
    * @param p the player
    * @return the next move board
    */
-  public Board getNextMoveBoard(final Board cb, final AiPlayer p) {
+  Board getNextMoveBoard(final Board cb, final AiPlayer p) {
 
     // Clear the list
     boardList.clearList();

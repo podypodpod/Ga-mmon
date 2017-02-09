@@ -41,8 +41,6 @@ public class Individual {
 
   private final static Logger logger = LoggerFactory.getLogger(Individual.class);
   private static final String PLAYERS_FILE_PATH = "savedPlayers/Attempt - ";
-
-
   private final static String[] AVAILABLE_ATTRIBUTES = {"bearAPiece", "takeAPiece", "doubleUpAPiece", "blockAnOpponent", "movingAPieceSolo",
       "spreadAHomePiece",
       "addACheckerToAStack", "twoOneSplitPlayInitialMove", "twoOneSlotPlayInitialMove", "threeOneInitialMove", "threeTwoSplitInitialMove",
@@ -95,11 +93,17 @@ public class Individual {
    * If it doesn't exist create the directory
    */
   public String getFilePathForPlayers() {
+
     final String savedPlayersDirectory = PLAYERS_FILE_PATH + GenAlgSettings.getAttemptCount();
     final boolean directoryExists = new File(savedPlayersDirectory).exists();
+
     if (!directoryExists) {
       logger.trace("Directory " + savedPlayersDirectory + " does not exist, making it");
-      new File(savedPlayersDirectory).mkdir();
+
+      final boolean fileWasCreated = new File(savedPlayersDirectory).mkdir();
+      if (!fileWasCreated) {
+        logger.error("Failed creating file {}", savedPlayersDirectory);
+      }
     }
     return savedPlayersDirectory;
   }
@@ -229,7 +233,7 @@ public class Individual {
   }
 
   /**
-   * overridden tostring
+   * overridden toString
    *
    * @see java.lang.Object#toString()
    */
@@ -247,7 +251,7 @@ public class Individual {
    * Update from binary to values.
    */
   private void updateFromBinary() {
-    final int[] values = Util.convertFromBinaryStringsToIntAr(String.valueOf(chromosome), numOfAttributes, 7);
+    final int[] values = Util.convertFromBinaryStringsToIntAr(String.valueOf(chromosome), numOfAttributes);
     for (int x = 0; x < values.length; x++) {
       attributes[x].setValue(values[x]);
     }
@@ -256,9 +260,8 @@ public class Individual {
   /**
    * Update from values to binary.
    */
-  public void updateToBinary() {
+  private void updateToBinary() {
     chromosome = Util.convertFromIntArrayToBinaryCharAry(attributes);
   }
-
 
 }

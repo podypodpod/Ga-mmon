@@ -35,13 +35,10 @@ public class BoardEvaluator {
 
   private final static Logger logger = LoggerFactory.getLogger(BoardEvaluator.class);
 
-  private Board liveBoard;
   AiPlayer currentPlayer;
-  private int myZero, opponentZero;
 
-  public int getMyZero() {
-    return myZero;
-  }
+  private Board liveBoard;
+  private int opponentZero;
 
   /**
    * hasABlotBeenDoubled
@@ -100,7 +97,7 @@ public class BoardEvaluator {
    * @param newBoard the board we are checking
    * @return true if it has been doubled
    */
-  public boolean hasAPieceBeenMovedSolo(final Board newBoard) {
+  boolean hasAPieceBeenMovedSolo(final Board newBoard) {
     if (liveBoard.getNumOfBlots(currentPlayer.black) < newBoard.getNumOfBlots(currentPlayer.black)) {
       logger.trace("Piece moved solo");
       return true;
@@ -118,7 +115,7 @@ public class BoardEvaluator {
    * @param newBoard the board we are checking
    * @return true if it has been spread
    */
-  public boolean hasAPieceBeenSpread(final Board newBoard) {
+  boolean hasAPieceBeenSpread(final Board newBoard) {
     if (liveBoard.getNumOfHomePointsCovered(currentPlayer.black) < newBoard
         .getNumOfHomePointsCovered(currentPlayer.black)) {
       logger.trace("Piece spread");
@@ -137,7 +134,7 @@ public class BoardEvaluator {
    * @param newBoard the board we are checking
    * @return true if it has been blocked
    */
-  public boolean hasAStackBeenAddedTo(final Board newBoard) {
+  boolean hasAStackBeenAddedTo(final Board newBoard) {
     if (liveBoard.getNumberOfCheckersOnStacks(currentPlayer.black) < newBoard
         .getNumberOfCheckersOnStacks(currentPlayer.black)) {
       logger.trace("Added to stack");
@@ -151,7 +148,7 @@ public class BoardEvaluator {
    * hasTheOpponentBeenBlocked
    *
    * checks to see if the board passed in has moved a piece to block the
-   * oponent
+   * opponent
    *
    * @param newBoard the board we are checking
    * @return true if it has been blocked
@@ -922,13 +919,6 @@ public class BoardEvaluator {
   }
 
   /**
-   * setMyZero
-   */
-  private void setMyZero(final int myZero) {
-    this.myZero = myZero;
-  }
-
-  /**
    * Sets the player.
    *
    * @param p the new player
@@ -936,10 +926,8 @@ public class BoardEvaluator {
   public void setPlayer(final AiPlayer p) {
     currentPlayer = p;
     if (p.black) {
-      setMyZero(25);
       opponentZero = 0;
     } else {
-      setMyZero(0);
       opponentZero = 25;
     }
   }

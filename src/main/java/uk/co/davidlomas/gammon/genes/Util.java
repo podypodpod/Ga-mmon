@@ -23,30 +23,31 @@ package uk.co.davidlomas.gammon.genes;
  *
  * @author David Lomas
  */
-public class Util {
+class Util {
+
+  private static final int LENGTH_OF_BLOCKS = 7;
+
 
   /**
    * Convert from binary strings to int ar.
    *
    * @param binaryStr the binary str
    * @param numOfBlocks the num of blocks
-   * @param lengthOfBlocks the length of blocks
    * @return the int[]
    */
-  public static int[] convertFromBinaryStringsToIntAr(final String binaryStr, final int numOfBlocks,
-      final int lengthOfBlocks) {
-    final int[] nums = new int[numOfBlocks];
+  static int[] convertFromBinaryStringsToIntAr(final String binaryStr, final int numOfBlocks) {
+    final int[] numbers = new int[numOfBlocks];
 
     int beginIndex = 0;
-    int endIndex = lengthOfBlocks; // blocks = size of binary chars per var
+    int endIndex = LENGTH_OF_BLOCKS; // blocks = size of binary chars per var
 
     // loop the string
     for (int x = 0; x < numOfBlocks; x++) {
-      nums[x] = convertFromBinaryStrToInt(binaryStr.substring(beginIndex, endIndex));
-      beginIndex += lengthOfBlocks;
-      endIndex += lengthOfBlocks;
+      numbers[x] = convertFromBinaryStrToInt(binaryStr.substring(beginIndex, endIndex));
+      beginIndex += LENGTH_OF_BLOCKS;
+      endIndex += LENGTH_OF_BLOCKS;
     }
-    return nums;
+    return numbers;
   }
 
   /**
@@ -55,10 +56,10 @@ public class Util {
    * @param binaryStr the binary str
    * @return the int
    */
-  public static int convertFromBinaryStrToInt(final String binaryStr) {
-    final int x = Integer.parseInt(binaryStr, 2);
-    if (x <= 100) {
-      return x;
+  private static int convertFromBinaryStrToInt(final String binaryStr) {
+    final int number = Integer.parseInt(binaryStr, 2);
+    if (number <= 100) {
+      return number;
     } else {
       return 100;
     }

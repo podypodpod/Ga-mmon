@@ -51,6 +51,8 @@ public class DieTest {
   public void GetDieValueShouldEqualWhatIsSet() {
     d1.setDieValue(4);
     assertEquals(4, d1.getDieValue());
+    d1.setDieValue(100);
+    assertEquals(100, d1.getDieValue());
   }
 
   @Test

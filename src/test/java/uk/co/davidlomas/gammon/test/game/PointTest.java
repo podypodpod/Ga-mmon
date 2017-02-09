@@ -150,7 +150,7 @@ public class PointTest {
   }
 
   @Test
-  public void shouldReturnAValueOfRedCountIfGreaterThanBlac() {
+  public void shouldReturnAValueOfRedCountIfGreaterThanBlack() {
 
     // Given
     testSubject.setBlackCount(0);
@@ -219,18 +219,15 @@ public class PointTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenPassedTwoDifferentPointsDifNums() {
+  public void shouldReturnFalseWhenPassedTwoDifferentPointsWithDifferentNumbers() {
     // Given
     testSubject.setBlackCount(3);
 
     final Point OtherPoint = new Point();
     OtherPoint.setBlackCount(4);
 
-    // When
-    final boolean x = testSubject.equals(OtherPoint);
-
     // Then
-    assertFalse(x);
+    assertFalse(testSubject.equals(OtherPoint));
   }
 
   @Test
@@ -273,8 +270,10 @@ public class PointTest {
   public void shouldTakeOnePieceFromRedCount() {
     // Given
     testSubject.setRedCount(5);
+
     // When
     testSubject.removeRedPiece();
+
     // Then
     assertEquals(4, testSubject.getRedCount());
   }

@@ -26,13 +26,13 @@ import uk.co.davidlomas.gammon.game.GameStats;
 /**
  * FitnessCalculator
  *
- * Allows the calculation of fitness of an indiviudal or population
+ * Allows the calculation of fitness of an individual or population
  *
  * @author David Lomas
  */
-public class FitnessCalculator {
+class FitnessCalculator {
 
-  final static Logger logger = LoggerFactory.getLogger(FitnessCalculator.class);
+  private final static Logger logger = LoggerFactory.getLogger(FitnessCalculator.class);
 
   private static GameManager gameManager;
 
@@ -45,10 +45,10 @@ public class FitnessCalculator {
    *
    * @param pop - population we are measuring
    */
-  public static void calculateFitnessOfPopulation(final Population pop) {
+  static void calculateFitnessOfPopulation(final Population pop) {
 
     Individual testSubject;
-    Individual oponent;
+    Individual opponent;
     double tempFitness;
 
     gameManager = new GameManager();
@@ -74,11 +74,11 @@ public class FitnessCalculator {
           logger.trace("\tagainst player: {}/{}", y + 1, pop.individuals.length);
 
           // Opponent individual
-          oponent = pop.individuals[y];
+          opponent = pop.individuals[y];
 
           // adding the result of the game to the temp fitness, so
           // this will add all the games score together
-          final GameStats gs = gameManager.playIndividualsVsEachOther(testSubject, oponent);
+          final GameStats gs = gameManager.playIndividualsVsEachOther(testSubject, opponent);
 
           tempFitness += gs.getPlayerOneScore();
         }
@@ -100,7 +100,7 @@ public class FitnessCalculator {
    * @param i2 player 2
    * @return the winner
    */
-  public static Individual getWinnerOf(final Individual i1, final Individual i2) {
+  static Individual getWinnerOf(final Individual i1, final Individual i2) {
     gameManager = new GameManager();
     final GameStats gs = gameManager.playIndividualsVsEachOther(i1, i2);
     return gs.getVictor();

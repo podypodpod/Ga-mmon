@@ -73,7 +73,7 @@ public class Population {
     return fittest;
   }
 
-  public Individual getIndividual(final int i) {
+  Individual getIndividual(final int i) {
     return individuals[i];
   }
 
@@ -81,12 +81,12 @@ public class Population {
     return individuals;
   }
 
-  public void saveIndividual(final int index, final Individual indiv) {
-    individuals[index] = indiv;
+  void saveIndividual(final int index, final Individual individual) {
+    individuals[index] = individual;
   }
 
-  public void setIndividuals(final Individual[] indivs) {
-    individuals = indivs;
+  public void setIndividuals(final Individual[] individual) {
+    individuals = individual;
   }
 
   public int size() {

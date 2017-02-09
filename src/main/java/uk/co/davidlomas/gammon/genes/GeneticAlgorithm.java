@@ -43,26 +43,26 @@ public class GeneticAlgorithm {
    * Randomly takes one side or the others attributes according to the uniform
    * rate
    *
-   * @param indiv1 the indiv1
-   * @param indiv2 the indiv2
-   * @return the individual
+   * @param individual1 the individual1
+   * @param individual2 the individual2
+   * @return the individual1
    */
-  private static Individual crossoverInidividuals(final Individual indiv1, final Individual indiv2) {
+  private static Individual crossoverIndividuals(final Individual individual1, final Individual individual2) {
 
     logger.trace("Crossing individuals");
 
     // new Individual
-    final Individual newIndiv = new Individual();
+    final Individual newIndividual = new Individual();
 
     // loop the individuals attributes
-    for (int x = 0; x < indiv1.getNumOfAttributes(); x++) {
+    for (int x = 0; x < individual1.getNumOfAttributes(); x++) {
       if (Math.random() <= GenAlgSettings.getUniformRate()) {
-        newIndiv.setAttribute(x, indiv1.getAttribute(x));
+        newIndividual.setAttribute(x, individual1.getAttribute(x));
       } else {
-        newIndiv.setAttribute(x, indiv2.getAttribute(x));
+        newIndividual.setAttribute(x, individual2.getAttribute(x));
       }
     }
-    return newIndiv;
+    return newIndividual;
   }
 
   /**
@@ -112,12 +112,12 @@ public class GeneticAlgorithm {
     // tournament selection (should provide some of the best players)
     for (int i = elitismOffset; i < currentPopulation.size(); i++) {
 
-      final Individual indiv1 = tournamentSelection(currentPopulation);
-      final Individual indiv2 = tournamentSelection(currentPopulation);
+      final Individual individual1 = tournamentSelection(currentPopulation);
+      final Individual individual2 = tournamentSelection(currentPopulation);
 
-      final Individual newIndiv = crossoverInidividuals(indiv1, indiv2);
+      final Individual newIndividual = crossoverIndividuals(individual1, individual2);
 
-      newPopulation.saveIndividual(i, newIndiv);
+      newPopulation.saveIndividual(i, newIndividual);
     }
 
     logger.info("Crossover finished");
@@ -139,22 +139,22 @@ public class GeneticAlgorithm {
    * gets a random number, if its less or equal to the mutation rate then
    * switch the bit
    *
-   * @param indiv the individual
+   * @param individual the individual
    */
-  public static void mutate(final Individual indiv) {
+  public static void mutate(final Individual individual) {
 
     // get the individuals string
-    final char[] indivStr = indiv.getChromosome();
+    final char[] individualString = individual.getChromosome();
 
     // loop through all bits
-    for (int x = 0; x < indivStr.length; x++) {
+    for (int x = 0; x < individualString.length; x++) {
       // random chance
       if (Math.random() <= GenAlgSettings.getMutationRate()) {
         // swap the bit over
-        if (indivStr[x] == '0') {
-          indivStr[x] = '1';
+        if (individualString[x] == '0') {
+          individualString[x] = '1';
         } else {
-          indivStr[x] = '0';
+          individualString[x] = '0';
         }
       }
     }
@@ -182,7 +182,7 @@ public class GeneticAlgorithm {
           GenAlgSettings.getTournamentSize(), GenAlgSettings.getPopulationSize());
     }
 
-    // Get the fitest via battling against each other
+    // Get the fittest via battling against each other
     Individual tournamentVictor = null;
 
     // until there is a winner
@@ -191,7 +191,7 @@ public class GeneticAlgorithm {
       // create a population for the winner of the round
       final Individual[] winnersOfRound = new Individual[tournament.size() / 2];
 
-      Individual winnerOfRound = null;
+      Individual winnerOfRound;
       // test the individuals
       int counter = 0;
       for (int i = 0; i < tournament.size(); i += 2) {

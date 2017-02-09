@@ -1,8 +1,7 @@
-.gradle
-
-/build/
-
 /logs/
-
 /.idea/
-/savedPlayers/test/
+/conf/GameSettings.properties
+/conf/GenAlgSettings.properties
+/savedPlayers/
+/build/
+/.gradle/
