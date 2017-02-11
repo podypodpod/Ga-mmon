@@ -18,16 +18,18 @@
 
 package uk.co.davidlomas.gammon.game;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.gui.BoardContainerFrame;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 
 /**
  * GameManager
- *
+ * <p>
  * Allows the starting of games and returns the results of games without having
  * to deal with all the actual methods etc in the game class
- *
+ * <p>
  * this class will be called when testing players etc, you can just make an
  * object and then pass it two individuals to the method to play a game and
  * return results.
@@ -36,44 +38,49 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
  */
 public class GameManager {
 
-  static BoardContainerFrame boardContainerFrame;
+    private final static Logger logger = LoggerFactory.getLogger(GameManager.class);
 
-  /**
-   * play Individuals Vs Each Other
-   *
-   * @param individual1 individual 1
-   * @param individual2 individual 2
-   * @return GameStats result of game (winner, values)
-   */
-  public GameStats playIndividualsVsEachOther(final Individual individual1,
-      final Individual individual2) {
+    static BoardContainerFrame boardContainerFrame;
 
-    if (GameSettings.getDisplayGUI()) {
-      startGui();
+    /**
+     * play Individuals Vs Each Other
+     *
+     * @param individual1 individual 1
+     * @param individual2 individual 2
+     * @return GameStats result of game (winner, values)
+     */
+    public GameStats playIndividualsVsEachOther(final Individual individual1,
+                                                final Individual individual2) {
+
+        if (GameSettings.getDisplayGUI()) {
+            startGui();
+        }
+
+        // The Game Thread
+        final Game currentGame = new Game(individual1, individual2);
+        currentGame.run();
+        return currentGame.getGameStats();
     }
 
-    // The Game Thread
-    final Game currentGame = new Game(individual1, individual2);
-    currentGame.run();
-    return currentGame.getGameStats();
-  }
 
-  /**
-   * start the Gui
-   */
-  private void startGui() {
-    // The Gui Thread
-    boardContainerFrame = new BoardContainerFrame();
-    final Thread guiThread = new Thread(boardContainerFrame);
-    guiThread.start();
+    /**
+     * st
+     * <p>
+     * art the Gui
+     */
+    private void startGui() {
+        // The Gui Thread
+        boardContainerFrame = new BoardContainerFrame();
+        final Thread guiThread = new Thread(boardContainerFrame);
+        guiThread.start();
 
-    // Stops it multi-threading,
-    try {
-      if (!GameSettings.getMultiThreading()) {
-        guiThread.join();
-      }
-    } catch (final InterruptedException e) {
-      e.printStackTrace();
+        // Stops it multi-threading,
+        try {
+            if (!GameSettings.getMultiThreading()) {
+                guiThread.join();
+            }
+        } catch (final InterruptedException e) {
+            logger.error("Interrupted during thread join", e);
+        }
     }
-  }
 }
