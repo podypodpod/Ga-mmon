@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
-import uk.co.davidlomas.gammon.test.helpers.Settings;
+import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import static org.junit.Assert.*;
 
@@ -28,12 +28,12 @@ public class GenAlgSettingsTest {
 
     @BeforeClass
     public static void beforeClass() {
-        Settings.resetSettings();
+        SettingsUtil.resetSettings();
     }
 
     @AfterClass
     public static void afterClass() {
-        Settings.resetSettings();
+        SettingsUtil.resetSettings();
     }
 
     @Test

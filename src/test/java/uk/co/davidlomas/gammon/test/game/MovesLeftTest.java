@@ -18,91 +18,89 @@
 
 package uk.co.davidlomas.gammon.test.game;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import uk.co.davidlomas.gammon.game.MovesList;
-import uk.co.davidlomas.gammon.test.helpers.Settings;
+import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
+
+import static org.junit.Assert.*;
 
 public class MovesLeftTest {
 
-  private MovesList testSubject;
+    private MovesList testSubject;
 
-  @BeforeClass
-  public static void beforeClass() {
-    Settings.resetSettings();
-  }
+    @BeforeClass
+    public static void beforeClass() {
+        SettingsUtil.resetSettings();
+    }
 
-  @AfterClass
-  public static void afterClass() {
-    Settings.resetSettings();
-  }
+    @AfterClass
+    public static void afterClass() {
+        SettingsUtil.resetSettings();
+    }
 
-  @Before
-  public void setUp() throws Exception {
-    testSubject = new MovesList();
-  }
+    @Before
+    public void setUp() throws Exception {
+        testSubject = new MovesList();
+    }
 
-  @Test
-  public void callingCloneConstructorOnMovesLeftShouldReturnABoardWithTheSameContents() {
-    // Given
-    testSubject.add(4);
-    testSubject.add(9);
-    testSubject.add(3);
+    @Test
+    public void callingCloneConstructorOnMovesLeftShouldReturnABoardWithTheSameContents() {
+        // Given
+        testSubject.add(4);
+        testSubject.add(9);
+        testSubject.add(3);
 
-    final MovesList clonedMovesLeft;
+        final MovesList clonedMovesLeft;
 
-    // When
-    clonedMovesLeft = new MovesList(testSubject);
+        // When
+        clonedMovesLeft = new MovesList(testSubject);
 
-    // Then
-    assertEquals(4, clonedMovesLeft.getNext());
-    assertTrue(clonedMovesLeft.moves.contains(4));
-    assertTrue(clonedMovesLeft.moves.contains(9));
-    assertTrue(clonedMovesLeft.moves.contains(3));
-  }
+        // Then
+        assertEquals(4, clonedMovesLeft.getNext());
+        assertTrue(clonedMovesLeft.moves.contains(4));
+        assertTrue(clonedMovesLeft.moves.contains(9));
+        assertTrue(clonedMovesLeft.moves.contains(3));
+    }
 
-  @Test
-  public void addingANumberToTheMovesLeftShouldStoreIt() {
+    @Test
+    public void addingANumberToTheMovesLeftShouldStoreIt() {
 
-    // When
-    testSubject.add(5);
+        // When
+        testSubject.add(5);
 
-    // Then
-    assertEquals(5, testSubject.getNext());
-    assertTrue(testSubject.contains(5));
-  }
+        // Then
+        assertEquals(5, testSubject.getNext());
+        assertTrue(testSubject.contains(5));
+    }
 
-  @Test
-  public void removingMoveFromArrayAndThenCallingContainsShouldReturnFalse() {
-    // Given
-    testSubject.add(4);
-    testSubject.add(9);
+    @Test
+    public void removingMoveFromArrayAndThenCallingContainsShouldReturnFalse() {
+        // Given
+        testSubject.add(4);
+        testSubject.add(9);
 
-    // When
-    testSubject.remove(4);
+        // When
+        testSubject.remove(4);
 
-    // Then
-    assertEquals(9, testSubject.getNext());
-    assertFalse(testSubject.contains(4));
-  }
+        // Then
+        assertEquals(9, testSubject.getNext());
+        assertFalse(testSubject.contains(4));
+    }
 
-  @Test
-  public void adding3ElementsToArrayAndCallingSizeShouldReturn3() {
-    // Given
-    testSubject.add(4);
-    testSubject.add(9);
-    testSubject.add(3);
+    @Test
+    public void adding3ElementsToArrayAndCallingSizeShouldReturn3() {
+        // Given
+        testSubject.add(4);
+        testSubject.add(9);
+        testSubject.add(3);
 
-    // When
-    final int size = testSubject.size();
+        // When
+        final int size = testSubject.size();
 
-    // Then
-    assertEquals(3, size);
-  }
+        // Then
+        assertEquals(3, size);
+    }
 }

@@ -64,9 +64,7 @@ public class GameManager {
 
 
     /**
-     * st
-     * <p>
-     * art the Gui
+     * start the Gui
      */
     private void startGui() {
         // The Gui Thread

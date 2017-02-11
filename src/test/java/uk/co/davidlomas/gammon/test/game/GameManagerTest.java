@@ -7,8 +7,10 @@ import org.junit.Test;
 import uk.co.davidlomas.gammon.game.GameManager;
 import uk.co.davidlomas.gammon.game.GameStats;
 import uk.co.davidlomas.gammon.genes.Individual;
-import uk.co.davidlomas.gammon.test.helpers.Settings;
+import uk.co.davidlomas.gammon.settings.GameSettings;
+import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
+import static java.lang.Thread.activeCount;
 import static org.junit.Assert.assertTrue;
 
 public class GameManagerTest {
@@ -19,13 +21,12 @@ public class GameManagerTest {
 
     @BeforeClass
     public static void beforeClass() {
-        Settings.resetSettings();
+        SettingsUtil.resetSettings();
     }
 
     @AfterClass
     public static void afterClass() {
-        Settings.resetSettings();
-
+        SettingsUtil.resetSettings();
     }
 
 
@@ -87,7 +88,19 @@ public class GameManagerTest {
         final double player2Score = gameStats.getPlayerTwoScore();
 
         assertTrue("Scores are equal, who wins?", player1Score != player2Score);
+    }
 
+    /**
+     * Normally 2 threads,
+     * gui is 3rd thread
+     * <p>
+     * checking there is 3 threads when using a gui
+     */
+    @Test
+    public void testingThatPlayingIndividualsAgainstEachOtherWithGuiSettingOnCreatesaThirdGuiThread() {
+        GameSettings.setDisplayGUICache(true);
+        new GameManager().playIndividualsVsEachOther(individual1, individual2);
+        assertTrue(activeCount() > 2);
     }
 
 }

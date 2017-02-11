@@ -8,7 +8,7 @@ import uk.co.davidlomas.gammon.game.GameManager;
 import uk.co.davidlomas.gammon.game.GameStats;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.genes.IndividualAttribute;
-import uk.co.davidlomas.gammon.test.helpers.Settings;
+import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import static org.junit.Assert.assertTrue;
 
@@ -16,12 +16,12 @@ public class GameTest {
 
     @BeforeClass
     public static void beforeClass() {
-        Settings.resetSettings();
+        SettingsUtil.resetSettings();
     }
 
     @AfterClass
     public static void afterClass() {
-        Settings.resetSettings();
+        SettingsUtil.resetSettings();
     }
 
     private Individual individual1;

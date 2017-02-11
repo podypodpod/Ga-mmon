@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import uk.co.davidlomas.gammon.genes.Individual;
-import uk.co.davidlomas.gammon.test.helpers.Settings;
+import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,12 +23,12 @@ public class IndividualTest {
 
     @BeforeClass
     public static void beforeClass() {
-        Settings.resetSettings();
+        SettingsUtil.resetSettings();
     }
 
     @AfterClass
     public static void afterClass() throws IOException {
-        Settings.resetSettings();
+        SettingsUtil.resetSettings();
         final File directory = new File("savedPlayers/Attempt - 9999");
         FileUtils.deleteDirectory(directory);
     }

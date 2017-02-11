@@ -18,49 +18,49 @@
 
 package uk.co.davidlomas.gammon.test.game;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import uk.co.davidlomas.gammon.game.Die;
-import uk.co.davidlomas.gammon.test.helpers.Settings;
+import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DieTest {
 
-  @BeforeClass
-  public static void beforeClass() {
-    Settings.resetSettings();
-  }
-
-  @AfterClass
-  public static void afterClass() {
-    Settings.resetSettings();
-  }
-
-  private Die d1;
-
-  @Before
-  public void setUp() throws Exception {
-    d1 = new Die();
-  }
-
-  @Test
-  public void GetDieValueShouldEqualWhatIsSet() {
-    d1.setDieValue(4);
-    assertEquals(4, d1.getDieValue());
-    d1.setDieValue(100);
-    assertEquals(100, d1.getDieValue());
-  }
-
-  @Test
-  public void RollingShouldProduceAnIntBetween1And6() {
-    int roll;
-    for (int x = 0; x > 10; x++) {
-      roll = d1.RollDie();
-      assertTrue(roll >= 1 && roll <= 6);
+    @BeforeClass
+    public static void beforeClass() {
+        SettingsUtil.resetSettings();
     }
-  }
+
+    @AfterClass
+    public static void afterClass() {
+        SettingsUtil.resetSettings();
+    }
+
+    private Die d1;
+
+    @Before
+    public void setUp() throws Exception {
+        d1 = new Die();
+    }
+
+    @Test
+    public void GetDieValueShouldEqualWhatIsSet() {
+        d1.setDieValue(4);
+        assertEquals(4, d1.getDieValue());
+        d1.setDieValue(100);
+        assertEquals(100, d1.getDieValue());
+    }
+
+    @Test
+    public void RollingShouldProduceAnIntBetween1And6() {
+        int roll;
+        for (int x = 0; x > 10; x++) {
+            roll = d1.RollDie();
+            assertTrue(roll >= 1 && roll <= 6);
+        }
+    }
 }
