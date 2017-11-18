@@ -1,7 +1,9 @@
 apply plugin: 'java'
-apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'checkstyle'
 
 version = '1.0'
+sourceCompatibility = 1.8
 
 jar {
     manifest {
@@ -11,14 +13,20 @@ jar {
 }
 
 dependencies {
+
+    // MAIN
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.+'
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.21'
     compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
 
-    //TEST
+    // TEST
     testCompile group: 'junit', name: 'junit', version: '4.+'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.8.0'
+    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
 
 }
+
 
 repositories {
     mavenCentral()

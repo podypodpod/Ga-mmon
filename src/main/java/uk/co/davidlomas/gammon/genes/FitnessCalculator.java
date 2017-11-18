@@ -25,84 +25,85 @@ import uk.co.davidlomas.gammon.game.GameStats;
 
 /**
  * FitnessCalculator
- *
+ * <p>
  * Allows the calculation of fitness of an individual or population
  *
  * @author David Lomas
  */
 class FitnessCalculator {
 
-  private final static Logger logger = LoggerFactory.getLogger(FitnessCalculator.class);
+	private final static Logger logger = LoggerFactory.getLogger(FitnessCalculator.class);
 
-  private static GameManager gameManager;
+	private static GameManager gameManager;
 
-  /**
-   * calculateFitnessOfPopulation
-   *
-   * calculates the fitness of every individual in the population.
-   *
-   * requires playing a large number of games ((population-1)^2)
-   *
-   * @param pop - population we are measuring
-   */
-  static void calculateFitnessOfPopulation(final Population pop) {
+	/**
+	 * calculateFitnessOfPopulation
+	 * <p>
+	 * calculates the fitness of every individual in the population.
+	 * <p>
+	 * requires playing a large number of games ((population-1)^2)
+	 *
+	 * @param pop - population we are measuring
+	 */
+	static void calculateFitnessOfPopulation(final Population pop) {
 
-    Individual testSubject;
-    Individual opponent;
-    double tempFitness;
+		Individual testSubject;
+		Individual opponent;
+		double tempFitness;
 
-    gameManager = new GameManager();
+		gameManager = new GameManager();
 
-    logger.trace("Round robin started");
+		logger.trace("Round robin started");
 
-    // looping the whole population, x is the one we are measuring
-    for (int playerCount = 0; playerCount < pop.individuals.length; playerCount++) {
+		// looping the whole population, x is the one we are measuring
+		for (int playerCount = 0; playerCount < pop.individuals.length; playerCount++) {
 
-      logger.trace("Testing Player: {} ", playerCount);
+			logger.trace("Testing Player: {} ", playerCount);
 
-      // the one we are generating the fitness of
-      testSubject = pop.individuals[playerCount];
+			// the one we are generating the fitness of
+			testSubject = pop.individuals[playerCount];
 
-      // will be added to over the course of the games
-      tempFitness = 0;
+			// will be added to over the course of the games
+			tempFitness = 0;
 
-      // looping the whole population, y is the one currently playing
-      // against x
-      for (int y = 0; y < pop.individuals.length; y++) {
-        // make sure its not playing itself
-        if (y != playerCount) {
-          logger.trace("\tagainst player: {}/{}", y + 1, pop.individuals.length);
+			// looping the whole population, y is the one currently playing
+			// against x
+			for (int y = 0; y < pop.individuals.length; y++) {
+				// make sure its not playing itself
+				if (y != playerCount) {
+					logger.trace("\tagainst player: {}/{}", y + 1, pop.individuals.length);
 
-          // Opponent individual
-          opponent = pop.individuals[y];
+					// Opponent individual
+					opponent = pop.individuals[y];
 
-          // adding the result of the game to the temp fitness, so
-          // this will add all the games score together
-          final GameStats gs = gameManager.playIndividualsVsEachOther(testSubject, opponent);
+					// adding the result of the game to the temp fitness, so
+					// this will add all the games score together
+					final GameStats gs = gameManager.playIndividualsVsEachOther(testSubject, opponent);
 
-          tempFitness += gs.getPlayerOneScore();
-        }
-      }
-      if (tempFitness != 0) {
-        // divides by the number of games and therefore gets an average
-        tempFitness = tempFitness / (pop.size() - 1);
-      }
-      testSubject.setFitness(tempFitness);
-    }
-  }
+					tempFitness += gs.getPlayerOneScore();
+				}
+			}
+			if (tempFitness != 0) {
+				// divides by the number of games and therefore gets an average
+				tempFitness = tempFitness / (pop.size() - 1);
+			}
+			testSubject.setFitness(tempFitness);
+		}
+	}
 
-  /**
-   * getWinnerOf
-   *
-   * Makes the 2 players play against each other and returns the winner
-   *
-   * @param i1 player 1
-   * @param i2 player 2
-   * @return the winner
-   */
-  static Individual getWinnerOf(final Individual i1, final Individual i2) {
-    gameManager = new GameManager();
-    final GameStats gs = gameManager.playIndividualsVsEachOther(i1, i2);
-    return gs.getVictor();
-  }
+	/**
+	 * getWinnerOf
+	 * <p>
+	 * Makes the 2 players play against each other and returns the winner
+	 *
+	 * @param i1 player 1
+	 * @param i2 player 2
+	 *
+	 * @return the winner
+	 */
+	static Individual getWinnerOf(final Individual i1, final Individual i2) {
+		gameManager = new GameManager();
+		final GameStats gs = gameManager.playIndividualsVsEachOther(i1, i2);
+		return gs.getVictor();
+	}
 }

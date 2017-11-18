@@ -20,81 +20,81 @@ package uk.co.davidlomas.gammon.genes;
 
 /**
  * The Class Population.
- *
+ * <p>
  * collection of individuals for the genetic algorithm to evolve
  *
  * @author David Lomas
  */
 public class Population {
 
-  public Individual[] individuals;
+	public Individual[] individuals;
 
-  /**
-   * Instantiates a new population.
-   *
-   * @param populationSize the population size
-   * @param initialise the initialise
-   */
-  public Population(final int populationSize, final boolean initialise) {
-    individuals = new Individual[populationSize];
+	/**
+	 * Instantiates a new population.
+	 *
+	 * @param populationSize the population size
+	 * @param initialise     the initialise
+	 */
+	public Population(final int populationSize, final boolean initialise) {
+		individuals = new Individual[populationSize];
 
-    if (initialise) {
-      for (int x = 0; x < populationSize; x++) {
-        final Individual newIndividual = new Individual();
+		if (initialise) {
+			for (int x = 0; x < populationSize; x++) {
+				final Individual newIndividual = new Individual();
 
-        individuals[x] = newIndividual;
-      }
-    }
-  }
+				individuals[x] = newIndividual;
+			}
+		}
+	}
 
-  /**
-   * calculates fitness of whole population
-   *
-   * Uses round robin to play all against each other
-   */
-  public void calculateFitness() {
-    FitnessCalculator.calculateFitnessOfPopulation(this);
-  }
+	/**
+	 * calculates fitness of whole population
+	 * <p>
+	 * Uses round robin to play all against each other
+	 */
+	public void calculateFitness() {
+		FitnessCalculator.calculateFitnessOfPopulation(this);
+	}
 
-  /**
-   * Gets the fittest.
-   *
-   * @return the fittest
-   */
-  public Individual getFittest() {
+	/**
+	 * Gets the fittest.
+	 *
+	 * @return the fittest
+	 */
+	public Individual getFittest() {
 
-    Individual fittest = individuals[0];
+		Individual fittest = individuals[0];
 
-    for (int x = 1; x < individuals.length; x++) {
-      if (fittest.getFitness() <= individuals[x].getFitness()) {
-        fittest = individuals[x];
-      }
-    }
-    return fittest;
-  }
+		for (int x = 1; x < individuals.length; x++) {
+			if (fittest.getFitness() <= individuals[x].getFitness()) {
+				fittest = individuals[x];
+			}
+		}
+		return fittest;
+	}
 
-  Individual getIndividual(final int i) {
-    return individuals[i];
-  }
+	Individual getIndividual(final int i) {
+		return individuals[i];
+	}
 
-  public Individual[] getPopulation() {
-    return individuals;
-  }
+	public Individual[] getPopulation() {
+		return individuals;
+	}
 
-  void saveIndividual(final int index, final Individual individual) {
-    individuals[index] = individual;
-  }
+	void saveIndividual(final int index, final Individual individual) {
+		individuals[index] = individual;
+	}
 
-  public void setIndividuals(final Individual[] individual) {
-    individuals = individual;
-  }
+	public void setIndividuals(final Individual[] individual) {
+		individuals = individual;
+	}
 
-  public int size() {
-    return individuals.length;
-  }
+	public int size() {
+		return individuals.length;
+	}
 
-  @Override
-  public String toString() {
-    return "Population of size: " + size();
-  }
+	@Override
+	public String toString() {
+		return "Population of size: " + size();
+	}
 }

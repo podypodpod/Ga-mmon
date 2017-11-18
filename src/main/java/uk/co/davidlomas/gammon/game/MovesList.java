@@ -23,93 +23,93 @@ import java.util.List;
 
 /**
  * The Class MovesLeft.
- *
+ * <p>
  * used for loops checking which moves the player has left to use
  *
  * @author David Lomas
  */
 public class MovesList {
 
-  public final List<Integer> moves;
+	public final List<Integer> moves;
 
-  public MovesList() {
-    moves = new ArrayList<>();
-  }
+	public MovesList() {
+		moves = new ArrayList<>();
+	}
 
-  /**
-   * Clone constructor
-   *
-   * Instantiates a new moves left.
-   */
-  public MovesList(final MovesList movesListCopy) {
-    moves = new ArrayList<>();
-    for (final int move : movesListCopy.moves) {
-      moves.add(move);
-    }
-  }
+	/**
+	 * Clone constructor
+	 * <p>
+	 * Instantiates a new moves left.
+	 */
+	public MovesList(final MovesList movesListCopy) {
+		moves = new ArrayList<>();
+		for (final int move : movesListCopy.moves) {
+			moves.add(move);
+		}
+	}
 
-  /**
-   * Add adds the param passed in to the list
-   */
-  public void add(final int value) {
-    moves.add(value);
-  }
+	/**
+	 * Add adds the param passed in to the list
+	 */
+	public void add(final int value) {
+		moves.add(value);
+	}
 
-  public void clear() {
-    moves.clear();
-  }
+	public void clear() {
+		moves.clear();
+	}
 
-  public boolean contains(final int move) {
-    return moves.contains(move);
-  }
+	public boolean contains(final int move) {
+		return moves.contains(move);
+	}
 
-  /**
-   * Gets the next.
-   *
-   * @return the next
-   */
-  public int getNext() {
-    return moves.get(0);
-  }
+	/**
+	 * Gets the next.
+	 *
+	 * @return the next
+	 */
+	public int getNext() {
+		return moves.get(0);
+	}
 
-  /**
-   * Remove removes the value passed in
-   */
-  public void remove(final int value) {
-    moves.remove(Integer.valueOf(value));
-  }
+	/**
+	 * Remove removes the value passed in
+	 */
+	public void remove(final int value) {
+		moves.remove(Integer.valueOf(value));
+	}
 
-  /**
-   * setTo
-   *
-   * Sets the list to the same as the one passed in
-   */
-  public void setTo(final List<Integer> diceRolls) {
-    clear();
-    for (final int roll : diceRolls) {
-      add(roll);
-    }
-  }
+	/**
+	 * setTo
+	 * <p>
+	 * Sets the list to the same as the one passed in
+	 */
+	public void setTo(final List<Integer> diceRolls) {
+		clear();
+		for (final int roll : diceRolls) {
+			add(roll);
+		}
+	}
 
-  /**
-   * Size.
-   *
-   * @return the size of list
-   */
-  public int size() {
-    return moves.size();
-  }
+	/**
+	 * Size.
+	 *
+	 * @return the size of list
+	 */
+	public int size() {
+		return moves.size();
+	}
 
-  /**
-   * toString method
-   */
-  @Override
-  public String toString() {
-    String str = size() + " moves Left, with Rolls: ";
+	/**
+	 * toString method
+	 */
+	@Override
+	public String toString() {
+		String str = size() + " moves Left, with Rolls: ";
 
-    for (int x = 0; x < size(); x++) {
-      str += moves.get(x) + ", ";
-    }
-    return str;
-  }
+		for (int x = 0; x < size(); x++) {
+			str += moves.get(x) + ", ";
+		}
+		return str;
+	}
 }

@@ -24,7 +24,7 @@ import uk.co.davidlomas.gammon.genes.Individual;
 
 /**
  * The Class AIPlayer.
- *
+ * <p>
  * extends the Player class and implements methods to allow the AI to choose the
  * next move
  *
@@ -32,48 +32,48 @@ import uk.co.davidlomas.gammon.genes.Individual;
  */
 public class AiPlayer extends Player {
 
-  private final static Logger logger = LoggerFactory.getLogger(AiPlayer.class);
-  private final MoveGenerator moveGenerator;
-  private Individual individual;
+	private final static Logger logger = LoggerFactory.getLogger(AiPlayer.class);
+	private final MoveGenerator moveGenerator;
+	private Individual individual;
 
-  /**
-   * Clone constructor
-   *
-   * @param playerToClone the player
-   */
-  public AiPlayer(final AiPlayer playerToClone) {
-    super(playerToClone.black);
-    movesLeft = new MovesList(playerToClone.movesLeft);
-    black = playerToClone.black;
-    turnOver = playerToClone.turnOver;
-    moveGenerator = playerToClone.moveGenerator;
-  }
+	/**
+	 * Clone constructor
+	 *
+	 * @param playerToClone the player
+	 */
+	AiPlayer(final AiPlayer playerToClone) {
+		super(playerToClone.black);
+		movesLeft = new MovesList(playerToClone.movesLeft);
+		black = playerToClone.black;
+		turnOver = playerToClone.turnOver;
+		moveGenerator = playerToClone.moveGenerator;
+	}
 
-  public AiPlayer(final boolean black, final Individual individual) {
-    super(black);
-    this.individual = individual;
-    moveGenerator = new MoveGenerator(individual);
-  }
+	public AiPlayer(final boolean black, final Individual individual) {
+		super(black);
+		this.individual = individual;
+		moveGenerator = new MoveGenerator(individual);
+	}
 
-  Board AiTurn(final Board currentBoard) {
+	Board AiTurn(final Board currentBoard) {
 
-    logger.trace("------------AI's Turn!-----------------");
+		logger.trace("------------{} player's turn!-----------------", getColourString());
 
-    movesLeft = new MovesList();
-    movesLeft.setTo(dice.RollTwoDice());
+		movesLeft = new MovesList();
+		movesLeft.setTo(dice.RollTwoDice());
 
-    logger.trace("Player has {}", movesLeft.toString());
+		logger.trace("Player has {}", movesLeft.toString());
 
-    Board newBoard = moveGenerator.getNextMoveBoard(currentBoard, this);
+		Board newBoard = moveGenerator.getNextMoveBoard(currentBoard, this);
 
-    // if the board has not changed
-    if (newBoard == null) {
-      newBoard = currentBoard;
-    }
-    return newBoard;
-  }
+		// if the board has not changed
+		if (newBoard == null) {
+			newBoard = currentBoard;
+		}
+		return newBoard;
+	}
 
-  public Individual getIndividual() {
-    return individual;
-  }
+	public Individual getIndividual() {
+		return individual;
+	}
 }

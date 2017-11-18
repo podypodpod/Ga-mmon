@@ -38,47 +38,48 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
  */
 public class GameManager {
 
-    private final static Logger logger = LoggerFactory.getLogger(GameManager.class);
+	private final static Logger logger = LoggerFactory.getLogger(GameManager.class);
 
-    static BoardContainerFrame boardContainerFrame;
+	static BoardContainerFrame boardContainerFrame;
 
-    /**
-     * play Individuals Vs Each Other
-     *
-     * @param individual1 individual 1
-     * @param individual2 individual 2
-     * @return GameStats result of game (winner, values)
-     */
-    public GameStats playIndividualsVsEachOther(final Individual individual1,
-                                                final Individual individual2) {
+	/**
+	 * play Individuals Vs Each Other
+	 *
+	 * @param individual1 individual 1
+	 * @param individual2 individual 2
+	 *
+	 * @return GameStats result of game (winner, values)
+	 */
+	public GameStats playIndividualsVsEachOther(final Individual individual1,
+												final Individual individual2) {
 
-        if (GameSettings.getDisplayGUI()) {
-            startGui();
-        }
+		if (GameSettings.getDisplayGUI()) {
+			startGui();
+		}
 
-        // The Game Thread
-        final Game currentGame = new Game(individual1, individual2);
-        currentGame.run();
-        return currentGame.getGameStats();
-    }
+		// The Game Thread
+		final Game currentGame = new Game(individual1, individual2);
+		currentGame.run();
+		return currentGame.getGameStats();
+	}
 
 
-    /**
-     * start the Gui
-     */
-    private void startGui() {
-        // The Gui Thread
-        boardContainerFrame = new BoardContainerFrame();
-        final Thread guiThread = new Thread(boardContainerFrame);
-        guiThread.start();
+	/**
+	 * start the Gui
+	 */
+	private void startGui() {
+		// The Gui Thread
+		boardContainerFrame = new BoardContainerFrame();
+		final Thread guiThread = new Thread(boardContainerFrame);
+		guiThread.start();
 
-        // Stops it multi-threading,
-        try {
-            if (!GameSettings.getMultiThreading()) {
-                guiThread.join();
-            }
-        } catch (final InterruptedException e) {
-            logger.error("Interrupted during thread join", e);
-        }
-    }
+		// Stops it multi-threading,
+		try {
+			if (!GameSettings.getMultiThreading()) {
+				guiThread.join();
+			}
+		} catch (final InterruptedException e) {
+			logger.error("Interrupted during thread join", e);
+		}
+	}
 }

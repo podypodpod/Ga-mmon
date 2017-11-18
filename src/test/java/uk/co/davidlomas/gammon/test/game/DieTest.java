@@ -30,37 +30,37 @@ import static org.junit.Assert.assertTrue;
 
 public class DieTest {
 
-    @BeforeClass
-    public static void beforeClass() {
-        SettingsUtil.resetSettings();
-    }
+	@BeforeClass
+	public static void beforeClass() {
+		SettingsUtil.resetSettings();
+	}
 
-    @AfterClass
-    public static void afterClass() {
-        SettingsUtil.resetSettings();
-    }
+	@AfterClass
+	public static void afterClass() {
+		SettingsUtil.resetSettings();
+	}
 
-    private Die d1;
+	private Die die1;
 
-    @Before
-    public void setUp() throws Exception {
-        d1 = new Die();
-    }
+	@Before
+	public void setUp() throws Exception {
+		die1 = new Die();
+	}
 
-    @Test
-    public void GetDieValueShouldEqualWhatIsSet() {
-        d1.setDieValue(4);
-        assertEquals(4, d1.getDieValue());
-        d1.setDieValue(100);
-        assertEquals(100, d1.getDieValue());
-    }
+	@Test
+	public void GetDieValueShouldEqualWhatIsSet() {
+		die1.setValue(4);
+		assertEquals(4, die1.getValue());
+		die1.setValue(100);
+		assertEquals(100, die1.getValue());
+	}
 
-    @Test
-    public void RollingShouldProduceAnIntBetween1And6() {
-        int roll;
-        for (int x = 0; x > 10; x++) {
-            roll = d1.RollDie();
-            assertTrue(roll >= 1 && roll <= 6);
-        }
-    }
+	@Test
+	public void RollingShouldProduceAnIntBetween1And6() {
+		int roll;
+		for (int x = 0; x < 10; x++) {
+			roll = die1.RollDie();
+			assertTrue(roll >= 1 && roll <= 6);
+		}
+	}
 }

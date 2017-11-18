@@ -19,48 +19,48 @@ package uk.co.davidlomas.gammon.genes;
 
 /**
  * IndividualAttribute
- *
+ * <p>
  * attribute for the individual, each will have a number of these e.g. bear a
  * piece
- *
+ * <p>
  * Controls the particular chance of doing a certain strategy
  *
  * @author David Lomas
  */
 public class IndividualAttribute {
 
-  private String name = "";
-  private int value = 0;
+	private String name = "";
+	private int value = 0;
 
-  public IndividualAttribute(final String name) {
-    this.name = name;
-    value = (int) (Math.random() * 100);
-  }
+	public IndividualAttribute(final String name) {
+		this.name = name;
+		value = (int) (Math.random() * 100);
+	}
 
-  @SuppressWarnings("SameParameterValue")
-  public IndividualAttribute(final String name, final int value) {
-    this.name = name;
-    this.value = value;
-  }
+	@SuppressWarnings("SameParameterValue")
+	public IndividualAttribute(final String name, final int value) {
+		this.name = name;
+		this.value = value;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public int getValue() {
-    return value;
-  }
+	public int getValue() {
+		return value;
+	}
 
-  public void setName(final String name) {
-    this.name = name;
-  }
+	public void setName(final String name) {
+		this.name = name;
+	}
 
-  public void setValue(final int value) {
-    this.value = value;
-  }
+	public void setValue(final int value) {
+		this.value = value;
+	}
 
-  @Override
-  public String toString() {
-    return name + ": " + value;
-  }
+	@Override
+	public String toString() {
+		return name + ": " + value;
+	}
 }

@@ -14,46 +14,45 @@ import static org.junit.Assert.assertTrue;
 
 public class GameTest {
 
-    @BeforeClass
-    public static void beforeClass() {
-        SettingsUtil.resetSettings();
-    }
+	@BeforeClass
+	public static void beforeClass() {
+		SettingsUtil.resetSettings();
+	}
 
-    @AfterClass
-    public static void afterClass() {
-        SettingsUtil.resetSettings();
-    }
+	@AfterClass
+	public static void afterClass() {
+		SettingsUtil.resetSettings();
+	}
 
-    private Individual individual1;
-    private Individual individual2;
-    private GameManager gameManager;
+	private Individual individual1;
+	private Individual individual2;
+	private GameManager gameManager;
 
-    @Before
-    public void setup() {
-        gameManager = new GameManager();
+	@Before
+	public void setup() {
+		gameManager = new GameManager();
 
-        individual1 = new Individual();
-        individual1.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen0.properties");
+		individual1 = new Individual();
+		individual1.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen0.properties");
 
-        individual2 = new Individual();
-        individual2.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen9.properties");
-    }
+		individual2 = new Individual();
+		individual2.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen9.properties");
+	}
 
-    /**
-     * Checking that when one player wins a game its returned as the victor
-     * TODO: SLOW AS HELL
-     */
-    @Test
-    public void testingGameStatsComesBackWithWinner() {
-        //given
-        //individual cant actually finish if it cant bear
-        individual1.setAttribute(0, new IndividualAttribute("bearAPiece", 0));
+	/**
+	 * Checking that when one player wins a game its returned as the victor
+	 */
+	@Test
+	public void testingGameStatsComesBackWithWinner() {
+		// GIVEN two equal players
+		// AND player 1 cannot bear and therefore win
+		individual1.setAttribute(0, new IndividualAttribute("bearAPiece", 0));
 
-        //when
-        final GameStats gameStats = gameManager.playIndividualsVsEachOther(individual1, individual2);
+		// WHEN they play each other
+		final GameStats gameStats = gameManager.playIndividualsVsEachOther(individual1, individual2);
 
-        //then
-        assertTrue(gameStats.getVictor().equals(individual2));
-        assertTrue("Crap player managed to win (impossible)", gameStats.getPlayerTwoScore() > gameStats.getPlayerOneScore());
-    }
+		// THEN player 2 must win
+		assertTrue(gameStats.getVictor().equals(individual2));
+		assertTrue("Crap player managed to win (impossible)", gameStats.getPlayerTwoScore() > gameStats.getPlayerOneScore());
+	}
 }

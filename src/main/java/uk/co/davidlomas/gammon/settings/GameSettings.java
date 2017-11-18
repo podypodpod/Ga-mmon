@@ -25,9 +25,9 @@ import java.util.Properties;
 
 /**
  * GameSettings class
- *
+ * <p>
  * Only created this to simplify changing the settings of the game
- *
+ * <p>
  * Puts all settings for the actual game in one place..e.g. timeDelay for if it
  * actually needs to be seen
  *
@@ -35,89 +35,89 @@ import java.util.Properties;
  */
 public class GameSettings {
 
-  private static Boolean isP1BlackCache = null;
-  private static Boolean displayGUICache = null;
-  private static Boolean areBothAIsCache = null;
-  private static Boolean multiThreadingCache = null;
+	private static Boolean isP1BlackCache = null;
+	private static Boolean displayGUICache = null;
+	private static Boolean areBothAIsCache = null;
+	private static Boolean multiThreadingCache = null;
 
-  private static int timeDelayCache = -1;
+	private static int timeDelayCache = -1;
 
-  public static void setIsP1BlackCache(final Boolean isP1BlackCache) {
-    GameSettings.isP1BlackCache = isP1BlackCache;
-  }
+	public static void setIsP1BlackCache(final Boolean isP1BlackCache) {
+		GameSettings.isP1BlackCache = isP1BlackCache;
+	}
 
-  public static void setDisplayGUICache(final Boolean displayGUICache) {
-    GameSettings.displayGUICache = displayGUICache;
-  }
+	public static void setDisplayGUICache(final Boolean displayGUICache) {
+		GameSettings.displayGUICache = displayGUICache;
+	}
 
-  public static void setAreBothAIsCache(final Boolean areBothAIsCache) {
-    GameSettings.areBothAIsCache = areBothAIsCache;
-  }
+	public static void setAreBothAIsCache(final Boolean areBothAIsCache) {
+		GameSettings.areBothAIsCache = areBothAIsCache;
+	}
 
-  public static void setMultiThreadingCache(final Boolean multiThreadingCache) {
-    GameSettings.multiThreadingCache = multiThreadingCache;
-  }
+	public static void setMultiThreadingCache(final Boolean multiThreadingCache) {
+		GameSettings.multiThreadingCache = multiThreadingCache;
+	}
 
-  public static void setTimeDelayCache(final int timeDelayCache) {
-    GameSettings.timeDelayCache = timeDelayCache;
-  }
+	public static void setTimeDelayCache(final int timeDelayCache) {
+		GameSettings.timeDelayCache = timeDelayCache;
+	}
 
-  public static boolean getAreBothAI() {
-    if (areBothAIsCache == null) {
-      areBothAIsCache = Boolean.valueOf(getPropertyFromFile("areBothAIs"));
-    }
-    return areBothAIsCache;
-  }
+	public static boolean getAreBothAI() {
+		if (areBothAIsCache == null) {
+			areBothAIsCache = Boolean.valueOf(getPropertyFromFile("areBothAIs"));
+		}
+		return areBothAIsCache;
+	}
 
-  public static boolean getDisplayGUI() {
-    if (displayGUICache == null) {
-      displayGUICache = Boolean.valueOf(getPropertyFromFile("displayGUI"));
-    }
-    return displayGUICache;
-  }
+	public static boolean getDisplayGUI() {
+		if (displayGUICache == null) {
+			displayGUICache = Boolean.valueOf(getPropertyFromFile("displayGUI"));
+		}
+		return displayGUICache;
+	}
 
-  public static boolean getMultiThreading() {
-    if (multiThreadingCache == null) {
-      multiThreadingCache = Boolean.valueOf(getPropertyFromFile("multiThreading"));
-    }
-    return multiThreadingCache;
-  }
+	public static boolean getMultiThreading() {
+		if (multiThreadingCache == null) {
+			multiThreadingCache = Boolean.valueOf(getPropertyFromFile("multiThreading"));
+		}
+		return multiThreadingCache;
+	}
 
-  public static String getPropertyFromFile(final String propVar) {
-    final Properties properties = new Properties();
-    InputStream input = null;
+	public static String getPropertyFromFile(final String propVar) {
+		final Properties properties = new Properties();
+		InputStream input = null;
 
-    try {
-      input = new FileInputStream("conf/GameSettings.properties");
-      properties.load(input);
-      return properties.getProperty(propVar);
+		try {
+			input = new FileInputStream("conf/GameSettings.properties");
+			properties.load(input);
+			return properties.getProperty(propVar);
 
-    } catch (final IOException ex) {
-      ex.printStackTrace();
-    } finally {
-      if (input != null) {
-        try {
-          input.close();
-        } catch (final IOException e) {
-          e.printStackTrace();
-        }
-      }
-    }
-    return null;
-  }
+		} catch (final IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (final IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
+	}
 
-  // GETTERS
-  public static int getTimeDelay() {
-    if (timeDelayCache == -1) {
-      timeDelayCache = Integer.valueOf(getPropertyFromFile("timeDelay"));
-    }
-    return timeDelayCache;
-  }
+	// GETTERS
+	public static int getTimeDelay() {
+		if (timeDelayCache == -1) {
+			timeDelayCache = Integer.valueOf(getPropertyFromFile("timeDelay"));
+		}
+		return timeDelayCache;
+	}
 
-  public static boolean isP1Black() {
-    if (isP1BlackCache == null) {
-      isP1BlackCache = Boolean.valueOf(getPropertyFromFile("isP1Black"));
-    }
-    return isP1BlackCache;
-  }
+	public static boolean isP1Black() {
+		if (isP1BlackCache == null) {
+			isP1BlackCache = Boolean.valueOf(getPropertyFromFile("isP1Black"));
+		}
+		return isP1BlackCache;
+	}
 }

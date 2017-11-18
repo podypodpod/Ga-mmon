@@ -1,10 +1,7 @@
 package uk.co.davidlomas.gammon.gui;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 public class MainMenuContainerFrame extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;

@@ -32,66 +32,66 @@ import static org.junit.Assert.assertTrue;
 
 public class MoveGeneratorTest {
 
-    private Board board;
-    private AiPlayer player1, player2;
-    private MoveGenerator moveGenerator;
+	private Board board;
+	private AiPlayer player1, player2;
+	private MoveGenerator moveGenerator;
 
-    @BeforeClass
-    public static void beforeClass() {
-        SettingsUtil.resetSettings();
-    }
+	@BeforeClass
+	public static void beforeClass() {
+		SettingsUtil.resetSettings();
+	}
 
-    @AfterClass
-    public static void afterClass() {
-        SettingsUtil.resetSettings();
-    }
+	@AfterClass
+	public static void afterClass() {
+		SettingsUtil.resetSettings();
+	}
 
-    @Before
-    public void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-        board = new Board();
-        player1 = new AiPlayer(true, null);
-        player2 = new AiPlayer(false, null);
-        moveGenerator = new MoveGenerator(null);
-    }
+		board = new Board();
+		player1 = new AiPlayer(true, null);
+		player2 = new AiPlayer(false, null);
+		moveGenerator = new MoveGenerator(null);
+	}
 
-    @Test
-    public void callingGenerateMovesOnDefaultBoardWithValidMovesForBlackShouldReturnBoards() {
-        // Given
-        board.setStartPosition();
-        player1.movesLeft.add(3);
-        player1.movesLeft.add(5);
+	@Test
+	public void callingGenerateMovesOnDefaultBoardWithValidMovesForBlackShouldReturnBoards() {
+		// Given
+		board.setStartPosition();
+		player1.movesLeft.add(3);
+		player1.movesLeft.add(5);
 
-        // When
-        moveGenerator.generateMoves(board, player1);
+		// When
+		moveGenerator.generateMoves(board, player1);
 
-        // Then
-        assertTrue(moveGenerator.getBoardList().hasContents());
-    }
+		// Then
+		assertTrue(moveGenerator.getBoardList().hasContents());
+	}
 
-    @Test
-    public void callingGenerateMovesOnDefaultBoardWithValidMovesForRedShouldReturnBoards() {
-        // Given
-        board.setStartPosition();
-        player2.movesLeft.add(1);
+	@Test
+	public void callingGenerateMovesOnDefaultBoardWithValidMovesForRedShouldReturnBoards() {
+		// Given
+		board.setStartPosition();
+		player2.movesLeft.add(1);
 
-        // When
-        moveGenerator.generateMoves(board, player2);
+		// When
+		moveGenerator.generateMoves(board, player2);
 
-        // Then
-        assertTrue(moveGenerator.getBoardList().hasContents());
-    }
+		// Then
+		assertTrue(moveGenerator.getBoardList().hasContents());
+	}
 
-    @Test
-    public void callingGenerateMovesOnABoardWithNoMovesShouldReturnAnEmptyList() {
-        // Given
-        board.setStartPosition();
-        player2.movesLeft.clear();
+	@Test
+	public void callingGenerateMovesOnABoardWithNoMovesShouldReturnAnEmptyList() {
+		// Given
+		board.setStartPosition();
+		player2.movesLeft.clear();
 
-        // When
-        moveGenerator.generateMoves(board, player2);
+		// When
+		moveGenerator.generateMoves(board, player2);
 
-        // Then
-        assertFalse(moveGenerator.getBoardList().hasContents());
-    }
+		// Then
+		assertFalse(moveGenerator.getBoardList().hasContents());
+	}
 }

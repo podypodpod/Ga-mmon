@@ -22,7 +22,7 @@ import uk.co.davidlomas.gammon.genes.Individual;
 
 /**
  * GameStats
- *
+ * <p>
  * The game stats class is returned after a finished game and supplies the
  * winning player as well as a score for the game.
  *
@@ -30,43 +30,43 @@ import uk.co.davidlomas.gammon.genes.Individual;
  */
 public class GameStats {
 
-  private Individual gameVictor = null;
-  private double playerOneScore = 0;
-  private double playerTwoScore = 0;
+	private Individual gameVictor = null;
+	private double playerOneScore = 0;
+	private double playerTwoScore = 0;
 
-  /**
-   * GameStats default constructor
-   *
-   * @param gameVictor the victor
-   * @param playerOneScore player one's score
-   * @param playerTwoScore player two's score
-   */
-  public GameStats(final Individual gameVictor, final double playerOneScore, final double playerTwoScore) {
-    this.gameVictor = gameVictor;
-    this.playerOneScore = playerOneScore;
-    this.playerTwoScore = playerTwoScore;
-  }
+	/**
+	 * GameStats default constructor
+	 *
+	 * @param gameVictor     the victor
+	 * @param playerOneScore player one's score
+	 * @param playerTwoScore player two's score
+	 */
+	public GameStats(final Individual gameVictor, final double playerOneScore, final double playerTwoScore) {
+		this.gameVictor = gameVictor;
+		this.playerOneScore = playerOneScore;
+		this.playerTwoScore = playerTwoScore;
+	}
 
-  /**
-   * getPlayerOneScore
-   *
-   * @return the individuals score
-   */
-  public double getPlayerOneScore() {
-    return playerOneScore;
-  }
+	/**
+	 * getPlayerOneScore
+	 *
+	 * @return the individuals score
+	 */
+	public double getPlayerOneScore() {
+		return playerOneScore;
+	}
 
-  /**
-   * getVictor
-   *
-   * @return individual
-   */
-  public Individual getVictor() {
-    return gameVictor;
-  }
+	/**
+	 * getVictor
+	 *
+	 * @return individual
+	 */
+	public Individual getVictor() {
+		return gameVictor;
+	}
 
-  public double getPlayerTwoScore() {
-    return playerTwoScore;
-  }
+	public double getPlayerTwoScore() {
+		return playerTwoScore;
+	}
 
 }

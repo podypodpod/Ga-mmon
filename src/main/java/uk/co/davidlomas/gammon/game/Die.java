@@ -18,25 +18,20 @@
 
 package uk.co.davidlomas.gammon.game;
 
+import lombok.Data;
+
 /**
  * A dice roll class.
  *
  * @author David Lomas
  */
+@Data
 public class Die {
 
-  private int value;
+	private int value;
 
-  public int getDieValue() {
-    return value;
-  }
-
-  public int RollDie() {
-    value = (int) (Math.random() * 6) + 1;
-    return value;
-  }
-
-  public void setDieValue(final int value) {
-    this.value = value;
-  }
+	public int RollDie() {
+		value = (int) (Math.random() * 6) + 1;
+		return value;
+	}
 }
