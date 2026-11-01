@@ -35,6 +35,9 @@ import java.util.Properties;
  */
 public class GameSettings {
 
+	// the settings folder can be moved with -Dgammon.confDir, the tests use this to work on a copy
+	private static final String FILE_PATH = System.getProperty("gammon.confDir", "conf") + "/GameSettings.properties";
+
 	private static Boolean isP1BlackCache = null;
 	private static Boolean displayGUICache = null;
 	private static Boolean areBothAIsCache = null;
@@ -88,7 +91,7 @@ public class GameSettings {
 		InputStream input = null;
 
 		try {
-			input = new FileInputStream("conf/GameSettings.properties");
+			input = new FileInputStream(FILE_PATH);
 			properties.load(input);
 			return properties.getProperty(propVar);
 
