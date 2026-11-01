@@ -20,6 +20,8 @@ package uk.co.davidlomas.gammon.game;
 
 import uk.co.davidlomas.gammon.settings.GameSettings;
 
+import java.util.Arrays;
+
 /**
  * The Class Board.
  * <p>
@@ -127,27 +129,28 @@ public class Board {
 	 * <p>
 	 * Board comparison, if they are the same (same piece positions)
 	 *
-	 * @param b the board
+	 * @param o the board
 	 *
 	 * @return true, if they are the same
 	 */
-	boolean equals(final Board b) {
-		boolean theSame = true;
-
-		// checking beared points
-		if (redBore != b.redBore || blackBore != b.blackBore) {
-			theSame = false;
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
 		}
-
-		// checking points
-		for (int x = 0; x < Points.length; x++) {
-			if (!Points[x].equals(b.Points[x])) {
-				theSame = false;
-			}
+		if (!(o instanceof Board)) {
+			return false;
 		}
+		final Board b = (Board) o;
+		return redBore == b.redBore && blackBore == b.blackBore && Arrays.equals(Points, b.Points);
+	}
 
-		return theSame;
-
+	/**
+	 * Hash of the piece positions, so boards can go in a HashSet. Don't change a board while it's in one.
+	 */
+	@Override
+	public int hashCode() {
+		return 31 * (31 * redBore + blackBore) + Arrays.hashCode(Points);
 	}
 
 	public int getBlackBore() {
