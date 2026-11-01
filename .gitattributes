@@ -1,0 +1,3 @@
+# gradlew must keep Unix line endings to run on Linux (CI), gradlew.bat needs Windows ones
+gradlew text eol=lf
+*.bat text eol=crlf
