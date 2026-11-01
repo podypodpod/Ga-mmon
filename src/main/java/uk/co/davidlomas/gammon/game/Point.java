@@ -82,12 +82,25 @@ public class Point {
 	/**
 	 * Equals.
 	 *
-	 * @param p the point
+	 * @param o the point
 	 *
-	 * @return true, if successful
+	 * @return true, if both points hold the same pieces
 	 */
-	public boolean equals(final Point p) {
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Point)) {
+			return false;
+		}
+		final Point p = (Point) o;
 		return redCount == p.redCount && blackCount == p.blackCount;
+	}
+
+	@Override
+	public int hashCode() {
+		return 31 * blackCount + redCount;
 	}
 
 	/**

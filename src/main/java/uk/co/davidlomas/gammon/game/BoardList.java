@@ -25,7 +25,9 @@ import uk.co.davidlomas.gammon.util.RandomSource;
 
 import java.lang.reflect.MalformedParametersException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The Class BoardList.
@@ -42,6 +44,11 @@ public class BoardList {
 	 * The all possible moves.
 	 */
 	private final List<Board> boardList;
+
+	/**
+	 * The same boards as boardList, so checking for a duplicate is a quick lookup instead of a scan of the list.
+	 */
+	private final Set<Board> boardsInList;
 
 	/**
 	 * The individual that will make the move.
@@ -63,6 +70,7 @@ public class BoardList {
 	public BoardList(final Individual individual) {
 		this.individual = individual;
 		boardList = new ArrayList<>();
+		boardsInList = new HashSet<>();
 		boardEvaluator = new BoardEvaluator();
 	}
 
@@ -73,6 +81,7 @@ public class BoardList {
 	 */
 	public void addBoardWithNextMove(final Board b) {
 		boardList.add(b);
+		boardsInList.add(b);
 	}
 
 	/**
@@ -122,6 +131,7 @@ public class BoardList {
 
 	void clearList() {
 		boardList.clear();
+		boardsInList.clear();
 	}
 
 	/**
@@ -580,11 +590,6 @@ public class BoardList {
 	 * @return true, if there is a duplicate
 	 */
 	private boolean thereIsADuplicate(final Board boardInQuestion) {
-		for (final Board board : boardList) {
-			if (board.equals(boardInQuestion)) {
-				return true;
-			}
-		}
-		return false;
+		return boardsInList.contains(boardInQuestion);
 	}
 }
