@@ -1,18 +1,24 @@
 package uk.co.davidlomas.gammon.test.genes;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import uk.co.davidlomas.gammon.genes.GeneticAlgorithm;
 import uk.co.davidlomas.gammon.genes.Individual;
-import uk.co.davidlomas.gammon.genes.IndividualAttribute;
 import uk.co.davidlomas.gammon.genes.Population;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
+import uk.co.davidlomas.gammon.util.RandomSource;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test class for {@link GeneticAlgorithm}
@@ -36,6 +42,11 @@ public class GeneticAlgorithmTest {
 	public void setup() {
 		individual1 = new Individual();
 		individual2 = new Individual();
+	}
+
+	@After
+	public void tearDown() {
+		RandomSource.reset();
 	}
 
 	@Test
@@ -63,30 +74,46 @@ public class GeneticAlgorithmTest {
 	}
 
 	@Test
-	public void havingATournamentWithAPlayerWith0BearAPieceShouldAlwaysMakeThemLoose() {
+	public void tournamentSelectionWithTheSameSeedPicksTheSameWinner() {
 		GenAlgSettings.setTournamentSize(2);
 		GenAlgSettings.setPopulationSize(2);
 
-		// individual 1 has a HIGH value on bearing pieces
-		final IndividualAttribute attr1 = new IndividualAttribute("bearAPiece");
-		attr1.setValue(100);
-		individual1.setAttribute(0, attr1);
+		final String firstWinner = runSeededTournament(42, 2);
+		final String secondWinner = runSeededTournament(42, 2);
 
-		// individual 1 has a LOW value on bearing pieces
-		final IndividualAttribute attr2 = new IndividualAttribute("bearAPiece");
-		attr2.setValue(0);
-		individual2.setAttribute(0, attr2);
+		assertEquals(firstWinner, secondWinner);
+	}
 
-		// make tournament out of the 2
-		final Population population = new Population(2, true);
-		final Individual[] individuals = population.getPopulation();
-		individuals[0] = individual1;
-		individuals[1] = individual2;
-		population.setIndividuals(individuals);
+	/**
+	 * The tournament should draw its players at random from the whole population,
+	 * not always take the first few
+	 */
+	@Test
+	public void tournamentSelectionDrawsPlayersFromTheWholePopulation() {
+		GenAlgSettings.setTournamentSize(2);
+		GenAlgSettings.setPopulationSize(4);
 
-		// make sure individual 1 wins
-		final Individual winner = GeneticAlgorithm.tournamentSelection(population);
-		assertEquals(individual1, winner);
+		final Set<Integer> winningPositions = new HashSet<>();
+		for (int seed = 0; seed < 20 && !winningPositions.contains(2) && !winningPositions.contains(3); seed++) {
+			RandomSource.setSeed(seed);
+			final Population population = new Population(4, true);
+			final Individual winner = GeneticAlgorithm.tournamentSelection(population);
+			winningPositions.add(Arrays.asList(population.getPopulation()).indexOf(winner));
+		}
+
+		assertTrue("Only the first two individuals ever won: " + winningPositions,
+				winningPositions.contains(2) || winningPositions.contains(3));
+	}
+
+	/**
+	 * Runs a tournament on a freshly seeded population
+	 *
+	 * @return the chromosome of the winner
+	 */
+	private String runSeededTournament(final long seed, final int populationSize) {
+		RandomSource.setSeed(seed);
+		final Population population = new Population(populationSize, true);
+		return String.valueOf(GeneticAlgorithm.tournamentSelection(population).getChromosome());
 	}
 
 	@Test

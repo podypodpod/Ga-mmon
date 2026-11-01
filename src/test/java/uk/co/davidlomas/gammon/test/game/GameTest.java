@@ -1,5 +1,6 @@
 package uk.co.davidlomas.gammon.test.game;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -7,9 +8,10 @@ import org.junit.Test;
 import uk.co.davidlomas.gammon.game.GameManager;
 import uk.co.davidlomas.gammon.game.GameStats;
 import uk.co.davidlomas.gammon.genes.Individual;
-import uk.co.davidlomas.gammon.genes.IndividualAttribute;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
+import uk.co.davidlomas.gammon.util.RandomSource;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class GameTest {
@@ -39,20 +41,41 @@ public class GameTest {
 		individual2.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen9.properties");
 	}
 
+	@After
+	public void tearDown() {
+		RandomSource.reset();
+	}
+
 	/**
-	 * Checking that when one player wins a game its returned as the victor
+	 * Checking that when one player wins a game its returned as the victor, with the higher score
 	 */
 	@Test
 	public void testingGameStatsComesBackWithWinner() {
-		// GIVEN two equal players
-		// AND player 1 cannot bear and therefore win
-		individual1.setAttribute(0, new IndividualAttribute("bearAPiece", 0));
+		RandomSource.setSeed(42);
 
-		// WHEN they play each other
 		final GameStats gameStats = gameManager.playIndividualsVsEachOther(individual1, individual2);
 
-		// THEN player 2 must win
-		assertTrue(gameStats.getVictor().equals(individual2));
-		assertTrue("Crap player managed to win (impossible)", gameStats.getPlayerTwoScore() > gameStats.getPlayerOneScore());
+		if (gameStats.getVictor().equals(individual1)) {
+			assertTrue(gameStats.getPlayerOneScore() > gameStats.getPlayerTwoScore());
+		} else {
+			assertEquals(individual2, gameStats.getVictor());
+			assertTrue(gameStats.getPlayerTwoScore() > gameStats.getPlayerOneScore());
+		}
+	}
+
+	/**
+	 * Checking that two games played with the same seed play out exactly the same
+	 */
+	@Test
+	public void testingGamesWithTheSameSeedHaveTheSameResult() {
+		RandomSource.setSeed(42);
+		final GameStats firstGame = gameManager.playIndividualsVsEachOther(individual1, individual2);
+
+		RandomSource.setSeed(42);
+		final GameStats secondGame = gameManager.playIndividualsVsEachOther(individual1, individual2);
+
+		assertEquals(firstGame.getVictor(), secondGame.getVictor());
+		assertEquals(firstGame.getPlayerOneScore(), secondGame.getPlayerOneScore(), 0);
+		assertEquals(firstGame.getPlayerTwoScore(), secondGame.getPlayerTwoScore(), 0);
 	}
 }

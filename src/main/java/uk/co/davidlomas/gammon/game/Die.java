@@ -19,6 +19,7 @@
 package uk.co.davidlomas.gammon.game;
 
 import lombok.Data;
+import uk.co.davidlomas.gammon.util.RandomSource;
 
 /**
  * A dice roll class.
@@ -31,7 +32,7 @@ public class Die {
 	private int value;
 
 	public int RollDie() {
-		value = (int) (Math.random() * 6) + 1;
+		value = RandomSource.nextInt(6) + 1;
 		return value;
 	}
 }

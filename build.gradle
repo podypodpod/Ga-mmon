@@ -9,6 +9,19 @@ checkstyle {
     ignoreFailures = true
 }
 
+// The tests change settings and write them to file, so give them a fresh copy of conf/ to work on
+def testConfDir = layout.buildDirectory.dir('test-conf')
+
+tasks.register('prepareTestConf', Sync) {
+    from 'conf'
+    into testConfDir
+}
+
+test {
+    dependsOn 'prepareTestConf'
+    systemProperty 'gammon.confDir', testConfDir.get().asFile.absolutePath
+}
+
 jar {
     manifest {
         attributes 'Implementation-Title': 'Ga-mmon',

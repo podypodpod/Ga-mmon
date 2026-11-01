@@ -113,7 +113,7 @@ public class GenAlgSettingsTest {
 
 	@Test
 	public void leavingMutationsAsDefaultValueAndGettingItShouldReturnValueFromPropertiesFile() {
-		final double original = GenAlgSettings.getMutationRate();
+		final String original = GenAlgSettings.getPropertyFromFile("mutationRate");
 
 
 		GenAlgSettings.updateToFile("mutationRate", "987");
@@ -121,54 +121,54 @@ public class GenAlgSettingsTest {
 		assertTrue(doublesAreEqual(987, actualValue));
 
 
-		GenAlgSettings.updateToFile("mutationRate", original + "");
+		GenAlgSettings.updateToFile("mutationRate", original);
 	}
 
 	@Test
 	public void leavingPopulationAsDefaultValueAndGettingItShouldReturnValueFromPropertiesFile() {
-		final int original = GenAlgSettings.getPopulationSize();
+		final String original = GenAlgSettings.getPropertyFromFile("populationSize");
 
 		GenAlgSettings.updateToFile("populationSize", "544");
 		final String actualValue = GenAlgSettings.getPopulationSize() + "";
 		assertEquals("544", actualValue);
 
-		GenAlgSettings.updateToFile("populationSize", original + "");
+		GenAlgSettings.updateToFile("populationSize", original);
 	}
 
 	@Test
 	public void leavingTournamentAsDefaultValueAndGettingItShouldReturnValueFromPropertiesFile() {
-		final int original = GenAlgSettings.getTournamentSize();
+		final String original = GenAlgSettings.getPropertyFromFile("tournamentSize");
 
 		GenAlgSettings.updateToFile("tournamentSize", "355");
 		final String actualValue = GenAlgSettings.getTournamentSize() + "";
 		assertEquals("355", actualValue);
 
 
-		GenAlgSettings.updateToFile("tournamentSize", original + "");
+		GenAlgSettings.updateToFile("tournamentSize", original);
 	}
 
 	@Test
 	public void leavingUniformRateAsDefaultValueAndGettingItShouldReturnValueFromPropertiesFile() {
-		final double original = GenAlgSettings.getUniformRate();
+		final String original = GenAlgSettings.getPropertyFromFile("uniformRate");
 
 		GenAlgSettings.updateToFile("uniformRate", "632");
 		final double actualValue = GenAlgSettings.getUniformRate();
 		assertTrue(doublesAreEqual(632, actualValue));
 
 
-		GenAlgSettings.updateToFile("uniformRate", original + "");
+		GenAlgSettings.updateToFile("uniformRate", original);
 	}
 
 	@Test
 	public void leavingElitismConsoleAsDefaultValueAndGettingItShouldReturnValueFromPropertiesFile() {
-		final boolean original = GenAlgSettings.isElitism();
+		final String original = GenAlgSettings.getPropertyFromFile("elitism");
 
 		GenAlgSettings.updateToFile("elitism", "false");
 		final Boolean actualValue = GenAlgSettings.isElitism();
 		assertFalse(actualValue);
 
 
-		GenAlgSettings.updateToFile("elitism", original + "");
+		GenAlgSettings.updateToFile("elitism", original);
 	}
 
 	@Test(expected = NoSuchFieldError.class)

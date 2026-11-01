@@ -105,7 +105,7 @@ public class MoveGenerator {
 	 *
 	 * @return the next move board
 	 */
-	Board getNextMoveBoard(final Board cb, final AiPlayer p) {
+	public Board getNextMoveBoard(final Board cb, final AiPlayer p) {
 
 		// Clear the list
 		boardList.clearList();

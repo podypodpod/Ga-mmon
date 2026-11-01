@@ -41,7 +41,8 @@ import javax.swing.*;
 class Game implements Runnable {
 
 	private final static Logger logger = LoggerFactory.getLogger(Game.class);
-	private static final double BORE_PIECE_SCORE_MULTIPLIER = 0.04;
+	// the loser can bear at most 14 pieces, 14/30 keeps their score below the winner's
+	private static final double BORE_PIECE_SCORE_MULTIPLIER = 1.0 / 30;
 
 	private final AiPlayer aiPlayer1;
 	private final AiPlayer aiPlayer2;

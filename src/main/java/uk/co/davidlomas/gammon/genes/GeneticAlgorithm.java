@@ -21,6 +21,7 @@ package uk.co.davidlomas.gammon.genes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
+import uk.co.davidlomas.gammon.util.RandomSource;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +59,7 @@ public class GeneticAlgorithm {
 
 		// loop the individuals attributes
 		for (int x = 0; x < individual1.getNumOfAttributes(); x++) {
-			if (Math.random() <= GenAlgSettings.getUniformRate()) {
+			if (RandomSource.nextDouble() <= GenAlgSettings.getUniformRate()) {
 				newIndividual.setAttribute(x, individual1.getAttribute(x));
 			} else {
 				newIndividual.setAttribute(x, individual2.getAttribute(x));
@@ -154,7 +155,7 @@ public class GeneticAlgorithm {
 		// loop through all bits
 		for (int x = 0; x < individualString.length; x++) {
 			// random chance
-			if (Math.random() <= GenAlgSettings.getMutationRate()) {
+			if (RandomSource.nextDouble() <= GenAlgSettings.getMutationRate()) {
 				// swap the bit over
 				if (individualString[x] == '0') {
 					individualString[x] = '1';
@@ -225,12 +226,12 @@ public class GeneticAlgorithm {
 	private static void addTournamentPlayers(final Population initialPopulation,
 											 final Population tournamentPopulation) {
 		final ArrayList<Integer> list = new ArrayList<>();
-		for (int i = 1; i < initialPopulation.size(); i++) {
+		for (int i = 0; i < initialPopulation.size(); i++) {
 			list.add(i);
 		}
-		Collections.shuffle(list);
+		Collections.shuffle(list, RandomSource.getRandom());
 		for (int i = 0; i < GenAlgSettings.getTournamentSize(); i++) {
-			tournamentPopulation.saveIndividual(i, initialPopulation.getIndividual(i));
+			tournamentPopulation.saveIndividual(i, initialPopulation.getIndividual(list.get(i)));
 		}
 	}
 }

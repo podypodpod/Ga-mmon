@@ -33,7 +33,8 @@ public class GenAlgSettings {
 	private static final String MUTATION_RATE = "mutationRate";
 	private static final String ATTEMPT_COUNT = "attemptCount";
 	private static final String GENERATIONS = "generations";
-	private static final String FILE_PATH = "conf/GenAlgSettings.properties";
+	// the settings folder can be moved with -Dgammon.confDir, the tests use this to work on a copy
+	private static final String FILE_PATH = System.getProperty("gammon.confDir", "conf") + "/GenAlgSettings.properties";
 
 	private static Boolean elitism = null;
 
