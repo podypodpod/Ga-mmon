@@ -21,6 +21,7 @@ package uk.co.davidlomas.gammon.game;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.davidlomas.gammon.genes.Individual;
+import uk.co.davidlomas.gammon.util.RandomSource;
 
 import java.lang.reflect.MalformedParametersException;
 import java.util.ArrayList;
@@ -171,7 +172,7 @@ public class BoardList {
 		if (currentBoard.canPlayerBear(player.black)) {
 
 			// Attribute 0 = bear a piece
-			if (player.getIndividual().getAttribute(0).getValue() > (int) (Math.random() * 100)) {
+			if (player.getIndividual().getAttribute(0).getValue() > RandomSource.nextInt(100)) {
 				// try to bear
 				for (final Board board : boardList) {
 					if (boardEvaluator.hasAPieceBeenBore(board)) {
@@ -180,7 +181,7 @@ public class BoardList {
 					}
 				}
 				// Attribute 5 = spread pieces
-			} else if (player.getIndividual().getAttribute(5).getValue() > (int) (Math.random() * 100)) {
+			} else if (player.getIndividual().getAttribute(5).getValue() > RandomSource.nextInt(100)) {
 				// try to spread a piece
 				for (final Board board : boardList) {
 					if (boardEvaluator.hasAPieceBeenSpread(board)) {
@@ -193,7 +194,7 @@ public class BoardList {
 		} else if (chosenBoard == null && !currentBoard.isInitialMove) {
 
 			// Attribute 1 = take a piece
-			if (player.getIndividual().getAttribute(1).getValue() > (int) (Math.random() * 100)) {
+			if (player.getIndividual().getAttribute(1).getValue() > RandomSource.nextInt(100)) {
 				// try to take a piece
 				for (final Board board : boardList) {
 					if (boardEvaluator.hasAPieceBeenTaken(board)) {
@@ -203,7 +204,7 @@ public class BoardList {
 				}
 
 				// Attribute 2 = doubleUpAPiece
-			} else if (player.getIndividual().getAttribute(2).getValue() > (int) (Math.random() * 100)) {
+			} else if (player.getIndividual().getAttribute(2).getValue() > RandomSource.nextInt(100)) {
 				// try to double up a piece
 				for (final Board board : boardList) {
 					if (boardEvaluator.hasABlotBeenDoubled(board)) {
@@ -213,7 +214,7 @@ public class BoardList {
 				}
 
 				// Attribute 3 = blockAnOpponent
-			} else if (player.getIndividual().getAttribute(3).getValue() > (int) (Math.random() * 100)) {
+			} else if (player.getIndividual().getAttribute(3).getValue() > RandomSource.nextInt(100)) {
 				// try to blockAnOpponent
 				for (final Board board : boardList) {
 					if (boardEvaluator.hasTheOpponentBeenBlocked(board)) {
@@ -222,7 +223,7 @@ public class BoardList {
 					}
 				}
 				// Attribute 4 = movingAPieceSolo
-			} else if (player.getIndividual().getAttribute(4).getValue() > (int) (Math.random() * 100)) {
+			} else if (player.getIndividual().getAttribute(4).getValue() > RandomSource.nextInt(100)) {
 				// try to move a piece solo
 				for (final Board board : boardList) {
 					if (boardEvaluator.hasAPieceBeenMovedSolo(board)) {
@@ -232,7 +233,7 @@ public class BoardList {
 				}
 
 				// Attribute 6 = addACheckerToAStack
-			} else if (player.getIndividual().getAttribute(6).getValue() > (int) (Math.random() * 100)) {
+			} else if (player.getIndividual().getAttribute(6).getValue() > RandomSource.nextInt(100)) {
 				// try to add a checker to a stack
 				for (final Board board : boardList) {
 					if (boardEvaluator.hasAStackBeenAddedTo(board)) {
@@ -248,7 +249,7 @@ public class BoardList {
 			if (hasDiceRoll(2) && hasDiceRoll(1)) {
 
 				// ATTRIBUTE 7 = twoOneSplitPlayInitialMove
-				if (player.getIndividual().getAttribute(7).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(7).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isTwoOneSplitPlayInitialMove(board)) {
 							chosenBoard = board;
@@ -256,7 +257,7 @@ public class BoardList {
 						}
 					}
 					// ATTRIBUTE 8 = twoOneSlotPlayInitialMove
-				} else if (player.getIndividual().getAttribute(8).getValue() > (int) (Math.random() * 100)) {
+				} else if (player.getIndividual().getAttribute(8).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isTwoOneSlotPlayInitialMove(board)) {
 							chosenBoard = board;
@@ -268,7 +269,7 @@ public class BoardList {
 			} else if (hasDiceRoll(3) && hasDiceRoll(1)) {
 
 				// ATTRIBUTE 9 = threeOneInitialMove
-				if (player.getIndividual().getAttribute(9).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(9).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isThreeOneInitialMove(board)) {
 							chosenBoard = board;
@@ -281,7 +282,7 @@ public class BoardList {
 			} else if (hasDiceRoll(3) && hasDiceRoll(1)) {
 
 				// ATTRIBUTE 10 = threeTwoSplitInitialMove
-				if (player.getIndividual().getAttribute(10).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(10).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isThreeTwoSplitInitialMove(board)) {
 							chosenBoard = board;
@@ -289,7 +290,7 @@ public class BoardList {
 						}
 					}
 					// ATTRIBUTE 11 = threeTwoOffenceInitialMove
-				} else if (player.getIndividual().getAttribute(11).getValue() > (int) (Math.random() * 100)) {
+				} else if (player.getIndividual().getAttribute(11).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isThreeTwoOffenceInitialMove(board)) {
 							chosenBoard = board;
@@ -302,7 +303,7 @@ public class BoardList {
 			} else if (hasDiceRoll(4) && hasDiceRoll(1)) {
 
 				// ATTRIBUTE 12 = fourOneInitialMove
-				if (player.getIndividual().getAttribute(12).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(12).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isFourOneInitialMove(board)) {
 							chosenBoard = board;
@@ -311,7 +312,7 @@ public class BoardList {
 					}
 
 					// ATTRIBUTE 13 = fourOneInitialMove
-				} else if (player.getIndividual().getAttribute(13).getValue() > (int) (Math.random() * 100)) {
+				} else if (player.getIndividual().getAttribute(13).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isFourOneInitialMoveAlt(board)) {
 							chosenBoard = board;
@@ -323,7 +324,7 @@ public class BoardList {
 			} else if (hasDiceRoll(4) && hasDiceRoll(2)) {
 
 				// ATTRIBUTE 14 = fourTwoInitialMove
-				if (player.getIndividual().getAttribute(14).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(14).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isFourTwoInitialMove(board)) {
 							chosenBoard = board;
@@ -335,7 +336,7 @@ public class BoardList {
 			} else if (hasDiceRoll(4) && hasDiceRoll(3)) {
 
 				// ATTRIBUTE 15 = fourThreeInitialMoveSplit
-				if (player.getIndividual().getAttribute(15).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(15).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isFourThreeInitialMoveSplit(board)) {
 							chosenBoard = board;
@@ -343,7 +344,7 @@ public class BoardList {
 						}
 					}
 					// ATTRIBUTE 16 = fourThreeInitialMoveBlock
-				} else if (player.getIndividual().getAttribute(16).getValue() > (int) (Math.random() * 100)) {
+				} else if (player.getIndividual().getAttribute(16).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isFourThreeInitialMoveBlock(board)) {
 							chosenBoard = board;
@@ -355,7 +356,7 @@ public class BoardList {
 			} else if (hasDiceRoll(5) && hasDiceRoll(1)) {
 
 				// ATTRIBUTE 17 = fiveOneInitialMove
-				if (player.getIndividual().getAttribute(17).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(17).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isFiveOneInitialMove(board)) {
 							chosenBoard = board;
@@ -363,7 +364,7 @@ public class BoardList {
 						}
 					}
 					// ATTRIBUTE 18 = fiveOneInitialMoveAlt
-				} else if (player.getIndividual().getAttribute(18).getValue() > (int) (Math.random() * 100)) {
+				} else if (player.getIndividual().getAttribute(18).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isFiveOneInitialMoveAlt(board)) {
 							chosenBoard = board;
@@ -375,7 +376,7 @@ public class BoardList {
 			} else if (hasDiceRoll(5) && hasDiceRoll(2)) {
 
 				// ATTRIBUTE 19 = fiveTwoInitialMove
-				if (player.getIndividual().getAttribute(19).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(19).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isFiveTwoInitialMove(board)) {
 							chosenBoard = board;
@@ -383,7 +384,7 @@ public class BoardList {
 						}
 					}
 					// ATTRIBUTE 20 = fiveTwoInitialMoveRisk
-				} else if (player.getIndividual().getAttribute(20).getValue() > (int) (Math.random() * 100)) {
+				} else if (player.getIndividual().getAttribute(20).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isFiveTwoInitialMoveRisk(board)) {
 							chosenBoard = board;
@@ -396,7 +397,7 @@ public class BoardList {
 			} else if (hasDiceRoll(5) && hasDiceRoll(3)) {
 
 				// ATTRIBUTE 21 = fiveTwoInitialMove
-				if (player.getIndividual().getAttribute(21).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(21).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isFiveThreeInitialMove(board)) {
 							chosenBoard = board;
@@ -408,7 +409,7 @@ public class BoardList {
 			} else if (hasDiceRoll(5) && hasDiceRoll(4)) {
 
 				// ATTRIBUTE 21 = fiveTwoInitialMove
-				if (player.getIndividual().getAttribute(21).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(21).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isFiveThreeInitialMove(board)) {
 							chosenBoard = board;
@@ -420,7 +421,7 @@ public class BoardList {
 			} else if (hasDiceRoll(5) && hasDiceRoll(4)) {
 
 				// ATTRIBUTE 22 = fiveFourInitialMoveAgr
-				if (player.getIndividual().getAttribute(22).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(22).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isFiveFourInitialMoveAgr(board)) {
 							chosenBoard = board;
@@ -428,7 +429,7 @@ public class BoardList {
 						}
 					}
 					// ATTRIBUTE 23 = fiveFourInitialMoveBal
-				} else if (player.getIndividual().getAttribute(23).getValue() > (int) (Math.random() * 100)) {
+				} else if (player.getIndividual().getAttribute(23).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isFiveFourInitialMoveBal(board)) {
 							chosenBoard = board;
@@ -440,7 +441,7 @@ public class BoardList {
 			} else if (hasDiceRoll(6) && hasDiceRoll(1)) {
 
 				// ATTRIBUTE 24 = sixOneInitialMove
-				if (player.getIndividual().getAttribute(24).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(24).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isSixOneInitialMove(board)) {
 							chosenBoard = board;
@@ -452,7 +453,7 @@ public class BoardList {
 			} else if (hasDiceRoll(6) && hasDiceRoll(2)) {
 
 				// ATTRIBUTE 25 = sixTwoInitialMove
-				if (player.getIndividual().getAttribute(25).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(25).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isSixTwoInitialMove(board)) {
 							chosenBoard = board;
@@ -460,7 +461,7 @@ public class BoardList {
 						}
 					}
 					// ATTRIBUTE 26 = sixTwoInitialMoveAgr
-				} else if (player.getIndividual().getAttribute(26).getValue() > (int) (Math.random() * 100)) {
+				} else if (player.getIndividual().getAttribute(26).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isSixTwoInitialMoveAgr(board)) {
 							chosenBoard = board;
@@ -472,7 +473,7 @@ public class BoardList {
 			} else if (hasDiceRoll(6) && hasDiceRoll(3)) {
 
 				// ATTRIBUTE 27 = sixThreeInitialMove
-				if (player.getIndividual().getAttribute(27).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(27).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isSixThreeInitialMove(board)) {
 							chosenBoard = board;
@@ -480,7 +481,7 @@ public class BoardList {
 						}
 					}
 					// ATTRIBUTE 28 = sixThreeInitialMoveSplit
-				} else if (player.getIndividual().getAttribute(28).getValue() > (int) (Math.random() * 100)) {
+				} else if (player.getIndividual().getAttribute(28).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isSixThreeInitialMoveSplit(board)) {
 							chosenBoard = board;
@@ -492,7 +493,7 @@ public class BoardList {
 			} else if (hasDiceRoll(6) && hasDiceRoll(4)) {
 
 				// ATTRIBUTE 29 = sixFourInitialMove
-				if (player.getIndividual().getAttribute(29).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(29).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isSixFourInitialMove(board)) {
 							chosenBoard = board;
@@ -500,7 +501,7 @@ public class BoardList {
 						}
 					}
 					// ATTRIBUTE 30 = sixFourInitialMoveSplit
-				} else if (player.getIndividual().getAttribute(30).getValue() > (int) (Math.random() * 100)) {
+				} else if (player.getIndividual().getAttribute(30).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isSixFourInitialMoveSplit(board)) {
 							chosenBoard = board;
@@ -513,7 +514,7 @@ public class BoardList {
 			} else if (hasDiceRoll(6) && hasDiceRoll(5)) {
 
 				// ATTRIBUTE 31 = sixFiveInitialMove
-				if (player.getIndividual().getAttribute(31).getValue() > (int) (Math.random() * 100)) {
+				if (player.getIndividual().getAttribute(31).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isSixFiveInitialMove(board)) {
 							chosenBoard = board;
@@ -526,7 +527,7 @@ public class BoardList {
 
 		// if no specific move has been found - pick a random available one
 		if (chosenBoard == null) {
-			final int randomNum = (int) (Math.random() * boardList.size());
+			final int randomNum = RandomSource.nextInt(boardList.size());
 			chosenBoard = boardList.get(randomNum);
 			logger.trace("Random move chosen");
 		}
@@ -554,7 +555,7 @@ public class BoardList {
 			} else {
 				// if the player personality = null then just pick at random, as
 				// this means its the basic opposition to test against
-				final int randomNumber = (int) (Math.random() * boardList.size());
+				final int randomNumber = RandomSource.nextInt(boardList.size());
 				logger.trace("board list size: {} ", boardList.size());
 
 				return boardList.get(randomNumber);
@@ -586,4 +587,4 @@ public class BoardList {
 		}
 		return false;
 	}
-}
+}

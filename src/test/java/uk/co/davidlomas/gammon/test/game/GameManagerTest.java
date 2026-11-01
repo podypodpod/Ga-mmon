@@ -1,5 +1,6 @@
 package uk.co.davidlomas.gammon.test.game;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -9,6 +10,7 @@ import uk.co.davidlomas.gammon.game.GameStats;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
+import uk.co.davidlomas.gammon.util.RandomSource;
 
 import static java.lang.Thread.activeCount;
 import static org.junit.Assert.assertTrue;
@@ -32,10 +34,16 @@ public class GameManagerTest {
 
 	@Before
 	public void setup() {
+		RandomSource.setSeed(42);
 		individual1 = new Individual();
 		individual2 = new Individual();
 		gameStats = new GameManager().playIndividualsVsEachOther(individual1,
 				individual2);
+	}
+
+	@After
+	public void tearDown() {
+		RandomSource.reset();
 	}
 
 	/**

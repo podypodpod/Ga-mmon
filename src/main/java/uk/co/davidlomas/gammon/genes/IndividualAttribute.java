@@ -17,6 +17,8 @@
  */
 package uk.co.davidlomas.gammon.genes;
 
+import uk.co.davidlomas.gammon.util.RandomSource;
+
 /**
  * IndividualAttribute
  * <p>
@@ -34,7 +36,7 @@ public class IndividualAttribute {
 
 	public IndividualAttribute(final String name) {
 		this.name = name;
-		value = (int) (Math.random() * 100);
+		value = RandomSource.nextInt(100);
 	}
 
 	@SuppressWarnings("SameParameterValue")
@@ -63,4 +65,4 @@ public class IndividualAttribute {
 	public String toString() {
 		return name + ": " + value;
 	}
-}
+}
