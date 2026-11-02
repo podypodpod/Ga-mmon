@@ -1,11 +1,10 @@
-package uk.co.davidlomas.gammon.test.genes;
+package uk.co.davidlomas.gammon.genes;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import java.io.File;

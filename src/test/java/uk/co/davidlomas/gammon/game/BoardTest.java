@@ -16,14 +16,12 @@
   GA-mmon. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package uk.co.davidlomas.gammon.test.game;
+package uk.co.davidlomas.gammon.game;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.co.davidlomas.gammon.game.Board;
-import uk.co.davidlomas.gammon.game.Point;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

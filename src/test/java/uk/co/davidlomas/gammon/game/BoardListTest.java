@@ -1,15 +1,10 @@
-package uk.co.davidlomas.gammon.test.game;
+package uk.co.davidlomas.gammon.game;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.co.davidlomas.gammon.game.AiPlayer;
-import uk.co.davidlomas.gammon.game.Board;
-import uk.co.davidlomas.gammon.game.BoardList;
-import uk.co.davidlomas.gammon.game.MoveGenerator;
-import uk.co.davidlomas.gammon.game.Point;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.genes.IndividualAttribute;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;

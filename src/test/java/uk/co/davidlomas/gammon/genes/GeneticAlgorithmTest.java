@@ -1,13 +1,10 @@
-package uk.co.davidlomas.gammon.test.genes;
+package uk.co.davidlomas.gammon.genes;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.co.davidlomas.gammon.genes.GeneticAlgorithm;
-import uk.co.davidlomas.gammon.genes.Individual;
-import uk.co.davidlomas.gammon.genes.Population;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;

@@ -1,10 +1,10 @@
-package uk.co.davidlomas.gammon.test.game;
+package uk.co.davidlomas.gammon.gui;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
-public class MainTestingTest {
+public class MainMenuContainerFrameTest {
 	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();

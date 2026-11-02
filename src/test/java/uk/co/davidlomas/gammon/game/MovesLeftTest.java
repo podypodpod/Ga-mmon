@@ -16,25 +16,21 @@
   GA-mmon. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package uk.co.davidlomas.gammon.test.game;
+package uk.co.davidlomas.gammon.game;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.co.davidlomas.gammon.game.AiPlayer;
-import uk.co.davidlomas.gammon.game.Board;
-import uk.co.davidlomas.gammon.game.MoveGenerator;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MoveGeneratorTest {
+public class MovesLeftTest {
 
-	private Board board;
-	private AiPlayer player1, player2;
-	private MoveGenerator moveGenerator;
+	private MovesList testSubject;
 
 	@BeforeAll
 	public static void beforeClass() {
@@ -48,50 +44,64 @@ public class MoveGeneratorTest {
 
 	@BeforeEach
 	public void setUp() throws Exception {
-
-		board = new Board();
-		player1 = new AiPlayer(true, null);
-		player2 = new AiPlayer(false, null);
-		moveGenerator = new MoveGenerator(null);
+		testSubject = new MovesList();
 	}
 
 	@Test
-	public void callingGenerateMovesOnDefaultBoardWithValidMovesForBlackShouldReturnBoards() {
+	public void callingCloneConstructorOnMovesLeftShouldReturnABoardWithTheSameContents() {
 		// Given
-		board.setStartPosition();
-		player1.movesLeft.add(3);
-		player1.movesLeft.add(5);
+		testSubject.add(4);
+		testSubject.add(9);
+		testSubject.add(3);
+
+		final MovesList clonedMovesLeft;
 
 		// When
-		moveGenerator.generateMoves(board, player1);
+		clonedMovesLeft = new MovesList(testSubject);
 
 		// Then
-		assertTrue(moveGenerator.getBoardList().hasContents());
+		assertEquals(4, clonedMovesLeft.getNext());
+		assertTrue(clonedMovesLeft.moves.contains(4));
+		assertTrue(clonedMovesLeft.moves.contains(9));
+		assertTrue(clonedMovesLeft.moves.contains(3));
 	}
 
 	@Test
-	public void callingGenerateMovesOnDefaultBoardWithValidMovesForRedShouldReturnBoards() {
-		// Given
-		board.setStartPosition();
-		player2.movesLeft.add(1);
+	public void addingANumberToTheMovesLeftShouldStoreIt() {
 
 		// When
-		moveGenerator.generateMoves(board, player2);
+		testSubject.add(5);
 
 		// Then
-		assertTrue(moveGenerator.getBoardList().hasContents());
+		assertEquals(5, testSubject.getNext());
+		assertTrue(testSubject.contains(5));
 	}
 
 	@Test
-	public void callingGenerateMovesOnABoardWithNoMovesShouldReturnAnEmptyList() {
+	public void removingMoveFromArrayAndThenCallingContainsShouldReturnFalse() {
 		// Given
-		board.setStartPosition();
-		player2.movesLeft.clear();
+		testSubject.add(4);
+		testSubject.add(9);
 
 		// When
-		moveGenerator.generateMoves(board, player2);
+		testSubject.remove(4);
 
 		// Then
-		assertFalse(moveGenerator.getBoardList().hasContents());
+		assertEquals(9, testSubject.getNext());
+		assertFalse(testSubject.contains(4));
+	}
+
+	@Test
+	public void adding3ElementsToArrayAndCallingSizeShouldReturn3() {
+		// Given
+		testSubject.add(4);
+		testSubject.add(9);
+		testSubject.add(3);
+
+		// When
+		final int size = testSubject.size();
+
+		// Then
+		assertEquals(3, size);
 	}
 }
