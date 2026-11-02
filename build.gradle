@@ -20,7 +20,8 @@ checkstyle {
     ignoreFailures = true
 }
 
-// The tests change settings and write them to file, so give them a fresh copy of conf/ to work on
+// The tests change settings and write them to file, so give them a fresh copy of conf/ to work on.
+// TestConfListener does the same when the tests are run some other way, such as from IntelliJ.
 def testConfDir = layout.buildDirectory.dir('test-conf')
 
 tasks.register('prepareTestConf', Sync) {
@@ -55,7 +56,8 @@ dependencies {
     // TEST
     testImplementation platform('org.junit:junit-bom:6.1.3')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // also needed to compile TestConfListener, which keeps the tests off the real conf/ folder
+    testImplementation 'org.junit.platform:junit-platform-launcher'
     testImplementation 'org.assertj:assertj-core:3.27.7'
 
 }
