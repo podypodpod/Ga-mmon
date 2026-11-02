@@ -15,24 +15,36 @@ import java.io.UncheckedIOException;
  * test runner, this makes the same copy in build/test-conf and points the settings at it. It runs once before any
  * test class loads, which matters because the settings classes read gammon.confDir when they are first used.
  * <p>
+ * The same goes for the players the tests save: they go in build/test-players, set by -Dgammon.playersDir, instead
+ * of savedPlayers/.
+ * <p>
  * Registered in META-INF/services/org.junit.platform.launcher.LauncherSessionListener.
  */
 public class TestConfListener implements LauncherSessionListener {
 
 	private static final String CONF_DIR_PROPERTY = "gammon.confDir";
+	private static final String PLAYERS_DIR_PROPERTY = "gammon.playersDir";
 
 	@Override
 	public void launcherSessionOpened(final LauncherSession session) {
-		if (System.getProperty(CONF_DIR_PROPERTY) != null) {
-			return;
+		if (System.getProperty(CONF_DIR_PROPERTY) == null) {
+			final File testConf = new File("build/test-conf");
+			try {
+				FileUtils.deleteDirectory(testConf);
+				FileUtils.copyDirectory(new File("conf"), testConf);
+			} catch (final IOException e) {
+				throw new UncheckedIOException("Couldn't make a copy of conf/ for the tests", e);
+			}
+			System.setProperty(CONF_DIR_PROPERTY, testConf.getAbsolutePath());
 		}
-		final File testConf = new File("build/test-conf");
-		try {
-			FileUtils.deleteDirectory(testConf);
-			FileUtils.copyDirectory(new File("conf"), testConf);
-		} catch (final IOException e) {
-			throw new UncheckedIOException("Couldn't make a copy of conf/ for the tests", e);
+		if (System.getProperty(PLAYERS_DIR_PROPERTY) == null) {
+			final File testPlayers = new File("build/test-players");
+			try {
+				FileUtils.deleteDirectory(testPlayers);
+			} catch (final IOException e) {
+				throw new UncheckedIOException("Couldn't empty build/test-players for the tests", e);
+			}
+			System.setProperty(PLAYERS_DIR_PROPERTY, testPlayers.getAbsolutePath());
 		}
-		System.setProperty(CONF_DIR_PROPERTY, testConf.getAbsolutePath());
 	}
 }

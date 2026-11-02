@@ -29,10 +29,18 @@ tasks.register('prepareTestConf', Sync) {
     into testConfDir
 }
 
+// Players the tests save go here instead of savedPlayers/, emptied before each run
+def testPlayersDir = layout.buildDirectory.dir('test-players')
+
+tasks.register('cleanTestPlayers', Delete) {
+    delete testPlayersDir
+}
+
 test {
     useJUnitPlatform()
-    dependsOn 'prepareTestConf'
+    dependsOn 'prepareTestConf', 'cleanTestPlayers'
     systemProperty 'gammon.confDir', testConfDir.get().asFile.absolutePath
+    systemProperty 'gammon.playersDir', testPlayersDir.get().asFile.absolutePath
 }
 
 jar {

@@ -36,7 +36,8 @@ import java.util.Properties;
 public class Individual {
 
 	private final static Logger logger = LoggerFactory.getLogger(Individual.class);
-	private static final String PLAYERS_FILE_PATH = "savedPlayers/Attempt - ";
+	// the saved players folder can be moved with -Dgammon.playersDir, the tests use this to keep out of savedPlayers/
+	private static final String PLAYERS_FILE_PATH = System.getProperty("gammon.playersDir", "savedPlayers") + "/Attempt - ";
 	private final static String[] AVAILABLE_ATTRIBUTES = {"bearAPiece", "takeAPiece", "doubleUpAPiece", "blockAnOpponent", "movingAPieceSolo",
 			"spreadAHomePiece",
 			"addACheckerToAStack", "twoOneSplitPlayInitialMove", "twoOneSlotPlayInitialMove", "threeOneInitialMove", "threeTwoSplitInitialMove",
@@ -96,7 +97,7 @@ public class Individual {
 		if (!directoryExists) {
 			logger.trace("Directory " + savedPlayersDirectory + " does not exist, making it");
 
-			final boolean fileWasCreated = new File(savedPlayersDirectory).mkdir();
+			final boolean fileWasCreated = new File(savedPlayersDirectory).mkdirs();
 			if (!fileWasCreated) {
 				logger.error("Failed creating file {}", savedPlayersDirectory);
 			}

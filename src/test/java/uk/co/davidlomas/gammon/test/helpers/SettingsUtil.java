@@ -21,4 +21,11 @@ public class SettingsUtil {
 		GenAlgSettings.setUniformRate(632.0);
 		GenAlgSettings.setMutationRate(0.1);
 	}
+
+	/**
+	 * The folder the tests save players in, set by TestConfListener or Gradle
+	 */
+	public static String getPlayersDir() {
+		return System.getProperty("gammon.playersDir");
+	}
 }
