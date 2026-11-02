@@ -22,9 +22,14 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import uk.co.davidlomas.gammon.test.helpers.BoardMirror;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BoardTest {
 
@@ -58,9 +63,9 @@ public class BoardTest {
 
 	@Test
 	public void testingAddingACounterToABoardsPointsWorks() {
-		assertEquals(board.Points[1].getBlackCount(), 0, "point [1] should start with 0");
+		assertEquals(0, board.Points[1].getBlackCount(), "point [1] should start with 0");
 		board.Points[1].addBlackPiece();
-		assertEquals(board.Points[1].getBlackCount(), 1, "point [1] didnt get added to");
+		assertEquals(1, board.Points[1].getBlackCount(), "point [1] didnt get added to");
 	}
 
 	@Test
@@ -119,4 +124,59 @@ public class BoardTest {
 		assertEquals(5, x13.getBlackCount());
 		assertEquals(2, x24.getBlackCount());
 	}
-}
+
+	// The bearing off tests set up black's position, and check red with the mirror image of it
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void aPlayerWithEveryPieceHomeCanBearOff(final boolean black) {
+		assertTrue(forColour(endGameBoard(), black).canPlayerBear(black));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void aPlayerWithAPieceJustOutsideHomeCannotBearOff(final boolean black) {
+		final Board blackPosition = endGameBoard();
+		blackPosition.Points[7].setBlackCount(1);
+
+		assertFalse(forColour(blackPosition, black).canPlayerBear(black));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void aPlayerWithAPieceOnTheBarCannotBearOff(final boolean black) {
+		final Board blackPosition = endGameBoard();
+		blackPosition.Points[25].setBlackCount(1);
+
+		assertFalse(forColour(blackPosition, black).canPlayerBear(black));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void homePointsCoveredCountsOnlyThePlayersOwnPoints(final boolean black) {
+		final Board blackPosition = endGameBoard();
+		// an opponent's piece in the home quarter isn't one of ours
+		blackPosition.Points[3].setRedCount(1);
+
+		assertEquals(2, forColour(blackPosition, black).getNumOfHomePointsCovered(black));
+	}
+
+	/**
+	 * Black has a piece on 1 and three on 6, its home quarter, and red has two on 20
+	 */
+	private static Board endGameBoard() {
+		final Board endGame = new Board();
+		for (final Point point : endGame.Points) {
+			point.setBlackCount(0);
+			point.setRedCount(0);
+		}
+		endGame.Points[1].setBlackCount(1);
+		endGame.Points[6].setBlackCount(3);
+		endGame.Points[20].setRedCount(2);
+		return endGame;
+	}
+
+	private static Board forColour(final Board blackPosition, final boolean black) {
+		return black ? blackPosition : BoardMirror.mirror(blackPosition);
+	}
+}
