@@ -1,10 +1,10 @@
 package uk.co.davidlomas.gammon.test.genes;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
@@ -12,8 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IndividualTest {
 
@@ -21,19 +21,19 @@ public class IndividualTest {
 	private Individual individual2;
 	private String filePath;
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass() throws IOException {
 		SettingsUtil.resetSettings();
 		final File directory = new File("savedPlayers/Attempt - 9999");
 		FileUtils.deleteDirectory(directory);
 	}
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		individual1 = new Individual();
 		individual2 = new Individual();
@@ -69,11 +69,9 @@ public class IndividualTest {
 		// check all attributes
 		for (int i = 0; i < individual1.getNumOfAttributes(); i++) {
 
-			assertEquals("Individuals attributes  don't match after loading",
-					individual1.getAttribute(i).getName(), individual2.getAttribute(i).getName());
+			assertEquals(individual1.getAttribute(i).getName(), individual2.getAttribute(i).getName(), "Individuals attributes  don't match after loading");
 
-			assertEquals("Individuals attributes  don't match after loading",
-					individual1.getAttribute(i).getValue(), individual2.getAttribute(i).getValue());
+			assertEquals(individual1.getAttribute(i).getValue(), individual2.getAttribute(i).getValue(), "Individuals attributes  don't match after loading");
 		}
 	}
 

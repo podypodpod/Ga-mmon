@@ -1,13 +1,15 @@
 package uk.co.davidlomas.gammon.test.genes;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.genes.IndividualAttribute;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test class for IndividualAttribute
@@ -19,17 +21,17 @@ public class IndividualAttributeTest {
 	private IndividualAttribute attribute1;
 	private IndividualAttribute attribute2;
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		attribute1 = new IndividualAttribute(NAME1);
 		attribute2 = new IndividualAttribute(NAME2);
@@ -38,17 +40,15 @@ public class IndividualAttributeTest {
 	@Test
 	public void creatingIndividualAttributesShouldBeBetween1And100() {
 
-		assertTrue("randomly created attributes are outside of the range",
-				attribute1.getValue() >= 0 && attribute1.getValue() <= 100);
+		assertTrue(attribute1.getValue() >= 0 && attribute1.getValue() <= 100, "randomly created attributes are outside of the range");
 
-		assertTrue("randomly created attributes are outside of the range",
-				attribute2.getValue() >= 0 && attribute2.getValue() <= 100);
+		assertTrue(attribute2.getValue() >= 0 && attribute2.getValue() <= 100, "randomly created attributes are outside of the range");
 	}
 
 	@Test
 	public void creatingIndividualAttributesShouldRetainTheirName() {
-		assertEquals("Individuals name doesn't match constructor", NAME1, attribute1.getName());
-		assertEquals("Individuals name doesn't match constructor", NAME2, attribute2.getName());
+		assertEquals(NAME1, attribute1.getName(), "Individuals name doesn't match constructor");
+		assertEquals(NAME2, attribute2.getName(), "Individuals name doesn't match constructor");
 	}
 
 	@Test
@@ -62,8 +62,8 @@ public class IndividualAttributeTest {
 		attribute2.setName(newName2);
 
 		//then
-		assertEquals("setting names on individual doesn't work", newName1, attribute1.getName());
-		assertEquals("setting names on individual doesn't work", newName2, attribute2.getName());
+		assertEquals(newName1, attribute1.getName(), "setting names on individual doesn't work");
+		assertEquals(newName2, attribute2.getName(), "setting names on individual doesn't work");
 	}
 
 	@Test
@@ -77,14 +77,14 @@ public class IndividualAttributeTest {
 		attribute2.setValue(newValue2);
 
 		//then
-		assertEquals("setting value doesn't work", newValue1, attribute1.getValue());
-		assertEquals("setting value doesn't work", newValue2, attribute2.getValue());
+		assertEquals(newValue1, attribute1.getValue(), "setting value doesn't work");
+		assertEquals(newValue2, attribute2.getValue(), "setting value doesn't work");
 	}
 
 	@Test
 	public void overriddenToStringIsNotEmpty() {
-		assertFalse("ToString is empty", attribute1.toString().isEmpty());
-		assertFalse("ToString is empty", attribute2.toString().isEmpty());
+		assertFalse(attribute1.toString().isEmpty(), "ToString is empty");
+		assertFalse(attribute2.toString().isEmpty(), "ToString is empty");
 	}
 
 }

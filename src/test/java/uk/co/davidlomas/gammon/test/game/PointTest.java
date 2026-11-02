@@ -18,30 +18,32 @@
 
 package uk.co.davidlomas.gammon.test.game;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.game.Point;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PointTest {
 
 	private Point testSubject;
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		testSubject = new Point();
 	}

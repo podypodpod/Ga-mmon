@@ -1,10 +1,10 @@
 package uk.co.davidlomas.gammon.test.game;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.game.GameManager;
 import uk.co.davidlomas.gammon.game.GameStats;
 import uk.co.davidlomas.gammon.genes.Individual;
@@ -13,7 +13,7 @@ import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
 import static java.lang.Thread.activeCount;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GameManagerTest {
 
@@ -21,18 +21,18 @@ public class GameManagerTest {
 	private Individual individual2;
 	private GameStats gameStats;
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass() {
 		SettingsUtil.resetSettings();
 	}
 
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		RandomSource.setSeed(42);
 		individual1 = new Individual();
@@ -41,7 +41,7 @@ public class GameManagerTest {
 				individual2);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		RandomSource.reset();
 	}
@@ -57,14 +57,13 @@ public class GameManagerTest {
 	public void testingPlayingIndividualsAgainstEachOtherReturnsAVictor() {
 		final Individual victor = gameStats.getVictor();
 
-		assertTrue("Victor is not one of the players",
-				victor.equals(individual2) || victor.equals(individual1));
+		assertTrue(victor.equals(individual2) || victor.equals(individual1), "Victor is not one of the players");
 
 		final double player1Score = gameStats.getPlayerOneScore();
 		final double player2Score = gameStats.getPlayerTwoScore();
 
-		assertTrue("score is out of bounds", player1Score >= 0 && player1Score <= 100);
-		assertTrue("score is out of bounds", player2Score >= 0 && player2Score <= 100);
+		assertTrue(player1Score >= 0 && player1Score <= 100, "score is out of bounds");
+		assertTrue(player2Score >= 0 && player2Score <= 100, "score is out of bounds");
 	}
 
 	/**
@@ -78,9 +77,9 @@ public class GameManagerTest {
 		final double player2Score = gameStats.getPlayerTwoScore();
 
 		if (player1Score > player2Score) {
-			assertTrue("Victor didn't have largest score", victor.equals(individual1));
+			assertTrue(victor.equals(individual1), "Victor didn't have largest score");
 		} else {
-			assertTrue("Victor didn't have largest score", victor.equals(individual2));
+			assertTrue(victor.equals(individual2), "Victor didn't have largest score");
 		}
 	}
 
@@ -95,7 +94,7 @@ public class GameManagerTest {
 		final double player1Score = gameStats.getPlayerOneScore();
 		final double player2Score = gameStats.getPlayerTwoScore();
 
-		assertTrue("Scores are equal, who wins?", player1Score != player2Score);
+		assertTrue(player1Score != player2Score, "Scores are equal, who wins?");
 	}
 
 	/**

@@ -1,10 +1,10 @@
 package uk.co.davidlomas.gammon.test.genes;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.genes.StartGa;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
@@ -14,12 +14,12 @@ import java.io.IOException;
 
 public class StartGaTest {
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass() throws IOException {
 		SettingsUtil.resetSettings();
 		final File directory = new File("savedPlayers/Attempt - 10000");
@@ -27,7 +27,7 @@ public class StartGaTest {
 	}
 
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		GenAlgSettings.setElitism(true);
 		GenAlgSettings.setGenerations(2);

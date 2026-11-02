@@ -1,6 +1,10 @@
 package uk.co.davidlomas.gammon.test.game;
 
-import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.game.AiPlayer;
 import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.BoardList;
@@ -13,9 +17,9 @@ import uk.co.davidlomas.gammon.util.RandomSource;
 
 import java.lang.reflect.MalformedParametersException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BoardListTest {
 
@@ -24,17 +28,17 @@ public class BoardListTest {
 	private Board board;
 	private Individual individual;
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		individual = new Individual();
 		player = new AiPlayer(true, individual);
@@ -42,7 +46,7 @@ public class BoardListTest {
 		board = new Board();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		RandomSource.reset();
 	}
@@ -57,7 +61,7 @@ public class BoardListTest {
 
 			final Board chosenBoard = chooseEndGameMove(100, 0);
 
-			assertTrue("Didn't bear off with seed " + seed, chosenBoard.getBlackBore() > 0);
+			assertTrue(chosenBoard.getBlackBore() > 0, "Didn't bear off with seed " + seed);
 		}
 	}
 
@@ -82,8 +86,8 @@ public class BoardListTest {
 			}
 		}
 
-		assertTrue("Never bore off with a random move", boreOff);
-		assertTrue("Always bore off with a random move", didNotBearOff);
+		assertTrue(boreOff, "Never bore off with a random move");
+		assertTrue(didNotBearOff, "Always bore off with a random move");
 	}
 
 	/**

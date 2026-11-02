@@ -18,32 +18,32 @@
 
 package uk.co.davidlomas.gammon.test.game;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.Point;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BoardTest {
 
 	private Board board;
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass() {
 		SettingsUtil.resetSettings();
 	}
 
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		board = new Board();
 	}
@@ -55,14 +55,14 @@ public class BoardTest {
 	public void testingCloneBoardConstructor() {
 		board.setBlackBore(10);
 		final Board clonedBoard = new Board(board);
-		assertEquals("Cloning boards doesn't keep values", 10, clonedBoard.getBlackBore());
+		assertEquals(10, clonedBoard.getBlackBore(), "Cloning boards doesn't keep values");
 	}
 
 	@Test
 	public void testingAddingACounterToABoardsPointsWorks() {
-		assertEquals("point [1] should start with 0", board.Points[1].getBlackCount(), 0);
+		assertEquals(board.Points[1].getBlackCount(), 0, "point [1] should start with 0");
 		board.Points[1].addBlackPiece();
-		assertEquals("point [1] didnt get added to", board.Points[1].getBlackCount(), 1);
+		assertEquals(board.Points[1].getBlackCount(), 1, "point [1] didnt get added to");
 	}
 
 	@Test

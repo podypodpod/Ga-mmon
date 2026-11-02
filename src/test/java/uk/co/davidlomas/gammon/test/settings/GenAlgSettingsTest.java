@@ -1,17 +1,20 @@
 package uk.co.davidlomas.gammon.test.settings;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GenAlgSettingsTest {
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		// reset all values to default as its static and the tests can therefore
 		// Influence each other
@@ -26,12 +29,12 @@ public class GenAlgSettingsTest {
 		GenAlgSettings.setMutationRate(-1);
 	}
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass() {
 		SettingsUtil.resetSettings();
 	}
@@ -171,14 +174,14 @@ public class GenAlgSettingsTest {
 		GenAlgSettings.updateToFile("elitism", original);
 	}
 
-	@Test(expected = NoSuchFieldError.class)
+	@Test
 	public void tryingToGetAMissingPropertyShouldThrowError() {
-		GenAlgSettings.getPropertyFromFile("missingProperty");
+		assertThrows(NoSuchFieldError.class, () -> GenAlgSettings.getPropertyFromFile("missingProperty"));
 	}
 
-	@Test(expected = NoSuchFieldError.class)
+	@Test
 	public void tryingToUpdateAMissingPropertyShouldThrowError() {
-		GenAlgSettings.updateToFile("missingProperty", "15");
+		assertThrows(NoSuchFieldError.class, () -> GenAlgSettings.updateToFile("missingProperty", "15"));
 	}
 
 	private boolean doublesAreEqual(final double first, final double second) {

@@ -1,16 +1,16 @@
 package uk.co.davidlomas.gammon.test.gui;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 public class BoardContainerFrameTest {
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass() {
 		SettingsUtil.resetSettings();
 	}

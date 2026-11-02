@@ -1,27 +1,27 @@
 package uk.co.davidlomas.gammon.test.game;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.game.GameManager;
 import uk.co.davidlomas.gammon.game.GameStats;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GameTest {
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass() {
 		SettingsUtil.resetSettings();
 	}
@@ -30,7 +30,7 @@ public class GameTest {
 	private Individual individual2;
 	private GameManager gameManager;
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		gameManager = new GameManager();
 
@@ -41,7 +41,7 @@ public class GameTest {
 		individual2.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen9.properties");
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		RandomSource.reset();
 	}
