@@ -507,7 +507,7 @@ public class BoardEvaluator {
 		if (currentPlayer.black) {
 			// if it has performed the move
 			if (ifPointHasPieces(newBoard, 24, 1) && ifPointHasPieces(newBoard, 21, 1)
-					&& ifPointHasPieces(newBoard, 6, 4) && ifPointHasPieces(newBoard, 9, 1)) {
+					&& ifPointHasPieces(newBoard, 13, 4) && ifPointHasPieces(newBoard, 9, 1)) {
 				logger.trace("isFourThreeInitialMoveSplit");
 				return true;
 			}
@@ -515,7 +515,7 @@ public class BoardEvaluator {
 		} else {
 			// if it has performed the move
 			if (ifPointHasPieces(newBoard, 1, 1) && ifPointHasPieces(newBoard, 4, 1)
-					&& ifPointHasPieces(newBoard, 13, 4) && ifPointHasPieces(newBoard, 16, 1)) {
+					&& ifPointHasPieces(newBoard, 12, 4) && ifPointHasPieces(newBoard, 16, 1)) {
 				logger.trace("isFourThreeInitialMoveSplit");
 				return true;
 			}
@@ -749,7 +749,7 @@ public class BoardEvaluator {
 		if (currentPlayer.black) {
 			// if it has performed the move
 			if (ifPointHasPieces(newBoard, 24, 1) && ifPointHasPieces(newBoard, 18, 1)
-					&& ifPointHasPieces(newBoard, 13, 4) && ifPointHasPieces(newBoard, 1, 1)) {
+					&& ifPointHasPieces(newBoard, 13, 4) && ifPointHasPieces(newBoard, 11, 1)) {
 				logger.trace("isFiveOneInitialMoveAlt");
 				return true;
 			}
@@ -870,16 +870,16 @@ public class BoardEvaluator {
 		// black
 		if (currentPlayer.black) {
 			// if it has performed the move
-			if (ifPointHasPieces(newBoard, 4, 1) && ifPointHasPieces(newBoard, 1, 1)
-					&& ifPointHasPieces(newBoard, 12, 4) && ifPointHasPieces(newBoard, 14, 1)) {
+			if (ifPointHasPieces(newBoard, 24, 1) && ifPointHasPieces(newBoard, 21, 1)
+					&& ifPointHasPieces(newBoard, 13, 4) && ifPointHasPieces(newBoard, 11, 1)) {
 				logger.trace("isThreeTwoSplitInitialMove");
 				return true;
 			}
 			// red
 		} else {
 			// if it has performed the move
-			if (ifPointHasPieces(newBoard, 24, 1) && ifPointHasPieces(newBoard, 21, 1)
-					&& ifPointHasPieces(newBoard, 13, 4) && ifPointHasPieces(newBoard, 11, 1)) {
+			if (ifPointHasPieces(newBoard, 1, 1) && ifPointHasPieces(newBoard, 4, 1)
+					&& ifPointHasPieces(newBoard, 12, 4) && ifPointHasPieces(newBoard, 14, 1)) {
 				logger.trace("isThreeTwoSplitInitialMove");
 				return true;
 			}
@@ -902,7 +902,7 @@ public class BoardEvaluator {
 		if (currentPlayer.black) {
 			// if it has performed the move
 			if (ifPointHasPieces(newBoard, 6, 4) && ifPointHasPieces(newBoard, 5, 1)
-					&& ifPointHasPieces(newBoard, 14, 1) && ifPointHasPieces(newBoard, 12, 4)) {
+					&& ifPointHasPieces(newBoard, 13, 4) && ifPointHasPieces(newBoard, 11, 1)) {
 				logger.trace("isTwoOneSlotPlayInitialMove");
 				return true;
 			}
@@ -910,7 +910,7 @@ public class BoardEvaluator {
 		} else {
 			// if it has performed the move
 			if (ifPointHasPieces(newBoard, 19, 4) && ifPointHasPieces(newBoard, 20, 1)
-					&& ifPointHasPieces(newBoard, 13, 4) && ifPointHasPieces(newBoard, 11, 1)) {
+					&& ifPointHasPieces(newBoard, 12, 4) && ifPointHasPieces(newBoard, 14, 1)) {
 				logger.trace("isTwoOneSlotPlayInitialMove");
 				return true;
 			}
@@ -932,16 +932,16 @@ public class BoardEvaluator {
 		// black
 		if (currentPlayer.black) {
 			// if it has performed the move
-			if (ifPointHasPieces(newBoard, 2, 1) && ifPointHasPieces(newBoard, 1, 1)
-					&& ifPointHasPieces(newBoard, 14, 1) && ifPointHasPieces(newBoard, 12, 4)) {
+			if (ifPointHasPieces(newBoard, 24, 1) && ifPointHasPieces(newBoard, 23, 1)
+					&& ifPointHasPieces(newBoard, 13, 4) && ifPointHasPieces(newBoard, 11, 1)) {
 				logger.trace("isTwoOneSplitPlayInitialMove");
 				return true;
 			}
 			// red
 		} else {
 			// if it has performed the move
-			if (ifPointHasPieces(newBoard, 24, 1) && ifPointHasPieces(newBoard, 23, 1)
-					&& ifPointHasPieces(newBoard, 13, 4) && ifPointHasPieces(newBoard, 11, 1)) {
+			if (ifPointHasPieces(newBoard, 1, 1) && ifPointHasPieces(newBoard, 2, 1)
+					&& ifPointHasPieces(newBoard, 12, 4) && ifPointHasPieces(newBoard, 14, 1)) {
 				logger.trace("isTwoOneSplitPlayInitialMove");
 				return true;
 			}
