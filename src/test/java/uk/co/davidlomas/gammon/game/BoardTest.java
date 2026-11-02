@@ -161,6 +161,18 @@ public class BoardTest {
 		assertEquals(2, forColour(blackPosition, black).getNumOfHomePointsCovered(black));
 	}
 
+	@Test
+	public void theMirrorImageSwapsTheBorneOffCounts() {
+		final Board blackPosition = endGameBoard();
+		blackPosition.setBlackBore(11);
+		blackPosition.setRedBore(4);
+
+		final Board mirrored = BoardMirror.mirror(blackPosition);
+
+		assertEquals(4, mirrored.getBlackBore());
+		assertEquals(11, mirrored.getRedBore());
+	}
+
 	/**
 	 * Black has a piece on 1 and three on 6, its home quarter, and red has two on 20
 	 */

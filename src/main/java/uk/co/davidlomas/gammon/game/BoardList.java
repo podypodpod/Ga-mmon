@@ -146,6 +146,8 @@ public class BoardList {
 
 	/**
 	 * Gets the boards, so tests can see which moves were on offer.
+	 * <p>
+	 * Nothing in the game calls this, but DecisionGenesTest does, so don't remove it as unused.
 	 *
 	 * @return the boards, read only
 	 */

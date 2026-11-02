@@ -157,6 +157,10 @@ public class Board {
 		return blackBore;
 	}
 
+	public int getRedBore() {
+		return redBore;
+	}
+
 	int getNumberOfCheckersOnStacks(final Boolean black) {
 		int num = 0;
 		// loop points
@@ -320,6 +324,10 @@ public class Board {
 	@SuppressWarnings("SameParameterValue")
 	public void setBlackBore(final int blackBore) {
 		this.blackBore = blackBore;
+	}
+
+	public void setRedBore(final int redBore) {
+		this.redBore = redBore;
 	}
 
 	public void setStartPosition() {

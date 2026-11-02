@@ -16,6 +16,8 @@ public class BoardMirror {
 			mirrored.Points[25 - point].setBlackCount(board.Points[point].getRedCount());
 			mirrored.Points[25 - point].setRedCount(board.Points[point].getBlackCount());
 		}
+		mirrored.setBlackBore(board.getRedBore());
+		mirrored.setRedBore(board.getBlackBore());
 		return mirrored;
 	}
 }

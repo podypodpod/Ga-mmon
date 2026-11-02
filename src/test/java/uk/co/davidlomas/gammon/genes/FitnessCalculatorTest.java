@@ -49,7 +49,7 @@ public class FitnessCalculatorTest {
 					total += gameManager.playIndividualsVsEachOther(player, opponent).getPlayerOneScore();
 				}
 			}
-			assertEquals(total / 2, player.getFitness(), 1e-9);
+			assertEquals(total / (individuals.length - 1), player.getFitness(), 1e-9);
 		}
 	}
 

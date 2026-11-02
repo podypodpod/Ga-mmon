@@ -1,10 +1,13 @@
 package uk.co.davidlomas.gammon.game;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import uk.co.davidlomas.gammon.genes.Individual;
+import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
 import java.util.ArrayList;
@@ -77,6 +80,16 @@ public class OpeningMovesTest {
 			arguments.add(Arguments.of(opening.gene, false, opening));
 		}
 		return arguments.stream();
+	}
+
+	@BeforeAll
+	public static void beforeClass() {
+		SettingsUtil.resetSettings();
+	}
+
+	@AfterAll
+	public static void afterClass() {
+		SettingsUtil.resetSettings();
 	}
 
 	@AfterEach
