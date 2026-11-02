@@ -18,29 +18,34 @@
 
 package uk.co.davidlomas.gammon.test.game;
 
-import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.Player;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PlayerTest {
 
 	private Player player1, player2;
 	private Board board;
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		player1 = new Player(false);// p1 is red
 		player2 = new Player(true);// p2 is black
@@ -70,7 +75,7 @@ public class PlayerTest {
 		player1.movesLeft.add(2);
 
 		// then
-		Assert.assertFalse(player1.passesBasicChecks(to, from, board));
+		assertFalse(player1.passesBasicChecks(to, from, board));
 	}
 
 	@Test
@@ -129,7 +134,7 @@ public class PlayerTest {
 		player1.movesLeft.add(2);
 
 		// then
-		Assert.assertFalse(player1.passesBasicChecks(to, from, board));
+		assertFalse(player1.passesBasicChecks(to, from, board));
 	}
 
 	@Test
@@ -180,7 +185,7 @@ public class PlayerTest {
 		player1.movesLeft.add(2);
 
 		// then
-		Assert.assertFalse(player1.passesBasicChecks(to, from, board));
+		assertFalse(player1.passesBasicChecks(to, from, board));
 	}
 
 	@Test
@@ -191,7 +196,7 @@ public class PlayerTest {
 		player1.movesLeft.add(2);
 
 		// then
-		Assert.assertFalse(player1.passesBasicChecks(to, from, board));
+		assertFalse(player1.passesBasicChecks(to, from, board));
 	}
 
 	@Test
@@ -202,7 +207,7 @@ public class PlayerTest {
 		player1.movesLeft.add(2);
 
 		// then
-		Assert.assertTrue(player1.passesBasicChecks(to, from, board));
+		assertTrue(player1.passesBasicChecks(to, from, board));
 	}
 
 	@Test
@@ -255,7 +260,7 @@ public class PlayerTest {
 		board.Points[0].addRedPiece();// add zero piece
 
 		// then
-		Assert.assertFalse(player1.passesBasicChecks(to, from, board));
+		assertFalse(player1.passesBasicChecks(to, from, board));
 	}
 
 	@Test
@@ -268,7 +273,7 @@ public class PlayerTest {
 		board.Points[25].addBlackPiece();// adding opponent zero
 
 		// then
-		Assert.assertTrue(player1.passesBasicChecks(to, from, board));
+		assertTrue(player1.passesBasicChecks(to, from, board));
 	}
 
 }

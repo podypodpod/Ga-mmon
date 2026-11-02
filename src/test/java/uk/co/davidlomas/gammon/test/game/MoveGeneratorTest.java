@@ -18,17 +18,17 @@
 
 package uk.co.davidlomas.gammon.test.game;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.game.AiPlayer;
 import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.MoveGenerator;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MoveGeneratorTest {
 
@@ -36,17 +36,17 @@ public class MoveGeneratorTest {
 	private AiPlayer player1, player2;
 	private MoveGenerator moveGenerator;
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		board = new Board();

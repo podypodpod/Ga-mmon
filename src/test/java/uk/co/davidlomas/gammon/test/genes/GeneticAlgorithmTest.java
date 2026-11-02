@@ -1,10 +1,10 @@
 package uk.co.davidlomas.gammon.test.genes;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.genes.GeneticAlgorithm;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.genes.Population;
@@ -16,9 +16,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test class for {@link GeneticAlgorithm}
@@ -28,23 +28,23 @@ public class GeneticAlgorithmTest {
 	private Individual individual1;
 	private Individual individual2;
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass() {
 		SettingsUtil.resetSettings();
 	}
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		individual1 = new Individual();
 		individual2 = new Individual();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		RandomSource.reset();
 	}
@@ -101,8 +101,7 @@ public class GeneticAlgorithmTest {
 			winningPositions.add(Arrays.asList(population.getPopulation()).indexOf(winner));
 		}
 
-		assertTrue("Only the first two individuals ever won: " + winningPositions,
-				winningPositions.contains(2) || winningPositions.contains(3));
+		assertTrue(winningPositions.contains(2) || winningPositions.contains(3), "Only the first two individuals ever won: " + winningPositions);
 	}
 
 	/**

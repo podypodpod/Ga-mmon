@@ -1,16 +1,16 @@
 package uk.co.davidlomas.gammon.test.genes;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 public class FitnessCalculatorTest {
-	@BeforeClass
+	@BeforeAll
 	public static void setup() {
 		SettingsUtil.resetSettings();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass() {
 		SettingsUtil.resetSettings();
 	}

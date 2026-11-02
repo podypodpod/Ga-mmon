@@ -1,15 +1,20 @@
 package uk.co.davidlomas.gammon.test.game;
 
-import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.game.AiPlayer;
 import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.BoardEvaluator;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
-import static junit.framework.TestCase.assertFalse;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test class for {@link BoardEvaluator}
@@ -19,7 +24,7 @@ public class BoardEvaluatorTest {
 	/**
 	 * Before class
 	 */
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();
 	}
@@ -27,7 +32,7 @@ public class BoardEvaluatorTest {
 	/**
 	 * After class
 	 */
-	@AfterClass
+	@AfterAll
 	public static void afterClass() {
 		SettingsUtil.resetSettings();
 	}
@@ -41,7 +46,7 @@ public class BoardEvaluatorTest {
 	/** Second board */
 	private Board secondBoard;
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		classUnderTest = new BoardEvaluator();
 		startingBoard = new Board();
@@ -54,14 +59,14 @@ public class BoardEvaluatorTest {
 
 	@Test
 	public void testingSettingAndGettingTheBoardReturnsTrueWithTheSameBoard() {
-		Assert.assertEquals(classUnderTest.getBoard(), startingBoard);
+		assertEquals(classUnderTest.getBoard(), startingBoard);
 	}
 
 	@Test
 	public void testingSettingAndGettingTheBoardReturnsFalseWithTheADifferentBoard() {
 		Board newBoard = new Board();
 		newBoard.setBlackBore(5);
-		Assert.assertNotEquals(classUnderTest.getBoard(), newBoard);
+		assertNotEquals(classUnderTest.getBoard(), newBoard);
 	}
 
 	/**
@@ -78,7 +83,7 @@ public class BoardEvaluatorTest {
 		secondBoard.Points[2].addBlackPiece();
 
 		//when
-		assertTrue("position points[2] hasn't been doubled", classUnderTest.hasABlotBeenDoubled(secondBoard));
+		assertTrue(classUnderTest.hasABlotBeenDoubled(secondBoard), "position points[2] hasn't been doubled");
 	}
 
 	/**
@@ -94,7 +99,7 @@ public class BoardEvaluatorTest {
 		secondBoard.Points[3].addBlackPiece();
 
 		//when
-		assertFalse("position points[2] has been doubled", classUnderTest.hasABlotBeenDoubled(secondBoard));
+		assertFalse(classUnderTest.hasABlotBeenDoubled(secondBoard), "position points[2] has been doubled");
 	}
 
 	/**
@@ -122,7 +127,7 @@ public class BoardEvaluatorTest {
 	@Test
 	public void testingThatBearingAPieceThenCallingHasAHasBeenBoreReturnsTrue() {
 		secondBoard.setBlackBore(1);
-		assertTrue("Piece has not been bore", classUnderTest.hasAPieceBeenBore(secondBoard));
+		assertTrue(classUnderTest.hasAPieceBeenBore(secondBoard), "Piece has not been bore");
 	}
 
 	/**
@@ -131,7 +136,7 @@ public class BoardEvaluatorTest {
 	@Test
 	public void testingThatMovingAPieceNotToBearThenCallingHasAHasBeenBoreReturnsTrue() {
 		secondBoard.Points[3].addBlackPiece();
-		assertFalse("Piece has been bore", classUnderTest.hasAPieceBeenBore(secondBoard));
+		assertFalse(classUnderTest.hasAPieceBeenBore(secondBoard), "Piece has been bore");
 	}
 
 
@@ -141,7 +146,7 @@ public class BoardEvaluatorTest {
 	@Test
 	public void testingThatTakingAnEnemyPieceAndCallingHasAPieceHasBeenTakenReturnsTrue() {
 		secondBoard.Points[0].addBlackPiece();
-		assertTrue("Hasn't recognized you taking an oppositions piece", classUnderTest.hasAPieceBeenTaken(secondBoard));
+		assertTrue(classUnderTest.hasAPieceBeenTaken(secondBoard), "Hasn't recognized you taking an oppositions piece");
 	}
 
 	/**
@@ -150,7 +155,7 @@ public class BoardEvaluatorTest {
 	@Test
 	public void testingThatMovingAPieceAndCallingHasAPieceHasBeenTakenReturnsFalse() {
 		secondBoard.Points[4].addBlackPiece();
-		assertFalse("Has counted moving a piece as taking a piece", classUnderTest.hasAPieceBeenTaken(secondBoard));
+		assertFalse(classUnderTest.hasAPieceBeenTaken(secondBoard), "Has counted moving a piece as taking a piece");
 	}
 
 	/**
@@ -159,7 +164,7 @@ public class BoardEvaluatorTest {
 	@Test
 	public void testingThatTakingMyOwnPieceAndCallingHasAPieceHasBeenTakenReturnsFalse() {
 		secondBoard.Points[25].addRedPiece();
-		assertFalse("Is counting taking your own piece as a positive", classUnderTest.hasAPieceBeenTaken(secondBoard));
+		assertFalse(classUnderTest.hasAPieceBeenTaken(secondBoard), "Is counting taking your own piece as a positive");
 	}
 
 	/**
@@ -177,7 +182,7 @@ public class BoardEvaluatorTest {
 	@Test
 	public void testingHasAStackBeenAddedToPositive() {
 		secondBoard.Points[13].addBlackPiece();
-		assertTrue("a piece wasn't stacked on position 13", classUnderTest.hasAStackBeenAddedTo(secondBoard));
+		assertTrue(classUnderTest.hasAStackBeenAddedTo(secondBoard), "a piece wasn't stacked on position 13");
 	}
 
 }
