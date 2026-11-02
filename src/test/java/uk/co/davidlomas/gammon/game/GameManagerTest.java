@@ -6,12 +6,19 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.genes.Individual;
+import uk.co.davidlomas.gammon.gui.BoardContainerFrame;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
-import static java.lang.Thread.activeCount;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+import java.awt.GraphicsEnvironment;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 public class GameManagerTest {
 
@@ -96,16 +103,33 @@ public class GameManagerTest {
 	}
 
 	/**
-	 * Normally 2 threads,
-	 * gui is 3rd thread
-	 * <p>
-	 * checking there is 3 threads when using a gui
+	 * With the GUI on, the first game opens the board window and the games after it draw in the same one, instead of
+	 * each opening its own
 	 */
 	@Test
-	public void testingThatPlayingIndividualsAgainstEachOtherWithGuiSettingOnCreatesaThirdGuiThread() {
+	public void withTheGuiOnEveryGameDrawsInTheSameWindow() throws Exception {
+		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
 		GameSettings.setDisplayGUICache(true);
-		new GameManager().playIndividualsVsEachOther(individual1, individual2);
-		assertTrue(activeCount() > 2);
+		// closing the window only closes it: the real one ends the program, which would end the test run
+		GameManager.windowCloseOperation = WindowConstants.DISPOSE_ON_CLOSE;
+		try {
+			new GameManager().playIndividualsVsEachOther(individual1, individual2);
+			final BoardContainerFrame window = GameManager.boardContainerFrame;
+			assertEquals(WindowConstants.DISPOSE_ON_CLOSE, window.getDefaultCloseOperation());
+
+			new GameManager().playIndividualsVsEachOther(individual2, individual1);
+
+			assertTrue(window.isShowing(), "the board window isn't showing");
+			assertSame(window, GameManager.boardContainerFrame, "the second game opened another window");
+		} finally {
+			GameSettings.setDisplayGUICache(false);
+			GameManager.windowCloseOperation = WindowConstants.EXIT_ON_CLOSE;
+			final BoardContainerFrame window = GameManager.boardContainerFrame;
+			GameManager.boardContainerFrame = null;
+			if (window != null) {
+				SwingUtilities.invokeAndWait(window::dispose);
+			}
+		}
 	}
 
 }

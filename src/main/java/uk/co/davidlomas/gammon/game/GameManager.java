@@ -24,6 +24,10 @@ import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.gui.BoardContainerFrame;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * GameManager
  * <p>
@@ -40,7 +44,11 @@ public class GameManager {
 
 	private final static Logger logger = LoggerFactory.getLogger(GameManager.class);
 
-	static BoardContainerFrame boardContainerFrame;
+	// set once, by startGui, and read by the game threads when they draw
+	static volatile BoardContainerFrame boardContainerFrame;
+
+	// what closing the board window does. Tests make it only close the window, rather than end the program
+	static int windowCloseOperation = WindowConstants.EXIT_ON_CLOSE;
 
 	/**
 	 * play Individuals Vs Each Other
@@ -54,6 +62,10 @@ public class GameManager {
 												final Individual individual2) {
 
 		if (GameSettings.getDisplayGUI()) {
+			if (SwingUtilities.isEventDispatchThread()) {
+				logger.warn("A game is being played on the Swing thread, so the board window can't update until it ends."
+						+ " Start games on another thread, as the Start Search button does");
+			}
 			startGui();
 		}
 
@@ -66,20 +78,32 @@ public class GameManager {
 
 	/**
 	 * start the Gui
+	 * <p>
+	 * One window is shared by every game, made the first time it's needed. It's built on the Swing thread, and this
+	 * waits for it, so the board panel is there before the game first draws on it
 	 */
-	private void startGui() {
-		// The Gui Thread
-		boardContainerFrame = new BoardContainerFrame();
-		final Thread guiThread = new Thread(boardContainerFrame);
-		guiThread.start();
-
-		// Stops it multi-threading,
-		try {
-			if (!GameSettings.getMultiThreading()) {
-				guiThread.join();
-			}
-		} catch (final InterruptedException e) {
-			logger.error("Interrupted during thread join", e);
+	private static synchronized void startGui() {
+		if (boardContainerFrame != null) {
+			return;
 		}
+		final BoardContainerFrame frame = new BoardContainerFrame();
+		final Runnable build = () -> {
+			frame.run();
+			frame.setDefaultCloseOperation(windowCloseOperation);
+		};
+		// invokeAndWait can't be used from the Swing thread itself, which is already the right place to build it
+		if (SwingUtilities.isEventDispatchThread()) {
+			build.run();
+		} else {
+			try {
+				SwingUtilities.invokeAndWait(build);
+			} catch (final InterruptedException e) {
+				Thread.currentThread().interrupt();
+				throw new IllegalStateException("Interrupted while opening the board window", e);
+			} catch (final InvocationTargetException e) {
+				throw new IllegalStateException("Couldn't open the board window", e.getCause());
+			}
+		}
+		boardContainerFrame = frame;
 	}
 }

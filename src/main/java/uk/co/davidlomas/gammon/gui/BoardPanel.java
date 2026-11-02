@@ -25,6 +25,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 
 /**
  * BoardPanel
@@ -34,12 +35,81 @@ import java.io.InputStream;
 public class BoardPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private Point[] points = null;
-	private int redBore, blackBore;
-	private Image backgroundImage;
+	// loaded once, rather than from disk every time the board is drawn
+	private static final Image BACKGROUND_IMAGE = loadBackgroundImage();
+	private static final int CHECKER_SIZE = 50;
+
+	/**
+	 * What to draw. The game hands over a new one for each move, a copy of its board, so a paint never sees the
+	 * board half way through a move. Null until the first board arrives, until then only the empty board is drawn
+	 */
+	private volatile Drawn drawn = null;
+
+	private static final class Drawn {
+		final Point[] points;
+		final int redBore;
+		final int blackBore;
+
+		Drawn(final Point[] points, final int redBore, final int blackBore) {
+			this.points = points;
+			this.redBore = redBore;
+			this.blackBore = blackBore;
+		}
+	}
+
+	private static Image loadBackgroundImage() {
+		try (InputStream is = BoardPanel.class.getResourceAsStream("/blank_board.png")) {
+			if (is == null) {
+				throw new IllegalStateException("blank_board.png isn't on the classpath");
+			}
+			return ImageIO.read(is);
+		} catch (final IOException e) {
+			throw new UncheckedIOException("Couldn't load the board image", e);
+		}
+	}
 
 	BoardPanel() {
 		setSize(1169, 637);
+	}
+
+	/**
+	 * Where the checker for a point is drawn, its top left corner. 0 and 25 are the bars, between the two halves
+	 *
+	 * @param point the point, 0 to 25
+	 *
+	 * @return the corner of the checker
+	 */
+	static java.awt.Point checkerCorner(final int point) {
+		if (point < 0 || point > 25) {
+			throw new IllegalArgumentException("There's no point " + point + " on the board, they go from 0 to 25");
+		}
+		if (point == 0) {
+			return new java.awt.Point(510, 150);
+		} else if (point == 25) {
+			return new java.awt.Point(510, 300);
+		} else if (point < 7) {
+			// top right half
+			return new java.awt.Point(990 - point * 70, 80);
+		} else if (point < 13) {
+			// top left half
+			return new java.awt.Point(500 - (point - 6) * 70, 80);
+		} else if (point < 19) {
+			// bottom left half
+			return new java.awt.Point(20 + (point - 12) * 70, 430);
+		}
+		// bottom right half
+		return new java.awt.Point(500 + (point - 18) * 70, 430);
+	}
+
+	/**
+	 * Where the count of borne off checkers is drawn, its top left corner
+	 *
+	 * @param black the player
+	 *
+	 * @return the corner of the checker
+	 */
+	static java.awt.Point borneOffCorner(final boolean black) {
+		return black ? new java.awt.Point(1050, 150) : new java.awt.Point(1050, 390);
 	}
 
 	@Override
@@ -53,108 +123,53 @@ public class BoardPanel extends JPanel {
 		graphics2D.setFont(new Font("default", Font.BOLD, 16));
 
 		// Drawing background
-		try {
-			final InputStream is = getClass().getResourceAsStream("/blank_board.png");
-			backgroundImage = ImageIO.read(is);
-		} catch (final IOException e) {
-			e.printStackTrace();
+		graphics2D.drawImage(BACKGROUND_IMAGE, 0, 0, this);
+
+		final Drawn board = drawn;
+		if (board == null) {
+			return;
 		}
-		graphics2D.drawImage(backgroundImage, 0, 0, this);
 
-		// Drawing checkers on board
-		// loop through all points
-		for (int i = 0; i < points.length; i++) {
-			// check if its blank, end if it is
-			if (points[i].getBlackCount() != 0 || points[i].getRedCount() != 0) {
-				// check colour
-				if (points[i].getBlackCount() != 0) {
-					graphics2D.setColor(Color.BLACK);
-				} else {
-					graphics2D.setColor(Color.RED);
-				}
-
-				// print 0 point checkers
-				if (i == 0 || i == 25) {
-
-					// deciding on the side
-					if (i == 0) {
-
-						graphics2D.fillOval(510, 150, 50, 50);
-						graphics2D.setColor(Color.WHITE);
-						graphics2D.drawOval(510, 150, 50, 50);
-						graphics2D.drawString(points[i].numEither() + "", 532, 180);
-
-					} else {
-
-						graphics2D.fillOval(510, 300, 50, 50);
-						graphics2D.setColor(Color.WHITE);
-						graphics2D.drawOval(510, 300, 50, 50);
-						graphics2D.drawString(points[i].numEither() + "", 532, 330);
-
-					}
-
-					// print top right half checkers
-				} else if (i > 0 && i < 7) {
-
-					graphics2D.fillOval(990 - i * 70, 80, 50, 50);
-					graphics2D.setColor(Color.WHITE);
-					graphics2D.drawOval(990 - i * 70, 80, 50, 50);
-					graphics2D.drawString(points[i].numEither() + "", 1010 - i * 70, 110);
-
-					// print top left half checkers
-				} else if (i > 6 && i < 13) {
-
-					graphics2D.fillOval(500 - (i - 6) * 70, 80, 50, 50);
-					graphics2D.setColor(Color.WHITE);
-					graphics2D.drawOval(500 - (i - 6) * 70, 80, 50, 50);
-					graphics2D.drawString(points[i].numEither() + "", 520 - (i - 6) * 70, 110);
-
-					// print bottom left half checkers
-				} else if (i > 12 && i < 19) {
-
-					graphics2D.fillOval(20 + (i - 12) * 70, 430, 50, 50);
-					graphics2D.setColor(Color.WHITE);
-					graphics2D.drawOval(20 + (i - 12) * 70, 430, 50, 50);
-					graphics2D.drawString(points[i].numEither() + "", 40 + (i - 12) * 70, 460);
-
-					// print bottom right half checkers
-				} else if (i > 18 && i < 25) {
-
-					graphics2D.fillOval(500 + (i - 18) * 70, 430, 50, 50);
-					graphics2D.setColor(Color.WHITE);
-					graphics2D.drawOval(500 + (i - 18) * 70, 430, 50, 50);
-					graphics2D.drawString(points[i].numEither() + "", 520 + (i - 18) * 70, 460);
-				}
+		// Drawing checkers on board, skipping the empty points
+		for (int i = 0; i < board.points.length; i++) {
+			final Point point = board.points[i];
+			if (point.numEither() != 0) {
+				final Color colour = point.getBlackCount() != 0 ? Color.BLACK : Color.RED;
+				// the bar's count sits slightly further in
+				final int textOffset = i == 0 || i == 25 ? 22 : 20;
+				drawChecker(graphics2D, colour, checkerCorner(i), point.numEither(), textOffset);
 			}
 		}
 
 		// Drawing checkers that have been bored
-		if (blackBore != 0) {
-			graphics2D.setColor(Color.BLACK);
-			graphics2D.fillOval(1050, 150, 50, 50);
-			graphics2D.setColor(Color.WHITE);
-			graphics2D.drawOval(1050, 150, 50, 50);
-			graphics2D.drawString(blackBore + "", 1070, 180);
+		if (board.blackBore != 0) {
+			drawChecker(graphics2D, Color.BLACK, borneOffCorner(true), board.blackBore, 20);
+		}
+		if (board.redBore != 0) {
+			drawChecker(graphics2D, Color.RED, borneOffCorner(false), board.redBore, 20);
+		}
+	}
 
-		}
-		if (redBore != 0) {
-			graphics2D.setColor(Color.RED);
-			graphics2D.fillOval(1050, 390, 50, 50);
-			graphics2D.setColor(Color.WHITE);
-			graphics2D.drawOval(1050, 390, 50, 50);
-			graphics2D.drawString(redBore + "", 1070, 420);
-		}
+	private static void drawChecker(final Graphics2D graphics2D, final Color colour, final java.awt.Point corner,
+									final int count, final int textOffset) {
+		graphics2D.setColor(colour);
+		graphics2D.fillOval(corner.x, corner.y, CHECKER_SIZE, CHECKER_SIZE);
+		graphics2D.setColor(Color.WHITE);
+		graphics2D.drawOval(corner.x, corner.y, CHECKER_SIZE, CHECKER_SIZE);
+		graphics2D.drawString(count + "", corner.x + textOffset, corner.y + 30);
 	}
 
 	/**
 	 * printCheckers
 	 * <p>
-	 * method to call to print board
+	 * method to call to print board. It takes a copy, as the game carries on changing its board while this draws
 	 */
 	public void printCheckers(final Point[] points, final int redBore, final int blackBore) {
-		this.points = points;
-		this.redBore = redBore;
-		this.blackBore = blackBore;
+		final Point[] copy = new Point[points.length];
+		for (int i = 0; i < points.length; i++) {
+			copy[i] = new Point(points[i]);
+		}
+		drawn = new Drawn(copy, redBore, blackBore);
 		repaint();
 	}
 

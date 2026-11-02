@@ -2,9 +2,27 @@ package uk.co.davidlomas.gammon.gui;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
+import javax.swing.JButton;
+import java.awt.Component;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class MainMenuPanelTest {
+
 	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();
@@ -13,5 +31,72 @@ public class MainMenuPanelTest {
 	@AfterAll
 	public static void afterClass() {
 		SettingsUtil.resetSettings();
+	}
+
+	@Test
+	public void theMenuHasItsThreeButtons() {
+		assertEquals(List.of("Start Search", "Play Best Two", "Change Settings"), buttonNames(new MainMenuPanel()));
+	}
+
+	@Test
+	public void startSearchRunsOneSearchAtATime() {
+		final AtomicInteger searches = new AtomicInteger();
+		final AtomicReference<Runnable> whenDone = new AtomicReference<>();
+		final MainMenuPanel panel = new MainMenuPanel(done -> {
+			searches.incrementAndGet();
+			whenDone.set(done);
+		});
+		final JButton startSearch = button(panel, "Start Search");
+
+		// pressing it twice while the first search is running starts only one
+		startSearch.doClick();
+		startSearch.doClick();
+		assertEquals(1, searches.get());
+		assertFalse(startSearch.isEnabled());
+
+		// once that search ends, it can be pressed again
+		whenDone.get().run();
+		assertTrue(startSearch.isEnabled());
+		startSearch.doClick();
+		assertEquals(2, searches.get());
+	}
+
+	@Test
+	public void theSearchRunsTheGeneticAlgorithmOnItsOwnThread() throws Exception {
+		// a small, quick run, set here so this test doesn't depend on what SettingsUtil chooses
+		GenAlgSettings.setPopulationSize(2);
+		GenAlgSettings.setGenerations(1);
+		GenAlgSettings.setAttemptCount(9999);
+		final CountDownLatch done = new CountDownLatch(1);
+
+		final Thread search = MainMenuPanel.searchThread(done::countDown);
+		// StartGa can't be stopped part way, so a run that's still going after this carries on in the background.
+		// As a daemon it can't keep the test run open
+		search.setDaemon(true);
+		search.start();
+
+		assertNotSame(Thread.currentThread(), search);
+		assertTrue(done.await(120, TimeUnit.SECONDS), "the search didn't finish");
+		assertEquals(10000, GenAlgSettings.getAttemptCount());
+		assertTrue(new File(SettingsUtil.getPlayersDir() + "/Attempt - 10000/PlayerFromGen0").isFile());
+	}
+
+	private static List<String> buttonNames(final MainMenuPanel panel) {
+		final List<String> names = new ArrayList<>();
+		for (final Component component : panel.getComponents()) {
+			if (component instanceof JButton) {
+				names.add(((JButton) component).getText());
+			}
+		}
+		return names;
+	}
+
+	private static JButton button(final MainMenuPanel panel, final String name) {
+		for (final Component component : panel.getComponents()) {
+			if (component instanceof JButton && name.equals(((JButton) component).getText())) {
+				return (JButton) component;
+			}
+		}
+		throw new AssertionError("no " + name + " button");
 	}
 }
