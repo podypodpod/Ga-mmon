@@ -34,7 +34,7 @@ public class GenAlgSettings {
 	private static final String ATTEMPT_COUNT = "attemptCount";
 	private static final String GENERATIONS = "generations";
 	// the settings folder can be moved with -Dgammon.confDir, the tests use this to work on a copy
-	private static final String FILE_PATH = System.getProperty("gammon.confDir", "conf") + "/GenAlgSettings.properties";
+	private static final String FILE_PATH = System.getProperty(GameSettings.CONF_DIR_PROPERTY, "conf") + "/GenAlgSettings.properties";
 
 	private static Boolean elitism = null;
 

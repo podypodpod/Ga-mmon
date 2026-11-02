@@ -10,7 +10,12 @@ import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -45,7 +50,7 @@ public class StartGaTest {
 	}
 
 	@Test
-	public void aRunSavesTheFittestPlayerFromTheStartAndFromEachGeneration() {
+	public void aRunSavesTheFittestPlayerFromTheStartAndFromEachGeneration() throws IOException {
 		RandomSource.setSeed(1);
 
 		StartGa.main(null);
@@ -53,9 +58,23 @@ public class StartGaTest {
 		// each run is a new attempt, with its own folder
 		assertEquals(10001, GenAlgSettings.getAttemptCount());
 		final File attempt = new File(SettingsUtil.getPlayersDir() + "/Attempt - 10001");
-		assertTrue(new File(attempt, "FittestFromInitialPopulation").isFile());
-		assertTrue(new File(attempt, "PlayerFromGen0").isFile());
-		assertTrue(new File(attempt, "PlayerFromGen1").isFile());
+		for (final String saved : new String[]{"FittestFromInitialPopulation", "PlayerFromGen0", "PlayerFromGen1"}) {
+			assertIsAPlayer(new File(attempt, saved));
+		}
 		assertFalse(new File(attempt, "PlayerFromGen2").exists(), "only two generations were asked for");
+	}
+
+	/**
+	 * The file holds a whole chromosome, 7 binary digits for each gene, and the fitness the player was saved with
+	 */
+	private static void assertIsAPlayer(final File file) throws IOException {
+		assertTrue(file.isFile(), file + " wasn't saved");
+		final Properties properties = new Properties();
+		try (InputStream input = new FileInputStream(file)) {
+			properties.load(input);
+		}
+		final int genes = new Individual().getNumOfAttributes();
+		assertThat(properties.getProperty("chromosome")).as(file.getName()).matches("[01]{" + (genes * 7) + "}");
+		assertThat(Double.parseDouble(properties.getProperty("fitness"))).as(file.getName()).isGreaterThanOrEqualTo(0);
 	}
 }

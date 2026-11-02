@@ -3,6 +3,8 @@ package uk.co.davidlomas.gammon.test.helpers;
 import org.apache.commons.io.FileUtils;
 import org.junit.platform.launcher.LauncherSession;
 import org.junit.platform.launcher.LauncherSessionListener;
+import uk.co.davidlomas.gammon.genes.Individual;
+import uk.co.davidlomas.gammon.settings.GameSettings;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,8 +24,10 @@ import java.io.UncheckedIOException;
  */
 public class TestConfListener implements LauncherSessionListener {
 
-	private static final String CONF_DIR_PROPERTY = "gammon.confDir";
-	private static final String PLAYERS_DIR_PROPERTY = "gammon.playersDir";
+	// These are compile-time constants, so using them here doesn't load GameSettings or Individual, which read the
+	// properties when they load
+	private static final String CONF_DIR_PROPERTY = GameSettings.CONF_DIR_PROPERTY;
+	private static final String PLAYERS_DIR_PROPERTY = Individual.PLAYERS_DIR_PROPERTY;
 
 	@Override
 	public void launcherSessionOpened(final LauncherSession session) {

@@ -5,11 +5,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import uk.co.davidlomas.gammon.game.GameManager;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -33,6 +33,7 @@ public class PopulationTest {
 
 	@BeforeEach
 	public void setup() {
+		RandomSource.setSeed(1);
 		initPopulation = new Population(POPULATION_SIZE, true);
 
 		GenAlgSettings.setElitism(true);
@@ -71,24 +72,21 @@ public class PopulationTest {
 	}
 
 	/**
-	 * Checking that calculate fitness does change order of a popualtion
+	 * With two players, each one's fitness is its score from the game where it moves first. Replaying those two games
+	 * with the same seed gives the scores, so this holds whichever seed is used and whoever wins.
 	 */
 	@Test
-	public void calculateFitnessChangesOrder() {
-		// Seeded, because each player's fitness is its score from the one game where it moves first, and if both
-		// of them lose that game every fitness stays 0. Unseeded, that happened often enough to fail CI.
-		RandomSource.setSeed(1);
-		initPopulation = new Population(POPULATION_SIZE, true);
+	public void calculatingFitnessGivesEachPlayerItsScoreFromTheGameItMovesFirstIn() {
+		final Individual first = initPopulation.getIndividual(0);
+		final Individual second = initPopulation.getIndividual(1);
 
-		// GIVEN a population which hasn't had it's fitness calculated
-		// AND its currently fittest player
-		final double before = initPopulation.getFittest().getFitness();
-
-		// WHEN we calculate the fitness
+		RandomSource.setSeed(4);
 		initPopulation.calculateFitness();
 
-		// THEN the fittest has changed
-		assertThat(initPopulation.getFittest().getFitness()).as("fittest").isNotEqualTo(before);
+		RandomSource.setSeed(4);
+		final GameManager gameManager = new GameManager();
+		assertEquals(gameManager.playIndividualsVsEachOther(first, second).getPlayerOneScore(), first.getFitness(), 1e-9);
+		assertEquals(gameManager.playIndividualsVsEachOther(second, first).getPlayerOneScore(), second.getFitness(), 1e-9);
 	}
 
 }
