@@ -3,7 +3,16 @@ apply plugin: 'idea'
 apply plugin: 'checkstyle'
 
 version = '1.0'
-sourceCompatibility = 1.8
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += ['-Xlint:deprecation', '-Xlint:removal']
+}
 
 checkstyle {
     ignoreFailures = true
