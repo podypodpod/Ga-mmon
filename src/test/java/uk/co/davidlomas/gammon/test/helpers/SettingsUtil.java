@@ -1,5 +1,6 @@
 package uk.co.davidlomas.gammon.test.helpers;
 
+import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 
@@ -20,5 +21,12 @@ public class SettingsUtil {
 		GenAlgSettings.setTournamentSize(2);
 		GenAlgSettings.setUniformRate(632.0);
 		GenAlgSettings.setMutationRate(0.1);
+	}
+
+	/**
+	 * The folder the tests save players in, set by TestConfListener or Gradle
+	 */
+	public static String getPlayersDir() {
+		return System.getProperty(Individual.PLAYERS_DIR_PROPERTY);
 	}
 }

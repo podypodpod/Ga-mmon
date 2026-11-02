@@ -1,6 +1,5 @@
 package uk.co.davidlomas.gammon.genes;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,28 +24,27 @@ public class IndividualTest {
 	}
 
 	@AfterAll
-	public static void afterClass() throws IOException {
+	public static void afterClass() {
 		SettingsUtil.resetSettings();
-		final File directory = new File("savedPlayers/Attempt - 9999");
-		FileUtils.deleteDirectory(directory);
 	}
 
 	@BeforeEach
 	public void setup() {
 		individual1 = new Individual();
 		individual2 = new Individual();
-		filePath = "savedPlayers/testIndividual - " + UUID.randomUUID().toString();
+		new File(SettingsUtil.getPlayersDir()).mkdirs();
+		filePath = SettingsUtil.getPlayersDir() + "/testIndividual - " + UUID.randomUUID().toString();
 	}
 
 	@Test
 	public void getFilePathForPlayersComparedToActualStringShouldBeTrue() {
 		final String actual = individual1.getFilePathForPlayers();
-		final String expected = "savedPlayers/Attempt - ";
+		final String expected = SettingsUtil.getPlayersDir() + "/Attempt - ";
 		assertTrue(actual.startsWith(expected));
 	}
 
 	/**
-	 * Saving a player to savedPlayers/testIndividual and then loading, checking results match
+	 * Saving a player to the players folder and then loading, checking results match
 	 */
 	@Test
 	public void savingAndLoadingIndividualCheckingPropertiesMatch() {
