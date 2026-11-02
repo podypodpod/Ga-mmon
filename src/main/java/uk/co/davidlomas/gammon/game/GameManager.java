@@ -75,6 +75,12 @@ public class GameManager {
 			return;
 		}
 		final BoardContainerFrame frame = new BoardContainerFrame();
+		// invokeAndWait can't be used from the Swing thread itself, which is already the right place to build it
+		if (SwingUtilities.isEventDispatchThread()) {
+			frame.run();
+			boardContainerFrame = frame;
+			return;
+		}
 		try {
 			SwingUtilities.invokeAndWait(frame);
 		} catch (final InterruptedException e) {

@@ -18,12 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
  */
 public class BoardPanelTest {
 
-	// inside the checker drawn on each spot, away from the count written on it
-	private static final int[] POINT_SIX = {580, 100};
-	private static final int[] POINT_ONE = {930, 100};
-	private static final int[] POINT_TWO = {860, 100};
-	private static final int[] BLACK_BORNE_OFF = {1060, 165};
-	private static final int[] RED_BORNE_OFF = {1060, 405};
+	// a spot inside each checker, away from the count written on it
+	private static final java.awt.Point POINT_SIX = inside(BoardPanel.checkerCorner(6));
+	private static final java.awt.Point POINT_ONE = inside(BoardPanel.checkerCorner(1));
+	private static final java.awt.Point POINT_TWO = inside(BoardPanel.checkerCorner(2));
+	private static final java.awt.Point BLACK_BORNE_OFF = inside(BoardPanel.borneOffCorner(true));
+	private static final java.awt.Point RED_BORNE_OFF = inside(BoardPanel.borneOffCorner(false));
 
 	@BeforeAll
 	public static void beforeClass() {
@@ -57,6 +57,18 @@ public class BoardPanelTest {
 	}
 
 	@Test
+	public void itDrawsTheBoardAsItWasHandedOverNotAsTheGameChangesIt() {
+		final Board board = new Board();
+		final BoardPanel panel = new BoardPanel();
+		panel.printCheckers(board.Points, 0, 0);
+
+		// the game carries on and empties point 6 before the panel gets round to drawing
+		board.Points[6].setBlackCount(0);
+
+		assertEquals(Color.BLACK.getRGB(), colourAt(draw(panel), POINT_SIX));
+	}
+
+	@Test
 	public void piecesBorneOffAreDrawnOnlyOnceThereAreSome() {
 		final BoardPanel panel = new BoardPanel();
 		panel.printCheckers(new Board().Points, 0, 3);
@@ -78,7 +90,11 @@ public class BoardPanelTest {
 		return image;
 	}
 
-	private static int colourAt(final BufferedImage image, final int[] spot) {
-		return image.getRGB(spot[0], spot[1]);
+	private static java.awt.Point inside(final java.awt.Point corner) {
+		return new java.awt.Point(corner.x + 10, corner.y + 20);
+	}
+
+	private static int colourAt(final BufferedImage image, final java.awt.Point spot) {
+		return image.getRGB(spot.x, spot.y);
 	}
 }

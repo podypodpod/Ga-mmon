@@ -43,8 +43,7 @@ public class BoardContainerFrame extends JFrame implements Runnable {
 	private void createGUI() {
 
 		// Setting up this frame and its panel
-		final JFrame frame = this;
-		frame.setTitle("GA-mmon");
+		setTitle("GA-mmon");
 		final JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridBagLayout());
 		final GridBagConstraints c = new GridBagConstraints();
@@ -58,10 +57,10 @@ public class BoardContainerFrame extends JFrame implements Runnable {
 		c.weighty = 1.0;
 		mainPanel.add(bp, c);
 
-		frame.add(mainPanel);
-		frame.setSize(1166, 600);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		add(mainPanel);
+		setSize(1166, 600);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		setVisible(true);
 	}
 
 	@Override

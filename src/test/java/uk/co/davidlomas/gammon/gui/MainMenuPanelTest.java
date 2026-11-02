@@ -11,7 +11,10 @@ import java.awt.Component;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -36,23 +39,43 @@ public class MainMenuPanelTest {
 	}
 
 	@Test
-	public void pressingStartSearchStartsTheSearch() {
+	public void startSearchRunsOneSearchAtATime() {
 		final AtomicInteger searches = new AtomicInteger();
-		final MainMenuPanel panel = new MainMenuPanel(searches::incrementAndGet);
+		final AtomicReference<Runnable> whenDone = new AtomicReference<>();
+		final MainMenuPanel panel = new MainMenuPanel(done -> {
+			searches.incrementAndGet();
+			whenDone.set(done);
+		});
+		final JButton startSearch = button(panel, "Start Search");
 
-		button(panel, "Start Search").doClick();
-
+		// pressing it twice while the first search is running starts only one
+		startSearch.doClick();
+		startSearch.doClick();
 		assertEquals(1, searches.get());
+		assertFalse(startSearch.isEnabled());
+
+		// once that search ends, it can be pressed again
+		whenDone.get().run();
+		assertTrue(startSearch.isEnabled());
+		startSearch.doClick();
+		assertEquals(2, searches.get());
 	}
 
 	@Test
-	public void theSearchRunsTheGeneticAlgorithmOnItsOwnThread() throws InterruptedException {
-		// SettingsUtil sets attempt 9999, so this run is attempt 10000
-		final Thread search = MainMenuPanel.startSearch();
+	public void theSearchRunsTheGeneticAlgorithmOnItsOwnThread() throws Exception {
+		// a small, quick run, set here so this test doesn't depend on what SettingsUtil chooses
+		GenAlgSettings.setPopulationSize(2);
+		GenAlgSettings.setGenerations(1);
+		GenAlgSettings.setAttemptCount(9999);
+		final CountDownLatch done = new CountDownLatch(1);
+
+		final Thread search = MainMenuPanel.startSearch(done::countDown);
 
 		assertNotSame(Thread.currentThread(), search);
-		search.join(120_000);
-		assertFalse(search.isAlive(), "the search didn't finish");
+		// StartGa can't be stopped part way, so a run that's still going after this carries on in the background.
+		// It's a daemon thread, so it can't keep the test run open
+		assertTrue(search.isDaemon());
+		assertTrue(done.await(120, TimeUnit.SECONDS), "the search didn't finish");
 		assertEquals(10000, GenAlgSettings.getAttemptCount());
 		assertTrue(new File(SettingsUtil.getPlayersDir() + "/Attempt - 10000/PlayerFromGen0").isFile());
 	}

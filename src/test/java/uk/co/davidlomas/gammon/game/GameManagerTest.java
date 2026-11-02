@@ -12,6 +12,7 @@ import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import java.awt.GraphicsEnvironment;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -111,6 +112,8 @@ public class GameManagerTest {
 		try {
 			new GameManager().playIndividualsVsEachOther(individual1, individual2);
 			final BoardContainerFrame window = GameManager.boardContainerFrame;
+			// closing it now only closes it: the real window ends the program, which would end the test run
+			SwingUtilities.invokeAndWait(() -> window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE));
 
 			new GameManager().playIndividualsVsEachOther(individual2, individual1);
 

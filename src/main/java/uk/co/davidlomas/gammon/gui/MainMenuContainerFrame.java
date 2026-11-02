@@ -7,15 +7,12 @@ public class MainMenuContainerFrame extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	public MainMenuPanel mmp;
-	JPanel mainPanel;
-	JFrame frame;
 
 	public void createGUI() {
 
 		// Setting up this frame and its panel
-		frame = this;
-		frame.setTitle("GA-mmon");
-		mainPanel = new JPanel();
+		setTitle("GA-mmon");
+		final JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridBagLayout());
 		final GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -28,10 +25,10 @@ public class MainMenuContainerFrame extends JFrame implements Runnable {
 		c.weighty = 1.0;
 		mainPanel.add(mmp, c);
 
-		frame.add(mainPanel);
-		frame.setSize(1166, 600);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		add(mainPanel);
+		setSize(1166, 600);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
 	}
 
 	@Override

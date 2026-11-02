@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import java.awt.GraphicsEnvironment;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,7 +31,11 @@ public class BoardContainerFrameTest {
 		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
 		final BoardContainerFrame frame = new BoardContainerFrame();
 		try {
-			SwingUtilities.invokeAndWait(frame);
+			// closing it here only closes it: the real window ends the program, which would end the test run
+			SwingUtilities.invokeAndWait(() -> {
+				frame.run();
+				frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+			});
 
 			assertTrue(frame.isShowing(), "the frame itself should be the window that opens");
 			assertEquals("GA-mmon", frame.getTitle());
