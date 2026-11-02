@@ -1,11 +1,13 @@
 package uk.co.davidlomas.gammon.genes;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
+import uk.co.davidlomas.gammon.util.RandomSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,6 +46,11 @@ public class PopulationTest {
 		GenAlgSettings.setMutationRate(1);
 	}
 
+	@AfterEach
+	public void tearDown() {
+		RandomSource.reset();
+	}
+
 	@Test
 	public void checkPopulationSizeIsRight() {
 		assertEquals(POPULATION_SIZE, initPopulation.getPopulation().length);
@@ -68,6 +75,11 @@ public class PopulationTest {
 	 */
 	@Test
 	public void calculateFitnessChangesOrder() {
+		// Seeded, because each player's fitness is its score from the one game where it moves first, and if both
+		// of them lose that game every fitness stays 0. Unseeded, that happened often enough to fail CI.
+		RandomSource.setSeed(1);
+		initPopulation = new Population(POPULATION_SIZE, true);
+
 		// GIVEN a population which hasn't had it's fitness calculated
 		// AND its currently fittest player
 		final double before = initPopulation.getFittest().getFitness();
