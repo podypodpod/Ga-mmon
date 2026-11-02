@@ -10,13 +10,20 @@ public class MainMenuPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	public MainMenuPanel() {
+		this(MainMenuPanel::startSearch);
+	}
+
+	/**
+	 * @param startSearch what the Start Search button does, so tests can see it's pressed without running the GA
+	 */
+	MainMenuPanel(final Runnable startSearch) {
 		setLayout(new GridLayout());
 
-		final JButton startSearch = new JButton("Start Search");
+		final JButton startSearchButton = new JButton("Start Search");
 
-		startSearch.addActionListener(e -> new StartGa());
+		startSearchButton.addActionListener(e -> startSearch.run());
 
-		this.add(startSearch);
+		this.add(startSearchButton);
 
 		final JButton playBestTwo = new JButton("Play Best Two");
 		this.add(playBestTwo);
@@ -24,5 +31,16 @@ public class MainMenuPanel extends JPanel {
 		final JButton changeSettings = new JButton("Change Settings");
 		this.add(changeSettings);
 
+	}
+
+	/**
+	 * Runs the genetic algorithm on its own thread, so the window keeps responding while it searches
+	 *
+	 * @return the thread it's running on
+	 */
+	static Thread startSearch() {
+		final Thread search = new Thread(() -> StartGa.main(new String[0]), "GA search");
+		search.start();
+		return search;
 	}
 }

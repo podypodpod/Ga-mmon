@@ -18,11 +18,12 @@
 
 package uk.co.davidlomas.gammon.game;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.gui.BoardContainerFrame;
 import uk.co.davidlomas.gammon.settings.GameSettings;
+
+import javax.swing.SwingUtilities;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * GameManager
@@ -38,9 +39,8 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
  */
 public class GameManager {
 
-	private final static Logger logger = LoggerFactory.getLogger(GameManager.class);
-
-	static BoardContainerFrame boardContainerFrame;
+	// set once, by startGui, and read by the game threads when they draw
+	static volatile BoardContainerFrame boardContainerFrame;
 
 	/**
 	 * play Individuals Vs Each Other
@@ -66,20 +66,23 @@ public class GameManager {
 
 	/**
 	 * start the Gui
+	 * <p>
+	 * One window is shared by every game, made the first time it's needed. It's built on the Swing thread, and this
+	 * waits for it, so the board panel is there before the game first draws on it
 	 */
-	private void startGui() {
-		// The Gui Thread
-		boardContainerFrame = new BoardContainerFrame();
-		final Thread guiThread = new Thread(boardContainerFrame);
-		guiThread.start();
-
-		// Stops it multi-threading,
-		try {
-			if (!GameSettings.getMultiThreading()) {
-				guiThread.join();
-			}
-		} catch (final InterruptedException e) {
-			logger.error("Interrupted during thread join", e);
+	private static synchronized void startGui() {
+		if (boardContainerFrame != null) {
+			return;
 		}
+		final BoardContainerFrame frame = new BoardContainerFrame();
+		try {
+			SwingUtilities.invokeAndWait(frame);
+		} catch (final InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new IllegalStateException("Interrupted while opening the board window", e);
+		} catch (final InvocationTargetException e) {
+			throw new IllegalStateException("Couldn't open the board window", e.getCause());
+		}
+		boardContainerFrame = frame;
 	}
 }

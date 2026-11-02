@@ -25,6 +25,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 
 /**
  * BoardPanel
@@ -34,9 +35,19 @@ import java.io.InputStream;
 public class BoardPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	// loaded once, rather than from disk every time the board is drawn
+	private static final Image BACKGROUND_IMAGE = loadBackgroundImage();
+	// null until the first board arrives, until then only the empty board is drawn
 	private Point[] points = null;
 	private int redBore, blackBore;
-	private Image backgroundImage;
+
+	private static Image loadBackgroundImage() {
+		try (InputStream is = BoardPanel.class.getResourceAsStream("/blank_board.png")) {
+			return ImageIO.read(is);
+		} catch (final IOException e) {
+			throw new UncheckedIOException("Couldn't load the board image", e);
+		}
+	}
 
 	BoardPanel() {
 		setSize(1169, 637);
@@ -53,13 +64,11 @@ public class BoardPanel extends JPanel {
 		graphics2D.setFont(new Font("default", Font.BOLD, 16));
 
 		// Drawing background
-		try {
-			final InputStream is = getClass().getResourceAsStream("/blank_board.png");
-			backgroundImage = ImageIO.read(is);
-		} catch (final IOException e) {
-			e.printStackTrace();
+		graphics2D.drawImage(BACKGROUND_IMAGE, 0, 0, this);
+
+		if (points == null) {
+			return;
 		}
-		graphics2D.drawImage(backgroundImage, 0, 0, this);
 
 		// Drawing checkers on board
 		// loop through all points

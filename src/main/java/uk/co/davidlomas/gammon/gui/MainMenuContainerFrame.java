@@ -12,8 +12,9 @@ public class MainMenuContainerFrame extends JFrame implements Runnable {
 
 	public void createGUI() {
 
-		// Creating JFrame and panel
-		frame = new JFrame("GA-mmon");
+		// Setting up this frame and its panel
+		frame = this;
+		frame.setTitle("GA-mmon");
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new GridBagLayout());
 		final GridBagConstraints c = new GridBagConstraints();

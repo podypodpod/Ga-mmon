@@ -29,6 +29,8 @@ import java.awt.*;
  * This is not currently needed, I could have put this in to the board panel
  * class but Its here for future changes if I add buttons to the GUI it will go
  * in to another class
+ * <p>
+ * Run it on the Swing thread, with SwingUtilities.invokeAndWait, so bp is ready when it returns
  *
  * @author David Lomas
  */
@@ -40,8 +42,9 @@ public class BoardContainerFrame extends JFrame implements Runnable {
 
 	private void createGUI() {
 
-		// Creating JFrame and panel
-		final JFrame frame = new JFrame("GA-mmon");
+		// Setting up this frame and its panel
+		final JFrame frame = this;
+		frame.setTitle("GA-mmon");
 		final JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridBagLayout());
 		final GridBagConstraints c = new GridBagConstraints();
