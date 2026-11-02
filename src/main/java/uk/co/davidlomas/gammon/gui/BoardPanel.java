@@ -80,6 +80,9 @@ public class BoardPanel extends JPanel {
 	 * @return the corner of the checker
 	 */
 	static java.awt.Point checkerCorner(final int point) {
+		if (point < 0 || point > 25) {
+			throw new IllegalArgumentException("There's no point " + point + " on the board, they go from 0 to 25");
+		}
 		if (point == 0) {
 			return new java.awt.Point(510, 150);
 		} else if (point == 25) {

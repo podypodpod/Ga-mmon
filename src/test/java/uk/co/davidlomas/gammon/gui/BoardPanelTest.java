@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Draws the board panel into an image, which needs no screen, and checks the colour where checkers should be
@@ -66,6 +67,12 @@ public class BoardPanelTest {
 		board.Points[6].setBlackCount(0);
 
 		assertEquals(Color.BLACK.getRGB(), colourAt(draw(panel), POINT_SIX));
+	}
+
+	@Test
+	public void thereIsNoPlaceToDrawAPointOffTheBoard() {
+		assertThrows(IllegalArgumentException.class, () -> BoardPanel.checkerCorner(-1));
+		assertThrows(IllegalArgumentException.class, () -> BoardPanel.checkerCorner(26));
 	}
 
 	@Test

@@ -52,22 +52,36 @@ public class MainMenuPanel extends JPanel {
 	 * @return the thread it's running on
 	 */
 	static Thread startSearch(final Runnable whenDone) {
-		final Thread search = new Thread(() -> {
+		final Thread search = searchThread(whenDone);
+		search.start();
+		return search;
+	}
+
+	/**
+	 * The thread a search runs on, not yet started, so tests can make it a daemon before starting it. The real one
+	 * isn't a daemon, so the program waits for a search to finish rather than cutting it off mid-save
+	 *
+	 * @param whenDone run on the Swing thread once the search has finished or failed
+	 *
+	 * @return the thread, not started
+	 */
+	static Thread searchThread(final Runnable whenDone) {
+		return new Thread(() -> {
 			try {
 				StartGa.main(new String[0]);
-			} catch (final RuntimeException e) {
+			} catch (final Throwable e) {
+				// any failure is reported, including Errors such as a settings class failing to load
 				logger.error("The search failed", e);
 				if (!GraphicsEnvironment.isHeadless()) {
 					SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null,
 							"The search failed: " + e, "GA-mmon", JOptionPane.ERROR_MESSAGE));
 				}
+				if (e instanceof Error) {
+					throw (Error) e;
+				}
 			} finally {
 				SwingUtilities.invokeLater(whenDone);
 			}
 		}, "GA search");
-		// so a search still running can't keep the program open once the window has gone
-		search.setDaemon(true);
-		search.start();
-		return search;
 	}
 }

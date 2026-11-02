@@ -69,12 +69,13 @@ public class MainMenuPanelTest {
 		GenAlgSettings.setAttemptCount(9999);
 		final CountDownLatch done = new CountDownLatch(1);
 
-		final Thread search = MainMenuPanel.startSearch(done::countDown);
+		final Thread search = MainMenuPanel.searchThread(done::countDown);
+		// StartGa can't be stopped part way, so a run that's still going after this carries on in the background.
+		// As a daemon it can't keep the test run open
+		search.setDaemon(true);
+		search.start();
 
 		assertNotSame(Thread.currentThread(), search);
-		// StartGa can't be stopped part way, so a run that's still going after this carries on in the background.
-		// It's a daemon thread, so it can't keep the test run open
-		assertTrue(search.isDaemon());
 		assertTrue(done.await(120, TimeUnit.SECONDS), "the search didn't finish");
 		assertEquals(10000, GenAlgSettings.getAttemptCount());
 		assertTrue(new File(SettingsUtil.getPlayersDir() + "/Attempt - 10000/PlayerFromGen0").isFile());

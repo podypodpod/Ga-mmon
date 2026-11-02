@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import java.awt.GraphicsEnvironment;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
@@ -109,11 +110,12 @@ public class GameManagerTest {
 	public void withTheGuiOnEveryGameDrawsInTheSameWindow() throws Exception {
 		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
 		GameSettings.setDisplayGUICache(true);
+		// closing the window only closes it: the real one ends the program, which would end the test run
+		GameManager.windowCloseOperation = WindowConstants.DISPOSE_ON_CLOSE;
 		try {
 			new GameManager().playIndividualsVsEachOther(individual1, individual2);
 			final BoardContainerFrame window = GameManager.boardContainerFrame;
-			// closing it now only closes it: the real window ends the program, which would end the test run
-			SwingUtilities.invokeAndWait(() -> window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE));
+			assertEquals(WindowConstants.DISPOSE_ON_CLOSE, window.getDefaultCloseOperation());
 
 			new GameManager().playIndividualsVsEachOther(individual2, individual1);
 
@@ -121,6 +123,7 @@ public class GameManagerTest {
 			assertSame(window, GameManager.boardContainerFrame, "the second game opened another window");
 		} finally {
 			GameSettings.setDisplayGUICache(false);
+			GameManager.windowCloseOperation = WindowConstants.EXIT_ON_CLOSE;
 			final BoardContainerFrame window = GameManager.boardContainerFrame;
 			GameManager.boardContainerFrame = null;
 			if (window != null) {

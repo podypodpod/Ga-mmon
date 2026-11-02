@@ -18,11 +18,14 @@
 
 package uk.co.davidlomas.gammon.game;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.gui.BoardContainerFrame;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -39,8 +42,13 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class GameManager {
 
+	private final static Logger logger = LoggerFactory.getLogger(GameManager.class);
+
 	// set once, by startGui, and read by the game threads when they draw
 	static volatile BoardContainerFrame boardContainerFrame;
+
+	// what closing the board window does. Tests make it only close the window, rather than end the program
+	static int windowCloseOperation = WindowConstants.EXIT_ON_CLOSE;
 
 	/**
 	 * play Individuals Vs Each Other
@@ -54,6 +62,10 @@ public class GameManager {
 												final Individual individual2) {
 
 		if (GameSettings.getDisplayGUI()) {
+			if (SwingUtilities.isEventDispatchThread()) {
+				logger.warn("A game is being played on the Swing thread, so the board window can't update until it ends."
+						+ " Start games on another thread, as the Start Search button does");
+			}
 			startGui();
 		}
 
@@ -75,19 +87,22 @@ public class GameManager {
 			return;
 		}
 		final BoardContainerFrame frame = new BoardContainerFrame();
+		final Runnable build = () -> {
+			frame.run();
+			frame.setDefaultCloseOperation(windowCloseOperation);
+		};
 		// invokeAndWait can't be used from the Swing thread itself, which is already the right place to build it
 		if (SwingUtilities.isEventDispatchThread()) {
-			frame.run();
-			boardContainerFrame = frame;
-			return;
-		}
-		try {
-			SwingUtilities.invokeAndWait(frame);
-		} catch (final InterruptedException e) {
-			Thread.currentThread().interrupt();
-			throw new IllegalStateException("Interrupted while opening the board window", e);
-		} catch (final InvocationTargetException e) {
-			throw new IllegalStateException("Couldn't open the board window", e.getCause());
+			build.run();
+		} else {
+			try {
+				SwingUtilities.invokeAndWait(build);
+			} catch (final InterruptedException e) {
+				Thread.currentThread().interrupt();
+				throw new IllegalStateException("Interrupted while opening the board window", e);
+			} catch (final InvocationTargetException e) {
+				throw new IllegalStateException("Couldn't open the board window", e.getCause());
+			}
 		}
 		boardContainerFrame = frame;
 	}
