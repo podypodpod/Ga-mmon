@@ -1,7 +1,6 @@
 package uk.co.davidlomas.gammon.test.game;
 
 import org.junit.*;
-import org.junit.rules.ExpectedException;
 import uk.co.davidlomas.gammon.game.AiPlayer;
 import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.BoardList;
@@ -15,6 +14,7 @@ import uk.co.davidlomas.gammon.util.RandomSource;
 import java.lang.reflect.MalformedParametersException;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 public class BoardListTest {
@@ -33,10 +33,6 @@ public class BoardListTest {
 	public static void afterClass() {
 		SettingsUtil.resetSettings();
 	}
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
 
 	@Before
 	public void setup() {
@@ -150,9 +146,7 @@ public class BoardListTest {
 	public void testingAddingABoardWithNextMoveToTheBoardListWithNoMovesLeft() {
 		assertFalse(classUnderTest.hasContents());
 
-		exception.expect(MalformedParametersException.class);
-		classUnderTest.addBoardWithNextMove(board, 0, 0, player, new MoveGenerator(individual));
-
-		assertTrue(classUnderTest.hasContents());
+		assertThrows(MalformedParametersException.class,
+				() -> classUnderTest.addBoardWithNextMove(board, 0, 0, player, new MoveGenerator(individual)));
 	}
 }
