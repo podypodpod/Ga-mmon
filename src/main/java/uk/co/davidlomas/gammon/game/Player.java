@@ -59,21 +59,49 @@ public class Player {
 			return false;
 		}
 
-		if (!movingToZeroPieces(to)) {
-			if (isValidLength(from, to)) {
-				if (validDestination(to, liveBoard)) {
-					return true;
+		if (!isValidLength(from, to)) {
+			return false;
+		}
+
+		if (isBearingOff(to)) {
+			return canBearOff(from, to, liveBoard);
+		}
+		return validDestination(to, liveBoard);
+	}
+
+	/**
+	 * returns true if the move takes the piece off the board: past 1 for black, past 24 for red
+	 */
+	private boolean isBearingOff(final int to) {
+		return black && to <= 0 || !black && to >= 25;
+	}
+
+	/**
+	 * returns true if the piece can be borne off. Every piece has to be home, and a roll bigger than the
+	 * piece needs can only be used on the piece furthest from being borne off
+	 */
+	private boolean canBearOff(final int from, final int to, final Board liveBoard) {
+		if (!liveBoard.canPlayerBear(black)) {
+			return false;
+		}
+		// the exact roll, landing on the edge of the board
+		if (to == 0 || to == 25) {
+			return true;
+		}
+		if (black) {
+			for (int point = from + 1; point <= 6; point++) {
+				if (liveBoard.Points[point].getBlackCount() > 0) {
+					return false;
 				}
 			}
-
-			// BEARING, bearing is counted as point -1 or 26
-		} else if (tryingAndCanBear(to, from, liveBoard)) {
-
-			if (moveRequiredIsAvailable(to, from)) {
-				return true;
+		} else {
+			for (int point = 19; point < from; point++) {
+				if (liveBoard.Points[point].getRedCount() > 0) {
+					return false;
+				}
 			}
 		}
-		return false;
+		return true;
 	}
 
 	private boolean isValidLength(final int from, final int to) {
@@ -109,7 +137,7 @@ public class Player {
 	public void movePiece(final int from, final int to, final Board liveBoard) {
 
 		// if not bearing positions
-		if (to != -1 && to != 26) {
+		if (!isBearingOff(to)) {
 
 			// if there is an opposing piece there
 			if (liveBoard.Points[to].getCol() != black && liveBoard.Points[to].numEither() == 1) {
@@ -144,13 +172,6 @@ public class Player {
 	}
 
 	/**
-	 * returns true if not moving to a zero space
-	 */
-	private boolean movingToZeroPieces(final int to) {
-		return !(to != 0 && to != 25 && to != -1 && to != 26);
-	}
-
-	/**
 	 * returns true if they are not moving the zero piece which needs to be
 	 * moved (only legal move)
 	 */
@@ -182,36 +203,6 @@ public class Player {
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * returns true if the distance between the two points matches the moves
-	 * left they have
-	 */
-	private boolean moveRequiredIsAvailable(final int to, final int from) {
-
-		final int y;
-		if (to == -1) {
-			y = 1;
-		} else {
-			y = -1;
-		}
-
-		// looping through the moves Left array to check against what they have
-		// asked for
-		for (final int move : movesLeft.moves) {
-			if (move >= distanceBetween(from, to + y)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * returns true if the player is trying to bear and he can bear at this time
-	 */
-	private boolean tryingAndCanBear(final int to, final int from, final Board liveBoard) {
-		return (to == -1 || to == 26) && liveBoard.canPlayerBear(liveBoard.Points[from].getCol());
 	}
 
 	/**
@@ -294,10 +285,10 @@ public class Player {
 	}
 
 	/**
-	 * returns if its within set array bounds
+	 * returns if its within set array bounds. A piece borne off with a 6 can land up to 5 points past the edge
 	 */
 	private boolean withinArrayBounds(final int to, final int from) {
-		return from >= 0 && from <= 25 && to <= 26 && to >= -1;
+		return from >= 0 && from <= 25 && to <= 30 && to >= -5;
 	}
 
 	/**

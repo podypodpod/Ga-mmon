@@ -22,6 +22,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import uk.co.davidlomas.gammon.test.helpers.BoardMirror;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -189,7 +192,8 @@ public class PlayerTest {
 	@Test
 	public void callingBasicChecksWithAnInvalidNumberTooHighShouldReturnFalse() {
 		// given
-		final int to = 27;
+		// 30 is as far as a 6 can take a red piece, borne off from 24
+		final int to = 31;
 		final int from = 1;
 		player1.movesLeft.add(2);
 
@@ -274,4 +278,74 @@ public class PlayerTest {
 		assertTrue(player1.passesBasicChecks(to, from, board));
 	}
 
+	// The bearing off tests set up black's position, and check red with the mirror image of it, where point p is 25 - p
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void aPieceCanBeBorneOffWithTheExactRoll(final boolean black) {
+		assertTrue(canMove(black, homeBoard(), 3, 3));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void aBiggerRollBearsOffThePieceFurthestFromHome(final boolean black) {
+		final Board blackPosition = homeBoard();
+		blackPosition.Points[6].setBlackCount(0);
+
+		assertTrue(canMove(black, blackPosition, 3, 6));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void aBiggerRollCantBearOffWhileAPieceIsFurtherFromHome(final boolean black) {
+		assertFalse(canMove(black, homeBoard(), 3, 4));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void aPieceCantBeBorneOffWhileAnotherIsOutsideHome(final boolean black) {
+		final Board blackPosition = homeBoard();
+		blackPosition.Points[7].setBlackCount(1);
+
+		assertFalse(canMove(black, blackPosition, 3, 3));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void bearingOffTakesThePieceOffTheBoard(final boolean black) {
+		final Board start = black ? homeBoard() : BoardMirror.mirror(homeBoard());
+		final int from = black ? 3 : 22;
+
+		new Player(black).movePiece(from, black ? -2 : 27, start);
+
+		assertEquals(0, black ? start.Points[from].getBlackCount() : start.Points[from].getRedCount());
+		assertEquals(1, start.howManyHasPlayerBore(black));
+	}
+
+	/**
+	 * Every black piece is home, one on 3 and two on 6, and red has two on 20
+	 */
+	private static Board homeBoard() {
+		final Board home = new Board();
+		for (final Point point : home.Points) {
+			point.setBlackCount(0);
+			point.setRedCount(0);
+		}
+		home.Points[3].setBlackCount(1);
+		home.Points[6].setBlackCount(2);
+		home.Points[20].setRedCount(2);
+		return home;
+	}
+
+	/**
+	 * Whether the player can move the piece on black's point from with the roll, mirrored for red
+	 */
+	private static boolean canMove(final boolean black, final Board blackPosition, final int from, final int roll) {
+		final Player player = new Player(black);
+		player.movesLeft.add(roll);
+		if (black) {
+			return player.isMovePossible(from, from - roll, blackPosition);
+		}
+		return player.isMovePossible(25 - from, 25 - from + roll, BoardMirror.mirror(blackPosition));
+	}
 }
