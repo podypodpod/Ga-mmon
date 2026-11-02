@@ -1,10 +1,9 @@
-package uk.co.davidlomas.gammon.test.settings;
+package uk.co.davidlomas.gammon.settings;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,12 +1,12 @@
-package uk.co.davidlomas.gammon.test.genes;
+package uk.co.davidlomas.gammon.game;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
-public class FitnessCalculatorTest {
+public class MainTestingTest {
 	@BeforeAll
-	public static void setup() {
+	public static void beforeClass() {
 		SettingsUtil.resetSettings();
 	}
 

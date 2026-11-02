@@ -1,11 +1,10 @@
-package uk.co.davidlomas.gammon.test.genes;
+package uk.co.davidlomas.gammon.game;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
-public class UtilTest {
-
+public class DiceListTest {
 	@BeforeAll
 	public static void beforeClass() {
 		SettingsUtil.resetSettings();

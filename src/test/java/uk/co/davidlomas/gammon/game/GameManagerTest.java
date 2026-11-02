@@ -1,12 +1,10 @@
-package uk.co.davidlomas.gammon.test.game;
+package uk.co.davidlomas.gammon.game;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.co.davidlomas.gammon.game.GameManager;
-import uk.co.davidlomas.gammon.game.GameStats;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
