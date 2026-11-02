@@ -104,8 +104,8 @@ public class Board {
 	 */
 	boolean canPlayerBear(final boolean black) {
 		if (black) {
-			// looping all areas apart from the players own quarter
-			for (int x = 7; x < 25; x++) {
+			// looping all areas apart from the players own quarter, including the bar on 25
+			for (int x = 7; x <= 25; x++) {
 				// if any of them contain a black piece
 				if (Points[x].getBlackCount() > 0) {
 					return false;
@@ -113,8 +113,8 @@ public class Board {
 			}
 
 		} else {
-			// looping all areas apart from the players own quarter
-			for (int x = 1; x < 18; x++) {
+			// looping all areas apart from the players own quarter (19 to 24), including the bar on 0
+			for (int x = 0; x <= 18; x++) {
 				// if any of them contain a red piece
 				if (Points[x].getRedCount() > 0) {
 					return false;
@@ -155,6 +155,10 @@ public class Board {
 
 	public int getBlackBore() {
 		return blackBore;
+	}
+
+	public int getRedBore() {
+		return redBore;
 	}
 
 	int getNumberOfCheckersOnStacks(final Boolean black) {
@@ -235,7 +239,8 @@ public class Board {
 			// RED
 		} else {
 			for (int x = 19; x <= 24; x++) {
-				if (Points[x].numEither() > 0 && Points[x].getCol()) {
+				// getCol() is true for a black point, so red's points are the ones where it's false
+				if (Points[x].numEither() > 0 && !Points[x].getCol()) {
 					num++;
 				}
 			}
@@ -319,6 +324,10 @@ public class Board {
 	@SuppressWarnings("SameParameterValue")
 	public void setBlackBore(final int blackBore) {
 		this.blackBore = blackBore;
+	}
+
+	public void setRedBore(final int redBore) {
+		this.redBore = redBore;
 	}
 
 	public void setStartPosition() {

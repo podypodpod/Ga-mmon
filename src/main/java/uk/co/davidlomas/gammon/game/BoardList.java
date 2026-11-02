@@ -25,6 +25,7 @@ import uk.co.davidlomas.gammon.util.RandomSource;
 
 import java.lang.reflect.MalformedParametersException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -141,6 +142,17 @@ public class BoardList {
 	 */
 	public boolean hasContents() {
 		return boardList.size() > 0;
+	}
+
+	/**
+	 * Gets the boards, so tests can see which moves were on offer.
+	 * <p>
+	 * Nothing in the game calls this, but DecisionGenesTest does, so don't remove it as unused.
+	 *
+	 * @return the boards, read only
+	 */
+	List<Board> getBoards() {
+		return Collections.unmodifiableList(boardList);
 	}
 
 	/**
