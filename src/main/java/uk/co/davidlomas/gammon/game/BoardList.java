@@ -289,7 +289,7 @@ public class BoardList {
 				}
 
 				// A Roll of THREE and a TWO
-			} else if (hasDiceRoll(3) && hasDiceRoll(1)) {
+			} else if (hasDiceRoll(3) && hasDiceRoll(2)) {
 
 				// ATTRIBUTE 10 = threeTwoSplitInitialMove
 				if (player.getIndividual().getAttribute(10).getValue() > RandomSource.nextInt(100)) {
@@ -406,19 +406,7 @@ public class BoardList {
 				// A Roll of FIVE and THREE
 			} else if (hasDiceRoll(5) && hasDiceRoll(3)) {
 
-				// ATTRIBUTE 21 = fiveTwoInitialMove
-				if (player.getIndividual().getAttribute(21).getValue() > RandomSource.nextInt(100)) {
-					for (final Board board : boardList) {
-						if (boardEvaluator.isFiveThreeInitialMove(board)) {
-							chosenBoard = board;
-							break;
-						}
-					}
-				}
-				// A Roll of FIVE and THREE
-			} else if (hasDiceRoll(5) && hasDiceRoll(4)) {
-
-				// ATTRIBUTE 21 = fiveTwoInitialMove
+				// ATTRIBUTE 21 = fiveThreeInitialMove
 				if (player.getIndividual().getAttribute(21).getValue() > RandomSource.nextInt(100)) {
 					for (final Board board : boardList) {
 						if (boardEvaluator.isFiveThreeInitialMove(board)) {
