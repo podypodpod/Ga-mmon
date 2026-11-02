@@ -65,7 +65,8 @@ public class StartGaTest {
 	}
 
 	/**
-	 * The file holds a whole chromosome, 7 binary digits for each gene, and the fitness the player was saved with
+	 * The file holds a whole chromosome, as long as a new player's, and the fitness it was saved with. A game scores
+	 * between 0 and 1, so the average does too
 	 */
 	private static void assertIsAPlayer(final File file) throws IOException {
 		assertTrue(file.isFile(), file + " wasn't saved");
@@ -73,8 +74,8 @@ public class StartGaTest {
 		try (InputStream input = new FileInputStream(file)) {
 			properties.load(input);
 		}
-		final int genes = new Individual().getNumOfAttributes();
-		assertThat(properties.getProperty("chromosome")).as(file.getName()).matches("[01]{" + (genes * 7) + "}");
-		assertThat(Double.parseDouble(properties.getProperty("fitness"))).as(file.getName()).isGreaterThanOrEqualTo(0);
+		final int length = new Individual().getChromosome().length;
+		assertThat(properties.getProperty("chromosome")).as(file.getName()).matches("[01]{" + length + "}");
+		assertThat(Double.parseDouble(properties.getProperty("fitness"))).as(file.getName()).isBetween(0.0, 1.0);
 	}
 }

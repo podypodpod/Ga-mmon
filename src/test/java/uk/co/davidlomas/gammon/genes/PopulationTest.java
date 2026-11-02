@@ -5,12 +5,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.co.davidlomas.gammon.game.GameManager;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test class for {@link Population}
@@ -72,21 +73,27 @@ public class PopulationTest {
 	}
 
 	/**
-	 * With two players, each one's fitness is its score from the game where it moves first. Replaying those two games
-	 * with the same seed gives the scores, so this holds whichever seed is used and whoever wins.
+	 * Calculating a population's fitness is FitnessCalculator's job, tested in FitnessCalculatorTest, so this only
+	 * checks the population hands it over: the same players and seed give the same fitness either way, whoever wins
 	 */
 	@Test
-	public void calculatingFitnessGivesEachPlayerItsScoreFromTheGameItMovesFirstIn() {
-		final Individual first = initPopulation.getIndividual(0);
-		final Individual second = initPopulation.getIndividual(1);
+	public void calculatingFitnessGivesTheSameResultAsTheFitnessCalculator() {
+		RandomSource.setSeed(1);
+		final Population samePlayers = new Population(POPULATION_SIZE, true);
 
 		RandomSource.setSeed(4);
 		initPopulation.calculateFitness();
-
 		RandomSource.setSeed(4);
-		final GameManager gameManager = new GameManager();
-		assertEquals(gameManager.playIndividualsVsEachOther(first, second).getPlayerOneScore(), first.getFitness(), 1e-9);
-		assertEquals(gameManager.playIndividualsVsEachOther(second, first).getPlayerOneScore(), second.getFitness(), 1e-9);
+		FitnessCalculator.calculateFitnessOfPopulation(samePlayers);
+
+		double total = 0;
+		for (int i = 0; i < POPULATION_SIZE; i++) {
+			assertArrayEquals(samePlayers.getIndividual(i).getChromosome(), initPopulation.getIndividual(i).getChromosome());
+			assertEquals(samePlayers.getIndividual(i).getFitness(), initPopulation.getIndividual(i).getFitness(), 1e-9);
+			total += samePlayers.getIndividual(i).getFitness();
+		}
+		// if every score were 0, a calculateFitness that did nothing would pass too
+		assertTrue(total > 0, "seed 4 gave every player a score of 0, pick another");
 	}
 
 }
