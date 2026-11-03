@@ -6,7 +6,7 @@ It started as a university project and is being tidied up and improved.
 
 ## Getting started
 
-You need Java to run Gradle. If you don't have the version the project is built with (25), Gradle downloads it for you.
+You need Java to run Gradle. If you don't have the version the project is built with (25), Gradle downloads it for you. The first build needs internet access, to fetch Gradle itself and its plugins.
 
 ```bash
 ./gradlew build

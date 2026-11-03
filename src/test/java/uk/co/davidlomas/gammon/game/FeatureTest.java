@@ -114,6 +114,27 @@ public class FeatureTest {
 
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
+	public void withTwoOnTheBarOnlyADoubleLeavesMovesToHitWith(final boolean black) {
+		// red has two on the bar and one on 8, 4 short of black's blot on 12, and only black's 2 point is open. Only
+		// 2-2 brings both in, leaving two 2s for the piece on 8 to hit with
+		final Board blackPosition = empty();
+		blackPosition.Points[12].setBlackCount(1);
+		for (final int point : new int[]{1, 3, 4, 5, 6}) {
+			blackPosition.Points[point].setBlackCount(2);
+		}
+		blackPosition.Points[8].setRedCount(1);
+		blackPosition.Points[0].setRedCount(2);
+
+		assertEquals(1, Feature.HIT_ROLLS.measure(forColour(blackPosition, black), black));
+
+		// a blot on the 2 point itself is hit by any roll with a 2, as a piece comes in on it
+		blackPosition.Points[12].setBlackCount(0);
+		blackPosition.Points[2].setBlackCount(1);
+		assertEquals(11, Feature.HIT_ROLLS.measure(forColour(blackPosition, black), black));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
 	public void aBlotOutOfReachIsSafe(final boolean black) {
 		final Board blackPosition = empty();
 		blackPosition.Points[20].setBlackCount(1);

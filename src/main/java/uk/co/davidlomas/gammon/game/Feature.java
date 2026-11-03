@@ -241,9 +241,9 @@ public enum Feature {
 	}
 
 	/**
-	 * Whether the opponent's roll hits any of the player's blots. With a piece on the bar, the opponent has to bring
-	 * it in before moving anything else: it can hit on the way in or carry on to a blot, and if it's the only one
-	 * there, another piece can hit with what's left of the roll once it's in
+	 * Whether the opponent's roll hits any of the player's blots. With pieces on the bar, the opponent has to bring
+	 * them in before moving anything else: one can hit on the way in or carry on to a blot with the moves the others
+	 * don't need, and another piece can hit with whatever's left of the roll once they're all in
 	 */
 	private static boolean rollHits(final Board board, final boolean black, final int die1, final int die2) {
 		final int onBar = theirs(board, black, 0);
@@ -259,10 +259,14 @@ public enum Feature {
 				}
 				continue;
 			}
-			if (canHit(board, black, 0, blot, die1, die2)) {
+			// a bar piece can hit as it comes in, and go on with the moves the other bar pieces don't need to come in
+			final boolean barPieceHits = die1 == die2
+					? canHit(board, black, 0, blot, die1, die2, Math.max(1, 5 - onBar))
+					: onBar == 1 ? canHit(board, black, 0, blot, die1, die2) : blot == die1 || blot == die2;
+			if (barPieceHits) {
 				return true;
 			}
-			if (onBar == 1 && hitsAfterComingIn(board, black, blot, die1, die2)) {
+			if (hitsAfterComingIn(board, black, blot, onBar, die1, die2)) {
 				return true;
 			}
 		}
@@ -270,20 +274,20 @@ public enum Feature {
 	}
 
 	/**
-	 * With one opponent piece on the bar: whether it can come in with part of the roll and another piece then hit the
-	 * blot with the rest
+	 * Whether the opponent's pieces on the bar can all come in with part of the roll and another piece then hit the
+	 * blot with the rest: one die each to come in, so with two different dice only one piece can be on the bar
 	 */
-	private static boolean hitsAfterComingIn(final Board board, final boolean black, final int blot, final int die1,
-											 final int die2) {
+	private static boolean hitsAfterComingIn(final Board board, final boolean black, final int blot, final int onBar,
+											 final int die1, final int die2) {
 		if (die1 != die2) {
-			return !blocked(board, black, die1) && opponentOn(board, black, blot - die2)
-					|| !blocked(board, black, die2) && opponentOn(board, black, blot - die1);
+			return onBar == 1 && (!blocked(board, black, die1) && opponentOn(board, black, blot - die2)
+					|| !blocked(board, black, die2) && opponentOn(board, black, blot - die1));
 		}
 		if (blocked(board, black, die1)) {
 			return false;
 		}
-		// a double: one move to come in, up to three left for another piece
-		for (int steps = 1; steps <= 3; steps++) {
+		// a double: one move for each piece on the bar to come in, the rest for another piece
+		for (int steps = 1; steps <= 4 - onBar; steps++) {
 			final int from = blot - die1 * steps;
 			if (from < 1) {
 				return false;
@@ -312,8 +316,16 @@ public enum Feature {
 	 */
 	private static boolean canHit(final Board board, final boolean black, final int from, final int distance,
 								  final int die1, final int die2) {
+		return canHit(board, black, from, distance, die1, die2, 4);
+	}
+
+	/**
+	 * As canHit, with a double only able to move the piece up to maxSteps times
+	 */
+	private static boolean canHit(final Board board, final boolean black, final int from, final int distance,
+								  final int die1, final int die2, final int maxSteps) {
 		if (die1 == die2) {
-			for (int steps = 1; steps <= 4; steps++) {
+			for (int steps = 1; steps <= maxSteps; steps++) {
 				if (die1 * steps == distance) {
 					return true;
 				}

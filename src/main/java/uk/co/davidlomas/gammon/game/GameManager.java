@@ -26,7 +26,10 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
 
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.function.Consumer;
 
 /**
  * GameManager
@@ -60,6 +63,24 @@ public class GameManager {
 	 */
 	public GameStats playIndividualsVsEachOther(final Individual individual1,
 												final Individual individual2) {
+		return play(individual1, individual2, game -> {
+		});
+	}
+
+	/**
+	 * Plays a game with a person as player 2, reading their moves from in and writing to out
+	 *
+	 * @param ai  player 1's genes
+	 * @param in  where the person's moves come from, such as System.in
+	 * @param out where the board and prompts go, such as System.out
+	 *
+	 * @return GameStats result of game (winner, values)
+	 */
+	GameStats playAgainstPerson(final Individual ai, final InputStream in, final PrintStream out) {
+		return play(ai, new Individual(), game -> game.getPlayerTwo().useConsole(in, out));
+	}
+
+	private GameStats play(final Individual individual1, final Individual individual2, final Consumer<Game> setUp) {
 
 		if (GameSettings.getDisplayGUI()) {
 			if (SwingUtilities.isEventDispatchThread()) {
@@ -71,6 +92,7 @@ public class GameManager {
 
 		// The Game Thread
 		final Game currentGame = new Game(individual1, individual2);
+		setUp.accept(currentGame);
 		currentGame.run();
 		return currentGame.getGameStats();
 	}
