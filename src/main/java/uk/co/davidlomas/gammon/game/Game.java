@@ -83,14 +83,15 @@ class Game implements Runnable {
 	}
 
 	GameStats getGameStats() {
-		// the winner scores the points the win is worth, 1, 2 or 3, and the loser scores nothing.
-		// A person playing as player 2 can concede, which hands player 1 the game, scored as the board stands
+		// the winner gains the points the win is worth, 1, 2 or 3, and the loser loses them, as in backgammon, so a
+		// loser who saves a gammon is a point better off. A person playing as player 2 can concede, which hands
+		// player 1 the game, scored as the board stands
 		final boolean playerOneWon = liveBoard.hasPlayerWon(aiPlayer1.black) || aiPlayer2.hasConceded();
 		final WinType winType = liveBoard.winTypeAgainst(playerOneWon ? aiPlayer2.black : aiPlayer1.black);
 		final int points = winType.getPoints();
 		return playerOneWon
-				? new GameStats(individual1, winType, points, 0)
-				: new GameStats(individual2, winType, 0, points);
+				? new GameStats(individual1, winType, points, -points)
+				: new GameStats(individual2, winType, -points, points);
 	}
 
 	/**

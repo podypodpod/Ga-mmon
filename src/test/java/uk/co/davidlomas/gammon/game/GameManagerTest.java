@@ -54,7 +54,7 @@ public class GameManagerTest {
 	/**
 	 * Checking the game stats returns the victor which is one the two players involved,
 	 * <p>
-	 * also returns a score from 0 - 100
+	 * and that both scores are between -3 and 3
 	 * <p>
 	 * * TODO: SLOW AS HELL
 	 */
@@ -67,12 +67,12 @@ public class GameManagerTest {
 		final double player1Score = gameStats.getPlayerOneScore();
 		final double player2Score = gameStats.getPlayerTwoScore();
 
-		assertTrue(player1Score >= 0 && player1Score <= 100, "score is out of bounds");
-		assertTrue(player2Score >= 0 && player2Score <= 100, "score is out of bounds");
+		assertTrue(player1Score >= -3 && player1Score <= 3, "score is out of bounds");
+		assertTrue(player2Score >= -3 && player2Score <= 3, "score is out of bounds");
 	}
 
 	/**
-	 * The winner scores the points their kind of win is worth, 1, 2 or 3, and the loser scores nothing
+	 * The winner gains the points their kind of win is worth, 1, 2 or 3, and the loser loses them
 	 */
 	@Test
 	public void theWinnerScoresWhatTheirWinIsWorth() {
@@ -82,7 +82,7 @@ public class GameManagerTest {
 				? gameStats.getPlayerTwoScore() : gameStats.getPlayerOneScore();
 
 		assertEquals(gameStats.getWinType().getPoints(), winnersScore);
-		assertEquals(0.0, losersScore);
+		assertEquals(-gameStats.getWinType().getPoints(), losersScore);
 	}
 
 	/**

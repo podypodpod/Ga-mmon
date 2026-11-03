@@ -24,11 +24,11 @@ public class GameStatsTest {
 	public void keepsTheVictorHowTheyWonAndBothScores() {
 		final Individual victor = new Individual();
 
-		final GameStats gameStats = new GameStats(victor, WinType.GAMMON, 2.0, 0.0);
+		final GameStats gameStats = new GameStats(victor, WinType.GAMMON, 2.0, -2.0);
 
 		assertSame(victor, gameStats.getVictor());
 		assertSame(WinType.GAMMON, gameStats.getWinType());
 		assertEquals(2.0, gameStats.getPlayerOneScore());
-		assertEquals(0.0, gameStats.getPlayerTwoScore());
+		assertEquals(-2.0, gameStats.getPlayerTwoScore());
 	}
 }
