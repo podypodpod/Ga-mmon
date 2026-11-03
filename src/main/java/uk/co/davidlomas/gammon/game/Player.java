@@ -21,9 +21,10 @@ package uk.co.davidlomas.gammon.game;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * The Class Player. the base class for players and contains code that only
@@ -46,6 +47,10 @@ public class Player {
 	private Scanner input;
 	private PrintStream output = System.out;
 	private boolean conceded;
+
+	// while a person plays a roll: the dice rolled, and the boards the rules allow them to finish on
+	private List<Integer> roll;
+	private BoardList legalMoves;
 
 	/**
 	 * Instantiates a new player.
@@ -231,6 +236,8 @@ public class Player {
 				? "Black moves from 24 down to 1, its bar is 25, and pieces come off past 1."
 				: "Red moves from 1 up to 24, its bar is 0, and pieces come off past 24."));
 		liveBoard.printBoard(output);
+		roll = new ArrayList<>(movesLeft.moves);
+		legalMoves = MoveGenerator.legalMoves(liveBoard, black, roll);
 
 		while (true) {
 			if (!hasAMove(liveBoard)) {
@@ -289,53 +296,31 @@ public class Player {
 	}
 
 	/**
-	 * The rules about using the dice: a player has to use as many of them as they can, and when only one of two
-	 * different dice can be used, it has to be the larger if that can be played. A move can be allowed on its own
-	 * and still break these, by leaving a die that could have been used with nothing to move.
+	 * Checks a move against the rules for using the dice: a player has to use as many of them as they can, and when
+	 * only one of two different dice can be used, it has to be the larger if that can be played. A move can be allowed
+	 * on its own and still break these, by leaving a die that could have been used with nothing to move.
+	 * <p>
+	 * The rules themselves are applied by MoveGenerator, the same as for the AI. A move is fine if the person can
+	 * still finish the turn on one of the boards it allows.
 	 *
 	 * @return why the move breaks them, to tell the person, or null if it doesn't
 	 */
 	private String whyTheRulesRefuse(final int from, final int die, final Board liveBoard) {
-		final List<Integer> dice = movesLeft.moves;
-		final int most = mostDiceUsable(liveBoard, dice);
-
 		final Board after = new Board(liveBoard);
 		movePiece(from, black ? from - die : from + die, after);
-		final List<Integer> rest = new ArrayList<>(dice);
+		final List<Integer> rest = new ArrayList<>(movesLeft.moves);
 		rest.remove(Integer.valueOf(die));
-		if (1 + mostDiceUsable(after, rest) < most) {
-			return "You can use " + most + " of your dice if you move another way, and you have to use as many as you can.";
-		}
 
-		if (most == 1 && dice.size() == 2 && !dice.get(0).equals(dice.get(1))) {
-			final int larger = Math.max(dice.get(0), dice.get(1));
-			if (die != larger && mostDiceUsable(liveBoard, List.of(larger)) == 1) {
-				return "Only one of your dice can be used, so it has to be the larger one, the " + larger + ".";
-			}
+		final Set<Board> allowed = legalMoves.boardSet();
+		if (allowed.contains(after) || !Collections.disjoint(MoveGenerator.reachableBoards(after, black, rest), allowed)) {
+			return null;
 		}
-		return null;
-	}
-
-	/**
-	 * The most of these dice the player could use from this board, trying every order and every piece
-	 */
-	private int mostDiceUsable(final Board board, final List<Integer> dice) {
-		final Player probe = new Player(black);
-		probe.movesLeft.setTo(dice);
-		int most = 0;
-		for (final int die : new HashSet<>(dice)) {
-			for (int from = 0; from <= 25 && most < dice.size(); from++) {
-				final int to = black ? from - die : from + die;
-				if (probe.isMovePossible(from, to, board)) {
-					final Board after = new Board(board);
-					probe.movePiece(from, to, after);
-					final List<Integer> rest = new ArrayList<>(dice);
-					rest.remove(Integer.valueOf(die));
-					most = Math.max(most, 1 + mostDiceUsable(after, rest));
-				}
-			}
+		final int most = legalMoves.mostDiceUsed();
+		if (most == 1 && roll.size() == 2 && !roll.get(0).equals(roll.get(1))) {
+			return "Only one of your dice can be used, so it has to be the larger one, the "
+					+ Math.max(roll.get(0), roll.get(1)) + ".";
 		}
-		return most;
+		return "You can use " + most + " of your dice if you move another way, and you have to use as many as you can.";
 	}
 
 	private void concede(final String message) {

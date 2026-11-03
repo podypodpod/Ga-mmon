@@ -28,7 +28,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 /**
@@ -53,6 +54,9 @@ public class BoardList {
 	 * the dice, and keepOnlyLegalMoves uses these to drop those.
 	 */
 	private final Map<Board, List<Integer>> boardsInList;
+
+	// how many dice the boards use, once keepOnlyLegalMoves has run
+	private int mostDiceUsed;
 
 	/**
 	 * The individual that will make the move.
@@ -79,11 +83,12 @@ public class BoardList {
 	}
 
 	/**
-	 * addBoardWithNextMove Adds the board passed in.
+	 * addBoardWithNextMove Adds the board passed in, for tests that build the list by hand. It isn't known which dice
+	 * reached it, so it's treated as using none, and keepOnlyLegalMoves would drop it next to generated boards.
 	 *
 	 * @param b the board
 	 */
-	public void addBoardWithNextMove(final Board b) {
+	void addBoardWithNextMove(final Board b) {
 		addBoard(b, Collections.emptyList());
 	}
 
@@ -150,7 +155,7 @@ public class BoardList {
 		for (final Board board : boardList) {
 			most = Math.max(most, boardsInList.get(board).size());
 		}
-		final int mostDiceUsed = most;
+		mostDiceUsed = most;
 		removeBoardsWhere(board -> boardsInList.get(board).size() < mostDiceUsed);
 
 		if (mostDiceUsed == 1 && roll.size() == 2 && !roll.get(0).equals(roll.get(1))) {
@@ -161,6 +166,20 @@ public class BoardList {
 				removeBoardsWhere(board -> boardsInList.get(board).get(0) != larger);
 			}
 		}
+	}
+
+	/**
+	 * @return how many dice the boards left by keepOnlyLegalMoves use
+	 */
+	int mostDiceUsed() {
+		return mostDiceUsed;
+	}
+
+	/**
+	 * @return the boards, for quick lookups, read only
+	 */
+	Set<Board> boardSet() {
+		return Collections.unmodifiableSet(boardsInList.keySet());
 	}
 
 	private void removeBoardsWhere(final Predicate<Board> unwanted) {

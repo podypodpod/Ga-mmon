@@ -21,7 +21,9 @@ package uk.co.davidlomas.gammon.game;
 import uk.co.davidlomas.gammon.genes.Individual;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The Class MoveGenerator.
@@ -110,16 +112,64 @@ public class MoveGenerator {
 	 */
 	public Board getNextMoveBoard(final Board cb, final AiPlayer p) {
 
-		// Clear the list
+		generateLegalMoves(cb, p);
+
+		// select the best board and return it, if no possible next moves it
+		// will return null and carry on using the same board
+		return boardList.selectBoard(cb, p);
+	}
+
+	/**
+	 * Fills the board list with every board the player could finish their turn on, following the rules for using
+	 * the dice. This is the one place those rules are applied, for the AI and for a person on the console.
+	 *
+	 * @param cb the current board
+	 * @param p  the player, with the dice they rolled
+	 */
+	void generateLegalMoves(final Board cb, final AiPlayer p) {
 		boardList.clearList();
 		final List<Integer> roll = new ArrayList<>(p.movesLeft.moves);
 
 		// generate all possible moves, then drop the ones the rules don't allow
 		generateMoves(cb, p);
 		boardList.keepOnlyLegalMoves(roll);
+	}
 
-		// select the best board and return it, if no possible next moves it
-		// will return null and carry on using the same board
-		return boardList.selectBoard(cb, p);
+	/**
+	 * The boards a player with these dice could finish their turn on, following the rules for using the dice
+	 *
+	 * @param board the board at the start of the turn
+	 * @param black the player
+	 * @param dice  the dice they rolled
+	 *
+	 * @return the list of boards, which also knows how many dice they use
+	 */
+	static BoardList legalMoves(final Board board, final boolean black, final List<Integer> dice) {
+		// no Individual is needed, as nothing is chosen from the list
+		final MoveGenerator generator = new MoveGenerator(null);
+		generator.generateLegalMoves(board, playerWith(black, dice));
+		return generator.boardList;
+	}
+
+	/**
+	 * Every board a player with these dice could reach from this one, part way through the turn as well as at the end,
+	 * ignoring the rules for using the dice
+	 *
+	 * @param board the board to start from
+	 * @param black the player
+	 * @param dice  the dice they have left
+	 *
+	 * @return the boards
+	 */
+	static Set<Board> reachableBoards(final Board board, final boolean black, final List<Integer> dice) {
+		final MoveGenerator generator = new MoveGenerator(null);
+		generator.generateMoves(board, playerWith(black, dice));
+		return new HashSet<>(generator.boardList.getBoards());
+	}
+
+	private static AiPlayer playerWith(final boolean black, final List<Integer> dice) {
+		final AiPlayer player = new AiPlayer(black, null);
+		player.movesLeft.setTo(dice);
+		return player;
 	}
 }
