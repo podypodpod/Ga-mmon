@@ -217,7 +217,14 @@ public class Player {
 	 * A person's turn, played on the console: rolls the dice, then asks what to do with them
 	 */
 	void turn(final Board liveBoard) {
-		movesLeft.setTo(dice.RollTwoDice());
+		turn(liveBoard, dice.RollTwoDice());
+	}
+
+	/**
+	 * A person's turn with dice already rolled, such as the opening move, which uses the dice from the opening roll
+	 */
+	void turn(final Board liveBoard, final List<Integer> roll) {
+		movesLeft.setTo(roll);
 		playRoll(liveBoard);
 	}
 

@@ -14,9 +14,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -184,6 +188,33 @@ public class ConsoleTurnTest {
 		assertSame(playerOne, game.getGameStats().getVictor());
 		assertTrue(said().contains("You conceded."));
 		assertFalse(said().contains("You've won!"));
+	}
+
+	@Test
+	public void theFirstMoveIsPlayedWithTheOpeningRollsDice() {
+		// over several seeds, so both players get to go first. The person concedes at their first turn
+		GameSettings.setAreBothAIsCache(false);
+		for (long seed = 0; seed < 20; seed++) {
+			RandomSource.setSeed(seed);
+			printed.reset();
+			final Game game = new Game(new Individual(), new Individual());
+			game.getPlayerTwo().useConsole(input("2"), new PrintStream(printed, true, StandardCharsets.UTF_8));
+
+			game.run();
+
+			final Matcher opening = Pattern.compile("player 1 rolled (\\d), you rolled (\\d)").matcher(said());
+			assertTrue(opening.find(), "seed " + seed + ": " + said());
+			final int playerOne = Integer.parseInt(opening.group(1));
+			final int you = Integer.parseInt(opening.group(2));
+			assertNotEquals(playerOne, you, "a tied opening roll is rolled again");
+
+			// the first dice anyone plays: the AI's if it won the opening roll, the person's if they did
+			final Matcher firstDice = Pattern.compile(playerOne > you ? "rolled \\[(\\d), (\\d)]" : "Dice left: \\[(\\d), (\\d)]")
+					.matcher(said());
+			assertTrue(firstDice.find(), "seed " + seed + ": " + said());
+			assertEquals(List.of(playerOne, you),
+					List.of(Integer.parseInt(firstDice.group(1)), Integer.parseInt(firstDice.group(2))), "seed " + seed);
+		}
 	}
 
 	/**

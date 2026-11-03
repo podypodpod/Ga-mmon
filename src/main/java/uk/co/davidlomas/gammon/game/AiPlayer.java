@@ -61,11 +61,23 @@ public class AiPlayer extends Player {
 	}
 
 	Board AiTurn(final Board currentBoard) {
+		return AiTurn(currentBoard, dice.RollTwoDice());
+	}
+
+	/**
+	 * A turn with dice already rolled, such as the opening move, which uses the dice from the opening roll
+	 *
+	 * @param currentBoard the board
+	 * @param roll         the dice to play
+	 *
+	 * @return the board after the move, or the same board if no move could be made
+	 */
+	Board AiTurn(final Board currentBoard, final List<Integer> roll) {
 
 		logger.trace("------------{} player's turn!-----------------", getColourString());
 
 		movesLeft = new MovesList();
-		movesLeft.setTo(dice.RollTwoDice());
+		movesLeft.setTo(roll);
 
 		logger.trace("Player has {}", movesLeft.toString());
 
