@@ -1,5 +1,8 @@
 package uk.co.davidlomas.gammon.game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Things about a board that a player weighs up when choosing a move, measured from that player's side.
  * <p>
@@ -52,20 +55,8 @@ public enum Feature {
 	HIT_ROLLS("hitRolls", 36, false) {
 		@Override
 		int measure(final Side side) {
-			if (side.theirs(0) == 0) {
-				return Long.bitCount(hitMask(side));
-			}
-			// with the opponent on the bar, roll by roll. 3-1 and 1-3 hit the same blots, so each pair of different
-			// dice is tried once and counted twice
-			int count = 0;
-			for (int die1 = 1; die1 <= 6; die1++) {
-				for (int die2 = die1; die2 <= 6; die2++) {
-					if (rollHits(side, die1, die2)) {
-						count += die1 == die2 ? 1 : 2;
-					}
-				}
-			}
-			return count;
+			// the masks are quicker, but only cover an opponent with nothing on the bar
+			return side.theirs(0) == 0 ? Long.bitCount(hitMask(side)) : countRollByRoll(side);
 		}
 	},
 
@@ -274,6 +265,23 @@ public enum Feature {
 	}
 
 	/**
+	 * How many of the opponent's 36 rolls hit at least one of the player's blots, trying them one by one. This
+	 * handles an opponent on the bar, and gives the same count as hitMask when there's nobody there. 3-1 and 1-3 hit
+	 * the same blots, so each pair of different dice is tried once and counted twice
+	 */
+	static int countRollByRoll(final Side side) {
+		int count = 0;
+		for (int die1 = 1; die1 <= 6; die1++) {
+			for (int die2 = die1; die2 <= 6; die2++) {
+				if (rollHits(side, die1, die2)) {
+					count += die1 == die2 ? 1 : 2;
+				}
+			}
+		}
+		return count;
+	}
+
+	/**
 	 * The rolls, as bits of a 36-bit mask, that would hit at least one of the player's blots, when the opponent has
 	 * nothing on the bar. It gives the same rolls as rollHits, worked out for each opponent piece and blot at once
 	 * rather than roll by roll
@@ -320,8 +328,8 @@ public enum Feature {
 
 	static {
 		for (int distance = 1; distance <= 24; distance++) {
-			final java.util.List<int[]> twoDice = new java.util.ArrayList<>();
-			final java.util.List<int[]> doubles = new java.util.ArrayList<>();
+			final List<int[]> twoDice = new ArrayList<>();
+			final List<int[]> doubles = new ArrayList<>();
 			for (int die1 = 1; die1 <= 6; die1++) {
 				for (int die2 = 1; die2 <= 6; die2++) {
 					if (die1 == distance || die2 == distance) {
@@ -440,26 +448,31 @@ public enum Feature {
 	}
 
 	/**
-	 * As canHit, with a double only able to move the piece up to maxSteps times
+	 * As canHit, with a double only able to move the piece up to maxSteps times. It reads the same tables as hitMask,
+	 * so there's one set of rules for which rolls reach a blot
 	 */
 	private static boolean canHit(final Side side, final int from, final int distance,
 								  final int die1, final int die2, final int maxSteps) {
-		if (die1 == die2) {
-			for (int steps = 1; steps <= maxSteps; steps++) {
-				if (die1 * steps == distance) {
-					return true;
-				}
-				if (blocked(side, from + die1 * steps)) {
-					return false;
+		if (distance < 1 || distance > 24) {
+			return false;
+		}
+		if ((DIRECT_HITS[distance] & rollBit(die1, die2)) != 0) {
+			return true;
+		}
+		if (die1 != die2) {
+			for (final int[] dice : TWO_DICE_HITS[distance]) {
+				if (dice[0] == Math.min(die1, die2) && dice[1] == Math.max(die1, die2)) {
+					return !blocked(side, from + dice[0]) || !blocked(side, from + dice[1]);
 				}
 			}
 			return false;
 		}
-		if (distance == die1 || distance == die2) {
-			return true;
+		for (final int[] dieAndSteps : DOUBLE_HITS[distance]) {
+			if (dieAndSteps[0] == die1 && dieAndSteps[1] <= maxSteps) {
+				return openOnTheWay(side, from, dieAndSteps[0], dieAndSteps[1]);
+			}
 		}
-		return distance == die1 + die2
-				&& (!blocked(side, from + die1) || !blocked(side, from + die2));
+		return false;
 	}
 
 	private static boolean blocked(final Side side, final int point) {

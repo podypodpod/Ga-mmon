@@ -57,6 +57,9 @@ public class BoardList {
 	// how many dice the boards use, once keepOnlyLegalMoves has run
 	private int mostDiceUsed;
 
+	// the boards as a set, made the first time it's asked for after the list changes
+	private Set<Board> boardSet;
+
 	// the boards, with the dice left, that the moves on from them have already been worked out for
 	private final Set<Position> triedFrom = new HashSet<>();
 
@@ -134,6 +137,7 @@ public class BoardList {
 		boardList.add(key.board);
 		keys.add(key);
 		boardsInList.put(key, diceUsed);
+		boardSet = null;
 	}
 
 	/**
@@ -221,7 +225,10 @@ public class BoardList {
 	 * @return the boards, for quick lookups, read only
 	 */
 	Set<Board> boardSet() {
-		return Collections.unmodifiableSet(new HashSet<>(boardList));
+		if (boardSet == null) {
+			boardSet = Collections.unmodifiableSet(new HashSet<>(boardList));
+		}
+		return boardSet;
 	}
 
 	/**
@@ -234,6 +241,7 @@ public class BoardList {
 				boardsInList.remove(key);
 				keys.remove(i);
 				boardList.remove(i);
+				boardSet = null;
 			}
 		}
 	}
@@ -247,6 +255,7 @@ public class BoardList {
 	void clearList() {
 		boardList.clear();
 		keys.clear();
+		boardSet = null;
 		boardsInList.clear();
 		triedFrom.clear();
 		mostDiceUsed = 0;
@@ -263,6 +272,9 @@ public class BoardList {
 
 	/**
 	 * Gets the boards, for MoveChooser to pick from and for tests to see which moves were on offer.
+	 * <p>
+	 * The boards themselves mustn't be changed: the list keeps the hash each one had when it was added, so a changed
+	 * board would be looked up in the wrong place. Copy one to play on from it, as Game does with the board chosen.
 	 *
 	 * @return the boards, read only
 	 */
