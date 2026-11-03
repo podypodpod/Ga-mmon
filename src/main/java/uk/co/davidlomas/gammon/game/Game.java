@@ -23,6 +23,8 @@ import org.slf4j.LoggerFactory;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 
+import java.util.List;
+
 /**
  * The Class Game.
  * <p>
@@ -54,6 +56,9 @@ class Game implements Runnable {
 	private final boolean areBothAIs = GameSettings.getAreBothAI();
 	private final int timeDelay = GameSettings.getTimeDelay();
 	private int p1Roll = 0, p2Roll = 0;
+
+	// the opening move is played with the two dice from the opening roll, rather than a new roll. Null once it's used
+	private List<Integer> openingDice;
 
 	/**
 	 * Instantiates a new game.
@@ -111,9 +116,23 @@ class Game implements Runnable {
 
 		if (p1Roll == p2Roll) {
 			initialRoll();
+			return;
 		}
 
+		openingDice = List.of(p1Roll, p2Roll);
 		liveBoard.isInitialMove = true;
+	}
+
+	/**
+	 * The dice for the next turn: the opening roll's dice for the first move of the game, a new roll after that
+	 */
+	private List<Integer> nextRoll(final Player player) {
+		if (openingDice != null) {
+			final List<Integer> opening = openingDice;
+			openingDice = null;
+			return opening;
+		}
+		return player.dice.RollTwoDice();
 	}
 
 	private boolean isGameActive() {
@@ -146,6 +165,10 @@ class Game implements Runnable {
 		initialRoll();
 
 		logger.trace("Player 1 rolls: {} Player 2: {}", p1Roll, p2Roll);
+		if (!areBothAIs) {
+			aiPlayer2.tell("Opening roll: player 1 rolled " + p1Roll + ", you rolled " + p2Roll + ". "
+					+ (p1Roll > p2Roll ? "Player 1 moves" : "You move") + " first, using those two dice.");
+		}
 
 		// if player 1 has won
 		boolean playerOnesTurn = false;
@@ -167,7 +190,7 @@ class Game implements Runnable {
 
 				// creating the new board with the chosen moves etc
 				final Board before = liveBoard;
-				liveBoard = new Board(aiPlayer1.AiTurn(liveBoard));
+				liveBoard = new Board(aiPlayer1.AiTurn(liveBoard, nextRoll(aiPlayer1)));
 
 				// a person playing sees the AI's roll, and their own turn starts by showing the board it left
 				if (!areBothAIs) {
@@ -217,7 +240,7 @@ class Game implements Runnable {
 				if (areBothAIs) {
 
 					// get the new board with the selected moves in
-					liveBoard = new Board(aiPlayer2.AiTurn(liveBoard));
+					liveBoard = new Board(aiPlayer2.AiTurn(liveBoard, nextRoll(aiPlayer2)));
 
 					// displaying new board
 					if (GameSettings.getDisplayGUI()) {
@@ -254,7 +277,7 @@ class Game implements Runnable {
 
 					// Running the turn method, waits for user input on selected
 					// move
-					aiPlayer2.turn(liveBoard);
+					aiPlayer2.turn(liveBoard, nextRoll(aiPlayer2));
 
 					// displaying new board
 					if (GameSettings.getDisplayGUI()) {
