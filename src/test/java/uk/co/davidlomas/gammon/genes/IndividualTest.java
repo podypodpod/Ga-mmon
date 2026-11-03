@@ -7,6 +7,10 @@ import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Properties;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -73,9 +77,14 @@ public class IndividualTest {
 	}
 
 	@Test
-	public void aPlayerSavedWithOtherGenesIsRefused() {
-		// saved in 2014 by the old rule-based player, with 32 genes rather than these
-		final String oldPlayer = "archive/rule-based-players-2014/Attempt - 2014 - 1/PlayerFromGen0.properties";
+	public void aPlayerSavedWithOtherGenesIsRefused() throws IOException {
+		// as the old rule-based player saved them, with 32 genes of 7 bits rather than these
+		final String oldPlayer = filePath + " old";
+		final Properties saved = new Properties();
+		saved.setProperty("chromosome", "0".repeat(32 * 7));
+		try (OutputStream out = new FileOutputStream(oldPlayer)) {
+			saved.store(out, null);
+		}
 
 		final IllegalArgumentException refused =
 				assertThrows(IllegalArgumentException.class, () -> individual1.loadFromFile(oldPlayer));
