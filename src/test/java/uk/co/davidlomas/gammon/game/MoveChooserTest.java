@@ -46,11 +46,11 @@ public class MoveChooserTest {
 
 		assertEquals(FEATURES + raceFeatures, names.length);
 		assertEquals("contactPipLead", names[0]);
-		assertEquals("contactHitRolls", names[MoveChooser.contactGene(Feature.HIT_ROLLS)]);
+		assertEquals("contactExposedBlots", names[MoveChooser.contactGene(Feature.EXPOSED_BLOTS)]);
 		assertEquals("racePipLead", names[FEATURES]);
 		assertEquals("raceStacking", names[MoveChooser.raceGene(Feature.STACKING)]);
 		// hitting can't happen in a race, so there's no gene for it
-		assertThrows(IllegalArgumentException.class, () -> MoveChooser.raceGene(Feature.HIT_ROLLS));
+		assertThrows(IllegalArgumentException.class, () -> MoveChooser.raceGene(Feature.EXPOSED_BLOTS));
 	}
 
 	@Test

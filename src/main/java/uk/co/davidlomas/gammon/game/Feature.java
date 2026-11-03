@@ -1,8 +1,5 @@
 package uk.co.davidlomas.gammon.game;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Things about a board that a player weighs up when choosing a move, measured from that player's side.
  * <p>
@@ -48,15 +45,19 @@ public enum Feature {
 	},
 
 	/**
-	 * How many of the opponent's 36 possible rolls would hit at least one of the player's blots, counting shots
-	 * that need both dice when the point between isn't blocked. While the opponent has a piece on the bar it has to
-	 * come in first, so only shots it leaves the dice for count then
+	 * The player's blots that an opponent's piece, or one on their bar, could hit with a single die: within six
+	 * points in front of it
 	 */
-	HIT_ROLLS("hitRolls", 36, false) {
+	EXPOSED_BLOTS("exposedBlots", 5, false) {
 		@Override
 		int measure(final Side side) {
-			// the masks are quicker, but only cover an opponent with nothing on the bar
-			return side.theirs(0) == 0 ? Long.bitCount(hitMask(side)) : countRollByRoll(side);
+			int exposed = 0;
+			for (int blot = 1; blot <= 24; blot++) {
+				if (side.mine(blot) == 1 && opponentWithinSix(side, blot)) {
+					exposed++;
+				}
+			}
+			return exposed;
 		}
 	},
 
@@ -265,217 +266,15 @@ public enum Feature {
 	}
 
 	/**
-	 * How many of the opponent's 36 rolls hit at least one of the player's blots, trying them one by one. This
-	 * handles an opponent on the bar, and gives the same count as hitMask when there's nobody there. 3-1 and 1-3 hit
-	 * the same blots, so each pair of different dice is tried once and counted twice
+	 * Whether an opponent's piece, which moves up towards 25, is one to six points short of the point, counting
+	 * their bar as 0
 	 */
-	static int countRollByRoll(final Side side) {
-		int count = 0;
-		for (int die1 = 1; die1 <= 6; die1++) {
-			for (int die2 = die1; die2 <= 6; die2++) {
-				if (rollHits(side, die1, die2)) {
-					count += die1 == die2 ? 1 : 2;
-				}
-			}
-		}
-		return count;
-	}
-
-	/**
-	 * The rolls, as bits of a 36-bit mask, that would hit at least one of the player's blots, when the opponent has
-	 * nothing on the bar. It gives the same rolls as rollHits, worked out for each opponent piece and blot at once
-	 * rather than roll by roll
-	 */
-	private static long hitMask(final Side side) {
-		long hits = 0;
-		for (int blot = 1; blot <= 24; blot++) {
-			if (side.mine(blot) != 1) {
-				continue;
-			}
-			for (int from = Math.max(1, blot - 24); from < blot; from++) {
-				if (side.theirs(from) > 0) {
-					hits |= hitMask(side, from, blot - from);
-				}
-			}
-		}
-		return hits;
-	}
-
-	/**
-	 * The rolls that take a piece on from the distance to a blot: any roll with that number on a die, two different
-	 * dice adding up to it with one of the points between open, or a double whose points on the way are open
-	 */
-	private static long hitMask(final Side side, final int from, final int distance) {
-		long mask = DIRECT_HITS[distance];
-		for (final int[] dice : TWO_DICE_HITS[distance]) {
-			if (!blocked(side, from + dice[0]) || !blocked(side, from + dice[1])) {
-				mask |= rollBit(dice[0], dice[1]) | rollBit(dice[1], dice[0]);
-			}
-		}
-		for (final int[] dieAndSteps : DOUBLE_HITS[distance]) {
-			if (openOnTheWay(side, from, dieAndSteps[0], dieAndSteps[1])) {
-				mask |= rollBit(dieAndSteps[0], dieAndSteps[0]);
-			}
-		}
-		return mask;
-	}
-
-	// For each distance from 1 to 24, worked out once: the rolls with that number on a die, the pairs of different
-	// dice that add up to it, and the doubles that reach it in two to four steps
-	private static final long[] DIRECT_HITS = new long[25];
-	private static final int[][][] TWO_DICE_HITS = new int[25][][];
-	private static final int[][][] DOUBLE_HITS = new int[25][][];
-
-	static {
-		for (int distance = 1; distance <= 24; distance++) {
-			final List<int[]> twoDice = new ArrayList<>();
-			final List<int[]> doubles = new ArrayList<>();
-			for (int die1 = 1; die1 <= 6; die1++) {
-				for (int die2 = 1; die2 <= 6; die2++) {
-					if (die1 == distance || die2 == distance) {
-						DIRECT_HITS[distance] |= rollBit(die1, die2);
-					}
-				}
-				for (int die2 = die1 + 1; die2 <= 6; die2++) {
-					if (die1 + die2 == distance && die1 != distance && die2 != distance) {
-						twoDice.add(new int[]{die1, die2});
-					}
-				}
-				for (int steps = 2; steps <= 4; steps++) {
-					if (die1 * steps == distance) {
-						doubles.add(new int[]{die1, steps});
-					}
-				}
-			}
-			TWO_DICE_HITS[distance] = twoDice.toArray(new int[0][]);
-			DOUBLE_HITS[distance] = doubles.toArray(new int[0][]);
-		}
-	}
-
-	private static long rollBit(final int die1, final int die2) {
-		return 1L << ((die1 - 1) * 6 + die2 - 1);
-	}
-
-	/**
-	 * Whether the points a double lands on before its last step are all open
-	 */
-	private static boolean openOnTheWay(final Side side, final int from, final int die, final int steps) {
-		for (int step = 1; step < steps; step++) {
-			if (blocked(side, from + die * step)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * Whether the opponent's roll hits any of the player's blots. With pieces on the bar, the opponent has to bring
-	 * them in before moving anything else: one can hit on the way in or carry on to a blot with the moves the others
-	 * don't need, and another piece can hit with whatever's left of the roll once they're all in
-	 */
-	private static boolean rollHits(final Side side, final int die1, final int die2) {
-		final int onBar = side.theirs(0);
-		for (int blot = 1; blot <= 24; blot++) {
-			if (side.mine(blot) != 1) {
-				continue;
-			}
-			if (onBar == 0) {
-				for (int from = 1; from < blot; from++) {
-					if (side.theirs(from) > 0 && canHit(side, from, blot - from, die1, die2)) {
-						return true;
-					}
-				}
-				continue;
-			}
-			// a bar piece can hit as it comes in, and go on with the moves the other bar pieces don't need to come in
-			final boolean barPieceHits = die1 == die2
-					? canHit(side, 0, blot, die1, die2, Math.max(1, 5 - onBar))
-					: onBar == 1 ? canHit(side, 0, blot, die1, die2) : blot == die1 || blot == die2;
-			if (barPieceHits) {
-				return true;
-			}
-			if (hitsAfterComingIn(side, blot, onBar, die1, die2)) {
+	private static boolean opponentWithinSix(final Side side, final int point) {
+		for (int from = Math.max(0, point - 6); from < point; from++) {
+			if (side.theirs(from) > 0) {
 				return true;
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Whether the opponent's pieces on the bar can all come in with part of the roll and another piece then hit the
-	 * blot with the rest: one die each to come in, so with two different dice only one piece can be on the bar
-	 */
-	private static boolean hitsAfterComingIn(final Side side, final int blot, final int onBar,
-											 final int die1, final int die2) {
-		if (die1 != die2) {
-			return onBar == 1 && (!blocked(side, die1) && opponentOn(side, blot - die2)
-					|| !blocked(side, die2) && opponentOn(side, blot - die1));
-		}
-		if (blocked(side, die1)) {
-			return false;
-		}
-		// a double: one move for each piece on the bar to come in, the rest for another piece
-		for (int steps = 1; steps <= 4 - onBar; steps++) {
-			final int from = blot - die1 * steps;
-			if (from < 1) {
-				return false;
-			}
-			if (opponentOn(side, from)) {
-				boolean open = true;
-				for (int step = 1; step < steps; step++) {
-					open &= !blocked(side, from + die1 * step);
-				}
-				if (open) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	private static boolean opponentOn(final Side side, final int point) {
-		return point >= 1 && point <= 24 && side.theirs(point) > 0;
-	}
-
-	/**
-	 * Whether an opponent's piece on from, distance short of a blot, can reach it with this roll. A double moves
-	 * the same die up to four times, and two different dice can be used either way round; each point landed on on the
-	 * way has to be open, not one the player has made
-	 */
-	private static boolean canHit(final Side side, final int from, final int distance,
-								  final int die1, final int die2) {
-		return canHit(side, from, distance, die1, die2, 4);
-	}
-
-	/**
-	 * As canHit, with a double only able to move the piece up to maxSteps times. It reads the same tables as hitMask,
-	 * so there's one set of rules for which rolls reach a blot
-	 */
-	private static boolean canHit(final Side side, final int from, final int distance,
-								  final int die1, final int die2, final int maxSteps) {
-		if (distance < 1 || distance > 24) {
-			return false;
-		}
-		if ((DIRECT_HITS[distance] & rollBit(die1, die2)) != 0) {
-			return true;
-		}
-		if (die1 != die2) {
-			for (final int[] dice : TWO_DICE_HITS[distance]) {
-				if (dice[0] == Math.min(die1, die2) && dice[1] == Math.max(die1, die2)) {
-					return !blocked(side, from + dice[0]) || !blocked(side, from + dice[1]);
-				}
-			}
-			return false;
-		}
-		for (final int[] dieAndSteps : DOUBLE_HITS[distance]) {
-			if (dieAndSteps[0] == die1 && dieAndSteps[1] <= maxSteps) {
-				return openOnTheWay(side, from, dieAndSteps[0], dieAndSteps[1]);
-			}
-		}
-		return false;
-	}
-
-	private static boolean blocked(final Side side, final int point) {
-		return point >= 1 && point <= 24 && side.mine(point) >= 2;
 	}
 }
