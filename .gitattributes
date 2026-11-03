@@ -1,3 +1,7 @@
+# Store every text file with Unix (LF) line endings, and check them out that way on every machine,
+# whatever core.autocrlf is set to
+* text=auto eol=lf
+
 # gradlew must keep Unix line endings to run on Linux (CI), gradlew.bat needs Windows ones
 gradlew text eol=lf
 *.bat text eol=crlf
