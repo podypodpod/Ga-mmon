@@ -26,9 +26,11 @@ import uk.co.davidlomas.gammon.util.RandomSource;
 import java.lang.reflect.MalformedParametersException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * The Class BoardList.
@@ -47,9 +49,14 @@ public class BoardList {
 	private final List<Board> boardList;
 
 	/**
-	 * The same boards as boardList, so checking for a duplicate is a quick lookup instead of a scan of the list.
+	 * The same boards as boardList, so checking for a duplicate is a quick lookup instead of a scan of the list,
+	 * with the dice each one used to get there. A board can be reached part way through a turn, after only some of
+	 * the dice, and keepOnlyLegalMoves uses these to drop those.
 	 */
-	private final Set<Board> boardsInList;
+	private final Map<Board, List<Integer>> boardsInList;
+
+	// how many dice the boards use, once keepOnlyLegalMoves has run
+	private int mostDiceUsed;
 
 	/**
 	 * The individual that will make the move.
@@ -71,18 +78,23 @@ public class BoardList {
 	public BoardList(final Individual individual) {
 		this.individual = individual;
 		boardList = new ArrayList<>();
-		boardsInList = new HashSet<>();
+		boardsInList = new HashMap<>();
 		boardEvaluator = new BoardEvaluator();
 	}
 
 	/**
-	 * addBoardWithNextMove Adds the board passed in.
+	 * addBoardWithNextMove Adds the board passed in, for tests that build the list by hand. It isn't known which dice
+	 * reached it, so it's treated as using none, and keepOnlyLegalMoves would drop it next to generated boards.
 	 *
 	 * @param b the board
 	 */
-	public void addBoardWithNextMove(final Board b) {
+	void addBoardWithNextMove(final Board b) {
+		addBoard(b, Collections.emptyList());
+	}
+
+	private void addBoard(final Board b, final List<Integer> diceUsed) {
 		boardList.add(b);
-		boardsInList.add(b);
+		boardsInList.put(b, diceUsed);
 	}
 
 	/**
@@ -103,6 +115,7 @@ public class BoardList {
 		} else {
 			// move the piece on this new board
 			player.movePiece(from, to, board);
+			player.diceUsed.add(player.distanceBetween(from, to));
 
 			if (player.movesLeft.size() > 1) {
 				player.movesLeft.moves.remove(Integer.valueOf(player.distanceBetween(from, to)));
@@ -116,12 +129,66 @@ public class BoardList {
 				moveGenerator.generateMoves(board, player);
 			}
 
-			// add the board to the list if there is not a duplicate
+			// add the board to the list if there is not a duplicate. If there is, keep whichever way of reaching it
+			// used more dice. The dice are only copied when they're kept, as many boards reached are duplicates
 			if (!thereIsADuplicate(board)) {
-				addBoardWithNextMove(board);
+				addBoard(board, new ArrayList<>(player.diceUsed));
+			} else if (boardsInList.get(board).size() < player.diceUsed.size()) {
+				boardsInList.put(board, new ArrayList<>(player.diceUsed));
 			}
 
 		}
+	}
+
+	/**
+	 * Drops the boards the rules don't allow. A player has to use as many of the dice as they can, and when only one
+	 * of two different dice can be used, it has to be the larger one if that can be played.
+	 * <p>
+	 * The list holds every board reached part way through a turn too, so without this the AI could stop after one
+	 * die when both could be played.
+	 *
+	 * @param roll the dice rolled this turn
+	 */
+	void keepOnlyLegalMoves(final List<Integer> roll) {
+		int most = 0;
+		for (final Board board : boardList) {
+			most = Math.max(most, boardsInList.get(board).size());
+		}
+		mostDiceUsed = most;
+		removeBoardsWhere(board -> boardsInList.get(board).size() < mostDiceUsed);
+
+		if (mostDiceUsed == 1 && roll.size() == 2 && !roll.get(0).equals(roll.get(1))) {
+			final int larger = Math.max(roll.get(0), roll.get(1));
+			final boolean largerCanBePlayed =
+					boardList.stream().anyMatch(board -> boardsInList.get(board).get(0) == larger);
+			if (largerCanBePlayed) {
+				removeBoardsWhere(board -> boardsInList.get(board).get(0) != larger);
+			}
+		}
+	}
+
+	/**
+	 * @return how many dice the boards left by keepOnlyLegalMoves use
+	 */
+	int mostDiceUsed() {
+		return mostDiceUsed;
+	}
+
+	/**
+	 * @return the boards, for quick lookups, read only
+	 */
+	Set<Board> boardSet() {
+		return Collections.unmodifiableSet(boardsInList.keySet());
+	}
+
+	private void removeBoardsWhere(final Predicate<Board> unwanted) {
+		boardList.removeIf(board -> {
+			if (unwanted.test(board)) {
+				boardsInList.remove(board);
+				return true;
+			}
+			return false;
+		});
 	}
 
 	/**
@@ -133,6 +200,7 @@ public class BoardList {
 	void clearList() {
 		boardList.clear();
 		boardsInList.clear();
+		mostDiceUsed = 0;
 	}
 
 	/**
@@ -590,6 +658,6 @@ public class BoardList {
 	 * @return true, if there is a duplicate
 	 */
 	private boolean thereIsADuplicate(final Board boardInQuestion) {
-		return boardsInList.contains(boardInQuestion);
+		return boardsInList.containsKey(boardInQuestion);
 	}
 }

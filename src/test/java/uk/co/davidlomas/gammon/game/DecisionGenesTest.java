@@ -122,9 +122,10 @@ public class DecisionGenesTest {
 		evaluator.setBoard(start);
 		evaluator.setPlayer(new AiPlayer(black, individual));
 
-		// And the roll offers moves that do what the gene asks, and moves that don't
+		// And the roll offers moves that do what the gene asks, and moves that don't, counting only the moves the
+		// rules allow, as those are the ones the player chooses from
 		final MoveGenerator offered = new MoveGenerator(individual);
-		offered.generateMoves(start, playerWithRoll(black, individual, scenario));
+		offered.generateLegalMoves(start, playerWithRoll(black, individual, scenario));
 		final List<Board> options = offered.getBoardList().getBoards();
 		final long matching = options.stream().filter(board -> scenario.check.test(evaluator, board)).count();
 		assertTrue(matching > 0, "no move on offer can " + scenario.name);

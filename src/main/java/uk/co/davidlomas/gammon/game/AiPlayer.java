@@ -22,6 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.davidlomas.gammon.genes.Individual;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The Class AIPlayer.
  * <p>
@@ -35,6 +38,8 @@ public class AiPlayer extends Player {
 	private final static Logger logger = LoggerFactory.getLogger(AiPlayer.class);
 	private final MoveGenerator moveGenerator;
 	private Individual individual;
+	// while the move generator tries out a turn, the dice this copy of the player has used so far, in order
+	final List<Integer> diceUsed = new ArrayList<>();
 
 	/**
 	 * Clone constructor
@@ -45,8 +50,8 @@ public class AiPlayer extends Player {
 		super(playerToClone.black);
 		movesLeft = new MovesList(playerToClone.movesLeft);
 		black = playerToClone.black;
-		turnOver = playerToClone.turnOver;
 		moveGenerator = playerToClone.moveGenerator;
+		diceUsed.addAll(playerToClone.diceUsed);
 	}
 
 	public AiPlayer(final boolean black, final Individual individual) {
