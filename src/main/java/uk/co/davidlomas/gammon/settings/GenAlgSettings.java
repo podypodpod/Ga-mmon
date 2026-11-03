@@ -106,14 +106,31 @@ public class GenAlgSettings {
 	 */
 	public static int getGamesPerPairing() {
 		if (gamesPerPairing == -1) {
-			final String value = getProperties().getProperty(GAMES_PER_PAIRING);
-			gamesPerPairing = value == null ? 1 : Integer.parseInt(value.trim());
+			gamesPerPairing = gamesPerPairingFrom(getProperties());
 		}
 		return gamesPerPairing;
 	}
 
+	/**
+	 * Reads gamesPerPairing from the settings, 1 if they don't have it
+	 *
+	 * @throws IllegalArgumentException if it's less than 1, as with no games every fitness would be 0
+	 */
+	static int gamesPerPairingFrom(final Properties properties) {
+		final String value = properties.getProperty(GAMES_PER_PAIRING);
+		return value == null ? 1 : checkGamesPerPairing(Integer.parseInt(value.trim()));
+	}
+
 	public static void setGamesPerPairing(final int games) {
-		gamesPerPairing = games;
+		gamesPerPairing = checkGamesPerPairing(games);
+	}
+
+	private static int checkGamesPerPairing(final int games) {
+		if (games < 1) {
+			throw new IllegalArgumentException(GAMES_PER_PAIRING + " has to be at least 1, so players play each other,"
+					+ " but it's " + games);
+		}
+		return games;
 	}
 
 	public static int getTournamentSize() {

@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
+import java.util.Properties;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -185,5 +187,29 @@ public class GenAlgSettingsTest {
 
 	private boolean doublesAreEqual(final double first, final double second) {
 		return Math.abs(first - second) == 0;
+	}
+
+	@Test
+	public void gamesPerPairingIsOneWhenTheSettingsFileDoesntSay() {
+		// as in a settings file from before it was added
+		assertEquals(1, GenAlgSettings.gamesPerPairingFrom(new Properties()));
+	}
+
+	@Test
+	public void gamesPerPairingIsReadFromTheSettingsFile() {
+		final Properties properties = new Properties();
+		properties.setProperty("gamesPerPairing", " 3 ");
+
+		assertEquals(3, GenAlgSettings.gamesPerPairingFrom(properties));
+	}
+
+	@Test
+	public void gamesPerPairingBelowOneIsRefused() {
+		// with no games, every fitness would be 0 and the GA would choose at random
+		final Properties properties = new Properties();
+		properties.setProperty("gamesPerPairing", "0");
+
+		assertThrows(IllegalArgumentException.class, () -> GenAlgSettings.gamesPerPairingFrom(properties));
+		assertThrows(IllegalArgumentException.class, () -> GenAlgSettings.setGamesPerPairing(-1));
 	}
 }

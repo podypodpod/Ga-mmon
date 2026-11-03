@@ -47,8 +47,10 @@ public final class RandomSource {
 	 */
 	public static void setSeed(final long seed) {
 		random = new Random(seed);
-		// mixed so the dice don't repeat the main random's numbers
-		dice = new Random(seed ^ 0x5DEECE66DL);
+		// a different seed for the dice, so they don't repeat the main random's numbers. Multiplying by an odd
+		// constant spreads small seeds such as 0 and 1 apart (Random already XORs its seed with 0x5DEECE66D, so that
+		// can't be used here: it would cancel out)
+		dice = new Random(seed * 0x9E3779B97F4A7C15L + 1);
 	}
 
 	/**

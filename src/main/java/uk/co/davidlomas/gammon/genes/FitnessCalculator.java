@@ -25,6 +25,8 @@ import uk.co.davidlomas.gammon.game.GameStats;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
+import java.util.function.LongSupplier;
+
 /**
  * FitnessCalculator
  * <p>
@@ -49,6 +51,14 @@ class FitnessCalculator {
 	 * @param pop - population we are measuring
 	 */
 	static void calculateFitnessOfPopulation(final Population pop) {
+		calculateFitnessOfPopulation(pop, RandomSource::nextLong);
+	}
+
+	/**
+	 * As calculateFitnessOfPopulation, with the seed for each meeting's dice taken from diceSeeds, so tests can
+	 * choose them
+	 */
+	static void calculateFitnessOfPopulation(final Population pop, final LongSupplier diceSeeds) {
 
 		final GameManager gameManager = new GameManager();
 		final int size = pop.individuals.length;
@@ -60,19 +70,10 @@ class FitnessCalculator {
 		for (int first = 0; first < size; first++) {
 			for (int second = first + 1; second < size; second++) {
 				for (int meeting = 0; meeting < meetings; meeting++) {
-					final long dice = RandomSource.nextLong();
-
-					RandomSource.setDiceSeed(dice);
-					final GameStats firstAsPlayerOne = gameManager.playIndividualsVsEachOther(pop.individuals[first],
-							pop.individuals[second]);
-					totals[first] += firstAsPlayerOne.getPlayerOneScore();
-					totals[second] += firstAsPlayerOne.getPlayerTwoScore();
-
-					RandomSource.setDiceSeed(dice);
-					final GameStats secondAsPlayerOne = gameManager.playIndividualsVsEachOther(pop.individuals[second],
-							pop.individuals[first]);
-					totals[second] += secondAsPlayerOne.getPlayerOneScore();
-					totals[first] += secondAsPlayerOne.getPlayerTwoScore();
+					final double[] scores = meet(gameManager, pop.individuals[first], pop.individuals[second],
+							diceSeeds.getAsLong());
+					totals[first] += scores[0];
+					totals[second] += scores[1];
 				}
 			}
 		}
@@ -82,5 +83,22 @@ class FitnessCalculator {
 		for (int i = 0; i < size; i++) {
 			pop.individuals[i].setFitness(gamesEach == 0 ? 0 : totals[i] / gamesEach);
 		}
+	}
+
+	/**
+	 * One meeting: two games with the same dice, one with each player as player one
+	 *
+	 * @return each player's total score from the two games, first then second
+	 */
+	static double[] meet(final GameManager gameManager, final Individual first, final Individual second,
+						 final long diceSeed) {
+		RandomSource.setDiceSeed(diceSeed);
+		final GameStats firstAsPlayerOne = gameManager.playIndividualsVsEachOther(first, second);
+
+		RandomSource.setDiceSeed(diceSeed);
+		final GameStats secondAsPlayerOne = gameManager.playIndividualsVsEachOther(second, first);
+
+		return new double[]{firstAsPlayerOne.getPlayerOneScore() + secondAsPlayerOne.getPlayerTwoScore(),
+				firstAsPlayerOne.getPlayerTwoScore() + secondAsPlayerOne.getPlayerOneScore()};
 	}
 }
