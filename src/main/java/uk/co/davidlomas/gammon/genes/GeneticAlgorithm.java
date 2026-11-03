@@ -50,7 +50,7 @@ public class GeneticAlgorithm {
 	 *
 	 * @return the individual1
 	 */
-	private static Individual crossoverIndividuals(final Individual individual1, final Individual individual2) {
+	static Individual crossoverIndividuals(final Individual individual1, final Individual individual2) {
 
 		logger.trace("Crossing individuals");
 
@@ -59,11 +59,10 @@ public class GeneticAlgorithm {
 
 		// loop the individuals attributes
 		for (int x = 0; x < individual1.getNumOfAttributes(); x++) {
-			if (RandomSource.nextDouble() <= GenAlgSettings.getUniformRate()) {
-				newIndividual.setAttribute(x, individual1.getAttribute(x));
-			} else {
-				newIndividual.setAttribute(x, individual2.getAttribute(x));
-			}
+			// a copy of the parent's gene, not the gene itself, so mutating the child can't change the parent
+			final IndividualAttribute parentsGene = RandomSource.nextDouble() <= GenAlgSettings.getUniformRate()
+					? individual1.getAttribute(x) : individual2.getAttribute(x);
+			newIndividual.setAttribute(x, new IndividualAttribute(parentsGene.getName(), parentsGene.getValue()));
 		}
 		return newIndividual;
 	}
@@ -164,6 +163,10 @@ public class GeneticAlgorithm {
 				}
 			}
 		}
+
+		// the game plays by the genes, not the chromosome, so they have to be set from the changed bits. Without
+		// this, mutation changed nothing about how a player plays, and saving the player put the old bits back
+		individual.updateFromBinary();
 	}
 
 	/**
