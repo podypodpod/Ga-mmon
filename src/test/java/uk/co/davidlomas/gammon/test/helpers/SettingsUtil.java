@@ -11,6 +11,7 @@ public class SettingsUtil {
 		GameSettings.setDisplayGUICache(false);
 		GameSettings.setIsP1BlackCache(true);
 		GameSettings.setMultiThreadingCache(false);
+		GameSettings.setThreadsCache(0);
 		GameSettings.setTimeDelayCache(0);
 
 		// GEN ALG

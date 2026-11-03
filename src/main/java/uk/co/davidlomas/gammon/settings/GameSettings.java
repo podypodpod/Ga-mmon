@@ -47,6 +47,7 @@ public class GameSettings {
 	private static Boolean multiThreadingCache = null;
 
 	private static int timeDelayCache = -1;
+	private static int threadsCache = -1;
 
 	public static void setIsP1BlackCache(final Boolean isP1BlackCache) {
 		GameSettings.isP1BlackCache = isP1BlackCache;
@@ -66,6 +67,50 @@ public class GameSettings {
 
 	public static void setTimeDelayCache(final int timeDelayCache) {
 		GameSettings.timeDelayCache = timeDelayCache;
+	}
+
+	public static void setThreadsCache(final int threadsCache) {
+		GameSettings.threadsCache = checkThreads(threadsCache);
+	}
+
+	/**
+	 * Reads every setting now, if it hasn't been read yet. The settings are read from the file the first time
+	 * they're asked for; call this before games are played on several threads, so they don't each read the file
+	 */
+	public static void loadAll() {
+		getAreBothAI();
+		getDisplayGUI();
+		getMultiThreading();
+		getThreads();
+		getTimeDelay();
+		isP1Black();
+	}
+
+	/**
+	 * How many threads to play the GA's fitness games on when multiThreading is on: 0, or missing from the file,
+	 * for one per core
+	 */
+	public static int getThreads() {
+		if (threadsCache == -1) {
+			threadsCache = threadsFrom(getPropertyFromFile("threads"));
+		}
+		return threadsCache;
+	}
+
+	/**
+	 * The threads setting from the file's value, 0 if it's missing
+	 *
+	 * @throws IllegalArgumentException if it's below 0
+	 */
+	static int threadsFrom(final String value) {
+		return value == null ? 0 : checkThreads(Integer.parseInt(value.trim()));
+	}
+
+	private static int checkThreads(final int threads) {
+		if (threads < 0) {
+			throw new IllegalArgumentException("threads has to be 0, for one per core, or more, but it's " + threads);
+		}
+		return threads;
 	}
 
 	public static boolean getAreBothAI() {

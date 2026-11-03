@@ -93,4 +93,19 @@ public class GameTest {
 		assertEquals(0.0, stats.getPlayerTwoScore());
 		assertNull(stats.getVictor());
 	}
+
+	@Test
+	public void aGameOnAnInterruptedThreadStopsAsADraw() {
+		// as when the GA gives up and interrupts the games it's still playing
+		final Game game = new Game(individual1, individual2);
+		Thread.currentThread().interrupt();
+		try {
+			game.run();
+		} finally {
+			// clears the interrupt, so it doesn't reach the next test
+			Thread.interrupted();
+		}
+
+		assertTrue(game.getGameStats().isDraw());
+	}
 }

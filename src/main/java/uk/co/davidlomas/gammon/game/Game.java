@@ -198,6 +198,13 @@ class Game implements Runnable {
 				gameActive = false;
 				break;
 			}
+			// the GA interrupts the games it's still playing when it gives up, such as after another game failed
+			if (areBothAIs && Thread.currentThread().isInterrupted()) {
+				logger.debug("Game stopped as its thread was interrupted");
+				cutShort = true;
+				gameActive = false;
+				break;
+			}
 
 			// Player1's Turn if the game is still active and it is now their
 			// turn
