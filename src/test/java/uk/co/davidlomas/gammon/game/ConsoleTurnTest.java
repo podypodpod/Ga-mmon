@@ -18,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -58,7 +57,7 @@ public class ConsoleTurnTest {
 		assertEquals(4, board.Points[6].getBlackCount());
 		assertEquals(2, board.Points[5].getBlackCount());
 		assertEquals(0, player.movesLeft.size());
-		assertTrue(said().contains("you're black"));
+		assertTrue(said().contains("you're player 2, black"));
 		assertTrue(said().contains("That's all your dice."));
 	}
 
@@ -127,11 +126,47 @@ public class ConsoleTurnTest {
 	}
 
 	@Test
-	public void runningOutOfInputPartWayThroughATurnIsAnError() {
+	public void theInputEndingPartWayThroughATurnConcedes() {
+		// they pick a piece, then the input ends, as with Ctrl+D or Ctrl+Z
+		final Board board = new Board();
 		final Player player = person(true, "1", "8");
 		player.movesLeft.add(3);
 
-		assertThrows(IllegalStateException.class, () -> player.playRoll(new Board()));
+		player.playRoll(board);
+
+		assertTrue(player.hasConceded());
+		assertTrue(said().contains("The input has ended, so you've conceded."));
+		assertEquals(3, board.Points[8].getBlackCount());
+	}
+
+	@Test
+	public void aPieceOnTheBarComesInFromTwentyFive() {
+		final Board board = new Board();
+		board.Points[24].setBlackCount(1);
+		board.Points[25].setBlackCount(1);
+		final Player player = person(true, "1", "25", "3");
+		player.movesLeft.add(3);
+
+		player.playRoll(board);
+
+		assertEquals(0, board.Points[25].getBlackCount());
+		assertEquals(1, board.Points[22].getBlackCount());
+	}
+
+	@Test
+	public void landingOnABlotSendsItToTheBar() {
+		// red has left a piece on its own on 3
+		final Board board = new Board();
+		board.Points[1].setRedCount(1);
+		board.Points[3].setRedCount(1);
+		final Player player = person(true, "1", "6", "3");
+		player.movesLeft.add(3);
+
+		player.playRoll(board);
+
+		assertEquals(1, board.Points[3].getBlackCount());
+		assertEquals(0, board.Points[3].getRedCount());
+		assertEquals(1, board.Points[0].getRedCount());
 	}
 
 	@Test

@@ -166,7 +166,14 @@ class Game implements Runnable {
 			if (playerOnesTurn && isGameActive()) {
 
 				// creating the new board with the chosen moves etc
+				final Board before = liveBoard;
 				liveBoard = new Board(aiPlayer1.AiTurn(liveBoard));
+
+				// a person playing sees the AI's roll, and their own turn starts by showing the board it left
+				if (!areBothAIs) {
+					aiPlayer2.tell("Player 1, " + aiPlayer1.getColourString() + ", rolled " + aiPlayer1.movesLeft.moves
+							+ (liveBoard.equals(before) ? " and couldn't move." : "."));
+				}
 
 				// displaying new board
 				if (GameSettings.getDisplayGUI()) {
@@ -181,7 +188,8 @@ class Game implements Runnable {
 
 					logger.trace("Player 1 has won! (Black={})", aiPlayer1.black);
 					if (!areBothAIs) {
-						aiPlayer2.tell("Player 1 has won.");
+						aiPlayer2.tell("You lost, player 1 has won.");
+						aiPlayer2.showBoard(liveBoard);
 					}
 
 					// if they haven't won then continue

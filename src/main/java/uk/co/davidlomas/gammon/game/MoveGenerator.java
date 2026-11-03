@@ -20,6 +20,9 @@ package uk.co.davidlomas.gammon.game;
 
 import uk.co.davidlomas.gammon.genes.Individual;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The Class MoveGenerator.
  * <p>
@@ -109,9 +112,11 @@ public class MoveGenerator {
 
 		// Clear the list
 		boardList.clearList();
+		final List<Integer> roll = new ArrayList<>(p.movesLeft.moves);
 
-		// generate all possible moves
+		// generate all possible moves, then drop the ones the rules don't allow
 		generateMoves(cb, p);
+		boardList.keepOnlyLegalMoves(roll);
 
 		// select the best board and return it, if no possible next moves it
 		// will return null and carry on using the same board

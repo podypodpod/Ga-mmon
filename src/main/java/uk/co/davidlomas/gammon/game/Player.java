@@ -20,6 +20,9 @@ package uk.co.davidlomas.gammon.game;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -39,6 +42,7 @@ public class Player {
 
 	// where a person's moves are read from and the prompts written to: the console, unless a test swaps them.
 	// The input is only opened when a person plays, so AI players never touch System.in
+	private static Scanner console;
 	private Scanner input;
 	private PrintStream output = System.out;
 	private boolean conceded;
@@ -223,7 +227,7 @@ public class Player {
 	 */
 	void playRoll(final Board liveBoard) {
 		output.println();
-		output.println("Your turn, you're " + getColourString() + ". " + (black
+		output.println("Your turn, you're player 2, " + getColourString() + ". " + (black
 				? "Black moves from 24 down to 1, its bar is 25, and pieces come off past 1."
 				: "Red moves from 1 up to 24, its bar is 0, and pieces come off past 24."));
 		liveBoard.printBoard(output);
@@ -234,22 +238,35 @@ public class Player {
 				return;
 			}
 			output.println("Dice left: " + movesLeft.moves);
-			final int option = readNumber("1) Move a piece  2) Concede the game: ");
+			final Integer option = readNumber("1) Move a piece  2) Concede the game: ");
+			if (option == null) {
+				concede("The input has ended, so you've conceded.");
+				return;
+			}
 
 			if (option == 1) {
-				final int from = readNumber("Move the piece on which point? ");
-				final int die = readNumber("Using which die? ");
+				final Integer from = readNumber("Move the piece on which point? ");
+				final Integer die = from == null ? null : readNumber("Using which die? ");
+				if (die == null) {
+					concede("The input has ended, so you've conceded.");
+					return;
+				}
 				final int to = black ? from - die : from + die;
-				if (movesLeft.contains(die) && isMovePossible(from, to, liveBoard)) {
-					movePiece(from, to, liveBoard);
-					movesLeft.remove(die);
-					liveBoard.printBoard(output);
-				} else {
+				// isMovePossible also checks they have that die, as the move is exactly that far
+				if (!isMovePossible(from, to, liveBoard)) {
 					output.println("That move isn't allowed.");
+				} else {
+					final String reason = whyTheRulesRefuse(from, die, liveBoard);
+					if (reason != null) {
+						output.println(reason);
+					} else {
+						movePiece(from, to, liveBoard);
+						movesLeft.remove(die);
+						liveBoard.printBoard(output);
+					}
 				}
 			} else if (option == 2) {
-				conceded = true;
-				output.println("You conceded.");
+				concede("You conceded.");
 				return;
 			} else {
 				output.println("Type 1 or 2.");
@@ -272,10 +289,72 @@ public class Player {
 	}
 
 	/**
+	 * The rules about using the dice: a player has to use as many of them as they can, and when only one of two
+	 * different dice can be used, it has to be the larger if that can be played. A move can be allowed on its own
+	 * and still break these, by leaving a die that could have been used with nothing to move.
+	 *
+	 * @return why the move breaks them, to tell the person, or null if it doesn't
+	 */
+	private String whyTheRulesRefuse(final int from, final int die, final Board liveBoard) {
+		final List<Integer> dice = movesLeft.moves;
+		final int most = mostDiceUsable(liveBoard, dice);
+
+		final Board after = new Board(liveBoard);
+		movePiece(from, black ? from - die : from + die, after);
+		final List<Integer> rest = new ArrayList<>(dice);
+		rest.remove(Integer.valueOf(die));
+		if (1 + mostDiceUsable(after, rest) < most) {
+			return "You can use " + most + " of your dice if you move another way, and you have to use as many as you can.";
+		}
+
+		if (most == 1 && dice.size() == 2 && !dice.get(0).equals(dice.get(1))) {
+			final int larger = Math.max(dice.get(0), dice.get(1));
+			if (die != larger && mostDiceUsable(liveBoard, List.of(larger)) == 1) {
+				return "Only one of your dice can be used, so it has to be the larger one, the " + larger + ".";
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * The most of these dice the player could use from this board, trying every order and every piece
+	 */
+	private int mostDiceUsable(final Board board, final List<Integer> dice) {
+		final Player probe = new Player(black);
+		probe.movesLeft.setTo(dice);
+		int most = 0;
+		for (final int die : new HashSet<>(dice)) {
+			for (int from = 0; from <= 25 && most < dice.size(); from++) {
+				final int to = black ? from - die : from + die;
+				if (probe.isMovePossible(from, to, board)) {
+					final Board after = new Board(board);
+					probe.movePiece(from, to, after);
+					final List<Integer> rest = new ArrayList<>(dice);
+					rest.remove(Integer.valueOf(die));
+					most = Math.max(most, 1 + mostDiceUsable(after, rest));
+				}
+			}
+		}
+		return most;
+	}
+
+	private void concede(final String message) {
+		conceded = true;
+		output.println(message);
+	}
+
+	/**
 	 * Shows the person a message, such as who won
 	 */
 	void tell(final String message) {
 		output.println(message);
+	}
+
+	/**
+	 * Shows the person the board
+	 */
+	void showBoard(final Board board) {
+		board.printBoard(output);
 	}
 
 	/**
@@ -294,17 +373,31 @@ public class Player {
 	}
 
 	/**
-	 * Asks until the person types a whole number
+	 * The one reader for the console, shared by every player. Each game makes a new player 2, and a reader of its
+	 * own would lose whatever the last one had already read ahead
 	 */
-	private int readNumber(final String prompt) {
+	private static synchronized Scanner console() {
+		if (console == null) {
+			console = new Scanner(System.in);
+		}
+		return console;
+	}
+
+	/**
+	 * Asks until the person types a whole number
+	 *
+	 * @return the number, or null if the input has ended, such as Ctrl+D or Ctrl+Z on the console
+	 */
+	private Integer readNumber(final String prompt) {
 		if (input == null) {
-			input = new Scanner(System.in);
+			input = console();
 		}
 		while (true) {
 			output.print(prompt);
 			output.flush();
 			if (!input.hasNextLine()) {
-				throw new IllegalStateException("The input ended part way through a turn");
+				output.println();
+				return null;
 			}
 			final String line = input.nextLine().trim();
 			try {
