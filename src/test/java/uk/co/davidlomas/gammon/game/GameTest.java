@@ -10,6 +10,8 @@ import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GameTest {
@@ -32,11 +34,10 @@ public class GameTest {
 	public void setup() {
 		gameManager = new GameManager();
 
+		// two players with genes of their own, seeded so they're the same each run
+		RandomSource.setSeed(9);
 		individual1 = new Individual();
-		individual1.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen0.properties");
-
 		individual2 = new Individual();
-		individual2.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen9.properties");
 	}
 
 	@AfterEach
@@ -53,6 +54,7 @@ public class GameTest {
 
 		final GameStats gameStats = gameManager.playIndividualsVsEachOther(individual1, individual2);
 
+		assertFalse(gameStats.isDraw(), "the seeded game was cut short as a draw, so it has no winner to check");
 		if (gameStats.getVictor().equals(individual1)) {
 			assertTrue(gameStats.getPlayerOneScore() > gameStats.getPlayerTwoScore());
 		} else {
@@ -75,5 +77,20 @@ public class GameTest {
 		assertEquals(firstGame.getVictor(), secondGame.getVictor());
 		assertEquals(firstGame.getPlayerOneScore(), secondGame.getPlayerOneScore(), 0);
 		assertEquals(firstGame.getPlayerTwoScore(), secondGame.getPlayerTwoScore(), 0);
+	}
+
+	@Test
+	public void aGameThatGoesOnTooLongIsADraw() {
+		RandomSource.setSeed(3);
+		final Game game = new Game(individual1, individual2, 6);
+
+		game.run();
+
+		final GameStats stats = game.getGameStats();
+		assertTrue(stats.isDraw());
+		assertEquals(WinType.DRAW, stats.getWinType());
+		assertEquals(0.0, stats.getPlayerOneScore());
+		assertEquals(0.0, stats.getPlayerTwoScore());
+		assertNull(stats.getVictor());
 	}
 }

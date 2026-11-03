@@ -41,7 +41,10 @@ import java.util.List;
 class Game implements Runnable {
 
 	private final static Logger logger = LoggerFactory.getLogger(Game.class);
-	// the loser can bear at most 14 pieces, 14/30 keeps their score below the winner's
+
+	// A game between two AIs is cut short after this many turns. Backgammon has no limit, but players whose genes
+	// value hitting over getting home can keep sending each other back for ever. A normal game is 50 to 60 turns
+	static final int MAX_TURNS = 300;
 
 	private final AiPlayer aiPlayer1;
 	private final AiPlayer aiPlayer2;
@@ -55,6 +58,9 @@ class Game implements Runnable {
 	private final boolean areBothAIs = GameSettings.getAreBothAI();
 	private final int timeDelay = GameSettings.getTimeDelay();
 	private int p1Roll = 0, p2Roll = 0;
+	private final int maxTurns;
+	private int turnsPlayed = 0;
+	private boolean cutShort = false;
 
 	// the opening move is played with the two dice from the opening roll, rather than a new roll. Null once it's used
 	private List<Integer> openingDice;
@@ -63,6 +69,14 @@ class Game implements Runnable {
 	 * Instantiates a new game.
 	 */
 	Game(final Individual individual1, final Individual individual2) {
+		this(individual1, individual2, MAX_TURNS);
+	}
+
+	/**
+	 * A game cut short after maxTurns, if both players are AIs, so tests can use a short limit
+	 */
+	Game(final Individual individual1, final Individual individual2, final int maxTurns) {
+		this.maxTurns = maxTurns;
 
 		liveBoard = new Board();
 		liveBoard.printBoardGUI();
@@ -86,6 +100,10 @@ class Game implements Runnable {
 		// the winner gains the points the win is worth, 1, 2 or 3, and the loser loses them, as in backgammon, so a
 		// loser who saves a gammon is a point better off. A person playing as player 2 can concede, which hands
 		// player 1 the game, scored as the board stands
+		// A game cut short is a draw, with no victor and nothing to either player
+		if (cutShort) {
+			return new GameStats(null, WinType.DRAW, 0, 0);
+		}
 		final boolean playerOneWon = liveBoard.hasPlayerWon(aiPlayer1.black) || aiPlayer2.hasConceded();
 		final WinType winType = liveBoard.winTypeAgainst(playerOneWon ? aiPlayer2.black : aiPlayer1.black);
 		final int points = winType.getPoints();
@@ -111,7 +129,6 @@ class Game implements Runnable {
 		}
 
 		openingDice = List.of(p1Roll, p2Roll);
-		liveBoard.isInitialMove = true;
 	}
 
 	/**
@@ -174,6 +191,13 @@ class Game implements Runnable {
 
 		// The Game Loop, while boolean gameActive is true, keep going
 		while (isGameActive()) {
+
+			if (areBothAIs && turnsPlayed++ >= maxTurns) {
+				logger.debug("Game cut short after {} turns", maxTurns);
+				cutShort = true;
+				gameActive = false;
+				break;
+			}
 
 			// Player1's Turn if the game is still active and it is now their
 			// turn
@@ -291,7 +315,6 @@ class Game implements Runnable {
 						playerOnesTurn = true;
 					}
 				}
-				liveBoard.isInitialMove = false;
 			}
 		}
 	}

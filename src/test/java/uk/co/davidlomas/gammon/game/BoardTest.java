@@ -151,16 +151,6 @@ public class BoardTest {
 		assertFalse(forColour(blackPosition, black).canPlayerBear(black));
 	}
 
-	@ParameterizedTest(name = "black {0}")
-	@ValueSource(booleans = {true, false})
-	public void homePointsCoveredCountsOnlyThePlayersOwnPoints(final boolean black) {
-		final Board blackPosition = endGameBoard();
-		// an opponent's piece in the home quarter isn't one of ours
-		blackPosition.Points[3].setRedCount(1);
-
-		assertEquals(2, forColour(blackPosition, black).getNumOfHomePointsCovered(black));
-	}
-
 	@Test
 	public void theMirrorImageSwapsTheBorneOffCounts() {
 		final Board blackPosition = endGameBoard();

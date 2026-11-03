@@ -63,7 +63,7 @@ public class GameStats {
 	/**
 	 * getVictor
 	 *
-	 * @return individual
+	 * @return individual, or null if the game was a draw
 	 */
 	public Individual getVictor() {
 		return gameVictor;
@@ -71,6 +71,13 @@ public class GameStats {
 
 	public double getPlayerTwoScore() {
 		return playerTwoScore;
+	}
+
+	/**
+	 * @return true if nobody won: the game went on too long and was cut short, so there's no victor
+	 */
+	public boolean isDraw() {
+		return winType == WinType.DRAW;
 	}
 
 	/**

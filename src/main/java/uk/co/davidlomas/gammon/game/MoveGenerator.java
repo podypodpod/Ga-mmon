@@ -44,7 +44,7 @@ public class MoveGenerator {
 	 */
 	public MoveGenerator(final Individual individual) {
 		this.individual = individual;
-		boardList = new BoardList(this.individual);
+		boardList = new BoardList();
 	}
 
 	/**
@@ -121,9 +121,9 @@ public class MoveGenerator {
 
 		generateLegalMoves(cb, p);
 
-		// select the best board and return it, if no possible next moves it
+		// the player's genes pick the best board, if no possible next moves it
 		// will return null and carry on using the same board
-		return boardList.selectBoard(cb, p);
+		return MoveChooser.choose(boardList.getBoards(), p.black, individual);
 	}
 
 	/**
