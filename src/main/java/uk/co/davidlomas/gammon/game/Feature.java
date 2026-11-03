@@ -17,12 +17,12 @@ public enum Feature {
 	 */
 	PIP_LEAD("pipLead", 100, true) {
 		@Override
-		int measure(final Board board, final boolean black) {
+		int measure(final Side side) {
 			int mine = 0;
 			int theirs = 0;
 			for (int point = 0; point <= 25; point++) {
-				mine += point * mine(board, black, point);
-				theirs += (25 - point) * theirs(board, black, point);
+				mine += point * side.mine(point);
+				theirs += (25 - point) * side.theirs(point);
 			}
 			return theirs - mine;
 		}
@@ -33,10 +33,10 @@ public enum Feature {
 	 */
 	BLOTS("blots", 5, false) {
 		@Override
-		int measure(final Board board, final boolean black) {
+		int measure(final Side side) {
 			int blots = 0;
 			for (int point = 1; point <= 24; point++) {
-				if (mine(board, black, point) == 1) {
+				if (side.mine(point) == 1) {
 					blots++;
 				}
 			}
@@ -51,11 +51,18 @@ public enum Feature {
 	 */
 	HIT_ROLLS("hitRolls", 36, false) {
 		@Override
-		int measure(final Board board, final boolean black) {
+		int measure(final Side side) {
+			if (side.theirs(0) == 0) {
+				return Long.bitCount(hitMask(side));
+			}
+			// with the opponent on the bar, roll by roll. 3-1 and 1-3 hit the same blots, so each pair of different
+			// dice is tried once and counted twice
 			int count = 0;
-			for (int roll = 0; roll < 36; roll++) {
-				if (rollHits(board, black, roll / 6 + 1, roll % 6 + 1)) {
-					count++;
+			for (int die1 = 1; die1 <= 6; die1++) {
+				for (int die2 = die1; die2 <= 6; die2++) {
+					if (rollHits(side, die1, die2)) {
+						count += die1 == die2 ? 1 : 2;
+					}
 				}
 			}
 			return count;
@@ -67,8 +74,8 @@ public enum Feature {
 	 */
 	POINTS_MADE("pointsMade", 7, false) {
 		@Override
-		int measure(final Board board, final boolean black) {
-			return pointsMade(board, black, 1, 24);
+		int measure(final Side side) {
+			return pointsMade(side, 1, 24);
 		}
 	},
 
@@ -77,8 +84,8 @@ public enum Feature {
 	 */
 	HOME_POINTS("homePoints", 6, true) {
 		@Override
-		int measure(final Board board, final boolean black) {
-			return pointsMade(board, black, 1, 6);
+		int measure(final Side side) {
+			return pointsMade(side, 1, 6);
 		}
 	},
 
@@ -87,11 +94,11 @@ public enum Feature {
 	 */
 	LONGEST_PRIME("longestPrime", 6, false) {
 		@Override
-		int measure(final Board board, final boolean black) {
+		int measure(final Side side) {
 			int longest = 0;
 			int run = 0;
 			for (int point = 1; point <= 24; point++) {
-				run = mine(board, black, point) >= 2 ? run + 1 : 0;
+				run = side.mine(point) >= 2 ? run + 1 : 0;
 				longest = Math.max(longest, run);
 			}
 			return longest;
@@ -103,8 +110,8 @@ public enum Feature {
 	 */
 	ANCHORS("anchors", 3, false) {
 		@Override
-		int measure(final Board board, final boolean black) {
-			return pointsMade(board, black, 19, 24);
+		int measure(final Side side) {
+			return pointsMade(side, 19, 24);
 		}
 	},
 
@@ -113,10 +120,10 @@ public enum Feature {
 	 */
 	PIECES_BACK("piecesBack", 5, true) {
 		@Override
-		int measure(final Board board, final boolean black) {
+		int measure(final Side side) {
 			int back = 0;
 			for (int point = 19; point <= 25; point++) {
-				back += mine(board, black, point);
+				back += side.mine(point);
 			}
 			return back;
 		}
@@ -127,8 +134,8 @@ public enum Feature {
 	 */
 	OPPONENT_ON_BAR("opponentOnBar", 2, false) {
 		@Override
-		int measure(final Board board, final boolean black) {
-			return theirs(board, black, 0);
+		int measure(final Side side) {
+			return side.theirs(0);
 		}
 	},
 
@@ -137,8 +144,8 @@ public enum Feature {
 	 */
 	BORNE_OFF("borneOff", 15, true) {
 		@Override
-		int measure(final Board board, final boolean black) {
-			return board.howManyHasPlayerBore(black);
+		int measure(final Side side) {
+			return side.borneOff;
 		}
 	},
 
@@ -147,10 +154,10 @@ public enum Feature {
 	 */
 	STACKING("stacking", 10, true) {
 		@Override
-		int measure(final Board board, final boolean black) {
+		int measure(final Side side) {
 			int extra = 0;
 			for (int point = 1; point <= 24; point++) {
-				extra += Math.max(0, mine(board, black, point) - 3);
+				extra += Math.max(0, side.mine(point) - 3);
 			}
 			return extra;
 		}
@@ -188,13 +195,53 @@ public enum Feature {
 	 *
 	 * @return the count or difference it measures
 	 */
-	abstract int measure(Board board, boolean black);
+	int measure(final Board board, final boolean black) {
+		return measure(new Side(board, black));
+	}
+
+	/**
+	 * The feature, unscaled, from the board as one player sees it
+	 */
+	abstract int measure(Side side);
 
 	/**
 	 * @return the feature divided by its scale, roughly between -1 and 1
 	 */
-	double scaled(final Board board, final boolean black) {
-		return measure(board, black) / scale;
+	double scaled(final Side side) {
+		return measure(side) / scale;
+	}
+
+	/**
+	 * A board as one player sees it: the pieces on each point in their own numbering, read from the board once, as
+	 * every feature looks at them many times
+	 */
+	static final class Side {
+		private final int[] mine = new int[26];
+		private final int[] theirs = new int[26];
+		final int borneOff;
+
+		Side(final Board board, final boolean black) {
+			for (int point = 0; point <= 25; point++) {
+				final Point onBoard = board.Points[black ? point : 25 - point];
+				mine[point] = black ? onBoard.getBlackCount() : onBoard.getRedCount();
+				theirs[point] = black ? onBoard.getRedCount() : onBoard.getBlackCount();
+			}
+			borneOff = board.howManyHasPlayerBore(black);
+		}
+
+		/**
+		 * The player's pieces on a point, in their own numbering
+		 */
+		int mine(final int point) {
+			return mine[point];
+		}
+
+		/**
+		 * The opponent's pieces on a point, in the player's numbering, where the opponent's bar is 0
+		 */
+		int theirs(final int point) {
+			return theirs[point];
+		}
 	}
 
 	/**
@@ -216,24 +263,10 @@ public enum Feature {
 		return blackFurthestBack > redFurthestBack;
 	}
 
-	/**
-	 * The player's pieces on a point, in their own numbering
-	 */
-	static int mine(final Board board, final boolean black, final int point) {
-		return black ? board.Points[point].getBlackCount() : board.Points[25 - point].getRedCount();
-	}
-
-	/**
-	 * The opponent's pieces on a point, in the player's numbering, where the opponent's bar is 0
-	 */
-	static int theirs(final Board board, final boolean black, final int point) {
-		return black ? board.Points[point].getRedCount() : board.Points[25 - point].getBlackCount();
-	}
-
-	private static int pointsMade(final Board board, final boolean black, final int from, final int to) {
+	private static int pointsMade(final Side side, final int from, final int to) {
 		int made = 0;
 		for (int point = from; point <= to; point++) {
-			if (mine(board, black, point) >= 2) {
+			if (side.mine(point) >= 2) {
 				made++;
 			}
 		}
@@ -241,19 +274,106 @@ public enum Feature {
 	}
 
 	/**
+	 * The rolls, as bits of a 36-bit mask, that would hit at least one of the player's blots, when the opponent has
+	 * nothing on the bar. It gives the same rolls as rollHits, worked out for each opponent piece and blot at once
+	 * rather than roll by roll
+	 */
+	private static long hitMask(final Side side) {
+		long hits = 0;
+		for (int blot = 1; blot <= 24; blot++) {
+			if (side.mine(blot) != 1) {
+				continue;
+			}
+			for (int from = Math.max(1, blot - 24); from < blot; from++) {
+				if (side.theirs(from) > 0) {
+					hits |= hitMask(side, from, blot - from);
+				}
+			}
+		}
+		return hits;
+	}
+
+	/**
+	 * The rolls that take a piece on from the distance to a blot: any roll with that number on a die, two different
+	 * dice adding up to it with one of the points between open, or a double whose points on the way are open
+	 */
+	private static long hitMask(final Side side, final int from, final int distance) {
+		long mask = DIRECT_HITS[distance];
+		for (final int[] dice : TWO_DICE_HITS[distance]) {
+			if (!blocked(side, from + dice[0]) || !blocked(side, from + dice[1])) {
+				mask |= rollBit(dice[0], dice[1]) | rollBit(dice[1], dice[0]);
+			}
+		}
+		for (final int[] dieAndSteps : DOUBLE_HITS[distance]) {
+			if (openOnTheWay(side, from, dieAndSteps[0], dieAndSteps[1])) {
+				mask |= rollBit(dieAndSteps[0], dieAndSteps[0]);
+			}
+		}
+		return mask;
+	}
+
+	// For each distance from 1 to 24, worked out once: the rolls with that number on a die, the pairs of different
+	// dice that add up to it, and the doubles that reach it in two to four steps
+	private static final long[] DIRECT_HITS = new long[25];
+	private static final int[][][] TWO_DICE_HITS = new int[25][][];
+	private static final int[][][] DOUBLE_HITS = new int[25][][];
+
+	static {
+		for (int distance = 1; distance <= 24; distance++) {
+			final java.util.List<int[]> twoDice = new java.util.ArrayList<>();
+			final java.util.List<int[]> doubles = new java.util.ArrayList<>();
+			for (int die1 = 1; die1 <= 6; die1++) {
+				for (int die2 = 1; die2 <= 6; die2++) {
+					if (die1 == distance || die2 == distance) {
+						DIRECT_HITS[distance] |= rollBit(die1, die2);
+					}
+				}
+				for (int die2 = die1 + 1; die2 <= 6; die2++) {
+					if (die1 + die2 == distance && die1 != distance && die2 != distance) {
+						twoDice.add(new int[]{die1, die2});
+					}
+				}
+				for (int steps = 2; steps <= 4; steps++) {
+					if (die1 * steps == distance) {
+						doubles.add(new int[]{die1, steps});
+					}
+				}
+			}
+			TWO_DICE_HITS[distance] = twoDice.toArray(new int[0][]);
+			DOUBLE_HITS[distance] = doubles.toArray(new int[0][]);
+		}
+	}
+
+	private static long rollBit(final int die1, final int die2) {
+		return 1L << ((die1 - 1) * 6 + die2 - 1);
+	}
+
+	/**
+	 * Whether the points a double lands on before its last step are all open
+	 */
+	private static boolean openOnTheWay(final Side side, final int from, final int die, final int steps) {
+		for (int step = 1; step < steps; step++) {
+			if (blocked(side, from + die * step)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Whether the opponent's roll hits any of the player's blots. With pieces on the bar, the opponent has to bring
 	 * them in before moving anything else: one can hit on the way in or carry on to a blot with the moves the others
 	 * don't need, and another piece can hit with whatever's left of the roll once they're all in
 	 */
-	private static boolean rollHits(final Board board, final boolean black, final int die1, final int die2) {
-		final int onBar = theirs(board, black, 0);
+	private static boolean rollHits(final Side side, final int die1, final int die2) {
+		final int onBar = side.theirs(0);
 		for (int blot = 1; blot <= 24; blot++) {
-			if (mine(board, black, blot) != 1) {
+			if (side.mine(blot) != 1) {
 				continue;
 			}
 			if (onBar == 0) {
 				for (int from = 1; from < blot; from++) {
-					if (theirs(board, black, from) > 0 && canHit(board, black, from, blot - from, die1, die2)) {
+					if (side.theirs(from) > 0 && canHit(side, from, blot - from, die1, die2)) {
 						return true;
 					}
 				}
@@ -261,12 +381,12 @@ public enum Feature {
 			}
 			// a bar piece can hit as it comes in, and go on with the moves the other bar pieces don't need to come in
 			final boolean barPieceHits = die1 == die2
-					? canHit(board, black, 0, blot, die1, die2, Math.max(1, 5 - onBar))
-					: onBar == 1 ? canHit(board, black, 0, blot, die1, die2) : blot == die1 || blot == die2;
+					? canHit(side, 0, blot, die1, die2, Math.max(1, 5 - onBar))
+					: onBar == 1 ? canHit(side, 0, blot, die1, die2) : blot == die1 || blot == die2;
 			if (barPieceHits) {
 				return true;
 			}
-			if (hitsAfterComingIn(board, black, blot, onBar, die1, die2)) {
+			if (hitsAfterComingIn(side, blot, onBar, die1, die2)) {
 				return true;
 			}
 		}
@@ -277,13 +397,13 @@ public enum Feature {
 	 * Whether the opponent's pieces on the bar can all come in with part of the roll and another piece then hit the
 	 * blot with the rest: one die each to come in, so with two different dice only one piece can be on the bar
 	 */
-	private static boolean hitsAfterComingIn(final Board board, final boolean black, final int blot, final int onBar,
+	private static boolean hitsAfterComingIn(final Side side, final int blot, final int onBar,
 											 final int die1, final int die2) {
 		if (die1 != die2) {
-			return onBar == 1 && (!blocked(board, black, die1) && opponentOn(board, black, blot - die2)
-					|| !blocked(board, black, die2) && opponentOn(board, black, blot - die1));
+			return onBar == 1 && (!blocked(side, die1) && opponentOn(side, blot - die2)
+					|| !blocked(side, die2) && opponentOn(side, blot - die1));
 		}
-		if (blocked(board, black, die1)) {
+		if (blocked(side, die1)) {
 			return false;
 		}
 		// a double: one move for each piece on the bar to come in, the rest for another piece
@@ -292,10 +412,10 @@ public enum Feature {
 			if (from < 1) {
 				return false;
 			}
-			if (opponentOn(board, black, from)) {
+			if (opponentOn(side, from)) {
 				boolean open = true;
 				for (int step = 1; step < steps; step++) {
-					open &= !blocked(board, black, from + die1 * step);
+					open &= !blocked(side, from + die1 * step);
 				}
 				if (open) {
 					return true;
@@ -305,8 +425,8 @@ public enum Feature {
 		return false;
 	}
 
-	private static boolean opponentOn(final Board board, final boolean black, final int point) {
-		return point >= 1 && point <= 24 && theirs(board, black, point) > 0;
+	private static boolean opponentOn(final Side side, final int point) {
+		return point >= 1 && point <= 24 && side.theirs(point) > 0;
 	}
 
 	/**
@@ -314,22 +434,22 @@ public enum Feature {
 	 * the same die up to four times, and two different dice can be used either way round; each point landed on on the
 	 * way has to be open, not one the player has made
 	 */
-	private static boolean canHit(final Board board, final boolean black, final int from, final int distance,
+	private static boolean canHit(final Side side, final int from, final int distance,
 								  final int die1, final int die2) {
-		return canHit(board, black, from, distance, die1, die2, 4);
+		return canHit(side, from, distance, die1, die2, 4);
 	}
 
 	/**
 	 * As canHit, with a double only able to move the piece up to maxSteps times
 	 */
-	private static boolean canHit(final Board board, final boolean black, final int from, final int distance,
+	private static boolean canHit(final Side side, final int from, final int distance,
 								  final int die1, final int die2, final int maxSteps) {
 		if (die1 == die2) {
 			for (int steps = 1; steps <= maxSteps; steps++) {
 				if (die1 * steps == distance) {
 					return true;
 				}
-				if (blocked(board, black, from + die1 * steps)) {
+				if (blocked(side, from + die1 * steps)) {
 					return false;
 				}
 			}
@@ -339,10 +459,10 @@ public enum Feature {
 			return true;
 		}
 		return distance == die1 + die2
-				&& (!blocked(board, black, from + die1) || !blocked(board, black, from + die2));
+				&& (!blocked(side, from + die1) || !blocked(side, from + die2));
 	}
 
-	private static boolean blocked(final Board board, final boolean black, final int point) {
-		return point >= 1 && point <= 24 && mine(board, black, point) >= 2;
+	private static boolean blocked(final Side side, final int point) {
+		return point >= 1 && point <= 24 && side.mine(point) >= 2;
 	}
 }
