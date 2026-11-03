@@ -88,6 +88,23 @@ With a population of 40, two meetings per pair and a mutation rate of 0.02, play
 
 Better features, which let a player tell good moves from bad more finely, are what would take it further.
 
+### Benchmarking a change
+
+```bash
+./gradlew benchmark
+```
+
+measures how strong the GA's players are and how fast games are, and adds a row to `benchmarks.csv`, so a change to the players or the GA can be compared with the row before it. It takes about four minutes on 12 cores. Run it on a commit without other changes, or the row's commit is marked `-dirty`, and commit the new row with the change.
+
+- **Strength** (`pointsPerGame`, `standardError`, `perSeed`): the GA is run for 60 generations from 3 fixed seeds, always with a population of 40 and two meetings per pair, whatever `conf/` says. Each run's fittest player then plays 1,000 meetings against `ReferencePlayer`, a hand-written player that never changes, so every commit is measured against the same opponent. The result is their average points a game against it, with the standard error between the three seeds. A difference of less than about two standard errors could be luck.
+- **Speed** (`gamesPerSecond`): the same 2,000 seeded games each time, on one thread. Expect it to vary by a few percent from run to run.
+- **Fingerprint**: a hash of those games' results. It stays the same while a change doesn't change how games are played, such as a speed-up, and changes when it does.
+- `gaSeconds` and `cores` give the time the GA runs took, which depends on the machine.
+
+`-Pgenerations=`, `-Pseeds=` and `-Pmeetings=` change how much it plays, for a quicker look or a closer one. Rows with different settings can't be compared.
+
+If evolved players come to beat the reference player by a wide margin, it stops telling changes apart, and a stronger reference player is needed. That starts a new series of rows. For a change to the players' features, it's also worth evolving players with and without the change and playing them against each other directly.
+
 ## Settings
 
 The settings are read from the files in `conf/`. To use a different folder, run with `-Dgammon.confDir=<folder>`, and to save players somewhere else, `-Dgammon.playersDir=<folder>`. The tests use these to work on their own copies.
