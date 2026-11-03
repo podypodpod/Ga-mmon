@@ -74,11 +74,11 @@ class FitnessCalculator {
 
 		// every meeting and its seed, worked out first and in order, so the result is the same however many
 		// threads play them and in whatever order they finish
-		final List<long[]> plan = new ArrayList<>();
+		final List<Meeting> plan = new ArrayList<>();
 		for (int first = 0; first < size; first++) {
 			for (int second = first + 1; second < size; second++) {
 				for (int meeting = 0; meeting < meetings; meeting++) {
-					plan.add(new long[]{first, second, meetingSeeds.getAsLong()});
+					plan.add(new Meeting(first, second, meetingSeeds.getAsLong()));
 				}
 			}
 		}
@@ -88,8 +88,8 @@ class FitnessCalculator {
 
 		final double[] totals = new double[size];
 		for (int i = 0; i < plan.size(); i++) {
-			totals[(int) plan.get(i)[0]] += scores.get(i)[0];
-			totals[(int) plan.get(i)[1]] += scores.get(i)[1];
+			totals[plan.get(i).first()] += scores.get(i)[0];
+			totals[plan.get(i).second()] += scores.get(i)[1];
 		}
 
 		// each player plays two games a meeting against each of the others
@@ -104,20 +104,22 @@ class FitnessCalculator {
 	 * in the plan's order. Even with one thread they're played on a thread of their own, so the caller's random
 	 * numbers aren't touched either way
 	 */
-	private static List<double[]> play(final Population pop, final List<long[]> plan) {
+	private static List<double[]> play(final Population pop, final List<Meeting> plan) {
 		// the settings are read now, before any game, so the threads don't each read them from the file
 		GameSettings.loadAll();
 		final boolean parallel = GameSettings.getMultiThreading() && !GameSettings.getDisplayGUI();
 
-		final int threads = !parallel ? 1
+		final int wanted = !parallel ? 1
 				: GameSettings.getThreads() == 0 ? Runtime.getRuntime().availableProcessors() : GameSettings.getThreads();
+		// no more threads than meetings, as any more would have nothing to play
+		final int threads = Math.max(1, Math.min(wanted, plan.size()));
 		final ExecutorService pool = Executors.newFixedThreadPool(threads);
 		try {
 			final List<Future<double[]>> playing = new ArrayList<>();
-			for (final long[] meeting : plan) {
-				final Individual first = pop.individuals[(int) meeting[0]];
-				final Individual second = pop.individuals[(int) meeting[1]];
-				playing.add(pool.submit(() -> meet(new GameManager(), first, second, meeting[2])));
+			for (final Meeting meeting : plan) {
+				final Individual first = pop.individuals[meeting.first()];
+				final Individual second = pop.individuals[meeting.second()];
+				playing.add(pool.submit(() -> meet(new GameManager(), first, second, meeting.seed())));
 			}
 			final List<double[]> scores = new ArrayList<>();
 			for (final Future<double[]> meeting : playing) {
@@ -134,6 +136,12 @@ class FitnessCalculator {
 			// the turn, so after a failure the others don't carry on in the background
 			pool.shutdownNow();
 		}
+	}
+
+	/**
+	 * A meeting to play: the two players, by their place in the population, and the meeting's seed
+	 */
+	private record Meeting(int first, int second, long seed) {
 	}
 
 	/**
