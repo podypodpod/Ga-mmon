@@ -130,12 +130,11 @@ public class BoardList {
 			}
 
 			// add the board to the list if there is not a duplicate. If there is, keep whichever way of reaching it
-			// used more dice
-			final List<Integer> diceUsed = new ArrayList<>(player.diceUsed);
+			// used more dice. The dice are only copied when they're kept, as many boards reached are duplicates
 			if (!thereIsADuplicate(board)) {
-				addBoard(board, diceUsed);
-			} else if (boardsInList.get(board).size() < diceUsed.size()) {
-				boardsInList.put(board, diceUsed);
+				addBoard(board, new ArrayList<>(player.diceUsed));
+			} else if (boardsInList.get(board).size() < player.diceUsed.size()) {
+				boardsInList.put(board, new ArrayList<>(player.diceUsed));
 			}
 
 		}
@@ -201,6 +200,7 @@ public class BoardList {
 	void clearList() {
 		boardList.clear();
 		boardsInList.clear();
+		mostDiceUsed = 0;
 	}
 
 	/**

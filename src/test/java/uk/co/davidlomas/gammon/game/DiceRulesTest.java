@@ -14,16 +14,21 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The rules for using the dice, for a person on the console and for the AI: use as many of the dice as you can, and
  * if only one of two different dice can be used, use the larger. Each position is set up for black and mirrored for
- * red, where point p is 25 - p, and the roll is a 6 and a 1.
+ * red, where point p is 25 - p. The roll is a 6 and a 1 unless a test says otherwise.
  */
 public class DiceRulesTest {
+
+	private static final List<Integer> SIX_ONE = List.of(6, 1);
+	private static final List<Integer> DOUBLE_THREE = List.of(3, 3, 3, 3);
 
 	@BeforeAll
 	public static void beforeClass() {
@@ -66,13 +71,64 @@ public class DiceRulesTest {
 		return board;
 	}
 
+	/**
+	 * Black's only piece is on 13 and red holds 1, so a double 3 takes it to 10, 7 and 4, and the fourth 3 has
+	 * nowhere to go.
+	 */
+	private static Board onlyThreeOfADoubleCanBeUsed() {
+		final Board board = emptyBoard();
+		board.Points[13].setBlackCount(1);
+		board.Points[1].setRedCount(2);
+		return board;
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void aPersonCanPlayTheDiceInEitherOrder(final boolean black) {
+		final Board board = forColour(bothDiceCanBeUsed(), black);
+		// the 1 from 8 first this time, then the 6 from 10
+		final ByteArrayOutputStream printed = new ByteArrayOutputStream();
+		final Player player = person(black, printed, SIX_ONE, "1", point(8, black), "1", "1", point(10, black), "6");
+
+		player.playRoll(board);
+
+		assertFalse(printed.toString(StandardCharsets.UTF_8).contains("you have to"));
+		assertEquals(7, pipsMoved(bothDiceCanBeUsed(), board, black));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void aPersonPlaysAsMuchOfADoubleAsTheyCan(final boolean black) {
+		final Board board = forColour(onlyThreeOfADoubleCanBeUsed(), black);
+		final ByteArrayOutputStream printed = new ByteArrayOutputStream();
+		final Player player = person(black, printed, DOUBLE_THREE, "1", point(13, black), "3", "1", point(10, black),
+				"3", "1", point(7, black), "3");
+
+		player.playRoll(board);
+
+		assertTrue(printed.toString(StandardCharsets.UTF_8).contains("None of your dice can be played."));
+		assertEquals(9, pipsMoved(onlyThreeOfADoubleCanBeUsed(), board, black));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void theAiPlaysAsMuchOfADoubleAsItCan(final boolean black) {
+		for (long seed = 0; seed < 20; seed++) {
+			RandomSource.setSeed(seed);
+
+			final Board chosen = aiMove(forColour(onlyThreeOfADoubleCanBeUsed(), black), black, DOUBLE_THREE);
+
+			assertEquals(9, pipsMoved(onlyThreeOfADoubleCanBeUsed(), chosen, black), "seed " + seed);
+		}
+	}
+
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
 	public void aPersonCantPlayADieThatStopsThemUsingTheOther(final boolean black) {
 		final Board board = forColour(bothDiceCanBeUsed(), black);
 		// the 1 from 10, refused, then the 6 from 10 and the 1 from 8
 		final ByteArrayOutputStream printed = new ByteArrayOutputStream();
-		final Player player = person(black, printed, "1", point(10, black), "1", "1", point(10, black), "6", "1",
+		final Player player = person(black, printed, SIX_ONE, "1", point(10, black), "1", "1", point(10, black), "6", "1",
 				point(8, black), "1");
 
 		player.playRoll(board);
@@ -87,7 +143,7 @@ public class DiceRulesTest {
 		final Board board = forColour(onlyOneDieCanBeUsed(), black);
 		// the 1 from 10, refused, then the 6 from 10
 		final ByteArrayOutputStream printed = new ByteArrayOutputStream();
-		final Player player = person(black, printed, "1", point(10, black), "1", "1", point(10, black), "6");
+		final Player player = person(black, printed, SIX_ONE, "1", point(10, black), "1", "1", point(10, black), "6");
 
 		player.playRoll(board);
 
@@ -102,7 +158,7 @@ public class DiceRulesTest {
 		for (long seed = 0; seed < 20; seed++) {
 			RandomSource.setSeed(seed);
 
-			final Board chosen = aiMove(forColour(bothDiceCanBeUsed(), black), black);
+			final Board chosen = aiMove(forColour(bothDiceCanBeUsed(), black), black, SIX_ONE);
 
 			assertEquals(7, pipsMoved(bothDiceCanBeUsed(), chosen, black), "seed " + seed);
 		}
@@ -114,20 +170,19 @@ public class DiceRulesTest {
 		for (long seed = 0; seed < 20; seed++) {
 			RandomSource.setSeed(seed);
 
-			final Board chosen = aiMove(forColour(onlyOneDieCanBeUsed(), black), black);
+			final Board chosen = aiMove(forColour(onlyOneDieCanBeUsed(), black), black, SIX_ONE);
 
 			assertEquals(6, pipsMoved(onlyOneDieCanBeUsed(), chosen, black), "seed " + seed);
 		}
 	}
 
-	private static Board aiMove(final Board board, final boolean black) {
+	private static Board aiMove(final Board board, final boolean black, final List<Integer> dice) {
 		final Individual individual = new Individual();
 		for (int i = 0; i < individual.getNumOfAttributes(); i++) {
 			individual.getAttribute(i).setValue(0);
 		}
 		final AiPlayer player = new AiPlayer(black, individual);
-		player.movesLeft.add(6);
-		player.movesLeft.add(1);
+		player.movesLeft.setTo(dice);
 		return new MoveGenerator(individual).getNextMoveBoard(board, player);
 	}
 
@@ -147,12 +202,12 @@ public class DiceRulesTest {
 		return pips;
 	}
 
-	private static Player person(final boolean black, final ByteArrayOutputStream printed, final String... lines) {
+	private static Player person(final boolean black, final ByteArrayOutputStream printed, final List<Integer> dice,
+								 final String... lines) {
 		final Player player = new Player(black);
 		player.useConsole(new ByteArrayInputStream((String.join("\n", lines) + "\n").getBytes(StandardCharsets.UTF_8)),
 				new PrintStream(printed, true, StandardCharsets.UTF_8));
-		player.movesLeft.add(6);
-		player.movesLeft.add(1);
+		player.movesLeft.setTo(dice);
 		return player;
 	}
 
