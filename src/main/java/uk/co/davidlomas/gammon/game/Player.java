@@ -48,10 +48,6 @@ public class Player {
 	private PrintStream output = System.out;
 	private boolean conceded;
 
-	// while a person plays a roll: the dice rolled, and the boards the rules allow them to finish on
-	private List<Integer> roll;
-	private BoardList legalMoves;
-
 	/**
 	 * Instantiates a new player.
 	 */
@@ -236,8 +232,9 @@ public class Player {
 				? "Black moves from 24 down to 1, its bar is 25, and pieces come off past 1."
 				: "Red moves from 1 up to 24, its bar is 0, and pieces come off past 24."));
 		liveBoard.printBoard(output);
-		roll = new ArrayList<>(movesLeft.moves);
-		legalMoves = MoveGenerator.legalMoves(liveBoard, black, roll);
+		// the boards the rules allow the person to finish this roll on
+		final List<Integer> roll = new ArrayList<>(movesLeft.moves);
+		final BoardList legalMoves = MoveGenerator.legalMoves(liveBoard, black, roll);
 
 		while (true) {
 			if (!hasAMove(liveBoard)) {
@@ -263,7 +260,7 @@ public class Player {
 				if (!isMovePossible(from, to, liveBoard)) {
 					output.println("That move isn't allowed.");
 				} else {
-					final String reason = whyTheRulesRefuse(from, die, liveBoard);
+					final String reason = whyTheRulesRefuse(from, die, liveBoard, roll, legalMoves);
 					if (reason != null) {
 						output.println(reason);
 					} else {
@@ -303,9 +300,13 @@ public class Player {
 	 * The rules themselves are applied by MoveGenerator, the same as for the AI. A move is fine if the person can
 	 * still finish the turn on one of the boards it allows.
 	 *
+	 * @param roll       the dice rolled this turn
+	 * @param legalMoves the boards the rules allow the turn to finish on, from the start of the roll
+	 *
 	 * @return why the move breaks them, to tell the person, or null if it doesn't
 	 */
-	private String whyTheRulesRefuse(final int from, final int die, final Board liveBoard) {
+	private String whyTheRulesRefuse(final int from, final int die, final Board liveBoard, final List<Integer> roll,
+									 final BoardList legalMoves) {
 		final Board after = new Board(liveBoard);
 		movePiece(from, black ? from - die : from + die, after);
 		final List<Integer> rest = new ArrayList<>(movesLeft.moves);
