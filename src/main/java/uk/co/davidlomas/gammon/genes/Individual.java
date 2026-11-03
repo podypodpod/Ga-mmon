@@ -19,6 +19,7 @@ package uk.co.davidlomas.gammon.genes;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.co.davidlomas.gammon.game.MoveChooser;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 
 import java.io.*;
@@ -28,8 +29,8 @@ import java.util.Properties;
 /**
  * The Class Individual.
  * <p>
- * The AI behind a player, contains AVAILABLE_ATTRIBUTES which dictates which decisions
- * they make
+ * The AI behind a player. Its genes are the weights it gives each feature of a board when choosing a move, one set
+ * for while the players can hit each other and one for the race after: see MoveChooser
  *
  * @author David Lomas
  */
@@ -41,13 +42,7 @@ public class Individual {
 	 */
 	public static final String PLAYERS_DIR_PROPERTY = "gammon.playersDir";
 	private static final String PLAYERS_FILE_PATH = System.getProperty(PLAYERS_DIR_PROPERTY, "savedPlayers") + "/Attempt - ";
-	private final static String[] AVAILABLE_ATTRIBUTES = {"bearAPiece", "takeAPiece", "doubleUpAPiece", "blockAnOpponent", "movingAPieceSolo",
-			"spreadAHomePiece",
-			"addACheckerToAStack", "twoOneSplitPlayInitialMove", "twoOneSlotPlayInitialMove", "threeOneInitialMove", "threeTwoSplitInitialMove",
-			"threeTwoOffenceInitialMove", "fourOneInitialMove", "fourOneInitialMoveAlt", "fourTwoInitialMove", "fourThreeInitialMoveSplit",
-			"fourThreeInitialMoveBlock", "fiveOneInitialMove", "fiveOneInitialMoveAlt", "fiveTwoInitialMove", "fiveTwoInitialMoveRisk",
-			"fiveThreeInitialMove", "fiveFourInitialMoveAgr", "fiveFourInitialMoveBal", "sixOneInitialMove", "sixTwoInitialMove", "sixTwoInitialMoveAgr",
-			"sixThreeInitialMove", "sixThreeInitialMoveSplit", "sixFourInitialMove", "sixFourInitialMoveSplit", "sixFiveInitialMove"};
+	private final static String[] AVAILABLE_ATTRIBUTES = MoveChooser.geneNames();
 
 
 	private final IndividualAttribute[] attributes;
@@ -139,8 +134,14 @@ public class Individual {
 			// load the file
 			properties.load(input);
 
-			// get the chromosome value
-			chromosome = properties.getProperty("chromosome").toCharArray();
+			// get the chromosome value. One saved with different genes, such as by the old rule-based players, can't
+			// be read as these
+			final String saved = properties.getProperty("chromosome");
+			if (saved == null || saved.length() != chromosome.length) {
+				throw new IllegalArgumentException(fullFilePath + " wasn't saved with these genes: its chromosome has "
+						+ (saved == null ? "no" : saved.length()) + " bits, not " + chromosome.length);
+			}
+			chromosome = saved.toCharArray();
 
 			// update to the rest of the AVAILABLE_ATTRIBUTES
 			updateFromBinary();

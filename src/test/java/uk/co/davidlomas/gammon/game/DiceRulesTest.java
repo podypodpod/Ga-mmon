@@ -154,7 +154,7 @@ public class DiceRulesTest {
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
 	public void theAiUsesBothDiceWhenItCan(final boolean black) {
-		// all its genes at 0, so it picks at random from the moves it's allowed, over several seeds
+		// all its genes at 50, a weight of 0, so it picks at random from the moves it's allowed, over several seeds
 		for (long seed = 0; seed < 20; seed++) {
 			RandomSource.setSeed(seed);
 
@@ -179,7 +179,7 @@ public class DiceRulesTest {
 	private static Board aiMove(final Board board, final boolean black, final List<Integer> dice) {
 		final Individual individual = new Individual();
 		for (int i = 0; i < individual.getNumOfAttributes(); i++) {
-			individual.getAttribute(i).setValue(0);
+			individual.getAttribute(i).setValue(50);
 		}
 		final AiPlayer player = new AiPlayer(black, individual);
 		player.movesLeft.setTo(dice);

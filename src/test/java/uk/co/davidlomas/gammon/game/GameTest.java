@@ -32,11 +32,10 @@ public class GameTest {
 	public void setup() {
 		gameManager = new GameManager();
 
+		// two players with genes of their own, seeded so they're the same each run
+		RandomSource.setSeed(9);
 		individual1 = new Individual();
-		individual1.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen0.properties");
-
 		individual2 = new Individual();
-		individual2.loadFromFile("savedPlayers/Attempt - 2014 - 1/PlayerFromGen9.properties");
 	}
 
 	@AfterEach
@@ -75,5 +74,18 @@ public class GameTest {
 		assertEquals(firstGame.getVictor(), secondGame.getVictor());
 		assertEquals(firstGame.getPlayerOneScore(), secondGame.getPlayerOneScore(), 0);
 		assertEquals(firstGame.getPlayerTwoScore(), secondGame.getPlayerTwoScore(), 0);
+	}
+
+	@Test
+	public void aGameThatGoesOnTooLongGoesToWhoeverIsAheadInTheRace() {
+		RandomSource.setSeed(3);
+		final Game game = new Game(individual1, individual2, 6);
+
+		game.run();
+
+		final GameStats stats = game.getGameStats();
+		assertEquals(WinType.SINGLE, stats.getWinType());
+		assertEquals(0, stats.getPlayerOneScore() + stats.getPlayerTwoScore());
+		assertTrue(stats.getVictor() == individual1 || stats.getVictor() == individual2);
 	}
 }

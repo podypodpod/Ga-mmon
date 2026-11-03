@@ -38,8 +38,6 @@ public class Board {
 
 	public final Point[] Points;
 
-	boolean isInitialMove = false;
-
 	public Board() {
 		Points = new Point[26];
 
@@ -160,93 +158,6 @@ public class Board {
 
 	public int getRedBore() {
 		return redBore;
-	}
-
-	int getNumberOfCheckersOnStacks(final Boolean black) {
-		int num = 0;
-		// loop points
-		for (final Point point : Points) {
-			// if the current point has more than 2 checkers (a stack) and is
-			// ours
-			if (point.numEither() > 2 && point.getCol() == black) {
-				// Add the count of the stack to the int
-				num += point.numEither();
-			}
-		}
-		return num;
-	}
-
-	/**
-	 * getNumberOfPiecesSurroundOpponent
-	 *
-	 * @param black player color
-	 *
-	 * @return int - number of pieces
-	 */
-	int getNumberOfPiecesSurroundOpponent(final Boolean black) {
-		int num = 0;
-		// loop points
-		for (int x = 0; x < Points.length; x++) {
-			// if there is an opposition piece
-			if (Points[x].numEither() > 0 && Points[x].getCol() != black) {
-				if (x < 25 && x > 0) {
-					// checking one before that
-					if (Points[x - 1].numEither() > 0 && Points[x - 1].getCol() == black) {
-						num++;
-					}
-					// checking the point after it
-					if (Points[x + 1].numEither() > 0 && Points[x + 1].getCol() == black) {
-						num++;
-					}
-				}
-			}
-		}
-		return num;
-	}
-
-	/**
-	 * getNumOfBlots
-	 *
-	 * @param black - player color
-	 *
-	 * @return int - number of blots
-	 */
-	public int getNumOfBlots(final boolean black) {
-		int num = 0;
-		for (final Point point : Points) {
-			if (point.numEither() == 1 && point.getCol() == black) {
-				num++;
-			}
-		}
-		return num;
-	}
-
-	/**
-	 * getNumOfHomePointsCovered
-	 *
-	 * @param black - player color
-	 *
-	 * @return int - num of points covered
-	 */
-	int getNumOfHomePointsCovered(final Boolean black) {
-		int num = 0;
-		// BLACK
-		if (black) {
-			for (int x = 1; x <= 6; x++) {
-				if (Points[x].numEither() > 0 && Points[x].getCol()) {
-					num++;
-				}
-			}
-			// RED
-		} else {
-			for (int x = 19; x <= 24; x++) {
-				// getCol() is true for a black point, so red's points are the ones where it's false
-				if (Points[x].numEither() > 0 && !Points[x].getCol()) {
-					num++;
-				}
-			}
-		}
-		return num;
 	}
 
 	/**
