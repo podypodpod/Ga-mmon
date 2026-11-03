@@ -11,11 +11,13 @@ import uk.co.davidlomas.gammon.test.helpers.BoardMirror;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MoveChooserTest {
@@ -38,13 +40,17 @@ public class MoveChooserTest {
 	}
 
 	@Test
-	public void thereIsAGeneForEachFeatureInContactAndInTheRace() {
+	public void thereIsAGeneForEachFeatureInContactAndForTheRaceFeaturesInARace() {
 		final String[] names = MoveChooser.geneNames();
+		final long raceFeatures = Arrays.stream(Feature.values()).filter(Feature::isInRace).count();
 
-		assertEquals(2 * FEATURES, names.length);
+		assertEquals(FEATURES + raceFeatures, names.length);
 		assertEquals("contactPipLead", names[0]);
+		assertEquals("contactHitRolls", names[MoveChooser.contactGene(Feature.HIT_ROLLS)]);
 		assertEquals("racePipLead", names[FEATURES]);
-		assertEquals("raceStacking", names[2 * FEATURES - 1]);
+		assertEquals("raceStacking", names[MoveChooser.raceGene(Feature.STACKING)]);
+		// hitting can't happen in a race, so there's no gene for it
+		assertThrows(IllegalArgumentException.class, () -> MoveChooser.raceGene(Feature.HIT_ROLLS));
 	}
 
 	@Test
@@ -63,7 +69,7 @@ public class MoveChooserTest {
 	public void aPlayerWhoValuesHittingHits(final boolean black) {
 		// red has a blot on 22 that black's 24 point can hit with the 2
 		final Individual hitter = weighted(50);
-		hitter.getAttribute(Feature.OPPONENT_ON_BAR.ordinal()).setValue(100);
+		hitter.getAttribute(MoveChooser.contactGene(Feature.OPPONENT_ON_BAR)).setValue(100);
 
 		for (long seed = 0; seed < 10; seed++) {
 			RandomSource.setSeed(seed);
@@ -75,7 +81,7 @@ public class MoveChooserTest {
 	@ValueSource(booleans = {true, false})
 	public void aPlayerWhoAvoidsHittingDoesNotHit(final boolean black) {
 		final Individual avoider = weighted(50);
-		avoider.getAttribute(Feature.OPPONENT_ON_BAR.ordinal()).setValue(0);
+		avoider.getAttribute(MoveChooser.contactGene(Feature.OPPONENT_ON_BAR)).setValue(0);
 
 		for (long seed = 0; seed < 10; seed++) {
 			RandomSource.setSeed(seed);
@@ -94,8 +100,8 @@ public class MoveChooserTest {
 		blackPosition.Points[20].setRedCount(15);
 		blackPosition.setBlackBore(11);
 		final Individual stacker = weighted(50);
-		stacker.getAttribute(Feature.STACKING.ordinal()).setValue(0);
-		stacker.getAttribute(FEATURES + Feature.STACKING.ordinal()).setValue(100);
+		stacker.getAttribute(MoveChooser.contactGene(Feature.STACKING)).setValue(0);
+		stacker.getAttribute(MoveChooser.raceGene(Feature.STACKING)).setValue(100);
 
 		final Board chosen = move(forColour(blackPosition, black), black, stacker, 3);
 
@@ -111,7 +117,7 @@ public class MoveChooserTest {
 		blackPosition.setBlackBore(14);
 		blackPosition.Points[20].setRedCount(15);
 		final Individual reluctant = weighted(50);
-		reluctant.getAttribute(FEATURES + Feature.BORNE_OFF.ordinal()).setValue(0);
+		reluctant.getAttribute(MoveChooser.raceGene(Feature.BORNE_OFF)).setValue(0);
 
 		final Board chosen = move(forColour(blackPosition, black), black, reluctant, 1);
 

@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IndividualTest {
@@ -71,4 +72,14 @@ public class IndividualTest {
 		}
 	}
 
+	@Test
+	public void aPlayerSavedWithOtherGenesIsRefused() {
+		// saved in 2014 by the old rule-based player, with 32 genes rather than these
+		final String oldPlayer = "archive/rule-based-players-2014/Attempt - 2014 - 1/PlayerFromGen0.properties";
+
+		final IllegalArgumentException refused =
+				assertThrows(IllegalArgumentException.class, () -> individual1.loadFromFile(oldPlayer));
+
+		assertTrue(refused.getMessage().contains("wasn't saved with these genes"), refused.getMessage());
+	}
 }

@@ -63,7 +63,7 @@ public class GameStats {
 	/**
 	 * getVictor
 	 *
-	 * @return individual
+	 * @return individual, or null if the game was a draw
 	 */
 	public Individual getVictor() {
 		return gameVictor;

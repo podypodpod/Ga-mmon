@@ -100,12 +100,9 @@ class Game implements Runnable {
 		// the winner gains the points the win is worth, 1, 2 or 3, and the loser loses them, as in backgammon, so a
 		// loser who saves a gammon is a point better off. A person playing as player 2 can concede, which hands
 		// player 1 the game, scored as the board stands
-		// A game cut short goes to whoever is ahead in the race, as a single game
+		// A game cut short is a draw, with no victor and nothing to either player
 		if (cutShort) {
-			final boolean playerOneAhead = Feature.PIP_LEAD.measure(liveBoard, aiPlayer1.black) >= 0;
-			return playerOneAhead
-					? new GameStats(individual1, WinType.SINGLE, 1, -1)
-					: new GameStats(individual2, WinType.SINGLE, -1, 1);
+			return new GameStats(null, WinType.DRAW, 0, 0);
 		}
 		final boolean playerOneWon = liveBoard.hasPlayerWon(aiPlayer1.black) || aiPlayer2.hasConceded();
 		final WinType winType = liveBoard.winTypeAgainst(playerOneWon ? aiPlayer2.black : aiPlayer1.black);

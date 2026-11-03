@@ -8,14 +8,14 @@ package uk.co.davidlomas.gammon.game;
  * The opponent moves the other way, up from their bar at 0.
  * <p>
  * Each feature is divided by its scale, so they're all roughly between -1 and 1 and a weight means much the same
- * for each of them.
+ * for each of them. Some only matter while the players can still hit each other, and aren't weighed in a race.
  */
 public enum Feature {
 
 	/**
 	 * How many pips the opponent needs to bear off, less how many the player needs
 	 */
-	PIP_LEAD("pipLead", 100) {
+	PIP_LEAD("pipLead", 100, true) {
 		@Override
 		int measure(final Board board, final boolean black) {
 			int mine = 0;
@@ -31,7 +31,7 @@ public enum Feature {
 	/**
 	 * The player's points with just one piece on, which the opponent can hit
 	 */
-	BLOTS("blots", 5) {
+	BLOTS("blots", 5, false) {
 		@Override
 		int measure(final Board board, final boolean black) {
 			int blots = 0;
@@ -45,25 +45,43 @@ public enum Feature {
 	},
 
 	/**
-	 * The player's blots that an opponent's piece, or one on their bar, could hit with a single die
+	 * How many of the opponent's 36 possible rolls would hit at least one of the player's blots, counting shots
+	 * that need both dice when the point between isn't blocked. A piece on the opponent's bar counts as being just
+	 * behind the player's home, though in a real game it would have to come in first
 	 */
-	EXPOSED_BLOTS("exposedBlots", 5) {
+	HIT_ROLLS("hitRolls", 36, false) {
 		@Override
 		int measure(final Board board, final boolean black) {
-			int exposed = 0;
-			for (int point = 1; point <= 24; point++) {
-				if (mine(board, black, point) == 1 && opponentWithinSix(board, black, point)) {
-					exposed++;
+			final boolean[] hits = new boolean[36];
+			for (int blot = 1; blot <= 24; blot++) {
+				if (mine(board, black, blot) != 1) {
+					continue;
+				}
+				for (int from = Math.max(0, blot - 24); from < blot; from++) {
+					if (theirs(board, black, from) == 0) {
+						continue;
+					}
+					for (int roll = 0; roll < 36; roll++) {
+						if (!hits[roll] && canHit(board, black, from, blot - from, roll / 6 + 1, roll % 6 + 1)) {
+							hits[roll] = true;
+						}
+					}
 				}
 			}
-			return exposed;
+			int count = 0;
+			for (final boolean hit : hits) {
+				if (hit) {
+					count++;
+				}
+			}
+			return count;
 		}
 	},
 
 	/**
 	 * The player's points with two or more pieces on, which the opponent can't land on
 	 */
-	POINTS_MADE("pointsMade", 7) {
+	POINTS_MADE("pointsMade", 7, false) {
 		@Override
 		int measure(final Board board, final boolean black) {
 			return pointsMade(board, black, 1, 24);
@@ -73,7 +91,7 @@ public enum Feature {
 	/**
 	 * Points made in the player's home quarter, where a hit opponent has to come back in
 	 */
-	HOME_POINTS("homePoints", 6) {
+	HOME_POINTS("homePoints", 6, true) {
 		@Override
 		int measure(final Board board, final boolean black) {
 			return pointsMade(board, black, 1, 6);
@@ -83,7 +101,7 @@ public enum Feature {
 	/**
 	 * The longest run of points made next to each other, which blocks the opponent's pieces behind it
 	 */
-	LONGEST_PRIME("longestPrime", 6) {
+	LONGEST_PRIME("longestPrime", 6, false) {
 		@Override
 		int measure(final Board board, final boolean black) {
 			int longest = 0;
@@ -99,7 +117,7 @@ public enum Feature {
 	/**
 	 * Points made in the opponent's home quarter, safe places to wait for a shot
 	 */
-	ANCHORS("anchors", 3) {
+	ANCHORS("anchors", 3, false) {
 		@Override
 		int measure(final Board board, final boolean black) {
 			return pointsMade(board, black, 19, 24);
@@ -109,7 +127,7 @@ public enum Feature {
 	/**
 	 * The player's pieces still in the opponent's home quarter or on the bar, furthest from home
 	 */
-	PIECES_BACK("piecesBack", 5) {
+	PIECES_BACK("piecesBack", 5, true) {
 		@Override
 		int measure(final Board board, final boolean black) {
 			int back = 0;
@@ -123,7 +141,7 @@ public enum Feature {
 	/**
 	 * The opponent's pieces on the bar, hit and not yet back in
 	 */
-	OPPONENT_ON_BAR("opponentOnBar", 2) {
+	OPPONENT_ON_BAR("opponentOnBar", 2, false) {
 		@Override
 		int measure(final Board board, final boolean black) {
 			return theirs(board, black, 0);
@@ -133,7 +151,7 @@ public enum Feature {
 	/**
 	 * The player's pieces borne off
 	 */
-	BORNE_OFF("borneOff", 15) {
+	BORNE_OFF("borneOff", 15, true) {
 		@Override
 		int measure(final Board board, final boolean black) {
 			return board.howManyHasPlayerBore(black);
@@ -143,7 +161,7 @@ public enum Feature {
 	/**
 	 * Pieces beyond three on a point, which are doing little there
 	 */
-	STACKING("stacking", 10) {
+	STACKING("stacking", 10, true) {
 		@Override
 		int measure(final Board board, final boolean black) {
 			int extra = 0;
@@ -156,10 +174,19 @@ public enum Feature {
 
 	private final String label;
 	private final double scale;
+	private final boolean inRace;
 
-	Feature(final String label, final double scale) {
+	Feature(final String label, final double scale, final boolean inRace) {
 		this.label = label;
 		this.scale = scale;
+		this.inRace = inRace;
+	}
+
+	/**
+	 * @return whether it can still change once the players have passed each other, so is worth weighing in a race
+	 */
+	public boolean isInRace() {
+		return inRace;
 	}
 
 	/**
@@ -230,14 +257,31 @@ public enum Feature {
 	}
 
 	/**
-	 * Whether an opponent's piece is 1 to 6 pips short of the point, the way the opponent moves
+	 * Whether an opponent's piece on from, distance short of a blot, can reach it with this roll. A double moves
+	 * the same die up to four times, and two different dice can be used either way round; each point landed on on the
+	 * way has to be open, not one the player has made
 	 */
-	private static boolean opponentWithinSix(final Board board, final boolean black, final int point) {
-		for (int from = Math.max(0, point - 6); from < point; from++) {
-			if (theirs(board, black, from) > 0) {
-				return true;
+	private static boolean canHit(final Board board, final boolean black, final int from, final int distance,
+								  final int die1, final int die2) {
+		if (die1 == die2) {
+			for (int steps = 1; steps <= 4; steps++) {
+				if (die1 * steps == distance) {
+					return true;
+				}
+				if (blocked(board, black, from + die1 * steps)) {
+					return false;
+				}
 			}
+			return false;
 		}
-		return false;
+		if (distance == die1 || distance == die2) {
+			return true;
+		}
+		return distance == die1 + die2
+				&& (!blocked(board, black, from + die1) || !blocked(board, black, from + die2));
+	}
+
+	private static boolean blocked(final Board board, final boolean black, final int point) {
+		return point >= 1 && point <= 24 && mine(board, black, point) >= 2;
 	}
 }

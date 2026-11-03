@@ -4,6 +4,7 @@ import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -11,25 +12,49 @@ import java.util.List;
  * the weight its genes give that feature, and plays the highest scoring one.
  * <p>
  * There are two sets of weights, one for while the two sides can still hit each other and one for the race after,
- * as what matters changes. Each gene's value, 0 to 100, gives a weight from -1 to 1, so a player can learn that a
- * feature is bad as well as good.
+ * as what matters changes. The race set only has the features that can still change in a race. Each gene's value,
+ * 0 to 100, gives a weight from -1 to 1, so a player can learn that a feature is bad as well as good.
  */
 public final class MoveChooser {
+
+	private static final Feature[] CONTACT_FEATURES = Feature.values();
+	private static final Feature[] RACE_FEATURES =
+			Arrays.stream(Feature.values()).filter(Feature::isInRace).toArray(Feature[]::new);
 
 	private MoveChooser() {
 	}
 
 	/**
-	 * The names of the genes, in order: every feature's weight for contact, then for the race
+	 * The names of the genes, in order: every feature's weight for contact, then the race features' weights
 	 */
 	public static String[] geneNames() {
-		final Feature[] features = Feature.values();
-		final String[] names = new String[2 * features.length];
-		for (final Feature feature : features) {
-			names[feature.ordinal()] = "contact" + capitalised(feature.getLabel());
-			names[features.length + feature.ordinal()] = "race" + capitalised(feature.getLabel());
+		final String[] names = new String[CONTACT_FEATURES.length + RACE_FEATURES.length];
+		for (int i = 0; i < CONTACT_FEATURES.length; i++) {
+			names[i] = "contact" + capitalised(CONTACT_FEATURES[i].getLabel());
+		}
+		for (int i = 0; i < RACE_FEATURES.length; i++) {
+			names[CONTACT_FEATURES.length + i] = "race" + capitalised(RACE_FEATURES[i].getLabel());
 		}
 		return names;
+	}
+
+	/**
+	 * @return the gene holding a feature's weight while the players can hit each other
+	 */
+	static int contactGene(final Feature feature) {
+		return feature.ordinal();
+	}
+
+	/**
+	 * @return the gene holding a feature's weight in a race
+	 * @throws IllegalArgumentException if the feature isn't weighed in a race
+	 */
+	static int raceGene(final Feature feature) {
+		final int index = Arrays.asList(RACE_FEATURES).indexOf(feature);
+		if (index < 0) {
+			throw new IllegalArgumentException(feature + " isn't weighed in a race");
+		}
+		return CONTACT_FEATURES.length + index;
 	}
 
 	/**
@@ -68,11 +93,15 @@ public final class MoveChooser {
 	 * How good the board looks to the player, by their weights for the stage the game is at
 	 */
 	static double score(final Board board, final boolean black, final Individual individual) {
-		final Feature[] features = Feature.values();
-		final int firstGene = Feature.isContact(board) ? 0 : features.length;
 		double score = 0;
-		for (final Feature feature : features) {
-			score += weight(individual, firstGene + feature.ordinal()) * feature.scaled(board, black);
+		if (Feature.isContact(board)) {
+			for (int i = 0; i < CONTACT_FEATURES.length; i++) {
+				score += weight(individual, i) * CONTACT_FEATURES[i].scaled(board, black);
+			}
+		} else {
+			for (int i = 0; i < RACE_FEATURES.length; i++) {
+				score += weight(individual, CONTACT_FEATURES.length + i) * RACE_FEATURES[i].scaled(board, black);
+			}
 		}
 		return score;
 	}

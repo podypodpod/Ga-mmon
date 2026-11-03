@@ -10,6 +10,7 @@ import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GameTest {
@@ -77,15 +78,16 @@ public class GameTest {
 	}
 
 	@Test
-	public void aGameThatGoesOnTooLongGoesToWhoeverIsAheadInTheRace() {
+	public void aGameThatGoesOnTooLongIsADraw() {
 		RandomSource.setSeed(3);
 		final Game game = new Game(individual1, individual2, 6);
 
 		game.run();
 
 		final GameStats stats = game.getGameStats();
-		assertEquals(WinType.SINGLE, stats.getWinType());
-		assertEquals(0, stats.getPlayerOneScore() + stats.getPlayerTwoScore());
-		assertTrue(stats.getVictor() == individual1 || stats.getVictor() == individual2);
+		assertEquals(WinType.DRAW, stats.getWinType());
+		assertEquals(0.0, stats.getPlayerOneScore());
+		assertEquals(0.0, stats.getPlayerTwoScore());
+		assertNull(stats.getVictor());
 	}
 }
