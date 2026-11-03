@@ -187,7 +187,9 @@ public class ConsoleTurnTest {
 		assertTrue(game.getPlayerTwo().hasConceded());
 		assertSame(playerOne, game.getGameStats().getVictor());
 		assertTrue(said().contains("You conceded."));
-		assertFalse(said().contains("You've won!"));
+		// at the start, the person's pieces on player 1's 24 point are in player 1's home quarter
+		assertTrue(said().contains("Player 1 wins a backgammon, worth 3 points."));
+		assertFalse(said().contains("You've won"));
 	}
 
 	@Test

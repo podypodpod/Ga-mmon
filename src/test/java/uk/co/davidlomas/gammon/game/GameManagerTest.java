@@ -72,6 +72,20 @@ public class GameManagerTest {
 	}
 
 	/**
+	 * The winner scores the points their kind of win is worth, 1, 2 or 3, and the loser scores nothing
+	 */
+	@Test
+	public void theWinnerScoresWhatTheirWinIsWorth() {
+		final double winnersScore = gameStats.getVictor() == individual1
+				? gameStats.getPlayerOneScore() : gameStats.getPlayerTwoScore();
+		final double losersScore = gameStats.getVictor() == individual1
+				? gameStats.getPlayerTwoScore() : gameStats.getPlayerOneScore();
+
+		assertEquals(gameStats.getWinType().getPoints(), winnersScore);
+		assertEquals(0.0, losersScore);
+	}
+
+	/**
 	 * Checking the victor is the player with the highest score
 	 */
 	@Test
