@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -66,4 +67,19 @@ public class GameSettingsTest {
 		assertEquals(newTimeDelayCache, GameSettings.getTimeDelay());
 	}
 
+	@Test
+	public void threadsIsZeroForOnePerCoreWhenTheFileDoesNotSay() {
+		assertEquals(0, GameSettings.threadsFrom(null));
+	}
+
+	@Test
+	public void threadsIsReadFromTheFile() {
+		assertEquals(4, GameSettings.threadsFrom(" 4 "));
+	}
+
+	@Test
+	public void threadsBelowZeroIsRefused() {
+		assertThrows(IllegalArgumentException.class, () -> GameSettings.threadsFrom("-1"));
+		assertThrows(IllegalArgumentException.class, () -> GameSettings.setThreadsCache(-2));
+	}
 }

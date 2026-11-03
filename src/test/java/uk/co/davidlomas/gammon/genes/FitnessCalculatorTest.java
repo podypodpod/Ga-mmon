@@ -92,11 +92,11 @@ public class FitnessCalculatorTest {
 
 	@Test
 	public void playingTheMeetingsAtTheSameTimeGivesTheSameFitness() {
-		// one at a time, then on every core, from the same seed
-		final double[] oneAtATime = fitnessFromSeed(6, false);
-		final double[] together = fitnessFromSeed(6, true);
+		// one at a time, then on every core, then on three threads, from the same seed
+		final double[] oneAtATime = fitnessFromSeed(6, false, 0);
 
-		assertArrayEquals(oneAtATime, together);
+		assertArrayEquals(oneAtATime, fitnessFromSeed(6, true, 0));
+		assertArrayEquals(oneAtATime, fitnessFromSeed(6, true, 3));
 	}
 
 	@Test
@@ -111,8 +111,9 @@ public class FitnessCalculatorTest {
 		assertEquals(new java.util.Random(8).nextLong(), RandomSource.nextLong());
 	}
 
-	private static double[] fitnessFromSeed(final long seed, final boolean multiThreading) {
+	private static double[] fitnessFromSeed(final long seed, final boolean multiThreading, final int threads) {
 		GameSettings.setMultiThreadingCache(multiThreading);
+		GameSettings.setThreadsCache(threads);
 		try {
 			RandomSource.setSeed(seed);
 			final Population population = new Population(5, true);
@@ -124,6 +125,7 @@ public class FitnessCalculatorTest {
 			return fitness;
 		} finally {
 			GameSettings.setMultiThreadingCache(false);
+			GameSettings.setThreadsCache(0);
 		}
 	}
 }

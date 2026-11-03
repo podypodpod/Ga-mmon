@@ -114,6 +114,7 @@ The settings are read from the files in `conf/`. To use a different folder, run 
 | `displayGUI` | Whether to show the board in a window while games are played |
 | `timeDelay` | Milliseconds to wait between moves when the board is shown |
 | `multiThreading` | Whether the GA plays its fitness games at the same time, one per core. It gives the same results either way, just faster, and is off while the board is shown |
+| `threads` | How many threads to play them on when `multiThreading` is on: 0, or missing, for one per core, or fewer to leave some cores free |
 
 `displayConsole` is in the files but isn't used at present.
 

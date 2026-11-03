@@ -106,12 +106,11 @@ class FitnessCalculator {
 	 */
 	private static List<double[]> play(final Population pop, final List<long[]> plan) {
 		// the settings are read now, before any game, so the threads don't each read them from the file
-		GameSettings.isP1Black();
-		GameSettings.getAreBothAI();
-		GameSettings.getTimeDelay();
+		GameSettings.loadAll();
 		final boolean parallel = GameSettings.getMultiThreading() && !GameSettings.getDisplayGUI();
 
-		final int threads = parallel ? Runtime.getRuntime().availableProcessors() : 1;
+		final int threads = !parallel ? 1
+				: GameSettings.getThreads() == 0 ? Runtime.getRuntime().availableProcessors() : GameSettings.getThreads();
 		final ExecutorService pool = Executors.newFixedThreadPool(threads);
 		try {
 			final List<Future<double[]>> playing = new ArrayList<>();
@@ -131,6 +130,8 @@ class FitnessCalculator {
 		} catch (final ExecutionException e) {
 			throw new IllegalStateException("A game failed", e.getCause());
 		} finally {
+			// stops the meetings still to start, and interrupts those being played, which then stop at the end of
+			// the turn, so after a failure the others don't carry on in the background
 			pool.shutdownNow();
 		}
 	}

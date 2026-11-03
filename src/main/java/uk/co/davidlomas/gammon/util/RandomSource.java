@@ -43,7 +43,9 @@ public final class RandomSource {
 	}
 
 	/**
-	 * Seed the random source so every following random value on this thread is repeatable
+	 * Seed the random source so every following random value on this thread is repeatable. Only this thread: work
+	 * started on another thread, such as a search started from the GUI, isn't seeded by it, so seed inside the thread
+	 * that does the work, as FitnessCalculator.meet does
 	 *
 	 * @param seed the seed
 	 */
