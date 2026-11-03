@@ -6,7 +6,7 @@ It started as a university project and is being tidied up and improved.
 
 ## Getting started
 
-You need Java. Gradle downloads the Java version the project uses (25) if you don't have it.
+You need Java to run Gradle. If you don't have the version the project is built with (25), Gradle downloads it for you.
 
 ```bash
 ./gradlew build
@@ -109,7 +109,7 @@ The settings are read from the files in `conf/`. To use a different folder, run 
 
 | Setting | What it does |
 |---|---|
-| `areBothAIs` | `false` to play player 2 yourself on the console (see below) |
+| `areBothAIs` | `false` to play player 2 yourself on the console in every game. `PlayAgainstAi` sets this for its game, so you don't need to |
 | `isP1Black` | Whether player 1 plays black |
 | `displayGUI` | Whether to show the board in a window while games are played |
 | `timeDelay` | Milliseconds to wait between moves when the board is shown |
@@ -118,6 +118,6 @@ The settings are read from the files in `conf/`. To use a different folder, run 
 
 ## Playing against the AI
 
-With `areBothAIs=false`, games are played between the AI as player 1 and you as player 2 on the console. Games are started with `GameManager.playIndividualsVsEachOther` in `uk.co.davidlomas.gammon.game`.
+Run the main class `uk.co.davidlomas.gammon.game.PlayAgainstAi` to play one game on the console. Give it a saved player's file, such as `savedPlayers/Attempt - 3/PlayerFromGen49`, to play that player, or nothing to play one with random genes. The AI is player 1 and you're player 2.
 
 On your turn the board and your dice are shown, and you're asked which piece to move and with which die. Bearing off is a move past the end of the board. You're told why if a move isn't allowed, and you can concede the game.

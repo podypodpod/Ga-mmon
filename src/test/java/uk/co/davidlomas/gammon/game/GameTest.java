@@ -10,6 +10,7 @@ import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -53,6 +54,7 @@ public class GameTest {
 
 		final GameStats gameStats = gameManager.playIndividualsVsEachOther(individual1, individual2);
 
+		assertFalse(gameStats.isDraw(), "the seeded game was cut short as a draw, so it has no winner to check");
 		if (gameStats.getVictor().equals(individual1)) {
 			assertTrue(gameStats.getPlayerOneScore() > gameStats.getPlayerTwoScore());
 		} else {
@@ -85,6 +87,7 @@ public class GameTest {
 		game.run();
 
 		final GameStats stats = game.getGameStats();
+		assertTrue(stats.isDraw());
 		assertEquals(WinType.DRAW, stats.getWinType());
 		assertEquals(0.0, stats.getPlayerOneScore());
 		assertEquals(0.0, stats.getPlayerTwoScore());

@@ -74,6 +74,13 @@ public class GameStats {
 	}
 
 	/**
+	 * @return true if nobody won: the game went on too long and was cut short, so there's no victor
+	 */
+	public boolean isDraw() {
+		return winType == WinType.DRAW;
+	}
+
+	/**
 	 * @return how the game was won, which sets the points it was worth
 	 */
 	public WinType getWinType() {

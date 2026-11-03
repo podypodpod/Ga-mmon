@@ -1,0 +1,6 @@
+plugins {
+    // lets Gradle download the Java version the toolchain in build.gradle asks for, if it isn't installed
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+rootProject.name = 'Ga-mmon'

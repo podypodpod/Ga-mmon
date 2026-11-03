@@ -46,31 +46,15 @@ public enum Feature {
 
 	/**
 	 * How many of the opponent's 36 possible rolls would hit at least one of the player's blots, counting shots
-	 * that need both dice when the point between isn't blocked. A piece on the opponent's bar counts as being just
-	 * behind the player's home, though in a real game it would have to come in first
+	 * that need both dice when the point between isn't blocked. While the opponent has a piece on the bar it has to
+	 * come in first, so only shots it leaves the dice for count then
 	 */
 	HIT_ROLLS("hitRolls", 36, false) {
 		@Override
 		int measure(final Board board, final boolean black) {
-			final boolean[] hits = new boolean[36];
-			for (int blot = 1; blot <= 24; blot++) {
-				if (mine(board, black, blot) != 1) {
-					continue;
-				}
-				for (int from = Math.max(0, blot - 24); from < blot; from++) {
-					if (theirs(board, black, from) == 0) {
-						continue;
-					}
-					for (int roll = 0; roll < 36; roll++) {
-						if (!hits[roll] && canHit(board, black, from, blot - from, roll / 6 + 1, roll % 6 + 1)) {
-							hits[roll] = true;
-						}
-					}
-				}
-			}
 			int count = 0;
-			for (final boolean hit : hits) {
-				if (hit) {
+			for (int roll = 0; roll < 36; roll++) {
+				if (rollHits(board, black, roll / 6 + 1, roll % 6 + 1)) {
 					count++;
 				}
 			}
@@ -254,6 +238,71 @@ public enum Feature {
 			}
 		}
 		return made;
+	}
+
+	/**
+	 * Whether the opponent's roll hits any of the player's blots. With a piece on the bar, the opponent has to bring
+	 * it in before moving anything else: it can hit on the way in or carry on to a blot, and if it's the only one
+	 * there, another piece can hit with what's left of the roll once it's in
+	 */
+	private static boolean rollHits(final Board board, final boolean black, final int die1, final int die2) {
+		final int onBar = theirs(board, black, 0);
+		for (int blot = 1; blot <= 24; blot++) {
+			if (mine(board, black, blot) != 1) {
+				continue;
+			}
+			if (onBar == 0) {
+				for (int from = 1; from < blot; from++) {
+					if (theirs(board, black, from) > 0 && canHit(board, black, from, blot - from, die1, die2)) {
+						return true;
+					}
+				}
+				continue;
+			}
+			if (canHit(board, black, 0, blot, die1, die2)) {
+				return true;
+			}
+			if (onBar == 1 && hitsAfterComingIn(board, black, blot, die1, die2)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * With one opponent piece on the bar: whether it can come in with part of the roll and another piece then hit the
+	 * blot with the rest
+	 */
+	private static boolean hitsAfterComingIn(final Board board, final boolean black, final int blot, final int die1,
+											 final int die2) {
+		if (die1 != die2) {
+			return !blocked(board, black, die1) && opponentOn(board, black, blot - die2)
+					|| !blocked(board, black, die2) && opponentOn(board, black, blot - die1);
+		}
+		if (blocked(board, black, die1)) {
+			return false;
+		}
+		// a double: one move to come in, up to three left for another piece
+		for (int steps = 1; steps <= 3; steps++) {
+			final int from = blot - die1 * steps;
+			if (from < 1) {
+				return false;
+			}
+			if (opponentOn(board, black, from)) {
+				boolean open = true;
+				for (int step = 1; step < steps; step++) {
+					open &= !blocked(board, black, from + die1 * step);
+				}
+				if (open) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private static boolean opponentOn(final Board board, final boolean black, final int point) {
+		return point >= 1 && point <= 24 && theirs(board, black, point) > 0;
 	}
 
 	/**

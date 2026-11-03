@@ -94,6 +94,26 @@ public class FeatureTest {
 
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
+	public void anOpponentOnTheBarHasToComeInBeforeAnotherPieceCanHit(final boolean black) {
+		// red has a piece on the bar and one on 7, 3 short of black's blot on 10. Black holds 1, 3, 4, 5 and 6, so red
+		// only comes in with a 2, and then the piece on 7 hits with a 3: 2-3 and 3-2. Without the bar piece, any 3
+		// would hit, and 2-1, 1-2 and 1-1 too
+		final Board blackPosition = empty();
+		blackPosition.Points[10].setBlackCount(1);
+		for (final int point : new int[]{1, 3, 4, 5, 6}) {
+			blackPosition.Points[point].setBlackCount(2);
+		}
+		blackPosition.Points[7].setRedCount(1);
+		blackPosition.Points[0].setRedCount(1);
+
+		assertEquals(2, Feature.HIT_ROLLS.measure(forColour(blackPosition, black), black));
+
+		blackPosition.Points[0].setRedCount(0);
+		assertEquals(14, Feature.HIT_ROLLS.measure(forColour(blackPosition, black), black));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
 	public void aBlotOutOfReachIsSafe(final boolean black) {
 		final Board blackPosition = empty();
 		blackPosition.Points[20].setBlackCount(1);

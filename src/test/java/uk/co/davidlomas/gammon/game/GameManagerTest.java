@@ -16,6 +16,7 @@ import javax.swing.WindowConstants;
 import java.awt.GraphicsEnvironment;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
@@ -44,6 +45,8 @@ public class GameManagerTest {
 		individual2 = new Individual();
 		gameStats = new GameManager().playIndividualsVsEachOther(individual1,
 				individual2);
+		// every test here checks the winner, which a game cut short as a draw doesn't have
+		assertFalse(gameStats.isDraw(), "the seeded game was cut short as a draw, so it has no winner to check");
 	}
 
 	@AfterEach
