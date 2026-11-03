@@ -47,7 +47,7 @@ public class AiPlayer extends Player {
 	 * @param playerToClone the player
 	 */
 	AiPlayer(final AiPlayer playerToClone) {
-		super(playerToClone.black);
+		super(playerToClone.black, playerToClone.dice);
 		movesLeft = new MovesList(playerToClone.movesLeft);
 		black = playerToClone.black;
 		moveGenerator = playerToClone.moveGenerator;

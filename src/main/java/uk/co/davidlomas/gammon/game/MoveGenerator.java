@@ -56,7 +56,14 @@ public class MoveGenerator {
 	public void generateMoves(final Board cb, final AiPlayer p) {
 
 		// Loop all moves
-		for (final int currentMove : p.movesLeft.moves) {
+		final List<Integer> moves = p.movesLeft.moves;
+		for (int move = 0; move < moves.size(); move++) {
+			final int currentMove = moves.get(move);
+
+			// a double has the same die four times, and each would give the same boards, so try each value once
+			if (moves.subList(0, move).contains(currentMove)) {
+				continue;
+			}
 
 			// check the current move doesn't = 0, this would mean it has been
 			// removed and a new board has been created

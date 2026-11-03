@@ -27,6 +27,7 @@ import java.lang.reflect.MalformedParametersException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,6 +58,35 @@ public class BoardList {
 
 	// how many dice the boards use, once keepOnlyLegalMoves has run
 	private int mostDiceUsed;
+
+	// the boards, with the dice left, that the moves on from them have already been worked out for
+	private final Set<Position> triedFrom = new HashSet<>();
+
+	/**
+	 * A board part way through a turn and the dice still to play, in any order
+	 */
+	private static final class Position {
+		private final Board board;
+		private final List<Integer> diceLeft;
+
+		Position(final Board board, final List<Integer> diceLeft) {
+			this.board = board;
+			this.diceLeft = new ArrayList<>(diceLeft);
+			this.diceLeft.removeIf(die -> die == 0);
+			Collections.sort(this.diceLeft);
+		}
+
+		@Override
+		public boolean equals(final Object o) {
+			return o instanceof Position && board.equals(((Position) o).board)
+					&& diceLeft.equals(((Position) o).diceLeft);
+		}
+
+		@Override
+		public int hashCode() {
+			return 31 * board.hashCode() + diceLeft.hashCode();
+		}
+	}
 
 	/**
 	 * The individual that will make the move.
@@ -124,8 +154,10 @@ public class BoardList {
 				player.movesLeft.moves.add(0);
 			}
 
-			// check if any further moves can be made
-			if (!(player.movesLeft.size() == 1 && player.movesLeft.getNext() == 0 || player.movesLeft.size() == 0)) {
+			// check if any further moves can be made. The same board with the same dice left leads on to the same
+			// boards as the last time it was reached, often in a different order of moves, so it's only tried once
+			if (!(player.movesLeft.size() == 1 && player.movesLeft.getNext() == 0 || player.movesLeft.size() == 0)
+					&& triedFrom.add(new Position(board, player.movesLeft.moves))) {
 				moveGenerator.generateMoves(board, player);
 			}
 
@@ -200,6 +232,7 @@ public class BoardList {
 	void clearList() {
 		boardList.clear();
 		boardsInList.clear();
+		triedFrom.clear();
 		mostDiceUsed = 0;
 	}
 

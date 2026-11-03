@@ -52,9 +52,16 @@ public class Player {
 	 * Instantiates a new player.
 	 */
 	public Player(final boolean black) {
+		this(black, new DiceList());
+	}
+
+	/**
+	 * A player using these dice, for copies of a player made while trying out moves, which don't need their own
+	 */
+	Player(final boolean black, final DiceList dice) {
 		this.black = black;
 		movesLeft = new MovesList();
-		dice = new DiceList();
+		this.dice = dice;
 	}
 
 	/**
