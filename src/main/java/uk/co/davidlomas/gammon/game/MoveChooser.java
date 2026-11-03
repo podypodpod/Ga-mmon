@@ -93,14 +93,15 @@ public final class MoveChooser {
 	 * How good the board looks to the player, by their weights for the stage the game is at
 	 */
 	static double score(final Board board, final boolean black, final Individual individual) {
+		final Feature.Side side = new Feature.Side(board, black);
 		double score = 0;
 		if (Feature.isContact(board)) {
 			for (int i = 0; i < CONTACT_FEATURES.length; i++) {
-				score += weight(individual, i) * CONTACT_FEATURES[i].scaled(board, black);
+				score += weight(individual, i) * CONTACT_FEATURES[i].scaled(side);
 			}
 		} else {
 			for (int i = 0; i < RACE_FEATURES.length; i++) {
-				score += weight(individual, CONTACT_FEATURES.length + i) * RACE_FEATURES[i].scaled(board, black);
+				score += weight(individual, CONTACT_FEATURES.length + i) * RACE_FEATURES[i].scaled(side);
 			}
 		}
 		return score;

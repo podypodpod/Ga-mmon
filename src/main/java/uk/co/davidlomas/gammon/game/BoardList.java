@@ -43,26 +43,58 @@ public class BoardList {
 	private final List<Board> boardList;
 
 	/**
-	 * The same boards as boardList, so checking for a duplicate is a quick lookup instead of a scan of the list,
-	 * with the dice each one used to get there. A board can be reached part way through a turn, after only some of
-	 * the dice, and keepOnlyLegalMoves uses these to drop those.
+	 * The same boards as boardList, in the same order, each with its hash worked out once
 	 */
-	private final Map<Board, List<Integer>> boardsInList;
+	private final List<HashedBoard> keys = new ArrayList<>();
+
+	/**
+	 * The same boards again, so checking for a duplicate is a quick lookup instead of a scan of the list, with the
+	 * dice each one used to get there. A board can be reached part way through a turn, after only some of the dice,
+	 * and keepOnlyLegalMoves uses these to drop those.
+	 */
+	private final Map<HashedBoard, List<Integer>> boardsInList;
 
 	// how many dice the boards use, once keepOnlyLegalMoves has run
 	private int mostDiceUsed;
+
+	// the boards as a set, made the first time it's asked for after the list changes
+	private Set<Board> boardSet;
 
 	// the boards, with the dice left, that the moves on from them have already been worked out for
 	private final Set<Position> triedFrom = new HashSet<>();
 
 	/**
+	 * A board and its hash. A board is looked up three times as moves are tried, and hashing it means going through
+	 * every point, so the hash is worked out once. The board must not change while it's in the list.
+	 */
+	private static final class HashedBoard {
+		private final Board board;
+		private final int hash;
+
+		HashedBoard(final Board board) {
+			this.board = board;
+			hash = board.hashCode();
+		}
+
+		@Override
+		public boolean equals(final Object o) {
+			return o instanceof HashedBoard && hash == ((HashedBoard) o).hash && board.equals(((HashedBoard) o).board);
+		}
+
+		@Override
+		public int hashCode() {
+			return hash;
+		}
+	}
+
+	/**
 	 * A board part way through a turn and the dice still to play, in any order
 	 */
 	private static final class Position {
-		private final Board board;
+		private final HashedBoard board;
 		private final List<Integer> diceLeft;
 
-		Position(final Board board, final List<Integer> diceLeft) {
+		Position(final HashedBoard board, final List<Integer> diceLeft) {
 			this.board = board;
 			this.diceLeft = new ArrayList<>(diceLeft);
 			this.diceLeft.removeIf(die -> die == 0);
@@ -98,12 +130,14 @@ public class BoardList {
 	 * @param b the board
 	 */
 	void addBoardWithNextMove(final Board b) {
-		addBoard(b, Collections.emptyList());
+		addBoard(new HashedBoard(b), Collections.emptyList());
 	}
 
-	private void addBoard(final Board b, final List<Integer> diceUsed) {
-		boardList.add(b);
-		boardsInList.put(b, diceUsed);
+	private void addBoard(final HashedBoard key, final List<Integer> diceUsed) {
+		boardList.add(key.board);
+		keys.add(key);
+		boardsInList.put(key, diceUsed);
+		boardSet = null;
 	}
 
 	/**
@@ -135,17 +169,19 @@ public class BoardList {
 
 			// check if any further moves can be made. The same board with the same dice left leads on to the same
 			// boards as the last time it was reached, often in a different order of moves, so it's only tried once
+			final HashedBoard key = new HashedBoard(board);
 			if (!(player.movesLeft.size() == 1 && player.movesLeft.getNext() == 0 || player.movesLeft.size() == 0)
-					&& triedFrom.add(new Position(board, player.movesLeft.moves))) {
+					&& triedFrom.add(new Position(key, player.movesLeft.moves))) {
 				moveGenerator.generateMoves(board, player);
 			}
 
 			// add the board to the list if there is not a duplicate. If there is, keep whichever way of reaching it
 			// used more dice. The dice are only copied when they're kept, as many boards reached are duplicates
-			if (!thereIsADuplicate(board)) {
-				addBoard(board, new ArrayList<>(player.diceUsed));
-			} else if (boardsInList.get(board).size() < player.diceUsed.size()) {
-				boardsInList.put(board, new ArrayList<>(player.diceUsed));
+			final List<Integer> diceBefore = boardsInList.get(key);
+			if (diceBefore == null) {
+				addBoard(key, new ArrayList<>(player.diceUsed));
+			} else if (diceBefore.size() < player.diceUsed.size()) {
+				boardsInList.put(key, new ArrayList<>(player.diceUsed));
 			}
 
 		}
@@ -162,18 +198,18 @@ public class BoardList {
 	 */
 	void keepOnlyLegalMoves(final List<Integer> roll) {
 		int most = 0;
-		for (final Board board : boardList) {
-			most = Math.max(most, boardsInList.get(board).size());
+		for (final List<Integer> diceUsed : boardsInList.values()) {
+			most = Math.max(most, diceUsed.size());
 		}
 		mostDiceUsed = most;
-		removeBoardsWhere(board -> boardsInList.get(board).size() < mostDiceUsed);
+		removeBoardsWhere(diceUsed -> diceUsed.size() < mostDiceUsed);
 
 		if (mostDiceUsed == 1 && roll.size() == 2 && !roll.get(0).equals(roll.get(1))) {
 			final int larger = Math.max(roll.get(0), roll.get(1));
 			final boolean largerCanBePlayed =
-					boardList.stream().anyMatch(board -> boardsInList.get(board).get(0) == larger);
+					boardsInList.values().stream().anyMatch(diceUsed -> diceUsed.get(0) == larger);
 			if (largerCanBePlayed) {
-				removeBoardsWhere(board -> boardsInList.get(board).get(0) != larger);
+				removeBoardsWhere(diceUsed -> diceUsed.get(0) != larger);
 			}
 		}
 	}
@@ -189,17 +225,25 @@ public class BoardList {
 	 * @return the boards, for quick lookups, read only
 	 */
 	Set<Board> boardSet() {
-		return Collections.unmodifiableSet(boardsInList.keySet());
+		if (boardSet == null) {
+			boardSet = Collections.unmodifiableSet(new HashSet<>(boardList));
+		}
+		return boardSet;
 	}
 
-	private void removeBoardsWhere(final Predicate<Board> unwanted) {
-		boardList.removeIf(board -> {
-			if (unwanted.test(board)) {
-				boardsInList.remove(board);
-				return true;
+	/**
+	 * Drops the boards whose dice used are unwanted, keeping the rest in order
+	 */
+	private void removeBoardsWhere(final Predicate<List<Integer>> unwanted) {
+		for (int i = keys.size() - 1; i >= 0; i--) {
+			final HashedBoard key = keys.get(i);
+			if (unwanted.test(boardsInList.get(key))) {
+				boardsInList.remove(key);
+				keys.remove(i);
+				boardList.remove(i);
+				boardSet = null;
 			}
-			return false;
-		});
+		}
 	}
 
 	/**
@@ -210,6 +254,8 @@ public class BoardList {
 
 	void clearList() {
 		boardList.clear();
+		keys.clear();
+		boardSet = null;
 		boardsInList.clear();
 		triedFrom.clear();
 		mostDiceUsed = 0;
@@ -225,25 +271,14 @@ public class BoardList {
 	}
 
 	/**
-	 * Gets the boards, so tests can see which moves were on offer.
+	 * Gets the boards, for MoveChooser to pick from and for tests to see which moves were on offer.
 	 * <p>
-	 * Nothing in the game calls this, but DecisionGenesTest does, so don't remove it as unused.
+	 * The boards themselves mustn't be changed: the list keeps the hash each one had when it was added, so a changed
+	 * board would be looked up in the wrong place. Copy one to play on from it, as Game does with the board chosen.
 	 *
 	 * @return the boards, read only
 	 */
 	List<Board> getBoards() {
 		return Collections.unmodifiableList(boardList);
-	}
-
-	/**
-	 * There is a duplicate. checks if there is already a duplicate of the board
-	 * passed in already present in the list
-	 *
-	 * @param boardInQuestion the board it is checking against
-	 *
-	 * @return true, if there is a duplicate
-	 */
-	private boolean thereIsADuplicate(final Board boardInQuestion) {
-		return boardsInList.containsKey(boardInQuestion);
 	}
 }
