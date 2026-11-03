@@ -84,7 +84,7 @@ The GA's code is in `uk.co.davidlomas.gammon.genes`: `StartGa` runs it, `Genetic
 
 ### What to expect
 
-With a population of 40, two meetings per pair and a mutation rate of 0.02, players improve quickly over the first 25 to 50 generations and then level off. In one such run, generation 50 beat generation 0 by half a point a game, winning about two games in three, and generation 199 was no better than generation 50. A 200-generation run takes about 25 minutes.
+With a population of 40, two meetings per pair and a mutation rate of 0.02, players improve quickly over the first 25 or so generations and then level off. In one such run, generation 25 beat generation 0 by about 0.8 points a game, winning nearly three games in four, and later generations were no better than generation 25. A 200-generation run takes about half an hour.
 
 Better features, which let a player tell good moves from bad more finely, are what would take it further.
 
