@@ -9,10 +9,13 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -58,6 +61,58 @@ public class GeneticAlgorithmTest {
 		final char after = individual1.getChromosome()[0];
 
 		assertNotEquals(before, after);
+	}
+
+	@Test
+	public void mutationChangesTheGenesTheGamePlaysBy() {
+		// flipping every bit changes every gene's value: 7 bits a gene, capped at 100
+		GenAlgSettings.setMutationRate(1.00);
+		final int[] before = geneValues(individual1);
+
+		GeneticAlgorithm.mutate(individual1);
+
+		final int[] after = geneValues(individual1);
+		for (int gene = 0; gene < before.length; gene++) {
+			assertNotEquals(before[gene], after[gene], "gene " + gene);
+		}
+	}
+
+	@Test
+	public void aMutatedPlayerIsSavedWithItsMutation() {
+		// saving rebuilds the chromosome from the genes, which used to put the old bits back
+		GenAlgSettings.setMutationRate(1.00);
+		GeneticAlgorithm.mutate(individual1);
+		final String mutated = String.valueOf(individual1.getChromosome());
+		final String file = SettingsUtil.getPlayersDir() + "/mutated - " + UUID.randomUUID();
+		new File(SettingsUtil.getPlayersDir()).mkdirs();
+
+		individual1.saveToFile(file);
+		final Individual loaded = new Individual();
+		loaded.loadFromFile(file);
+
+		assertArrayEquals(geneValues(individual1), geneValues(loaded));
+		assertEquals(mutated, String.valueOf(individual1.getChromosome()));
+	}
+
+	@Test
+	public void mutatingAChildDoesntChangeItsParents() {
+		final int[] firstParent = geneValues(individual1);
+		final int[] secondParent = geneValues(individual2);
+		final Individual child = GeneticAlgorithm.crossoverIndividuals(individual1, individual2);
+		GenAlgSettings.setMutationRate(1.00);
+
+		GeneticAlgorithm.mutate(child);
+
+		assertArrayEquals(firstParent, geneValues(individual1));
+		assertArrayEquals(secondParent, geneValues(individual2));
+	}
+
+	private static int[] geneValues(final Individual individual) {
+		final int[] values = new int[individual.getNumOfAttributes()];
+		for (int gene = 0; gene < values.length; gene++) {
+			values[gene] = individual.getAttribute(gene).getValue();
+		}
+		return values;
 	}
 
 	@Test
