@@ -11,7 +11,7 @@ import uk.co.davidlomas.gammon.util.RandomSource;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * Test class for {@link Population}
@@ -86,14 +86,12 @@ public class PopulationTest {
 		RandomSource.setSeed(4);
 		FitnessCalculator.calculateFitnessOfPopulation(samePlayers);
 
-		double total = 0;
 		for (int i = 0; i < POPULATION_SIZE; i++) {
 			assertArrayEquals(samePlayers.getIndividual(i).getChromosome(), initPopulation.getIndividual(i).getChromosome());
 			assertEquals(samePlayers.getIndividual(i).getFitness(), initPopulation.getIndividual(i).getFitness(), 1e-9);
-			total += samePlayers.getIndividual(i).getFitness();
+			// every game is won or lost by at least a point, so a fitness of 0 means calculateFitness did nothing
+			assertNotEquals(0.0, initPopulation.getIndividual(i).getFitness());
 		}
-		// if every score were 0, a calculateFitness that did nothing would pass too
-		assertTrue(total > 0, "seed 4 gave every player a score of 0, pick another");
 	}
 
 }

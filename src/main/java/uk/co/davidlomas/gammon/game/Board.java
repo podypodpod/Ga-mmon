@@ -261,6 +261,31 @@ public class Board {
 	}
 
 	/**
+	 * How the game was won against this player, from where their pieces are when it ends: a gammon if they haven't
+	 * borne off any, a backgammon if they also still have one on the bar or in the winner's home quarter, otherwise a
+	 * single game.
+	 *
+	 * @param loserBlack the player who lost
+	 *
+	 * @return the kind of win
+	 */
+	WinType winTypeAgainst(final boolean loserBlack) {
+		if (howManyHasPlayerBore(loserBlack) > 0) {
+			return WinType.SINGLE;
+		}
+		// the loser's bar, and the winner's home quarter: red's is 19 to 24, black's is 1 to 6
+		final int bar = loserBlack ? 25 : 0;
+		final int winnersHomeStart = loserBlack ? 19 : 1;
+		for (final int point : new int[]{bar, winnersHomeStart, winnersHomeStart + 1, winnersHomeStart + 2,
+				winnersHomeStart + 3, winnersHomeStart + 4, winnersHomeStart + 5}) {
+			if ((loserBlack ? Points[point].getBlackCount() : Points[point].getRedCount()) > 0) {
+				return WinType.BACKGAMMON;
+			}
+		}
+		return WinType.GAMMON;
+	}
+
+	/**
 	 * How many has player bore.
 	 *
 	 * @param black the blackBore

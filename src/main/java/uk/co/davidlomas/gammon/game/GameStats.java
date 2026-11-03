@@ -31,6 +31,7 @@ import uk.co.davidlomas.gammon.genes.Individual;
 public class GameStats {
 
 	private Individual gameVictor = null;
+	private WinType winType = null;
 	private double playerOneScore = 0;
 	private double playerTwoScore = 0;
 
@@ -38,11 +39,14 @@ public class GameStats {
 	 * GameStats default constructor
 	 *
 	 * @param gameVictor     the victor
+	 * @param winType        how they won
 	 * @param playerOneScore player one's score
 	 * @param playerTwoScore player two's score
 	 */
-	public GameStats(final Individual gameVictor, final double playerOneScore, final double playerTwoScore) {
+	public GameStats(final Individual gameVictor, final WinType winType, final double playerOneScore,
+					 final double playerTwoScore) {
 		this.gameVictor = gameVictor;
+		this.winType = winType;
 		this.playerOneScore = playerOneScore;
 		this.playerTwoScore = playerTwoScore;
 	}
@@ -67,6 +71,13 @@ public class GameStats {
 
 	public double getPlayerTwoScore() {
 		return playerTwoScore;
+	}
+
+	/**
+	 * @return how the game was won, which sets the points it was worth
+	 */
+	public WinType getWinType() {
+		return winType;
 	}
 
 }

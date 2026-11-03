@@ -42,7 +42,6 @@ class Game implements Runnable {
 
 	private final static Logger logger = LoggerFactory.getLogger(Game.class);
 	// the loser can bear at most 14 pieces, 14/30 keeps their score below the winner's
-	private static final double BORE_PIECE_SCORE_MULTIPLIER = 1.0 / 30;
 
 	private final AiPlayer aiPlayer1;
 	private final AiPlayer aiPlayer2;
@@ -84,23 +83,15 @@ class Game implements Runnable {
 	}
 
 	GameStats getGameStats() {
-		final Individual gameVictor;
-		final double playerOneScore;
-		final double playerTwoScore;
-
-		// a person playing as player 2 can concede, which hands player 1 the game
-		if (liveBoard.hasPlayerWon(aiPlayer1.black) || aiPlayer2.hasConceded()) {
-			final double reductions = liveBoard.howManyHasPlayerBore(aiPlayer2.black) * BORE_PIECE_SCORE_MULTIPLIER;
-			playerOneScore = 1 - reductions;
-			playerTwoScore = reductions;
-			gameVictor = individual1;
-		} else {
-			final double reductions = liveBoard.howManyHasPlayerBore(aiPlayer1.black) * BORE_PIECE_SCORE_MULTIPLIER;
-			playerTwoScore = 1 - reductions;
-			playerOneScore = reductions;
-			gameVictor = individual2;
-		}
-		return new GameStats(gameVictor, playerOneScore, playerTwoScore);
+		// the winner gains the points the win is worth, 1, 2 or 3, and the loser loses them, as in backgammon, so a
+		// loser who saves a gammon is a point better off. A person playing as player 2 can concede, which hands
+		// player 1 the game, scored as the board stands
+		final boolean playerOneWon = liveBoard.hasPlayerWon(aiPlayer1.black) || aiPlayer2.hasConceded();
+		final WinType winType = liveBoard.winTypeAgainst(playerOneWon ? aiPlayer2.black : aiPlayer1.black);
+		final int points = winType.getPoints();
+		return playerOneWon
+				? new GameStats(individual1, winType, points, -points)
+				: new GameStats(individual2, winType, -points, points);
 	}
 
 	/**
@@ -211,7 +202,7 @@ class Game implements Runnable {
 
 					logger.trace("Player 1 has won! (Black={})", aiPlayer1.black);
 					if (!areBothAIs) {
-						aiPlayer2.tell("You lost, player 1 has won.");
+						aiPlayer2.tell("You lost, player 1 has won " + getGameStats().getWinType().describe() + ".");
 						aiPlayer2.showBoard(liveBoard);
 					}
 
@@ -289,11 +280,12 @@ class Game implements Runnable {
 					if (aiPlayer2.hasConceded()) {
 
 						gameActive = false;
+						aiPlayer2.tell("Player 1 wins " + getGameStats().getWinType().describe() + ".");
 
 					} else if (liveBoard.hasPlayerWon(aiPlayer2.black)) {
 
 						gameActive = false;
-						aiPlayer2.tell("You've won!");
+						aiPlayer2.tell("You've won " + getGameStats().getWinType().describe() + "!");
 
 					} else {
 						playerOnesTurn = true;

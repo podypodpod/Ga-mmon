@@ -21,13 +21,14 @@ public class GameStatsTest {
 	}
 
 	@Test
-	public void keepsTheVictorAndBothScores() {
+	public void keepsTheVictorHowTheyWonAndBothScores() {
 		final Individual victor = new Individual();
 
-		final GameStats gameStats = new GameStats(victor, 1.0, 0.25);
+		final GameStats gameStats = new GameStats(victor, WinType.GAMMON, 2.0, -2.0);
 
 		assertSame(victor, gameStats.getVictor());
-		assertEquals(1.0, gameStats.getPlayerOneScore());
-		assertEquals(0.25, gameStats.getPlayerTwoScore());
+		assertSame(WinType.GAMMON, gameStats.getWinType());
+		assertEquals(2.0, gameStats.getPlayerOneScore());
+		assertEquals(-2.0, gameStats.getPlayerTwoScore());
 	}
 }
