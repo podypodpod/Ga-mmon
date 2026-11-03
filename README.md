@@ -24,7 +24,7 @@ The features are measured from the side of the player choosing:
 |---|---|
 | Pip lead | How many pips the opponent needs to bear off, less how many the player needs |
 | Blots | The player's points with a single piece on, which can be hit |
-| Hit rolls | How many of the opponent's 36 possible rolls would hit one of the player's blots, counting shots that need both dice, and the player's points in the way that block them |
+| Exposed blots | The player's blots that an opponent's piece, or one on their bar, could hit with a single die |
 | Points made | Points with two or more of the player's pieces, which the opponent can't land on |
 | Home points | Points made in the player's home quarter |
 | Longest prime | The longest run of points made next to each other, which blocks the opponent's pieces behind it |

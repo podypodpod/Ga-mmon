@@ -56,104 +56,50 @@ public class FeatureTest {
 
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
-	public void aBlotFourAwayIsHitByFifteenRolls(final boolean black) {
-		// any 4, then 3-1 and 1-3, 2-2 and 1-1
+	public void aBlotWithinSixOfAnOpponentsPieceIsExposed(final boolean black) {
+		// red on 3 is 4 short of the blot on 7, but 17 short of the one on 20
 		final Board blackPosition = empty();
 		blackPosition.Points[7].setBlackCount(1);
-		blackPosition.Points[3].setRedCount(2);
-
-		final Board board = forColour(blackPosition, black);
-		assertEquals(1, Feature.BLOTS.measure(board, black));
-		assertEquals(15, Feature.HIT_ROLLS.measure(board, black));
-	}
-
-	@ParameterizedTest(name = "black {0}")
-	@ValueSource(booleans = {true, false})
-	public void aBlotEightAwayIsHitBySixRolls(final boolean black) {
-		// 6-2, 2-6, 5-3, 3-5, 4-4 and 2-2: it needs both dice
-		final Board blackPosition = empty();
-		blackPosition.Points[11].setBlackCount(1);
-		blackPosition.Points[3].setRedCount(2);
-
-		assertEquals(6, Feature.HIT_ROLLS.measure(forColour(blackPosition, black), black));
-	}
-
-	@ParameterizedTest(name = "black {0}")
-	@ValueSource(booleans = {true, false})
-	public void pointsMadeInTheWayBlockShotsThatNeedBothDice(final boolean black) {
-		// the blot on 9 is 6 from red on 3, and black holds 4 to 8, so only a 6 itself hits: 11 rolls
-		final Board blackPosition = empty();
-		blackPosition.Points[9].setBlackCount(1);
-		for (int point = 4; point <= 8; point++) {
-			blackPosition.Points[point].setBlackCount(2);
-		}
-		blackPosition.Points[3].setRedCount(2);
-
-		assertEquals(11, Feature.HIT_ROLLS.measure(forColour(blackPosition, black), black));
-	}
-
-	@ParameterizedTest(name = "black {0}")
-	@ValueSource(booleans = {true, false})
-	public void anOpponentOnTheBarHasToComeInBeforeAnotherPieceCanHit(final boolean black) {
-		// red has a piece on the bar and one on 7, 3 short of black's blot on 10. Black holds 1, 3, 4, 5 and 6, so red
-		// only comes in with a 2, and then the piece on 7 hits with a 3: 2-3 and 3-2. Without the bar piece, any 3
-		// would hit, and 2-1, 1-2 and 1-1 too
-		final Board blackPosition = empty();
-		blackPosition.Points[10].setBlackCount(1);
-		for (final int point : new int[]{1, 3, 4, 5, 6}) {
-			blackPosition.Points[point].setBlackCount(2);
-		}
-		blackPosition.Points[7].setRedCount(1);
-		blackPosition.Points[0].setRedCount(1);
-
-		assertEquals(2, Feature.HIT_ROLLS.measure(forColour(blackPosition, black), black));
-
-		blackPosition.Points[0].setRedCount(0);
-		assertEquals(14, Feature.HIT_ROLLS.measure(forColour(blackPosition, black), black));
-	}
-
-	@ParameterizedTest(name = "black {0}")
-	@ValueSource(booleans = {true, false})
-	public void withTwoOnTheBarOnlyADoubleLeavesMovesToHitWith(final boolean black) {
-		// red has two on the bar and one on 8, 4 short of black's blot on 12, and only black's 2 point is open. Only
-		// 2-2 brings both in, leaving two 2s for the piece on 8 to hit with
-		final Board blackPosition = empty();
-		blackPosition.Points[12].setBlackCount(1);
-		for (final int point : new int[]{1, 3, 4, 5, 6}) {
-			blackPosition.Points[point].setBlackCount(2);
-		}
-		blackPosition.Points[8].setRedCount(1);
-		blackPosition.Points[0].setRedCount(2);
-
-		assertEquals(1, Feature.HIT_ROLLS.measure(forColour(blackPosition, black), black));
-
-		// a blot on the 2 point itself is hit by any roll with a 2, as a piece comes in on it
-		blackPosition.Points[12].setBlackCount(0);
-		blackPosition.Points[2].setBlackCount(1);
-		assertEquals(11, Feature.HIT_ROLLS.measure(forColour(blackPosition, black), black));
-	}
-
-	@ParameterizedTest(name = "black {0}")
-	@ValueSource(booleans = {true, false})
-	public void aBlotOutOfReachIsSafe(final boolean black) {
-		final Board blackPosition = empty();
 		blackPosition.Points[20].setBlackCount(1);
 		blackPosition.Points[3].setRedCount(2);
 
-		assertEquals(0, Feature.HIT_ROLLS.measure(forColour(blackPosition, black), black));
+		final Board board = forColour(blackPosition, black);
+		assertEquals(2, Feature.BLOTS.measure(board, black));
+		assertEquals(1, Feature.EXPOSED_BLOTS.measure(board, black));
 	}
 
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
-	public void aPieceOnTheBarCanHitABlotOnItsWayIn(final boolean black) {
+	public void aBlotSevenAwayIsNotExposed(final boolean black) {
+		// it would need both dice, which isn't counted
+		final Board blackPosition = empty();
+		blackPosition.Points[10].setBlackCount(1);
+		blackPosition.Points[3].setRedCount(2);
+
+		assertEquals(0, Feature.EXPOSED_BLOTS.measure(forColour(blackPosition, black), black));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void aBlotAnOpponentHasPassedIsNotExposed(final boolean black) {
+		// red moves up, away from the blot on 3
+		final Board blackPosition = empty();
+		blackPosition.Points[3].setBlackCount(1);
+		blackPosition.Points[5].setRedCount(2);
+
+		assertEquals(0, Feature.EXPOSED_BLOTS.measure(forColour(blackPosition, black), black));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void aPieceOnTheBarExposesBlotsInThePlayersHome(final boolean black) {
 		final Board blackPosition = empty();
 		blackPosition.Points[5].setBlackCount(1);
 		// red's bar: it comes in on 1 to 6
 		blackPosition.Points[0].setRedCount(1);
 
-		// 5 away: any 5, then 4-1, 1-4, 3-2 and 2-3
 		final Board board = forColour(blackPosition, black);
-		assertEquals(15, Feature.HIT_ROLLS.measure(board, black));
+		assertEquals(1, Feature.EXPOSED_BLOTS.measure(board, black));
 		assertEquals(1, Feature.OPPONENT_ON_BAR.measure(board, black));
 	}
 
