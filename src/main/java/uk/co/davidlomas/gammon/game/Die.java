@@ -32,7 +32,7 @@ public class Die {
 	private int value;
 
 	public int RollDie() {
-		value = RandomSource.nextInt(6) + 1;
+		value = RandomSource.rollDie();
 		return value;
 	}
 }

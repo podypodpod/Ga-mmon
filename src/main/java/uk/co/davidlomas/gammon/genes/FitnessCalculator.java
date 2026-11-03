@@ -22,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.davidlomas.gammon.game.GameManager;
 import uk.co.davidlomas.gammon.game.GameStats;
+import uk.co.davidlomas.gammon.settings.GenAlgSettings;
+import uk.co.davidlomas.gammon.util.RandomSource;
 
 /**
  * FitnessCalculator
@@ -34,76 +36,51 @@ class FitnessCalculator {
 
 	private final static Logger logger = LoggerFactory.getLogger(FitnessCalculator.class);
 
-	private static GameManager gameManager;
-
 	/**
 	 * calculateFitnessOfPopulation
 	 * <p>
-	 * calculates the fitness of every individual in the population.
+	 * calculates the fitness of every individual in the population: the average score from every game it plays.
 	 * <p>
-	 * requires playing a large number of games ((population-1)^2)
+	 * Every pair of players meets GenAlgSettings.getGamesPerPairing() times. Each meeting is two games with the same
+	 * dice, one with each of them as player one, so they both get the luckier seat, and both players' scores count.
+	 * That takes out much of the luck backgammon's dice bring, which would otherwise decide more of the fitness than
+	 * the players' skill.
 	 *
 	 * @param pop - population we are measuring
 	 */
 	static void calculateFitnessOfPopulation(final Population pop) {
 
-		Individual testSubject;
-		Individual opponent;
-		double tempFitness;
-
-		gameManager = new GameManager();
+		final GameManager gameManager = new GameManager();
+		final int size = pop.individuals.length;
+		final int meetings = GenAlgSettings.getGamesPerPairing();
+		final double[] totals = new double[size];
 
 		logger.trace("Round robin started");
 
-		// looping the whole population, x is the one we are measuring
-		for (int playerCount = 0; playerCount < pop.individuals.length; playerCount++) {
+		for (int first = 0; first < size; first++) {
+			for (int second = first + 1; second < size; second++) {
+				for (int meeting = 0; meeting < meetings; meeting++) {
+					final long dice = RandomSource.nextLong();
 
-			logger.trace("Testing Player: {} ", playerCount);
+					RandomSource.setDiceSeed(dice);
+					final GameStats firstAsPlayerOne = gameManager.playIndividualsVsEachOther(pop.individuals[first],
+							pop.individuals[second]);
+					totals[first] += firstAsPlayerOne.getPlayerOneScore();
+					totals[second] += firstAsPlayerOne.getPlayerTwoScore();
 
-			// the one we are generating the fitness of
-			testSubject = pop.individuals[playerCount];
-
-			// will be added to over the course of the games
-			tempFitness = 0;
-
-			// looping the whole population, y is the one currently playing
-			// against x
-			for (int y = 0; y < pop.individuals.length; y++) {
-				// make sure its not playing itself
-				if (y != playerCount) {
-					logger.trace("\tagainst player: {}/{}", y + 1, pop.individuals.length);
-
-					// Opponent individual
-					opponent = pop.individuals[y];
-
-					// adding the result of the game to the temp fitness, so
-					// this will add all the games score together
-					final GameStats gs = gameManager.playIndividualsVsEachOther(testSubject, opponent);
-
-					tempFitness += gs.getPlayerOneScore();
+					RandomSource.setDiceSeed(dice);
+					final GameStats secondAsPlayerOne = gameManager.playIndividualsVsEachOther(pop.individuals[second],
+							pop.individuals[first]);
+					totals[second] += secondAsPlayerOne.getPlayerOneScore();
+					totals[first] += secondAsPlayerOne.getPlayerTwoScore();
 				}
 			}
-			if (tempFitness != 0) {
-				// divides by the number of games and therefore gets an average
-				tempFitness = tempFitness / (pop.size() - 1);
-			}
-			testSubject.setFitness(tempFitness);
 		}
-	}
 
-	/**
-	 * getWinnerOf
-	 * <p>
-	 * Makes the 2 players play against each other and returns the winner
-	 *
-	 * @param i1 player 1
-	 * @param i2 player 2
-	 *
-	 * @return the winner
-	 */
-	static Individual getWinnerOf(final Individual i1, final Individual i2) {
-		gameManager = new GameManager();
-		final GameStats gs = gameManager.playIndividualsVsEachOther(i1, i2);
-		return gs.getVictor();
+		// each player plays two games a meeting against each of the others
+		final int gamesEach = 2 * meetings * (size - 1);
+		for (int i = 0; i < size; i++) {
+			pop.individuals[i].setFitness(gamesEach == 0 ? 0 : totals[i] / gamesEach);
+		}
 	}
 }

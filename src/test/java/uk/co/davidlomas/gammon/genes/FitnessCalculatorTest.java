@@ -5,11 +5,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.game.GameManager;
+import uk.co.davidlomas.gammon.game.GameStats;
+import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FitnessCalculatorTest {
 	@BeforeAll
@@ -25,42 +26,53 @@ public class FitnessCalculatorTest {
 	@AfterEach
 	public void tearDown() {
 		RandomSource.reset();
+		GenAlgSettings.setGamesPerPairing(1);
 	}
 
 	@Test
-	public void fitnessIsTheAverageScoreFromPlayingEveryoneElseOnce() {
-		// Given a population of three
+	public void eachPlayersFitnessIsTheAverageOfBothGamesInEveryMeeting() {
+		// Given two players, who meet twice
+		GenAlgSettings.setGamesPerPairing(2);
 		RandomSource.setSeed(3);
-		final Population population = new Population(3, true);
-		final Individual[] individuals = population.individuals;
+		final Population population = new Population(2, true);
+		final Individual first = population.individuals[0];
+		final Individual second = population.individuals[1];
 
 		// When their fitness is worked out
 		RandomSource.setSeed(4);
 		FitnessCalculator.calculateFitnessOfPopulation(population);
 
-		// Then each one's fitness is the average of its scores, as player one, against the other two.
-		// Replaying the same games in the same order with the same seed gives those scores.
+		// Then it's the average of all four games, as player one and as player two. Replaying them with the same
+		// seed, each meeting's two games rolling the same dice, gives the scores
 		RandomSource.setSeed(4);
 		final GameManager gameManager = new GameManager();
-		for (final Individual player : individuals) {
-			double total = 0;
-			for (final Individual opponent : individuals) {
-				if (opponent != player) {
-					total += gameManager.playIndividualsVsEachOther(player, opponent).getPlayerOneScore();
-				}
-			}
-			assertEquals(total / (individuals.length - 1), player.getFitness(), 1e-9);
+		double firstTotal = 0;
+		double secondTotal = 0;
+		for (int meeting = 0; meeting < 2; meeting++) {
+			final long dice = RandomSource.nextLong();
+			RandomSource.setDiceSeed(dice);
+			final GameStats firstGoesFirst = gameManager.playIndividualsVsEachOther(first, second);
+			RandomSource.setDiceSeed(dice);
+			final GameStats secondGoesFirst = gameManager.playIndividualsVsEachOther(second, first);
+			firstTotal += firstGoesFirst.getPlayerOneScore() + secondGoesFirst.getPlayerTwoScore();
+			secondTotal += firstGoesFirst.getPlayerTwoScore() + secondGoesFirst.getPlayerOneScore();
 		}
+		assertEquals(firstTotal / 4, first.getFitness(), 1e-9);
+		assertEquals(secondTotal / 4, second.getFitness(), 1e-9);
 	}
 
 	@Test
-	public void theWinnerOfAGameIsOneOfTheTwoPlayers() {
+	public void whatOnePlayerWinsAnotherLosesSoTheFitnessesAddUpToNothing() {
+		// every game is zero-sum and everyone plays as many games, so the population's fitness adds up to 0
 		RandomSource.setSeed(5);
-		final Individual first = new Individual();
-		final Individual second = new Individual();
+		final Population population = new Population(4, true);
 
-		final Individual winner = FitnessCalculator.getWinnerOf(first, second);
+		FitnessCalculator.calculateFitnessOfPopulation(population);
 
-		assertTrue(winner == first || winner == second);
+		double total = 0;
+		for (final Individual individual : population.individuals) {
+			total += individual.getFitness();
+		}
+		assertEquals(0, total, 1e-9);
 	}
 }

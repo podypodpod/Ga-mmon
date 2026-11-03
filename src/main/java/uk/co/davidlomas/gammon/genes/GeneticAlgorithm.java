@@ -169,8 +169,8 @@ public class GeneticAlgorithm {
 	/**
 	 * Tournament selection.
 	 * <p>
-	 * Selects the individuals for crossover it does this by selecting a random
-	 * population and playing them against each other until there is one victor
+	 * Selects the individuals for crossover: picks a few at random from the population, and the fittest of them
+	 * wins. The population's fitness has to have been worked out first
 	 *
 	 * @return the individual
 	 */
@@ -178,44 +178,18 @@ public class GeneticAlgorithm {
 
 		logger.trace("Tournament selection starting");
 
-		// Create a tournament population
-		final Population tournament = new Population(GenAlgSettings.getTournamentSize(), false);
-
-		if (GenAlgSettings.getTournamentSize() <= pop.size()) {
-			addTournamentPlayers(pop, tournament);
-		} else {
-			logger.error("Tournament Size {} cannot be larger than the population size {}",
-					GenAlgSettings.getTournamentSize(), GenAlgSettings.getPopulationSize());
+		// the tournament can't have more players than the population
+		final int size = Math.min(GenAlgSettings.getTournamentSize(), pop.size());
+		if (size < GenAlgSettings.getTournamentSize()) {
+			logger.warn("Tournament size {} is larger than the population size {}, so using {}",
+					GenAlgSettings.getTournamentSize(), pop.size(), size);
 		}
+		final Population tournament = new Population(size, false);
+		addTournamentPlayers(pop, tournament);
 
-		// Get the fittest via battling against each other
-		Individual tournamentVictor = null;
-
-		// until there is a winner
-		while (tournamentVictor == null) {
-
-			// create a population for the winner of the round
-			final Individual[] winnersOfRound = new Individual[tournament.size() / 2];
-
-			Individual winnerOfRound;
-			// test the individuals
-			int counter = 0;
-			for (int i = 0; i < tournament.size(); i += 2) {
-				winnerOfRound = FitnessCalculator.getWinnerOf(tournament.getIndividual(i),
-						tournament.getIndividual(i + 1));
-				winnersOfRound[counter++] = winnerOfRound;
-			}
-
-			// if there is only 1 left, then it is the winner!
-			if (winnersOfRound.length == 1) {
-				tournamentVictor = winnersOfRound[0];
-			}
-			// setting the tournament array to the winners of the round, so now
-			// only has the winners in
-			else {
-				tournament.setIndividuals(winnersOfRound);
-			}
-		}
+		// the fittest player wins. Fitness averages many games, so it says far more about the players than the single
+		// game each round used to be decided by
+		final Individual tournamentVictor = tournament.getFittest();
 		logger.trace("Tournament selection ended");
 		return tournamentVictor;
 	}
@@ -230,7 +204,7 @@ public class GeneticAlgorithm {
 			list.add(i);
 		}
 		Collections.shuffle(list, RandomSource.getRandom());
-		for (int i = 0; i < GenAlgSettings.getTournamentSize(); i++) {
+		for (int i = 0; i < tournamentPopulation.size(); i++) {
 			tournamentPopulation.saveIndividual(i, initialPopulation.getIndividual(list.get(i)));
 		}
 	}

@@ -81,6 +81,10 @@ public class PopulationTest {
 		RandomSource.setSeed(1);
 		final Population samePlayers = new Population(POPULATION_SIZE, true);
 
+		// a fitness no game can give, so it shows whether calculateFitness set one
+		for (final Individual individual : initPopulation.getPopulation()) {
+			individual.setFitness(99);
+		}
 		RandomSource.setSeed(4);
 		initPopulation.calculateFitness();
 		RandomSource.setSeed(4);
@@ -89,8 +93,7 @@ public class PopulationTest {
 		for (int i = 0; i < POPULATION_SIZE; i++) {
 			assertArrayEquals(samePlayers.getIndividual(i).getChromosome(), initPopulation.getIndividual(i).getChromosome());
 			assertEquals(samePlayers.getIndividual(i).getFitness(), initPopulation.getIndividual(i).getFitness(), 1e-9);
-			// every game is won or lost by at least a point, so a fitness of 0 means calculateFitness did nothing
-			assertNotEquals(0.0, initPopulation.getIndividual(i).getFitness());
+			assertNotEquals(99.0, initPopulation.getIndividual(i).getFitness());
 		}
 	}
 
