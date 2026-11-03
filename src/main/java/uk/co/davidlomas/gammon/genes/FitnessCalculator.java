@@ -22,9 +22,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.davidlomas.gammon.game.GameManager;
 import uk.co.davidlomas.gammon.game.GameStats;
+import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.function.LongSupplier;
 
 /**
@@ -47,6 +54,8 @@ class FitnessCalculator {
 	 * dice, one with each of them as player one, so they both get the luckier seat, and both players' scores count.
 	 * That takes out much of the luck backgammon's dice bring, which would otherwise decide more of the fitness than
 	 * the players' skill.
+	 * <p>
+	 * With GameSettings' multiThreading on, the meetings are played at the same time, one per core.
 	 *
 	 * @param pop - population we are measuring
 	 */
@@ -55,27 +64,32 @@ class FitnessCalculator {
 	}
 
 	/**
-	 * As calculateFitnessOfPopulation, with the seed for each meeting's dice taken from diceSeeds, so tests can
-	 * choose them
+	 * As calculateFitnessOfPopulation, with the seed for each meeting taken from meetingSeeds, so tests can choose
+	 * them
 	 */
-	static void calculateFitnessOfPopulation(final Population pop, final LongSupplier diceSeeds) {
+	static void calculateFitnessOfPopulation(final Population pop, final LongSupplier meetingSeeds) {
 
-		final GameManager gameManager = new GameManager();
 		final int size = pop.individuals.length;
 		final int meetings = GenAlgSettings.getGamesPerPairing();
-		final double[] totals = new double[size];
 
-		logger.trace("Round robin started");
-
+		// every meeting and its seed, worked out first and in order, so the result is the same however many
+		// threads play them and in whatever order they finish
+		final List<long[]> plan = new ArrayList<>();
 		for (int first = 0; first < size; first++) {
 			for (int second = first + 1; second < size; second++) {
 				for (int meeting = 0; meeting < meetings; meeting++) {
-					final double[] scores = meet(gameManager, pop.individuals[first], pop.individuals[second],
-							diceSeeds.getAsLong());
-					totals[first] += scores[0];
-					totals[second] += scores[1];
+					plan.add(new long[]{first, second, meetingSeeds.getAsLong()});
 				}
 			}
+		}
+
+		logger.trace("Round robin started: {} meetings", plan.size());
+		final List<double[]> scores = play(pop, plan);
+
+		final double[] totals = new double[size];
+		for (int i = 0; i < plan.size(); i++) {
+			totals[(int) plan.get(i)[0]] += scores.get(i)[0];
+			totals[(int) plan.get(i)[1]] += scores.get(i)[1];
 		}
 
 		// each player plays two games a meeting against each of the others
@@ -86,12 +100,52 @@ class FitnessCalculator {
 	}
 
 	/**
-	 * One meeting: two games with the same dice, one with each player as player one
+	 * Plays every meeting in the plan, on as many threads as the settings allow, and gives back each one's scores
+	 * in the plan's order. Even with one thread they're played on a thread of their own, so the caller's random
+	 * numbers aren't touched either way
+	 */
+	private static List<double[]> play(final Population pop, final List<long[]> plan) {
+		// the settings are read now, before any game, so the threads don't each read them from the file
+		GameSettings.isP1Black();
+		GameSettings.getAreBothAI();
+		GameSettings.getTimeDelay();
+		final boolean parallel = GameSettings.getMultiThreading() && !GameSettings.getDisplayGUI();
+
+		final int threads = parallel ? Runtime.getRuntime().availableProcessors() : 1;
+		final ExecutorService pool = Executors.newFixedThreadPool(threads);
+		try {
+			final List<Future<double[]>> playing = new ArrayList<>();
+			for (final long[] meeting : plan) {
+				final Individual first = pop.individuals[(int) meeting[0]];
+				final Individual second = pop.individuals[(int) meeting[1]];
+				playing.add(pool.submit(() -> meet(new GameManager(), first, second, meeting[2])));
+			}
+			final List<double[]> scores = new ArrayList<>();
+			for (final Future<double[]> meeting : playing) {
+				scores.add(meeting.get());
+			}
+			return scores;
+		} catch (final InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new IllegalStateException("Interrupted while the games were played", e);
+		} catch (final ExecutionException e) {
+			throw new IllegalStateException("A game failed", e.getCause());
+		} finally {
+			pool.shutdownNow();
+		}
+	}
+
+	/**
+	 * One meeting: two games with the same dice, one with each player as player one. The seed sets the players'
+	 * choices and the dice, so a meeting plays the same whichever thread plays it
 	 *
 	 * @return each player's total score from the two games, first then second
 	 */
 	static double[] meet(final GameManager gameManager, final Individual first, final Individual second,
-						 final long diceSeed) {
+						 final long seed) {
+		RandomSource.setSeed(seed);
+		final long diceSeed = RandomSource.nextLong();
+
 		RandomSource.setDiceSeed(diceSeed);
 		final GameStats firstAsPlayerOne = gameManager.playIndividualsVsEachOther(first, second);
 

@@ -84,7 +84,7 @@ The GA's code is in `uk.co.davidlomas.gammon.genes`: `StartGa` runs it, `Genetic
 
 ### What to expect
 
-With a population of 40, two meetings per pair and a mutation rate of 0.02, players improve quickly over the first 25 or so generations and then level off. In one such run, generation 25 beat generation 0 by about 0.8 points a game, winning nearly three games in four, and later generations were no better than generation 25. A 200-generation run takes about half an hour.
+With a population of 40, two meetings per pair and a mutation rate of 0.02, players improve quickly over the first 25 or so generations and then level off. In one such run, generation 25 beat generation 0 by about 0.8 points a game, winning nearly three games in four, and later generations were no better than generation 25. A 200-generation run takes about five minutes on a 12-core machine, with the games played on every core (see `multiThreading`).
 
 Better features, which let a player tell good moves from bad more finely, are what would take it further.
 
@@ -113,8 +113,9 @@ The settings are read from the files in `conf/`. To use a different folder, run 
 | `isP1Black` | Whether player 1 plays black |
 | `displayGUI` | Whether to show the board in a window while games are played |
 | `timeDelay` | Milliseconds to wait between moves when the board is shown |
+| `multiThreading` | Whether the GA plays its fitness games at the same time, one per core. It gives the same results either way, just faster, and is off while the board is shown |
 
-`displayConsole` and `multiThreading` are in the files but aren't used at present.
+`displayConsole` is in the files but isn't used at present.
 
 ## Playing against the AI
 

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.game.GameManager;
 import uk.co.davidlomas.gammon.game.GameStats;
+import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
@@ -13,6 +14,7 @@ import uk.co.davidlomas.gammon.util.RandomSource;
 import java.util.PrimitiveIterator;
 import java.util.stream.LongStream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FitnessCalculatorTest {
@@ -39,14 +41,14 @@ public class FitnessCalculatorTest {
 		final Individual second = new Individual();
 		final GameManager gameManager = new GameManager();
 
-		RandomSource.setSeed(4);
 		final double[] scores = FitnessCalculator.meet(gameManager, first, second, 7);
 
-		// the same two games, played by hand
-		RandomSource.setSeed(4);
-		RandomSource.setDiceSeed(7);
+		// the same two games, played by hand: the meeting's seed sets the players' choices, and gives the dice seed
+		RandomSource.setSeed(7);
+		final long dice = RandomSource.nextLong();
+		RandomSource.setDiceSeed(dice);
 		final GameStats firstGoesFirst = gameManager.playIndividualsVsEachOther(first, second);
-		RandomSource.setDiceSeed(7);
+		RandomSource.setDiceSeed(dice);
 		final GameStats secondGoesFirst = gameManager.playIndividualsVsEachOther(second, first);
 		assertEquals(firstGoesFirst.getPlayerOneScore() + secondGoesFirst.getPlayerTwoScore(), scores[0], 1e-9);
 		assertEquals(firstGoesFirst.getPlayerTwoScore() + secondGoesFirst.getPlayerOneScore(), scores[1], 1e-9);
@@ -54,20 +56,18 @@ public class FitnessCalculatorTest {
 
 	@Test
 	public void fitnessIsTheAverageScoreOverEveryGameInEveryMeeting() {
-		// Given two players who meet twice, with dice from seeds 7 and then 9
+		// Given two players who meet twice, with meetings seeded 7 and then 9
 		GenAlgSettings.setGamesPerPairing(2);
 		RandomSource.setSeed(3);
 		final Population population = new Population(2, true);
 		final Individual first = population.individuals[0];
 		final Individual second = population.individuals[1];
-		final PrimitiveIterator.OfLong diceSeeds = LongStream.of(7, 9).iterator();
+		final PrimitiveIterator.OfLong meetingSeeds = LongStream.of(7, 9).iterator();
 
 		// When their fitness is worked out
-		RandomSource.setSeed(4);
-		FitnessCalculator.calculateFitnessOfPopulation(population, diceSeeds::nextLong);
+		FitnessCalculator.calculateFitnessOfPopulation(population, meetingSeeds::nextLong);
 
 		// Then it's their scores from both meetings, four games each, averaged
-		RandomSource.setSeed(4);
 		final GameManager gameManager = new GameManager();
 		final double[] firstMeeting = FitnessCalculator.meet(gameManager, first, second, 7);
 		final double[] secondMeeting = FitnessCalculator.meet(gameManager, first, second, 9);
@@ -88,5 +88,42 @@ public class FitnessCalculatorTest {
 			total += individual.getFitness();
 		}
 		assertEquals(0, total, 1e-9);
+	}
+
+	@Test
+	public void playingTheMeetingsAtTheSameTimeGivesTheSameFitness() {
+		// one at a time, then on every core, from the same seed
+		final double[] oneAtATime = fitnessFromSeed(6, false);
+		final double[] together = fitnessFromSeed(6, true);
+
+		assertArrayEquals(oneAtATime, together);
+	}
+
+	@Test
+	public void workingOutFitnessDoesNotChangeTheCallersRandomNumbers() {
+		// the GA goes on to pick parents and mutate from the same random numbers, so the games mustn't use them up
+		final Population population = new Population(3, true);
+		RandomSource.setSeed(8);
+
+		FitnessCalculator.calculateFitnessOfPopulation(population, () -> 1L);
+
+		// the next number is the first one seed 8 gives, as if no games had been played
+		assertEquals(new java.util.Random(8).nextLong(), RandomSource.nextLong());
+	}
+
+	private static double[] fitnessFromSeed(final long seed, final boolean multiThreading) {
+		GameSettings.setMultiThreadingCache(multiThreading);
+		try {
+			RandomSource.setSeed(seed);
+			final Population population = new Population(5, true);
+			FitnessCalculator.calculateFitnessOfPopulation(population);
+			final double[] fitness = new double[population.size()];
+			for (int i = 0; i < fitness.length; i++) {
+				fitness[i] = population.individuals[i].getFitness();
+			}
+			return fitness;
+		} finally {
+			GameSettings.setMultiThreadingCache(false);
+		}
 	}
 }

@@ -30,27 +30,29 @@ import java.util.Random;
  */
 public final class RandomSource {
 
-	private static Random random = new Random();
+	// Each thread has its own randoms, so games played at the same time on different threads, as the fitness
+	// calculation does, neither share one nor change each other's: seeding sets only the calling thread's
+	private static final ThreadLocal<Random> random = ThreadLocal.withInitial(Random::new);
 
 	// The dice have a random of their own, so the same dice can be rolled again in another game even though the
 	// players' choices, which use the main one, differ. The fitness calculation uses this to give both players the
 	// same luck
-	private static Random dice = new Random();
+	private static final ThreadLocal<Random> dice = ThreadLocal.withInitial(Random::new);
 
 	private RandomSource() {
 	}
 
 	/**
-	 * Seed the random source so every following random value is repeatable
+	 * Seed the random source so every following random value on this thread is repeatable
 	 *
 	 * @param seed the seed
 	 */
 	public static void setSeed(final long seed) {
-		random = new Random(seed);
+		random.set(new Random(seed));
 		// a different seed for the dice, so they don't repeat the main random's numbers. Multiplying by an odd
 		// constant spreads small seeds such as 0 and 1 apart (Random already XORs its seed with 0x5DEECE66D, so that
 		// can't be used here: it would cancel out)
-		dice = new Random(seed * 0x9E3779B97F4A7C15L + 1);
+		dice.set(new Random(seed * 0x9E3779B97F4A7C15L + 1));
 	}
 
 	/**
@@ -59,29 +61,29 @@ public final class RandomSource {
 	 * @param seed the seed
 	 */
 	public static void setDiceSeed(final long seed) {
-		dice = new Random(seed);
+		dice.set(new Random(seed));
 	}
 
 	/**
-	 * Go back to an unseeded, unpredictable random source
+	 * Go back to an unseeded, unpredictable random source on this thread
 	 */
 	public static void reset() {
-		random = new Random();
-		dice = new Random();
+		random.set(new Random());
+		dice.set(new Random());
 	}
 
 	/**
 	 * @return a roll of one die, 1 to 6, from the dice's own random
 	 */
 	public static int rollDie() {
-		return dice.nextInt(6) + 1;
+		return dice.get().nextInt(6) + 1;
 	}
 
 	/**
 	 * @return a random long, such as a seed for the dice
 	 */
 	public static long nextLong() {
-		return random.nextLong();
+		return random.get().nextLong();
 	}
 
 	/**
@@ -90,20 +92,20 @@ public final class RandomSource {
 	 * @return a random int between 0 (inclusive) and bound (exclusive)
 	 */
 	public static int nextInt(final int bound) {
-		return random.nextInt(bound);
+		return random.get().nextInt(bound);
 	}
 
 	/**
 	 * @return a random double between 0.0 (inclusive) and 1.0 (exclusive)
 	 */
 	public static double nextDouble() {
-		return random.nextDouble();
+		return random.get().nextDouble();
 	}
 
 	/**
 	 * @return the underlying random, for library calls such as Collections.shuffle
 	 */
 	public static Random getRandom() {
-		return random;
+		return random.get();
 	}
 }
