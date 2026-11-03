@@ -43,6 +43,19 @@ test {
     systemProperty 'gammon.playersDir', testPlayersDir.get().asFile.absolutePath
 }
 
+// Measures the GA's players against a fixed reference player, and how fast games are, and adds a row to
+// benchmarks.csv. About four minutes on 12 cores. -Pgenerations, -Pseeds and -Pmeetings change how much it plays
+tasks.register('benchmark', JavaExec) {
+    group = 'verification'
+    description = 'Measures player strength and game speed, and adds a row to benchmarks.csv'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'uk.co.davidlomas.gammon.genes.Benchmark'
+    args = [project.findProperty('generations') ?: '60', project.findProperty('seeds') ?: '3',
+            project.findProperty('meetings') ?: '1000', 'benchmarks.csv']
+    // the players it evolves aren't saved, but keep anything that is out of savedPlayers/
+    systemProperty 'gammon.playersDir', layout.buildDirectory.dir('benchmark-players').get().asFile.absolutePath
+}
+
 jar {
     manifest {
         attributes 'Implementation-Title': 'Ga-mmon',
