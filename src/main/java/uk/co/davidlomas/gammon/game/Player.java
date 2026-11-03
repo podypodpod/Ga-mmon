@@ -18,9 +18,8 @@
 
 package uk.co.davidlomas.gammon.game;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 /**
@@ -34,12 +33,15 @@ import java.util.Scanner;
  */
 public class Player {
 
-	private final static Logger logger = LoggerFactory.getLogger(Player.class);
-
 	public MovesList movesLeft;
 	protected Boolean black;
 	final DiceList dice;
-	boolean turnOver;
+
+	// where a person's moves are read from and the prompts written to: the console, unless a test swaps them.
+	// The input is only opened when a person plays, so AI players never touch System.in
+	private Scanner input;
+	private PrintStream output = System.out;
+	private boolean conceded;
 
 	/**
 	 * Instantiates a new player.
@@ -206,72 +208,109 @@ public class Player {
 	}
 
 	/**
-	 * The players turn.
+	/**
+	 * A person's turn, played on the console: rolls the dice, then asks what to do with them
 	 */
 	void turn(final Board liveBoard) {
-
-		turnOver = false;
-
-		logger.trace("------------Your Turn!-----------------");
-
-		// Rolling the dice
 		movesLeft.setTo(dice.RollTwoDice());
+		playRoll(liveBoard);
+	}
 
-		logger.trace("Player has : " + movesLeft.toString());
+	/**
+	 * Plays the dice already in movesLeft, asking the person which piece to move with which die until none of them
+	 * can be used, or they concede. Bearing off is a move like any other: a piece moved past the end of the board
+	 * comes off, if the rules allow it.
+	 */
+	void playRoll(final Board liveBoard) {
+		output.println();
+		output.println("Your turn, you're " + getColourString() + ". " + (black
+				? "Black moves from 24 down to 1, its bar is 25, and pieces come off past 1."
+				: "Red moves from 1 up to 24, its bar is 0, and pieces come off past 24."));
+		liveBoard.printBoard(output);
 
-		// ASKING WHAT TO DO
-		while (!turnOver) {
+		while (true) {
+			if (!hasAMove(liveBoard)) {
+				output.println(movesLeft.size() == 0 ? "That's all your dice." : "None of your dice can be played.");
+				return;
+			}
+			output.println("Dice left: " + movesLeft.moves);
+			final int option = readNumber("1) Move a piece  2) Concede the game: ");
 
-			logger.trace("What do you want to do?, " + movesLeft.size() + " moves left");
-
-			logger.trace("1) Move a piece");
-			logger.trace("2) Bear off a piece");
-			logger.trace("3) Skip or Finish go");
-			logger.trace("4) Concede");
-
-			final Scanner Scanner = new Scanner(System.in);
-
-			final int option = Scanner.nextInt();
-
-			// MOVE A piece
 			if (option == 1) {
-				logger.trace("from which point (1,2,3 etc): ");
-				final int from = Scanner.nextInt();
-				logger.trace("to which point (1,2,3,bear=-1 etc)");
-				final int to = Scanner.nextInt();
-
-				// IF ITS POSSIBLE
-				if (isMovePossible(from, to, liveBoard)) {
-					// MOVE THE PIECE
+				final int from = readNumber("Move the piece on which point? ");
+				final int die = readNumber("Using which die? ");
+				final int to = black ? from - die : from + die;
+				if (movesLeft.contains(die) && isMovePossible(from, to, liveBoard)) {
 					movePiece(from, to, liveBoard);
-					// REMOVE THE "MOVE"
-					movesLeft.remove(distanceBetween(from, to));
-
-					if (movesLeft.size() == 0) {
-						turnOver = true;
-					}
+					movesLeft.remove(die);
+					liveBoard.printBoard(output);
 				} else {
-					logger.trace("invalid move");
+					output.println("That move isn't allowed.");
 				}
-				// SKIP GO
 			} else if (option == 2) {
-				if (liveBoard.canPlayerBear(black)) {
+				conceded = true;
+				output.println("You conceded.");
+				return;
+			} else {
+				output.println("Type 1 or 2.");
+			}
+		}
+	}
 
-					logger.trace("Bear which piece?");
-
-					final int bearPiece = Scanner.nextInt();
-					if (isMovePossible(bearPiece, -1, liveBoard)) {
-						liveBoard.bearPiece(bearPiece, black);
-					}
-				} else {
-					logger.trace("Can not bear pieces yet");
+	/**
+	 * returns true if any of the dice left can move any of the player's pieces
+	 */
+	boolean hasAMove(final Board liveBoard) {
+		for (final int die : movesLeft.moves) {
+			for (int from = 0; from <= 25; from++) {
+				if (isMovePossible(from, black ? from - die : from + die, liveBoard)) {
+					return true;
 				}
-			} else if (option == 3) {
-				turnOver = true;
-				// CONCEDING
-			} else if (option == 4) {
-				turnOver = true;
+			}
+		}
+		return false;
+	}
 
+	/**
+	 * Shows the person a message, such as who won
+	 */
+	void tell(final String message) {
+		output.println(message);
+	}
+
+	/**
+	 * Has the person conceded the game
+	 */
+	boolean hasConceded() {
+		return conceded;
+	}
+
+	/**
+	 * Reads moves from in and writes prompts to out, instead of the console, so tests can play a turn
+	 */
+	void useConsole(final InputStream in, final PrintStream out) {
+		input = new Scanner(in);
+		output = out;
+	}
+
+	/**
+	 * Asks until the person types a whole number
+	 */
+	private int readNumber(final String prompt) {
+		if (input == null) {
+			input = new Scanner(System.in);
+		}
+		while (true) {
+			output.print(prompt);
+			output.flush();
+			if (!input.hasNextLine()) {
+				throw new IllegalStateException("The input ended part way through a turn");
+			}
+			final String line = input.nextLine().trim();
+			try {
+				return Integer.parseInt(line);
+			} catch (final NumberFormatException e) {
+				output.println("Type a number.");
 			}
 		}
 	}

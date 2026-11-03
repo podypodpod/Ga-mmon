@@ -23,8 +23,6 @@ import org.slf4j.LoggerFactory;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 
-import javax.swing.*;
-
 /**
  * The Class Game.
  * <p>
@@ -73,12 +71,20 @@ class Game implements Runnable {
 		aiPlayer2 = new AiPlayer(!isP1Black, individual2);
 	}
 
+	/**
+	 * Player 2, the one a person plays when areBothAI is off, so tests can give it scripted moves
+	 */
+	AiPlayer getPlayerTwo() {
+		return aiPlayer2;
+	}
+
 	GameStats getGameStats() {
 		final Individual gameVictor;
 		final double playerOneScore;
 		final double playerTwoScore;
 
-		if (liveBoard.hasPlayerWon(aiPlayer1.black)) {
+		// a person playing as player 2 can concede, which hands player 1 the game
+		if (liveBoard.hasPlayerWon(aiPlayer1.black) || aiPlayer2.hasConceded()) {
 			final double reductions = liveBoard.howManyHasPlayerBore(aiPlayer2.black) * BORE_PIECE_SCORE_MULTIPLIER;
 			playerOneScore = 1 - reductions;
 			playerTwoScore = reductions;
@@ -174,6 +180,9 @@ class Game implements Runnable {
 					gameActive = false;
 
 					logger.trace("Player 1 has won! (Black={})", aiPlayer1.black);
+					if (!areBothAIs) {
+						aiPlayer2.tell("Player 1 has won.");
+					}
 
 					// if they haven't won then continue
 				} else {
@@ -244,12 +253,16 @@ class Game implements Runnable {
 						liveBoard.printBoardGUI();
 					}
 
-					// checking if the player has now won
-					// gameActive is false if they have, and they are informed
-					if (liveBoard.hasPlayerWon(aiPlayer2.black)) {
+					// checking if the player has now won, or given up
+					// gameActive is false if so, and they are informed
+					if (aiPlayer2.hasConceded()) {
 
 						gameActive = false;
-						JOptionPane.showMessageDialog(null, "Player 2 has won! (Black=" + aiPlayer2.black + ")");
+
+					} else if (liveBoard.hasPlayerWon(aiPlayer2.black)) {
+
+						gameActive = false;
+						aiPlayer2.tell("You've won!");
 
 					} else {
 						playerOnesTurn = true;

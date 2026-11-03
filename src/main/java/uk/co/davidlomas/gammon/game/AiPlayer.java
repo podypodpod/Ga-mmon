@@ -45,7 +45,6 @@ public class AiPlayer extends Player {
 		super(playerToClone.black);
 		movesLeft = new MovesList(playerToClone.movesLeft);
 		black = playerToClone.black;
-		turnOver = playerToClone.turnOver;
 		moveGenerator = playerToClone.moveGenerator;
 	}
 

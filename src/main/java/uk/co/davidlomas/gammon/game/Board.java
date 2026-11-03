@@ -20,6 +20,7 @@ package uk.co.davidlomas.gammon.game;
 
 import uk.co.davidlomas.gammon.settings.GameSettings;
 
+import java.io.PrintStream;
 import java.util.Arrays;
 
 /**
@@ -283,36 +284,42 @@ public class Board {
 	}
 
 	public void printBoard() {
-		System.out.println("|---------------------------------------|");
-		System.out
-				.println("|  Black 0 = " + Points[25].numEither() + "        |" + "  Beared: " + blackBore + "     |");
-		System.out.println("|---------------------------------------|");
-		System.out.println("|NUM| 1| 2| 3| 4| 5| 6| 7| 8| 9|10|11|12|");
-		System.out.println("|---------------------------------------|");
-		System.out.print("|RED");
-		for (int x = 1; x <= 12; x++) {
-			System.out.print("| " + Points[x].getRedCount());
+		printBoard(System.out);
+	}
+
+	/**
+	 * Prints the board as text, with the bars (black 25, red 0) and how many each player has borne off
+	 *
+	 * @param out where to print it
+	 */
+	public void printBoard(final PrintStream out) {
+		final String line = "|---------------------------------------|";
+		out.println(line);
+		out.println(String.format("| Black's bar (25): %-2d  Borne off: %-2d   |", Points[25].numEither(), blackBore));
+		out.println(line);
+		printRow(out, 1, 12);
+		out.println(line);
+		printRow(out, 13, 24);
+		out.println(line);
+		out.println(String.format("| Red's bar (0):    %-2d  Borne off: %-2d   |", Points[0].numEither(), redBore));
+		out.println(line);
+	}
+
+	/**
+	 * Prints the numbers of the points from first to last, then how many red and black pieces are on each
+	 */
+	private void printRow(final PrintStream out, final int first, final int last) {
+		final StringBuilder numbers = new StringBuilder("|NUM");
+		final StringBuilder red = new StringBuilder("|RED");
+		final StringBuilder black = new StringBuilder("|BLK");
+		for (int x = first; x <= last; x++) {
+			numbers.append(String.format("|%2d", x));
+			red.append(String.format("|%2d", Points[x].getRedCount()));
+			black.append(String.format("|%2d", Points[x].getBlackCount()));
 		}
-		System.out.println("|");
-		System.out.print("|BLK");
-		for (int x = 1; x <= 12; x++) {
-			System.out.print("| " + Points[x].getBlackCount());
-		}
-		System.out.println("|");
-		System.out.println("|---------------------------------------|");
-		System.out.print("|RED");
-		for (int x = 13; x <= 24; x++) {
-			System.out.print("| " + Points[x].getRedCount());
-		}
-		System.out.println("|");
-		System.out.print("|BLK");
-		for (int x = 13; x <= 24; x++) {
-			System.out.print("| " + Points[x].getBlackCount());
-		}
-		System.out.println("|");
-		System.out.println("|---------------------------------------|");
-		System.out.println("|  Red 0 = " + Points[0].numEither() + "          |" + "  Beared: " + redBore + "     |");
-		System.out.println("|---------------------------------------|");
+		out.println(numbers.append('|'));
+		out.println(red.append('|'));
+		out.println(black.append('|'));
 	}
 
 	void printBoardGUI() {
