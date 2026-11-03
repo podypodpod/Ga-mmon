@@ -33,6 +33,7 @@ public class GenAlgSettings {
 	private static final String MUTATION_RATE = "mutationRate";
 	private static final String ATTEMPT_COUNT = "attemptCount";
 	private static final String GENERATIONS = "generations";
+	private static final String GAMES_PER_PAIRING = "gamesPerPairing";
 	// the settings folder can be moved with -Dgammon.confDir, the tests use this to work on a copy
 	private static final String FILE_PATH = System.getProperty(GameSettings.CONF_DIR_PROPERTY, "conf") + "/GenAlgSettings.properties";
 
@@ -44,6 +45,7 @@ public class GenAlgSettings {
 	private static int tournamentSize = -1;
 	private static double uniformRate = -1;
 	private static double mutationRate = -1;
+	private static int gamesPerPairing = -1;
 
 	public static void setElitism(final Boolean elitism) {
 		GenAlgSettings.elitism = elitism;
@@ -95,6 +97,40 @@ public class GenAlgSettings {
 
 	public static void setGenerations(final int gens) {
 		generations = gens;
+	}
+
+	/**
+	 * How many times each pair of players meets when fitness is worked out. Each meeting is two games, one with each
+	 * of them as player one. More meetings mean less luck in the fitness, and a slower run. 1 if the settings file
+	 * doesn't say.
+	 */
+	public static int getGamesPerPairing() {
+		if (gamesPerPairing == -1) {
+			gamesPerPairing = gamesPerPairingFrom(getProperties());
+		}
+		return gamesPerPairing;
+	}
+
+	/**
+	 * Reads gamesPerPairing from the settings, 1 if they don't have it
+	 *
+	 * @throws IllegalArgumentException if it's less than 1, as with no games every fitness would be 0
+	 */
+	static int gamesPerPairingFrom(final Properties properties) {
+		final String value = properties.getProperty(GAMES_PER_PAIRING);
+		return value == null ? 1 : checkGamesPerPairing(Integer.parseInt(value.trim()));
+	}
+
+	public static void setGamesPerPairing(final int games) {
+		gamesPerPairing = checkGamesPerPairing(games);
+	}
+
+	private static int checkGamesPerPairing(final int games) {
+		if (games < 1) {
+			throw new IllegalArgumentException(GAMES_PER_PAIRING + " has to be at least 1, so players play each other,"
+					+ " but it's " + games);
+		}
+		return games;
 	}
 
 	public static int getTournamentSize() {

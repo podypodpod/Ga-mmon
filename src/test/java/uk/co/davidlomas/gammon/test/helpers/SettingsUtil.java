@@ -21,6 +21,7 @@ public class SettingsUtil {
 		GenAlgSettings.setTournamentSize(2);
 		GenAlgSettings.setUniformRate(632.0);
 		GenAlgSettings.setMutationRate(0.1);
+		GenAlgSettings.setGamesPerPairing(1);
 	}
 
 	/**

@@ -15,6 +15,8 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -99,6 +101,42 @@ public class GeneticAlgorithmTest {
 		}
 
 		assertTrue(winningPositions.contains(2) || winningPositions.contains(3), "Only the first two individuals ever won: " + winningPositions);
+	}
+
+	@Test
+	public void aTournamentOfTheWholePopulationPicksTheFittest() {
+		final Population population = populationWithFitness(1.5, -2.0, 3.0, 0.5);
+		GenAlgSettings.setTournamentSize(4);
+
+		assertSame(population.getIndividual(2), GeneticAlgorithm.tournamentSelection(population));
+	}
+
+	@Test
+	public void theLeastFitPlayerNeverWinsATournament() {
+		// with two in each tournament, the least fit always meets someone fitter
+		final Population population = populationWithFitness(1.5, -2.0, 3.0, 0.5);
+		GenAlgSettings.setTournamentSize(2);
+
+		for (long seed = 0; seed < 50; seed++) {
+			RandomSource.setSeed(seed);
+			assertNotSame(population.getIndividual(1), GeneticAlgorithm.tournamentSelection(population), "seed " + seed);
+		}
+	}
+
+	@Test
+	public void aTournamentLargerThanThePopulationUsesTheWholePopulation() {
+		final Population population = populationWithFitness(1.5, -2.0, 3.0, 0.5);
+		GenAlgSettings.setTournamentSize(8);
+
+		assertSame(population.getIndividual(2), GeneticAlgorithm.tournamentSelection(population));
+	}
+
+	private static Population populationWithFitness(final double... fitness) {
+		final Population population = new Population(fitness.length, true);
+		for (int i = 0; i < fitness.length; i++) {
+			population.getIndividual(i).setFitness(fitness[i]);
+		}
+		return population;
 	}
 
 	/**
