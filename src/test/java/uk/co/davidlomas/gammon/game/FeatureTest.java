@@ -105,6 +105,34 @@ public class FeatureTest {
 
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
+	public void pipsAtRiskAddUpWhatTheExposedBlotsWouldLose(final boolean black) {
+		// red on 3 exposes the blots on 7, which would lose 18 pips, and 9, which would lose 16, but not the one on 20
+		final Board blackPosition = empty();
+		blackPosition.Points[7].setBlackCount(1);
+		blackPosition.Points[9].setBlackCount(1);
+		blackPosition.Points[20].setBlackCount(1);
+		blackPosition.Points[3].setRedCount(2);
+
+		assertEquals(34, Feature.PIPS_AT_RISK.measure(forColour(blackPosition, black), black));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void aBlotThatHasComeFurtherHasMoreAtRisk(final boolean black) {
+		// red's bar is 0, so it exposes the blot on 2, which has come much further than the one on 22
+		final Board nearHome = empty();
+		nearHome.Points[2].setBlackCount(1);
+		nearHome.Points[0].setRedCount(1);
+		final Board farFromHome = empty();
+		farFromHome.Points[22].setBlackCount(1);
+		farFromHome.Points[20].setRedCount(1);
+
+		assertEquals(23, Feature.PIPS_AT_RISK.measure(forColour(nearHome, black), black));
+		assertEquals(3, Feature.PIPS_AT_RISK.measure(forColour(farFromHome, black), black));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
 	public void thePrimeIsTheLongestRunOfPointsMade(final boolean black) {
 		final Board blackPosition = empty();
 		for (final int point : new int[]{4, 5, 6, 7, 9, 10}) {

@@ -62,6 +62,23 @@ public enum Feature {
 	},
 
 	/**
+	 * How many pips the player's exposed blots would lose if they were all hit: the further a blot has come, the more
+	 * it has to lose, as a hit piece goes back to the bar at 25
+	 */
+	PIPS_AT_RISK("pipsAtRisk", 40, false) {
+		@Override
+		int measure(final Side side) {
+			int pips = 0;
+			for (int blot = 1; blot <= 24; blot++) {
+				if (side.mine(blot) == 1 && opponentWithinSix(side, blot)) {
+					pips += 25 - blot;
+				}
+			}
+			return pips;
+		}
+	},
+
+	/**
 	 * The player's points with two or more pieces on, which the opponent can't land on
 	 */
 	POINTS_MADE("pointsMade", 7, false) {

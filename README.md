@@ -25,6 +25,7 @@ The features are measured from the side of the player choosing:
 | Pip lead | How many pips the opponent needs to bear off, less how many the player needs |
 | Blots | The player's points with a single piece on, which can be hit |
 | Exposed blots | The player's blots that an opponent's piece, or one on their bar, could hit with a single die |
+| Pips at risk | How many pips the player's exposed blots would lose if they were all hit, as a blot that has come further has more to lose |
 | Points made | Points with two or more of the player's pieces, which the opponent can't land on |
 | Home points | Points made in the player's home quarter |
 | Longest prime | The longest run of points made next to each other, which blocks the opponent's pieces behind it |
@@ -36,7 +37,7 @@ The features are measured from the side of the player choosing:
 
 Backgammon plays very differently once the two sides have passed each other and can't hit each other any more, so a player has two sets of weights: one for while the players are in contact, with all the features, and one for the race after, with only the features that can still change in a race (pip lead, home points, pieces back, borne off and stacking).
 
-That's 16 weights. Each is a gene holding a number from 0 to 100, stored as 7 bits, which gives a weight from -1 to 1. A weight can be negative, so a player can learn that something is bad for it, such as leaving blots to be hit, as well as good.
+That's 17 weights. Each is a gene holding a number from 0 to 100, stored as 7 bits, which gives a weight from -1 to 1. A weight can be negative, so a player can learn that something is bad for it, such as leaving blots to be hit, as well as good.
 
 The code for this is in `MoveChooser` and `Feature`, in `uk.co.davidlomas.gammon.game`.
 
