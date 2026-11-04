@@ -16,6 +16,8 @@ import java.util.stream.LongStream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class FitnessCalculatorTest {
 	@BeforeAll
@@ -109,6 +111,23 @@ public class FitnessCalculatorTest {
 
 		// the next number is the first one seed 8 gives, as if no games had been played
 		assertEquals(new java.util.Random(8).nextLong(), RandomSource.nextLong());
+	}
+
+	@Test
+	public void gamesAreOnlyPlayedInParallelWhenNoOneIsWatchingOrPlaying() {
+		GameSettings.setMultiThreadingCache(true);
+		try {
+			assertTrue(FitnessCalculator.playsInParallel());
+
+			GameSettings.setAreBothAIsCache(false);
+			assertFalse(FitnessCalculator.playsInParallel(), "a person can only play one game at a time");
+			GameSettings.setAreBothAIsCache(true);
+
+			GameSettings.setDisplayGUICache(true);
+			assertFalse(FitnessCalculator.playsInParallel(), "the window only shows one game");
+		} finally {
+			SettingsUtil.resetSettings();
+		}
 	}
 
 	private static double[] fitnessFromSeed(final long seed, final boolean multiThreading, final int threads) {

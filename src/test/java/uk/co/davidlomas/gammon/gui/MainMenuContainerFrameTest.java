@@ -31,15 +31,13 @@ public class MainMenuContainerFrameTest {
 		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
 		final MainMenuContainerFrame frame = new MainMenuContainerFrame();
 		try {
-			// closing it here only closes it: the real window ends the program, which would end the test run
-			SwingUtilities.invokeAndWait(() -> {
-				frame.run();
-				frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			});
+			SwingUtilities.invokeAndWait(frame::run);
 
 			assertTrue(frame.isShowing(), "the frame itself should be the window that opens");
 			assertEquals("GA-mmon", frame.getTitle());
 			assertSame(frame, SwingUtilities.getWindowAncestor(frame.mmp));
+			// exiting wouldn't wait for a search that's still running
+			assertEquals(WindowConstants.DISPOSE_ON_CLOSE, frame.getDefaultCloseOperation());
 		} finally {
 			SwingUtilities.invokeAndWait(frame::dispose);
 		}

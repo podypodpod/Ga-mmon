@@ -14,6 +14,7 @@ import uk.co.davidlomas.gammon.util.RandomSource;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import java.awt.GraphicsEnvironment;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -117,6 +118,41 @@ public class GameManagerTest {
 		final double player2Score = gameStats.getPlayerTwoScore();
 
 		assertTrue(player1Score != player2Score, "Scores are equal, who wins?");
+	}
+
+	/**
+	 * With the GUI on, a game spends its time waiting between moves. Being interrupted then has to stop it, or the GA
+	 * giving up would leave it playing on in the background
+	 */
+	@Test
+	public void aGameInterruptedWhileWaitingBetweenMovesStops() throws Exception {
+		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
+		GameSettings.setDisplayGUICache(true);
+		GameSettings.setTimeDelayCache(60_000);
+		GameManager.windowCloseOperation = WindowConstants.DISPOSE_ON_CLOSE;
+		final AtomicReference<GameStats> result = new AtomicReference<>();
+		final Thread game = new Thread(() -> result.set(new GameManager().playIndividualsVsEachOther(individual1, individual2)));
+		game.setDaemon(true);
+		try {
+			game.start();
+			// usually long enough for the first move to be played and the wait to start, though it stops either way
+			game.join(1000);
+			game.interrupt();
+			game.join(10_000);
+
+			assertFalse(game.isAlive(), "the game carried on after being interrupted");
+			assertTrue(result.get().isDraw(), "a game that's stopped has no winner");
+		} finally {
+			game.interrupt();
+			GameSettings.setDisplayGUICache(false);
+			GameSettings.setTimeDelayCache(0);
+			GameManager.windowCloseOperation = WindowConstants.EXIT_ON_CLOSE;
+			final BoardContainerFrame window = GameManager.boardContainerFrame;
+			GameManager.boardContainerFrame = null;
+			if (window != null) {
+				SwingUtilities.invokeAndWait(window::dispose);
+			}
+		}
 	}
 
 	/**

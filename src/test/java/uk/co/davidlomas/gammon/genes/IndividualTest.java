@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -74,6 +75,32 @@ public class IndividualTest {
 
 			assertEquals(individual1.getAttribute(i).getValue(), individual2.getAttribute(i).getValue(), "Individuals attributes  don't match after loading");
 		}
+	}
+
+	@Test
+	public void aFileThatCantBeReadIsAnErrorRatherThanLeavingTheGenesAsTheyWere() {
+		final UncheckedIOException failed =
+				assertThrows(UncheckedIOException.class, () -> individual1.loadFromFile(filePath + " missing"));
+
+		assertTrue(failed.getMessage().contains(filePath), failed.getMessage());
+	}
+
+	@Test
+	public void aFileThatCantBeWrittenIsAnError() {
+		final String nowhere = filePath + " no such folder/player";
+
+		assertThrows(UncheckedIOException.class, () -> individual1.saveToFile(nowhere));
+	}
+
+	@Test
+	public void theLastAttemptIsTheHighestAttemptFolder() {
+		final int highest = Individual.lastAttempt() + 2;
+		assertTrue(new File(SettingsUtil.getPlayersDir() + "/Attempt - " + highest).mkdirs());
+		// neither of these is an attempt
+		assertTrue(new File(SettingsUtil.getPlayersDir() + "/Attempt - " + (highest + 1) + " old").mkdirs());
+		assertTrue(new File(SettingsUtil.getPlayersDir() + "/Attempts").mkdirs() || new File(SettingsUtil.getPlayersDir() + "/Attempts").isDirectory());
+
+		assertEquals(highest, Individual.lastAttempt());
 	}
 
 	@Test

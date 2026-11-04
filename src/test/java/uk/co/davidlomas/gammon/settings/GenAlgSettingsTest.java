@@ -23,7 +23,6 @@ public class GenAlgSettingsTest {
 		GenAlgSettings.setElitism(null);
 		GenAlgSettings.setGenerations(-1);
 		GenAlgSettings.setPopulationSize(-1);
-		GenAlgSettings.setAttemptCount(-1);
 		GenAlgSettings.setTournamentSize(-1);
 
 		GenAlgSettings.setUniformRate(-1);
@@ -83,34 +82,8 @@ public class GenAlgSettingsTest {
 	}
 
 	@Test
-	public void updatingPropFileAttemptCountThenGettingItShouldReturnExpectedValue() {
-		final double original = GenAlgSettings.getAttemptCount();
-
-		GenAlgSettings.updateToFile("attemptCount", "151");
-		final String actualValue = GenAlgSettings.getPropertyFromFile("attemptCount");
-		assertEquals("151", actualValue);
-
-		GenAlgSettings.updateToFile("attemptCount", original + "");
-	}
-
-	@Test
-	public void leavingAttemptAsDefaultValueAndGettingItShouldReturnValueFromPropertiesFile() {
-		final double original = GenAlgSettings.getAttemptCount();
-
-		GenAlgSettings.updateToFile("attemptCount", "999");
-		final String actualValue = GenAlgSettings.getAttemptCount() + "";
-		assertEquals("999", actualValue);
-
-		GenAlgSettings.updateToFile("attemptCount", original + "");
-	}
-
-	@Test
 	public void leavingGenerationsAsDefaultValueAndGettingItShouldReturnValueFromPropertiesFile() {
-		final double original = GenAlgSettings.getAttemptCount();
-
-		GenAlgSettings.updateToFile("attemptCount", original + "");
-
-		GenAlgSettings.updateToFile("generations", "123");
+		SettingsUtil.writeGenAlgSetting("generations", "123");
 		final String actualValue = GenAlgSettings.getGenerations() + "";
 		assertEquals("123", actualValue);
 	}
@@ -120,69 +93,105 @@ public class GenAlgSettingsTest {
 		final String original = GenAlgSettings.getPropertyFromFile("mutationRate");
 
 
-		GenAlgSettings.updateToFile("mutationRate", "987");
+		SettingsUtil.writeGenAlgSetting("mutationRate", "987");
 		final double actualValue = GenAlgSettings.getMutationRate();
 		assertTrue(doublesAreEqual(987, actualValue));
 
 
-		GenAlgSettings.updateToFile("mutationRate", original);
+		SettingsUtil.writeGenAlgSetting("mutationRate", original);
 	}
 
 	@Test
 	public void leavingPopulationAsDefaultValueAndGettingItShouldReturnValueFromPropertiesFile() {
 		final String original = GenAlgSettings.getPropertyFromFile("populationSize");
 
-		GenAlgSettings.updateToFile("populationSize", "544");
+		SettingsUtil.writeGenAlgSetting("populationSize", "544");
 		final String actualValue = GenAlgSettings.getPopulationSize() + "";
 		assertEquals("544", actualValue);
 
-		GenAlgSettings.updateToFile("populationSize", original);
+		SettingsUtil.writeGenAlgSetting("populationSize", original);
 	}
 
 	@Test
 	public void leavingTournamentAsDefaultValueAndGettingItShouldReturnValueFromPropertiesFile() {
 		final String original = GenAlgSettings.getPropertyFromFile("tournamentSize");
 
-		GenAlgSettings.updateToFile("tournamentSize", "355");
+		SettingsUtil.writeGenAlgSetting("tournamentSize", "355");
 		final String actualValue = GenAlgSettings.getTournamentSize() + "";
 		assertEquals("355", actualValue);
 
 
-		GenAlgSettings.updateToFile("tournamentSize", original);
+		SettingsUtil.writeGenAlgSetting("tournamentSize", original);
 	}
 
 	@Test
 	public void leavingUniformRateAsDefaultValueAndGettingItShouldReturnValueFromPropertiesFile() {
 		final String original = GenAlgSettings.getPropertyFromFile("uniformRate");
 
-		GenAlgSettings.updateToFile("uniformRate", "632");
+		SettingsUtil.writeGenAlgSetting("uniformRate", "632");
 		final double actualValue = GenAlgSettings.getUniformRate();
 		assertTrue(doublesAreEqual(632, actualValue));
 
 
-		GenAlgSettings.updateToFile("uniformRate", original);
+		SettingsUtil.writeGenAlgSetting("uniformRate", original);
 	}
 
 	@Test
 	public void leavingElitismConsoleAsDefaultValueAndGettingItShouldReturnValueFromPropertiesFile() {
 		final String original = GenAlgSettings.getPropertyFromFile("elitism");
 
-		GenAlgSettings.updateToFile("elitism", "false");
+		SettingsUtil.writeGenAlgSetting("elitism", "false");
 		final Boolean actualValue = GenAlgSettings.isElitism();
 		assertFalse(actualValue);
 
 
-		GenAlgSettings.updateToFile("elitism", original);
+		SettingsUtil.writeGenAlgSetting("elitism", original);
 	}
 
 	@Test
-	public void tryingToGetAMissingPropertyShouldThrowError() {
-		assertThrows(NoSuchFieldError.class, () -> GenAlgSettings.getPropertyFromFile("missingProperty"));
+	public void tryingToGetAMissingPropertySaysWhichOne() {
+		final IllegalStateException missing =
+				assertThrows(IllegalStateException.class, () -> GenAlgSettings.getPropertyFromFile("missingProperty"));
+
+		assertTrue(missing.getMessage().contains("missingProperty"), missing.getMessage());
 	}
 
 	@Test
-	public void tryingToUpdateAMissingPropertyShouldThrowError() {
-		assertThrows(NoSuchFieldError.class, () -> GenAlgSettings.updateToFile("missingProperty", "15"));
+	public void spacesAroundANumberInTheFileAreIgnored() {
+		final String original = GenAlgSettings.getPropertyFromFile("populationSize");
+
+		SettingsUtil.writeGenAlgSetting("populationSize", " 544 ");
+		assertEquals(544, GenAlgSettings.getPopulationSize());
+
+		SettingsUtil.writeGenAlgSetting("populationSize", original);
+	}
+
+	@Test
+	public void aNumberThatIsntOneSaysWhichSettingItIs() {
+		final String original = GenAlgSettings.getPropertyFromFile("tournamentSize");
+
+		SettingsUtil.writeGenAlgSetting("tournamentSize", "lots");
+		final IllegalArgumentException refused =
+				assertThrows(IllegalArgumentException.class, GenAlgSettings::getTournamentSize);
+		assertTrue(refused.getMessage().contains("tournamentSize"), refused.getMessage());
+
+		SettingsUtil.writeGenAlgSetting("tournamentSize", original);
+	}
+
+	@Test
+	public void elitismThatIsntTrueOrFalseIsRefused() {
+		final String original = GenAlgSettings.getPropertyFromFile("elitism");
+
+		SettingsUtil.writeGenAlgSetting("elitism", "yes");
+		assertThrows(IllegalArgumentException.class, GenAlgSettings::isElitism);
+
+		SettingsUtil.writeGenAlgSetting("elitism", original);
+	}
+
+	@Test
+	public void theAttemptCountIsntInTheSettingsFile() {
+		// a run mustn't change the file, which is in git
+		assertThrows(IllegalStateException.class, () -> GenAlgSettings.getPropertyFromFile("attemptCount"));
 	}
 
 	private boolean doublesAreEqual(final double first, final double second) {

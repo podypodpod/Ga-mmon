@@ -79,7 +79,7 @@ Some sets of weights value hitting more than getting home, and two such players 
    - Then each bit of the child's genes flips with a chance of `mutationRate` (mutation), so new values can appear.
 4. Fitness is worked out for the new generation, and the GA repeats from step 3 until it has made `generations` generations.
 
-Each run is a new attempt, numbered by `attemptCount` in the settings, which goes up by one at the start of each run. The players are saved in `savedPlayers/Attempt - N/`:
+Each run is a new attempt, numbered one above the highest attempt already in `savedPlayers/`. The players are saved in `savedPlayers/Attempt - N/`:
 
 - `FittestFromInitialPopulation`, the fittest of the first population;
 - `PlayerFromGen0`, `PlayerFromGen1` and so on, the fittest of each generation.
@@ -128,7 +128,7 @@ If evolved players come to beat the reference player by a wide margin, it stops 
 
 ## Settings
 
-The settings are read from the files in `conf/`. To use a different folder, run with `-Dgammon.confDir=<folder>`, and to save players somewhere else, `-Dgammon.playersDir=<folder>`. The tests use these to work on their own copies.
+The settings are read from the files in `conf/`. To use a different folder, run with `-Dgammon.confDir=<folder>`, and to save players somewhere else, `-Dgammon.playersDir=<folder>`. The tests use these to work on their own copies. A setting that's missing or can't be read stops the run with an error naming it, except where the tables say otherwise.
 
 `conf/GenAlgSettings.properties`, for the GA:
 
@@ -141,7 +141,6 @@ The settings are read from the files in `conf/`. To use a different folder, run 
 | `uniformRate` | The chance a child takes each gene from its first parent |
 | `mutationRate` | The chance each bit of a child's genes flips |
 | `elitism` | Whether the fittest player is carried over to the next generation |
-| `attemptCount` | The number of the last run, which picks the folder players are saved in |
 
 `conf/GameSettings.properties`, for the games:
 
@@ -151,7 +150,7 @@ The settings are read from the files in `conf/`. To use a different folder, run 
 | `isP1Black` | Whether player 1 plays black |
 | `displayGUI` | Whether to show the board in a window while games are played |
 | `timeDelay` | Milliseconds to wait between moves when the board is shown |
-| `multiThreading` | Whether the GA plays its fitness games at the same time, one per core. It gives the same results either way, just faster, and is off while the board is shown |
+| `multiThreading` | Whether the GA plays its fitness games at the same time, one per core. It gives the same results either way, just faster, and is off while the board is shown or a person is playing |
 | `threads` | How many threads to play them on when `multiThreading` is on: 0, or missing, for one per core, or fewer to leave some cores free |
 
 `displayConsole` is in the files but isn't used at present.

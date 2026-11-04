@@ -31,6 +31,8 @@ import uk.co.davidlomas.gammon.util.RandomSource;
  */
 public class IndividualAttribute {
 
+	private static final int MAX_VALUE = 100;
+
 	private String name = "";
 	private int value = 0;
 
@@ -42,7 +44,7 @@ public class IndividualAttribute {
 	@SuppressWarnings("SameParameterValue")
 	public IndividualAttribute(final String name, final int value) {
 		this.name = name;
-		this.value = value;
+		this.value = checked(value);
 	}
 
 	public String getName() {
@@ -58,11 +60,22 @@ public class IndividualAttribute {
 	}
 
 	public void setValue(final int value) {
-		this.value = value;
+		this.value = checked(value);
+	}
+
+	/**
+	 * @throws IllegalArgumentException if it isn't 0 to 100. A gene has 7 bits in the chromosome, so a value that needs
+	 *                                  more would put all the genes after it in the wrong place
+	 */
+	private static int checked(final int value) {
+		if (value < 0 || value > MAX_VALUE) {
+			throw new IllegalArgumentException("A gene goes from 0 to " + MAX_VALUE + ", not " + value);
+		}
+		return value;
 	}
 
 	@Override
 	public String toString() {
 		return name + ": " + value;
 	}
-}
+}

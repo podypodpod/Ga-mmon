@@ -203,7 +203,8 @@ public final class Benchmark {
 	private static String git(final String... args) throws IOException {
 		final List<String> command = new ArrayList<>(List.of("git"));
 		command.addAll(List.of(args));
-		final Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
+		// its warnings go nowhere, as among its output they'd look like part of the hash, or like changed files
+		final Process process = new ProcessBuilder(command).redirectError(ProcessBuilder.Redirect.DISCARD).start();
 		try (InputStream out = process.getInputStream()) {
 			final String text = new String(out.readAllBytes(), StandardCharsets.UTF_8).trim();
 			return process.waitFor() == 0 ? text : "";

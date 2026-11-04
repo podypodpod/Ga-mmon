@@ -78,6 +78,29 @@ public class GameSettingsTest {
 	}
 
 	@Test
+	public void aBooleanCanHaveSpacesAndAnyCase() {
+		assertTrue(GameSettings.booleanFrom("areBothAIs", "true "));
+		assertTrue(GameSettings.booleanFrom("areBothAIs", "TRUE"));
+		assertFalse(GameSettings.booleanFrom("areBothAIs", " false"));
+	}
+
+	@Test
+	public void aBooleanThatIsntTrueOrFalseIsRefusedRatherThanReadAsFalse() {
+		for (final String value : new String[]{"yes", "", null}) {
+			final IllegalArgumentException refused = assertThrows(IllegalArgumentException.class,
+					() -> GameSettings.booleanFrom("areBothAIs", value));
+			assertTrue(refused.getMessage().contains("areBothAIs"), refused.getMessage());
+		}
+	}
+
+	@Test
+	public void aTimeDelayThatIsntANumberIsRefused() {
+		assertEquals(5, GameSettings.timeDelayFrom(" 5 "));
+		assertThrows(IllegalArgumentException.class, () -> GameSettings.timeDelayFrom("soon"));
+		assertThrows(IllegalArgumentException.class, () -> GameSettings.timeDelayFrom(null));
+	}
+
+	@Test
 	public void threadsBelowZeroIsRefused() {
 		assertThrows(IllegalArgumentException.class, () -> GameSettings.threadsFrom("-1"));
 		assertThrows(IllegalArgumentException.class, () -> GameSettings.setThreadsCache(-2));

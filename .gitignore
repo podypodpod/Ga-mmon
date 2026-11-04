@@ -1,7 +1,5 @@
 /logs/
 /.idea/
-/conf/GameSettings.properties
-/conf/GenAlgSettings.properties
 /savedPlayers/
 /build/
 /.gradle/

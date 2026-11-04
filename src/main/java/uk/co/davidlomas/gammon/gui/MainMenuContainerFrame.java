@@ -27,7 +27,8 @@ public class MainMenuContainerFrame extends JFrame implements Runnable {
 
 		add(mainPanel);
 		setSize(1166, 600);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// not exiting, which wouldn't wait for a search still running: the program ends once that has finished
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
 

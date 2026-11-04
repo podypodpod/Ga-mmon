@@ -3,6 +3,7 @@ package uk.co.davidlomas.gammon.gui;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
@@ -66,7 +67,7 @@ public class MainMenuPanelTest {
 		// a small, quick run, set here so this test doesn't depend on what SettingsUtil chooses
 		GenAlgSettings.setPopulationSize(2);
 		GenAlgSettings.setGenerations(1);
-		GenAlgSettings.setAttemptCount(9999);
+		final int attempt = Individual.lastAttempt() + 1;
 		final CountDownLatch done = new CountDownLatch(1);
 
 		final Thread search = MainMenuPanel.searchThread(done::countDown);
@@ -77,8 +78,8 @@ public class MainMenuPanelTest {
 
 		assertNotSame(Thread.currentThread(), search);
 		assertTrue(done.await(120, TimeUnit.SECONDS), "the search didn't finish");
-		assertEquals(10000, GenAlgSettings.getAttemptCount());
-		assertTrue(new File(SettingsUtil.getPlayersDir() + "/Attempt - 10000/PlayerFromGen0").isFile());
+		assertEquals(attempt, GenAlgSettings.getAttemptCount());
+		assertTrue(new File(SettingsUtil.getPlayersDir() + "/Attempt - " + attempt + "/PlayerFromGen0").isFile());
 	}
 
 	private static List<String> buttonNames(final MainMenuPanel panel) {

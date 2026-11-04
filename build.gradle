@@ -55,6 +55,8 @@ tasks.register('ga', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'uk.co.davidlomas.gammon.genes.StartGa'
     jvmArgs collector
+    // with areBothAIs off, a person plays player 2 from here
+    standardInput = System.in
 }
 
 // Measures the GA's players against a fixed reference player, and how fast games are, and adds a row to
