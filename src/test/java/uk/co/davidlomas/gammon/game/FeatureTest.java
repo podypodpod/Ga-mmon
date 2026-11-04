@@ -56,7 +56,7 @@ public class FeatureTest {
 
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
-	public void aBlotWithinSixOfAnOpponentsPieceIsExposed(final boolean black) {
+	public void aBlotWithinSixOfAnOpponentsPieceIsAtRisk(final boolean black) {
 		// red on 3 is 4 short of the blot on 7, but 17 short of the one on 20
 		final Board blackPosition = empty();
 		blackPosition.Points[7].setBlackCount(1);
@@ -65,42 +65,70 @@ public class FeatureTest {
 
 		final Board board = forColour(blackPosition, black);
 		assertEquals(2, Feature.BLOTS.measure(board, black));
-		assertEquals(1, Feature.EXPOSED_BLOTS.measure(board, black));
+		assertEquals(18, Feature.PIPS_AT_RISK.measure(board, black));
 	}
 
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
-	public void aBlotSevenAwayIsNotExposed(final boolean black) {
+	public void aBlotSevenAwayIsNotAtRisk(final boolean black) {
 		// it would need both dice, which isn't counted
 		final Board blackPosition = empty();
 		blackPosition.Points[10].setBlackCount(1);
 		blackPosition.Points[3].setRedCount(2);
 
-		assertEquals(0, Feature.EXPOSED_BLOTS.measure(forColour(blackPosition, black), black));
+		assertEquals(0, Feature.PIPS_AT_RISK.measure(forColour(blackPosition, black), black));
 	}
 
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
-	public void aBlotAnOpponentHasPassedIsNotExposed(final boolean black) {
+	public void aBlotAnOpponentHasPassedIsNotAtRisk(final boolean black) {
 		// red moves up, away from the blot on 3
 		final Board blackPosition = empty();
 		blackPosition.Points[3].setBlackCount(1);
 		blackPosition.Points[5].setRedCount(2);
 
-		assertEquals(0, Feature.EXPOSED_BLOTS.measure(forColour(blackPosition, black), black));
+		assertEquals(0, Feature.PIPS_AT_RISK.measure(forColour(blackPosition, black), black));
 	}
 
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
-	public void aPieceOnTheBarExposesBlotsInThePlayersHome(final boolean black) {
+	public void aPieceOnTheBarPutsBlotsInThePlayersHomeAtRisk(final boolean black) {
 		final Board blackPosition = empty();
 		blackPosition.Points[5].setBlackCount(1);
 		// red's bar: it comes in on 1 to 6
 		blackPosition.Points[0].setRedCount(1);
 
 		final Board board = forColour(blackPosition, black);
-		assertEquals(1, Feature.EXPOSED_BLOTS.measure(board, black));
+		assertEquals(20, Feature.PIPS_AT_RISK.measure(board, black));
 		assertEquals(1, Feature.OPPONENT_ON_BAR.measure(board, black));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void pipsAtRiskAddUpWhatTheExposedBlotsWouldLose(final boolean black) {
+		// red on 3 exposes the blots on 7, which would lose 18 pips, and 9, which would lose 16, but not the one on 20
+		final Board blackPosition = empty();
+		blackPosition.Points[7].setBlackCount(1);
+		blackPosition.Points[9].setBlackCount(1);
+		blackPosition.Points[20].setBlackCount(1);
+		blackPosition.Points[3].setRedCount(2);
+
+		assertEquals(34, Feature.PIPS_AT_RISK.measure(forColour(blackPosition, black), black));
+	}
+
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void aBlotThatHasComeFurtherHasMoreAtRisk(final boolean black) {
+		// red's bar is 0, so it exposes the blot on 2, which has come much further than the one on 22
+		final Board nearHome = empty();
+		nearHome.Points[2].setBlackCount(1);
+		nearHome.Points[0].setRedCount(1);
+		final Board farFromHome = empty();
+		farFromHome.Points[22].setBlackCount(1);
+		farFromHome.Points[20].setRedCount(1);
+
+		assertEquals(23, Feature.PIPS_AT_RISK.measure(forColour(nearHome, black), black));
+		assertEquals(3, Feature.PIPS_AT_RISK.measure(forColour(farFromHome, black), black));
 	}
 
 	@ParameterizedTest(name = "black {0}")

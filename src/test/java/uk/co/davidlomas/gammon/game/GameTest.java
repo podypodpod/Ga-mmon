@@ -51,11 +51,15 @@ public class GameTest {
 	 */
 	@Test
 	public void testingGameStatsComesBackWithWinner() {
-		RandomSource.setSeed(42);
+		// players with random genes sometimes never finish, which is a draw with no winner to check, so try until a
+		// game does finish
+		GameStats gameStats = null;
+		for (int seed = 42; seed < 142 && (gameStats == null || gameStats.isDraw()); seed++) {
+			RandomSource.setSeed(seed);
+			gameStats = gameManager.playIndividualsVsEachOther(individual1, individual2);
+		}
 
-		final GameStats gameStats = gameManager.playIndividualsVsEachOther(individual1, individual2);
-
-		assertFalse(gameStats.isDraw(), "the seeded game was cut short as a draw, so it has no winner to check");
+		assertFalse(gameStats.isDraw(), "none of the seeded games finished, so there's no winner to check");
 		if (gameStats.getVictor().equals(individual1)) {
 			assertTrue(gameStats.getPlayerOneScore() > gameStats.getPlayerTwoScore());
 		} else {
