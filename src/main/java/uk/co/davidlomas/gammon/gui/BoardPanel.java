@@ -18,7 +18,7 @@
 
 package uk.co.davidlomas.gammon.gui;
 
-import uk.co.davidlomas.gammon.game.Point;
+import uk.co.davidlomas.gammon.game.Board;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -43,19 +43,7 @@ public class BoardPanel extends JPanel {
 	 * What to draw. The game hands over a new one for each move, a copy of its board, so a paint never sees the
 	 * board half way through a move. Null until the first board arrives, until then only the empty board is drawn
 	 */
-	private volatile Drawn drawn = null;
-
-	private static final class Drawn {
-		final Point[] points;
-		final int redBore;
-		final int blackBore;
-
-		Drawn(final Point[] points, final int redBore, final int blackBore) {
-			this.points = points;
-			this.redBore = redBore;
-			this.blackBore = blackBore;
-		}
-	}
+	private volatile Board drawn = null;
 
 	private static Image loadBackgroundImage() {
 		try (InputStream is = BoardPanel.class.getResourceAsStream("/blank_board.png")) {
@@ -125,28 +113,27 @@ public class BoardPanel extends JPanel {
 		// Drawing background
 		graphics2D.drawImage(BACKGROUND_IMAGE, 0, 0, this);
 
-		final Drawn board = drawn;
+		final Board board = drawn;
 		if (board == null) {
 			return;
 		}
 
 		// Drawing checkers on board, skipping the empty points
-		for (int i = 0; i < board.points.length; i++) {
-			final Point point = board.points[i];
-			if (point.numEither() != 0) {
-				final Color colour = point.getBlackCount() != 0 ? Color.BLACK : Color.RED;
+		for (int i = 0; i < Board.POINTS; i++) {
+			if (board.numEither(i) != 0) {
+				final Color colour = board.getBlackCount(i) != 0 ? Color.BLACK : Color.RED;
 				// the bar's count sits slightly further in
 				final int textOffset = i == 0 || i == 25 ? 22 : 20;
-				drawChecker(graphics2D, colour, checkerCorner(i), point.numEither(), textOffset);
+				drawChecker(graphics2D, colour, checkerCorner(i), board.numEither(i), textOffset);
 			}
 		}
 
 		// Drawing checkers that have been bored
-		if (board.blackBore != 0) {
-			drawChecker(graphics2D, Color.BLACK, borneOffCorner(true), board.blackBore, 20);
+		if (board.getBlackBore() != 0) {
+			drawChecker(graphics2D, Color.BLACK, borneOffCorner(true), board.getBlackBore(), 20);
 		}
-		if (board.redBore != 0) {
-			drawChecker(graphics2D, Color.RED, borneOffCorner(false), board.redBore, 20);
+		if (board.getRedBore() != 0) {
+			drawChecker(graphics2D, Color.RED, borneOffCorner(false), board.getRedBore(), 20);
 		}
 	}
 
@@ -164,12 +151,8 @@ public class BoardPanel extends JPanel {
 	 * <p>
 	 * method to call to print board. It takes a copy, as the game carries on changing its board while this draws
 	 */
-	public void printCheckers(final Point[] points, final int redBore, final int blackBore) {
-		final Point[] copy = new Point[points.length];
-		for (int i = 0; i < points.length; i++) {
-			copy[i] = new Point(points[i]);
-		}
-		drawn = new Drawn(copy, redBore, blackBore);
+	public void printCheckers(final Board board) {
+		drawn = new Board(board);
 		repaint();
 	}
 

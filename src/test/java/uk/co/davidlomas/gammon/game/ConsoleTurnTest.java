@@ -9,6 +9,7 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.test.helpers.BoardMirror;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
+import uk.co.davidlomas.gammon.test.helpers.TestBoards;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -57,9 +58,9 @@ public class ConsoleTurnTest {
 		player.playRoll(board);
 
 		// 8 to 5 with the 3, then 6 to 5 with the 1
-		assertEquals(2, board.Points[8].getBlackCount());
-		assertEquals(4, board.Points[6].getBlackCount());
-		assertEquals(2, board.Points[5].getBlackCount());
+		assertEquals(2, board.getBlackCount(8));
+		assertEquals(4, board.getBlackCount(6));
+		assertEquals(2, board.getBlackCount(5));
 		assertEquals(0, player.movesLeft.size());
 		assertTrue(said().contains("you're player 2, black"));
 		assertTrue(said().contains("That's all your dice."));
@@ -77,7 +78,7 @@ public class ConsoleTurnTest {
 		assertTrue(said().contains("Type a number."));
 		assertTrue(said().contains("That move isn't allowed."));
 		assertTrue(said().contains("Type 1 or 2."));
-		assertEquals(1, board.Points[2].getBlackCount());
+		assertEquals(1, board.getBlackCount(2));
 	}
 
 	@Test
@@ -89,7 +90,7 @@ public class ConsoleTurnTest {
 
 		black.playRoll(blackPosition);
 
-		assertEquals(0, blackPosition.Points[3].getBlackCount());
+		assertEquals(0, blackPosition.getBlackCount(3));
 		assertEquals(1, blackPosition.getBlackBore());
 	}
 
@@ -102,24 +103,20 @@ public class ConsoleTurnTest {
 
 		red.playRoll(redPosition);
 
-		assertEquals(0, redPosition.Points[22].getRedCount());
+		assertEquals(0, redPosition.getRedCount(22));
 		assertEquals(1, redPosition.getRedBore());
 	}
 
 	@Test
 	public void whenNoDieCanBePlayedTheTurnEndsWithoutAsking() {
 		// black is on the bar and red holds every point it could come in on
-		final Board board = new Board();
-		for (final Point point : board.Points) {
-			point.setBlackCount(0);
-			point.setRedCount(0);
-		}
-		board.Points[25].setBlackCount(1);
-		board.Points[6].setBlackCount(14);
+		final Board board = TestBoards.empty();
+		board.setBlackCount(25, 1);
+		board.setBlackCount(6, 14);
 		for (int point = 19; point <= 24; point++) {
-			board.Points[point].setRedCount(2);
+			board.setRedCount(point, 2);
 		}
-		board.Points[1].setRedCount(3);
+		board.setRedCount(1, 3);
 		final Player player = person(true);
 		player.movesLeft.add(6);
 		player.movesLeft.add(2);
@@ -140,37 +137,37 @@ public class ConsoleTurnTest {
 
 		assertTrue(player.hasConceded());
 		assertTrue(said().contains("The input has ended, so you've conceded."));
-		assertEquals(3, board.Points[8].getBlackCount());
+		assertEquals(3, board.getBlackCount(8));
 	}
 
 	@Test
 	public void aPieceOnTheBarComesInFromTwentyFive() {
 		final Board board = new Board();
-		board.Points[24].setBlackCount(1);
-		board.Points[25].setBlackCount(1);
+		board.setBlackCount(24, 1);
+		board.setBlackCount(25, 1);
 		final Player player = person(true, "1", "25", "3");
 		player.movesLeft.add(3);
 
 		player.playRoll(board);
 
-		assertEquals(0, board.Points[25].getBlackCount());
-		assertEquals(1, board.Points[22].getBlackCount());
+		assertEquals(0, board.getBlackCount(25));
+		assertEquals(1, board.getBlackCount(22));
 	}
 
 	@Test
 	public void landingOnABlotSendsItToTheBar() {
 		// red has left a piece on its own on 3
 		final Board board = new Board();
-		board.Points[1].setRedCount(1);
-		board.Points[3].setRedCount(1);
+		board.setRedCount(1, 1);
+		board.setRedCount(3, 1);
 		final Player player = person(true, "1", "6", "3");
 		player.movesLeft.add(3);
 
 		player.playRoll(board);
 
-		assertEquals(1, board.Points[3].getBlackCount());
-		assertEquals(0, board.Points[3].getRedCount());
-		assertEquals(1, board.Points[0].getRedCount());
+		assertEquals(1, board.getBlackCount(3));
+		assertEquals(0, board.getRedCount(3));
+		assertEquals(1, board.getRedCount(0));
 	}
 
 	@Test
@@ -240,14 +237,10 @@ public class ConsoleTurnTest {
 	 * Every black piece is home, one on 3 and two on 6, and red has two on 20
 	 */
 	private static Board homeBoard() {
-		final Board home = new Board();
-		for (final Point point : home.Points) {
-			point.setBlackCount(0);
-			point.setRedCount(0);
-		}
-		home.Points[3].setBlackCount(1);
-		home.Points[6].setBlackCount(2);
-		home.Points[20].setRedCount(2);
+		final Board home = TestBoards.empty();
+		home.setBlackCount(3, 1);
+		home.setBlackCount(6, 2);
+		home.setRedCount(20, 2);
 		return home;
 	}
 }

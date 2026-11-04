@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.test.helpers.BoardMirror;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
+import uk.co.davidlomas.gammon.test.helpers.TestBoards;
 
 import java.util.List;
 
@@ -33,13 +34,13 @@ public class ReferencePlayerTest {
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
 	public void itPlaysAWinningMove(final boolean black) {
-		final Board notYet = empty();
-		notYet.Points[1].setBlackCount(1);
+		final Board notYet = TestBoards.empty();
+		notYet.setBlackCount(1, 1);
 		notYet.setBlackBore(14);
-		notYet.Points[20].setRedCount(15);
-		final Board won = empty();
+		notYet.setRedCount(20, 15);
+		final Board won = TestBoards.empty();
 		won.setBlackBore(15);
-		won.Points[20].setRedCount(15);
+		won.setRedCount(20, 15);
 
 		final Board winning = forColour(won, black);
 		assertSame(winning, ReferencePlayer.choose(List.of(forColour(notYet, black), winning), black));
@@ -49,13 +50,13 @@ public class ReferencePlayerTest {
 	@ValueSource(booleans = {true, false})
 	public void itMakesAPointRatherThanLeaveABlotToBeHit(final boolean black) {
 		// the same pips either way: one on 7 and one on 13, with red on 3 four short of the 7, or two on 10
-		final Board blots = empty();
-		blots.Points[7].setBlackCount(1);
-		blots.Points[13].setBlackCount(1);
-		blots.Points[3].setRedCount(2);
-		final Board point = empty();
-		point.Points[10].setBlackCount(2);
-		point.Points[3].setRedCount(2);
+		final Board blots = TestBoards.empty();
+		blots.setBlackCount(7, 1);
+		blots.setBlackCount(13, 1);
+		blots.setRedCount(3, 2);
+		final Board point = TestBoards.empty();
+		point.setBlackCount(10, 2);
+		point.setRedCount(3, 2);
 
 		final Board safe = forColour(point, black);
 		assertSame(safe, ReferencePlayer.choose(List.of(forColour(blots, black), safe), black));
@@ -65,15 +66,15 @@ public class ReferencePlayerTest {
 	@ValueSource(booleans = {true, false})
 	public void inARaceItBearsOffRatherThanMoveTheSamePips(final boolean black) {
 		// red is all behind black, so it's a race. A 3 bears the piece on 3 off, or moves the piece on 5 to 2
-		final Board moved = empty();
-		moved.Points[3].setBlackCount(1);
-		moved.Points[2].setBlackCount(1);
+		final Board moved = TestBoards.empty();
+		moved.setBlackCount(3, 1);
+		moved.setBlackCount(2, 1);
 		moved.setBlackBore(13);
-		moved.Points[20].setRedCount(15);
-		final Board borne = empty();
-		borne.Points[5].setBlackCount(1);
+		moved.setRedCount(20, 15);
+		final Board borne = TestBoards.empty();
+		borne.setBlackCount(5, 1);
 		borne.setBlackBore(14);
-		borne.Points[20].setRedCount(15);
+		borne.setRedCount(20, 15);
 
 		final Board off = forColour(borne, black);
 		assertSame(off, ReferencePlayer.choose(List.of(forColour(moved, black), off), black));
@@ -87,15 +88,6 @@ public class ReferencePlayerTest {
 	@Test
 	public void itPlaysWholeGamesAgainstAnEvolvedPlayer() {
 		assertNotNull(new GameManager().playIndividualsVsEachOther(new ReferencePlayer(), new Individual()));
-	}
-
-	private static Board empty() {
-		final Board board = new Board();
-		for (final Point point : board.Points) {
-			point.setBlackCount(0);
-			point.setRedCount(0);
-		}
-		return board;
 	}
 
 	private static Board forColour(final Board blackPosition, final boolean black) {

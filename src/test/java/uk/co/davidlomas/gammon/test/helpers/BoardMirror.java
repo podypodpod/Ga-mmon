@@ -12,9 +12,9 @@ public class BoardMirror {
 
 	public static Board mirror(final Board board) {
 		final Board mirrored = new Board();
-		for (int point = 0; point < board.Points.length; point++) {
-			mirrored.Points[25 - point].setBlackCount(board.Points[point].getRedCount());
-			mirrored.Points[25 - point].setRedCount(board.Points[point].getBlackCount());
+		for (int point = 0; point < Board.POINTS; point++) {
+			mirrored.setBlackCount(25 - point, board.getRedCount(point));
+			mirrored.setRedCount(25 - point, board.getBlackCount(point));
 		}
 		mirrored.setBlackBore(board.getRedBore());
 		mirrored.setRedBore(board.getBlackBore());

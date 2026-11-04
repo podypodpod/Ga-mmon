@@ -104,13 +104,13 @@ public class Player {
 		}
 		if (black) {
 			for (int point = from + 1; point <= 6; point++) {
-				if (liveBoard.Points[point].getBlackCount() > 0) {
+				if (liveBoard.getBlackCount(point) > 0) {
 					return false;
 				}
 			}
 		} else {
 			for (int point = 19; point < from; point++) {
-				if (liveBoard.Points[point].getRedCount() > 0) {
+				if (liveBoard.getRedCount(point) > 0) {
 					return false;
 				}
 			}
@@ -142,7 +142,7 @@ public class Player {
 	 * returns true if start position has a piece on it
 	 */
 	private boolean hasAPieceAtStart(final int from, final Board liveBoard) {
-		return liveBoard.Points[from].numEither() > 0 && liveBoard.Points[from].getCol() == black;
+		return liveBoard.numEither(from) > 0 && liveBoard.getCol(from) == black;
 	}
 
 	/**
@@ -154,25 +154,25 @@ public class Player {
 		if (!isBearingOff(to)) {
 
 			// if there is an opposing piece there
-			if (liveBoard.Points[to].getCol() != black && liveBoard.Points[to].numEither() == 1) {
+			if (liveBoard.getCol(to) != black && liveBoard.numEither(to) == 1) {
 
-				liveBoard.Points[from].removePiece(black);
-				liveBoard.Points[to].removePiece(!black);
-				liveBoard.Points[to].addPiece(black);
+				liveBoard.removePiece(from, black);
+				liveBoard.removePiece(to, !black);
+				liveBoard.addPiece(to, black);
 
 				if (black) {
-					liveBoard.Points[0].addRedPiece();
+					liveBoard.addPiece(0, false);
 				} else {
-					liveBoard.Points[25].addBlackPiece();
+					liveBoard.addPiece(25, true);
 				}
 
 			} else {// if its empty
-				liveBoard.Points[from].removePiece(black);
-				liveBoard.Points[to].addPiece(black);
+				liveBoard.removePiece(from, black);
+				liveBoard.addPiece(to, black);
 
 			}
 		} else {// ELSE WE ARE BEARING THE PIECE OFF
-			liveBoard.Points[from].removePiece(black);
+			liveBoard.removePiece(from, black);
 			liveBoard.addToBear(black);
 
 		}
@@ -412,8 +412,7 @@ public class Player {
 	 * returns true if destination isn't filled or no more than 1 chip
 	 */
 	private boolean validDestination(final int to, final Board liveBoard) {
-		return liveBoard.Points[to].getCol() == black
-				|| liveBoard.Points[to].getCol() != black && liveBoard.Points[to].numEither() <= 1;
+		return liveBoard.getCol(to) == black || liveBoard.numEither(to) <= 1;
 	}
 
 	/**

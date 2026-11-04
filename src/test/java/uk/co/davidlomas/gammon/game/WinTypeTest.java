@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.co.davidlomas.gammon.test.helpers.BoardMirror;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
+import uk.co.davidlomas.gammon.test.helpers.TestBoards;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -30,7 +31,7 @@ public class WinTypeTest {
 	@ValueSource(booleans = {true, false})
 	public void aLoserWhoHasBorneOffAPieceLosesASingleGame(final boolean loserBlack) {
 		final Board blackLosing = redHasWon();
-		blackLosing.Points[3].setBlackCount(14);
+		blackLosing.setBlackCount(3, 14);
 		blackLosing.setBlackBore(1);
 
 		assertEquals(WinType.SINGLE, forLoser(blackLosing, loserBlack).winTypeAgainst(loserBlack));
@@ -40,8 +41,8 @@ public class WinTypeTest {
 	@ValueSource(booleans = {true, false})
 	public void aLoserWhoHasBorneOffNothingLosesAGammon(final boolean loserBlack) {
 		final Board blackLosing = redHasWon();
-		blackLosing.Points[3].setBlackCount(10);
-		blackLosing.Points[13].setBlackCount(5);
+		blackLosing.setBlackCount(3, 10);
+		blackLosing.setBlackCount(13, 5);
 
 		assertEquals(WinType.GAMMON, forLoser(blackLosing, loserBlack).winTypeAgainst(loserBlack));
 	}
@@ -50,9 +51,9 @@ public class WinTypeTest {
 	@ValueSource(booleans = {true, false})
 	public void aLoserWithAPieceInTheWinnersHomeLosesABackgammon(final boolean loserBlack) {
 		final Board blackLosing = redHasWon();
-		blackLosing.Points[3].setBlackCount(14);
+		blackLosing.setBlackCount(3, 14);
 		// red's home quarter is 19 to 24
-		blackLosing.Points[24].setBlackCount(1);
+		blackLosing.setBlackCount(24, 1);
 
 		assertEquals(WinType.BACKGAMMON, forLoser(blackLosing, loserBlack).winTypeAgainst(loserBlack));
 	}
@@ -61,9 +62,9 @@ public class WinTypeTest {
 	@ValueSource(booleans = {true, false})
 	public void aLoserWithAPieceOnTheBarLosesABackgammon(final boolean loserBlack) {
 		final Board blackLosing = redHasWon();
-		blackLosing.Points[3].setBlackCount(14);
+		blackLosing.setBlackCount(3, 14);
 		// black's bar
-		blackLosing.Points[25].setBlackCount(1);
+		blackLosing.setBlackCount(25, 1);
 
 		assertEquals(WinType.BACKGAMMON, forLoser(blackLosing, loserBlack).winTypeAgainst(loserBlack));
 	}
@@ -81,11 +82,7 @@ public class WinTypeTest {
 	 * An empty board where red has borne off all 15 pieces, for a test to place black's
 	 */
 	private static Board redHasWon() {
-		final Board board = new Board();
-		for (final Point point : board.Points) {
-			point.setBlackCount(0);
-			point.setRedCount(0);
-		}
+		final Board board = TestBoards.empty();
 		board.setRedBore(15);
 		return board;
 	}
