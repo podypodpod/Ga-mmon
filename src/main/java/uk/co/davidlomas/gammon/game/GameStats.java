@@ -34,6 +34,7 @@ public class GameStats {
 	private WinType winType = null;
 	private double playerOneScore = 0;
 	private double playerTwoScore = 0;
+	private int turns = 0;
 
 	/**
 	 * GameStats default constructor
@@ -49,6 +50,17 @@ public class GameStats {
 		this.winType = winType;
 		this.playerOneScore = playerOneScore;
 		this.playerTwoScore = playerTwoScore;
+	}
+
+	/**
+	 * As the default constructor, for a game between two AIs, whose turns are counted
+	 *
+	 * @param turns how many turns the two players had between them
+	 */
+	GameStats(final Individual gameVictor, final WinType winType, final double playerOneScore,
+			  final double playerTwoScore, final int turns) {
+		this(gameVictor, winType, playerOneScore, playerTwoScore);
+		this.turns = turns;
 	}
 
 	/**
@@ -71,6 +83,13 @@ public class GameStats {
 
 	public double getPlayerTwoScore() {
 		return playerTwoScore;
+	}
+
+	/**
+	 * @return how many turns the two players had between them, if they were both AIs, otherwise 0
+	 */
+	public int getTurns() {
+		return turns;
 	}
 
 	/**

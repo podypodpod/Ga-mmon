@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.util.List;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,6 +64,17 @@ public class StartGaTest {
 			assertIsAPlayer(new File(attempt, saved));
 		}
 		assertFalse(new File(attempt, "PlayerFromGen2").exists(), "only two generations were asked for");
+
+		// a row for the initial population and for each generation, all measured as the first and last are
+		final List<String> stats = Files.readAllLines(new File(attempt, "runStats.csv").toPath());
+		assertEquals(RunStats.HEADER, stats.get(0));
+		assertEquals(4, stats.size());
+		assertThat(stats.get(1)).startsWith("initial,");
+		assertThat(stats.get(2)).startsWith("0,");
+		assertThat(stats.get(3)).startsWith("1,");
+		for (final String row : stats.subList(1, stats.size())) {
+			assertFalse(row.endsWith(","), row + " wasn't measured against the reference player");
+		}
 	}
 
 	/**

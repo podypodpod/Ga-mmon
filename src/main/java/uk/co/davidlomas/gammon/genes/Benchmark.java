@@ -18,9 +18,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Measures how strong the GA's players are and how fast games are, so a change can be compared with the commit before
@@ -134,26 +131,14 @@ public final class Benchmark {
 	/**
 	 * The player's average points a game against the reference player, over paired meetings on every core
 	 */
-	private static double againstReference(final Individual player, final int meetings, final long seed)
-			throws Exception {
+	private static double againstReference(final Individual player, final int meetings, final long seed) {
 		RandomSource.setSeed(seed);
 		final ReferencePlayer reference = new ReferencePlayer();
-		final ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-		try {
-			final List<Future<Double>> playing = new ArrayList<>();
-			for (int meeting = 0; meeting < meetings; meeting++) {
-				final long meetingSeed = RandomSource.nextLong();
-				playing.add(pool.submit(() -> FitnessCalculator.meet(new GameManager(), player, reference,
-						meetingSeed)[0]));
-			}
-			double total = 0;
-			for (final Future<Double> points : playing) {
-				total += points.get();
-			}
-			return total / (2.0 * meetings);
-		} finally {
-			pool.shutdownNow();
+		final long[] meetingSeeds = new long[meetings];
+		for (int meeting = 0; meeting < meetings; meeting++) {
+			meetingSeeds[meeting] = RandomSource.nextLong();
 		}
+		return FitnessCalculator.averagePoints(player, reference, meetingSeeds);
 	}
 
 	/**

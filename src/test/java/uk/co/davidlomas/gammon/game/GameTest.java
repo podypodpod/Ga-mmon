@@ -9,6 +9,7 @@ import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -107,5 +108,23 @@ public class GameTest {
 		}
 
 		assertTrue(game.getGameStats().isDraw());
+	}
+
+	@Test
+	public void aGameCutShortCountsOnlyTheTurnsPlayed() {
+		final Game game = new Game(individual1, individual2, 6);
+
+		game.run();
+
+		assertEquals(6, game.getGameStats().getTurns());
+	}
+
+	@Test
+	public void aFinishedGameCountsItsTurns() {
+		final Game game = new Game(individual1, individual2);
+
+		game.run();
+
+		assertThat(game.getGameStats().getTurns()).isBetween(1, 300);
 	}
 }
