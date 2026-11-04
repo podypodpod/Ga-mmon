@@ -22,7 +22,7 @@ final class RunStats {
 	 * How many generations go between measuring the fittest player against the reference player
 	 */
 	static final int REFERENCE_EVERY = 10;
-	static final String HEADER = "generation,bestFitness,averageFitness,geneSpread,turnsPerGame,drawRate,singleRate,"
+	static final String HEADER = "generation,bestFitness,geneSpread,turnsPerGame,drawRate,singleRate,"
 			+ "gammonRate,backgammonRate,pointsAgainstReference";
 
 	private static final Logger logger = LoggerFactory.getLogger(RunStats.class);
@@ -65,19 +65,11 @@ final class RunStats {
 
 	static String row(final String generation, final Population pop, final Double pointsAgainstReference) {
 		final GameTally games = pop.getGameTally();
-		return String.format(Locale.ROOT, "%s,%.4f,%.4f,%.2f,%.1f,%.4f,%.4f,%.4f,%.4f,%s", generation,
-				pop.getFittest().getFitness(), averageFitness(pop), geneSpread(pop), games.turnsPerGame(),
+		return String.format(Locale.ROOT, "%s,%.4f,%.2f,%.1f,%.4f,%.4f,%.4f,%.4f,%s", generation,
+				pop.getFittest().getFitness(), geneSpread(pop), games.turnsPerGame(),
 				games.rate(WinType.DRAW), games.rate(WinType.SINGLE), games.rate(WinType.GAMMON),
 				games.rate(WinType.BACKGAMMON), pointsAgainstReference == null ? ""
 						: String.format(Locale.ROOT, "%.3f", pointsAgainstReference));
-	}
-
-	private static double averageFitness(final Population pop) {
-		double total = 0;
-		for (final Individual individual : pop.individuals) {
-			total += individual.getFitness();
-		}
-		return total / pop.size();
 	}
 
 	/**

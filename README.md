@@ -96,7 +96,7 @@ A run's `runStats.csv` shows what's happening beyond the fitness scores, which o
 | Column | What it shows |
 |---|---|
 | `generation` | `initial`, then the generation, matching the saved players' names |
-| `bestFitness`, `averageFitness` | The fittest player's fitness and the population's average |
+| `bestFitness` | The fittest player's fitness. It can't show improvement, as it depends on how good the rest of the generation is |
 | `geneSpread` | How much the population still differs: the standard deviation of each gene's value across the population, averaged over the genes. Random genes give about 29, and it falls as the population converges. If it's near 0, there's nothing left for crossover to work with |
 | `turnsPerGame` | The average turns in the generation's fitness games, the two players' added together |
 | `drawRate` | The share of those games cut short at 300 turns. If it rises, players are failing to finish games |
