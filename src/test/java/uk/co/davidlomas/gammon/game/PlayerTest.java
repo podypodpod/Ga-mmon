@@ -318,7 +318,7 @@ public class PlayerTest {
 
 		new Player(black).movePiece(from, black ? -2 : 27, start);
 
-		assertEquals(0, black ? start.getBlackCount(from) : start.getRedCount(from));
+		assertEquals(0, start.getCount(from, black));
 		assertEquals(1, start.howManyHasPlayerBore(black));
 	}
 

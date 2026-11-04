@@ -49,9 +49,9 @@ public final class ReferencePlayer extends Individual {
 	 * their bar 25, and the opponent's bar is 0
 	 */
 	static double score(final Board board, final boolean black) {
-		final int[] mine = new int[26];
-		final int[] theirs = new int[26];
-		for (int point = 0; point <= 25; point++) {
+		final int[] mine = new int[Board.POINTS];
+		final int[] theirs = new int[Board.POINTS];
+		for (int point = 0; point < Board.POINTS; point++) {
 			final int onBoard = black ? point : 25 - point;
 			mine[point] = board.getCount(onBoard, black);
 			theirs[point] = board.getCount(onBoard, !black);
@@ -61,7 +61,7 @@ public final class ReferencePlayer extends Individual {
 		int theirPips = 0;
 		int myFurthestBack = 0;
 		int theirFurthestBack = 25;
-		for (int point = 0; point <= 25; point++) {
+		for (int point = 0; point < Board.POINTS; point++) {
 			myPips += point * mine[point];
 			theirPips += (25 - point) * theirs[point];
 			if (mine[point] > 0) {

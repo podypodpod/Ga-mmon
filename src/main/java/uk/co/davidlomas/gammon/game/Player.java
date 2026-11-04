@@ -412,8 +412,7 @@ public class Player {
 	 * returns true if destination isn't filled or no more than 1 chip
 	 */
 	private boolean validDestination(final int to, final Board liveBoard) {
-		return liveBoard.getCol(to) == black
-				|| liveBoard.getCol(to) != black && liveBoard.numEither(to) <= 1;
+		return liveBoard.getCol(to) == black || liveBoard.numEither(to) <= 1;
 	}
 
 	/**

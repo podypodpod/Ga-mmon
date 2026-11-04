@@ -30,6 +30,7 @@ import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BoardTest {
@@ -98,10 +99,6 @@ public class BoardTest {
 	@Test
 	public void givenADefaultBoardThePositionsShouldBeAsFollows() {
 
-		// Given standard BG start is applied
-
-		// Then
-
 		// RED
 		assertEquals(2, board.getRedCount(1));
 		assertEquals(5, board.getRedCount(12));
@@ -167,6 +164,36 @@ public class BoardTest {
 		assertEquals(2, empty.getRedCount(5));
 		assertEquals(2, empty.getCount(5, false));
 		assertEquals(0, empty.getBlackCount(5));
+	}
+
+	@Test
+	public void theSameCountOfTheOtherPlayersPiecesIsADifferentBoard() {
+		final Board black = new Board();
+		black.removeAllPieces();
+		black.setBlackCount(4, 2);
+		final Board red = new Board();
+		red.removeAllPieces();
+		red.setRedCount(4, 2);
+
+		assertNotEquals(black, red);
+	}
+
+	@Test
+	public void theLastPointsCountsAreKeptApart() {
+		final Board empty = new Board();
+		empty.removeAllPieces();
+
+		empty.setRedCount(25, 2);
+
+		assertEquals(2, empty.getRedCount(25));
+		assertEquals(0, empty.getBlackCount(25));
+		assertEquals(0, empty.getRedCount(24));
+	}
+
+	@Test
+	public void aCountThatWontFitIsRefusedRatherThanWrappingRound() {
+		assertThrows(IllegalArgumentException.class, () -> board.setBlackCount(3, 128));
+		assertThrows(IllegalArgumentException.class, () -> board.setRedCount(3, 128));
 	}
 
 	@Test

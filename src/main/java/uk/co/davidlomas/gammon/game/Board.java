@@ -89,11 +89,21 @@ public class Board {
 	}
 
 	public void setBlackCount(final int point, final int count) {
-		counts[index(point, true)] = (byte) count;
+		counts[index(point, true)] = asCount(count);
 	}
 
 	public void setRedCount(final int point, final int count) {
-		counts[index(point, false)] = (byte) count;
+		counts[index(point, false)] = asCount(count);
+	}
+
+	/**
+	 * @throws IllegalArgumentException if it doesn't fit in a byte, rather than letting it wrap round to another count
+	 */
+	private static byte asCount(final int count) {
+		if (count != (byte) count) {
+			throw new IllegalArgumentException("A point can't hold " + count + " pieces");
+		}
+		return (byte) count;
 	}
 
 	public void addPiece(final int point, final boolean black) {
