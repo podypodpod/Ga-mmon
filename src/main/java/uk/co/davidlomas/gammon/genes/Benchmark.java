@@ -27,9 +27,11 @@ import java.util.Locale;
  * plays the hand-written ReferencePlayer, which never changes. It's their average points a game against it, with the
  * standard error between the seeds' players.
  * <p>
- * Speed: a fixed set of seeded games between two seeded players, on one thread, in games a second. They're timed
- * several times and the fastest kept, as anything else the machine is doing can only slow a pass down. Their results
- * also give a fingerprint, which stays the same while a change doesn't change how games are played.
+ * Speed: a fixed set of seeded games between two seeded players, on one thread, in games a second. They're played
+ * first, as how much of the GA has run changes how the JVM has optimised the code, which moved the speed by far more
+ * than anything else. They're timed several times and the fastest kept, as anything else the machine is doing can only
+ * slow a pass down. Their results also give a fingerprint, which stays the same while a change doesn't change how games
+ * are played.
  * <p>
  * Arguments, all optional: generations (60), seeds (3), meetings with the reference player for each seed (1000), and
  * the csv file to add the row to (benchmarks.csv).
@@ -87,6 +89,9 @@ public final class Benchmark {
 		GameSettings.setMultiThreadingCache(true);
 		GameSettings.setThreadsCache(0);
 
+		final long[] fingerprint = new long[1];
+		final double gamesPerSecond = speed(fingerprint, speedPasses);
+
 		final long gaStart = System.nanoTime();
 		final double[] perSeed = new double[seeds];
 		for (int seed = 0; seed < seeds; seed++) {
@@ -106,9 +111,6 @@ public final class Benchmark {
 			squares += (points - mean) * (points - mean);
 		}
 		final double standardError = seeds > 1 ? Math.sqrt(squares / (seeds - 1) / seeds) : 0;
-
-		final long[] fingerprint = new long[1];
-		final double gamesPerSecond = speed(fingerprint, speedPasses);
 
 		final StringBuilder seedColumn = new StringBuilder();
 		for (final double points : perSeed) {
