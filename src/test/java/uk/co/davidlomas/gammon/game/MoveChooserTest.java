@@ -10,6 +10,7 @@ import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.test.helpers.BoardMirror;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
+import uk.co.davidlomas.gammon.test.helpers.TestBoards;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -94,7 +95,7 @@ public class MoveChooserTest {
 	public void inARaceTheRaceWeightsDecide(final boolean black) {
 		// black has three on 6 and one on 9, red is all past, and a 3 either stacks the 6 point or moves 6 to 3.
 		// The contact weights say avoid stacking and the race weights say stack, so it stacks
-		final Board blackPosition = empty();
+		final Board blackPosition = TestBoards.empty();
 		blackPosition.setBlackCount(6, 3);
 		blackPosition.setBlackCount(9, 1);
 		blackPosition.setRedCount(20, 15);
@@ -112,7 +113,7 @@ public class MoveChooserTest {
 	@ValueSource(booleans = {true, false})
 	public void aWinningMoveIsAlwaysPlayed(final boolean black) {
 		// black's last piece is on 1, and this player's genes say bearing off is bad
-		final Board blackPosition = empty();
+		final Board blackPosition = TestBoards.empty();
 		blackPosition.setBlackCount(1, 1);
 		blackPosition.setBlackBore(14);
 		blackPosition.setRedCount(20, 15);
@@ -160,12 +161,6 @@ public class MoveChooserTest {
 			individual.getAttribute(gene).setValue(value);
 		}
 		return individual;
-	}
-
-	private static Board empty() {
-		final Board board = new Board();
-		board.removeAllPieces();
-		return board;
 	}
 
 	private static Board forColour(final Board blackPosition, final boolean black) {

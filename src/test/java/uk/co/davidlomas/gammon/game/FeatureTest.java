@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.co.davidlomas.gammon.test.helpers.BoardMirror;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
+import uk.co.davidlomas.gammon.test.helpers.TestBoards;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -58,7 +59,7 @@ public class FeatureTest {
 	@ValueSource(booleans = {true, false})
 	public void aBlotWithinSixOfAnOpponentsPieceIsAtRisk(final boolean black) {
 		// red on 3 is 4 short of the blot on 7, but 17 short of the one on 20
-		final Board blackPosition = empty();
+		final Board blackPosition = TestBoards.empty();
 		blackPosition.setBlackCount(7, 1);
 		blackPosition.setBlackCount(20, 1);
 		blackPosition.setRedCount(3, 2);
@@ -72,7 +73,7 @@ public class FeatureTest {
 	@ValueSource(booleans = {true, false})
 	public void aBlotSevenAwayIsNotAtRisk(final boolean black) {
 		// it would need both dice, which isn't counted
-		final Board blackPosition = empty();
+		final Board blackPosition = TestBoards.empty();
 		blackPosition.setBlackCount(10, 1);
 		blackPosition.setRedCount(3, 2);
 
@@ -83,7 +84,7 @@ public class FeatureTest {
 	@ValueSource(booleans = {true, false})
 	public void aBlotAnOpponentHasPassedIsNotAtRisk(final boolean black) {
 		// red moves up, away from the blot on 3
-		final Board blackPosition = empty();
+		final Board blackPosition = TestBoards.empty();
 		blackPosition.setBlackCount(3, 1);
 		blackPosition.setRedCount(5, 2);
 
@@ -93,7 +94,7 @@ public class FeatureTest {
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
 	public void aPieceOnTheBarPutsBlotsInThePlayersHomeAtRisk(final boolean black) {
-		final Board blackPosition = empty();
+		final Board blackPosition = TestBoards.empty();
 		blackPosition.setBlackCount(5, 1);
 		// red's bar: it comes in on 1 to 6
 		blackPosition.setRedCount(0, 1);
@@ -107,7 +108,7 @@ public class FeatureTest {
 	@ValueSource(booleans = {true, false})
 	public void pipsAtRiskAddUpWhatTheExposedBlotsWouldLose(final boolean black) {
 		// red on 3 exposes the blots on 7, which would lose 18 pips, and 9, which would lose 16, but not the one on 20
-		final Board blackPosition = empty();
+		final Board blackPosition = TestBoards.empty();
 		blackPosition.setBlackCount(7, 1);
 		blackPosition.setBlackCount(9, 1);
 		blackPosition.setBlackCount(20, 1);
@@ -120,10 +121,10 @@ public class FeatureTest {
 	@ValueSource(booleans = {true, false})
 	public void aBlotThatHasComeFurtherHasMoreAtRisk(final boolean black) {
 		// red's bar is 0, so it exposes the blot on 2, which has come much further than the one on 22
-		final Board nearHome = empty();
+		final Board nearHome = TestBoards.empty();
 		nearHome.setBlackCount(2, 1);
 		nearHome.setRedCount(0, 1);
-		final Board farFromHome = empty();
+		final Board farFromHome = TestBoards.empty();
 		farFromHome.setBlackCount(22, 1);
 		farFromHome.setRedCount(20, 1);
 
@@ -134,7 +135,7 @@ public class FeatureTest {
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
 	public void thePrimeIsTheLongestRunOfPointsMade(final boolean black) {
-		final Board blackPosition = empty();
+		final Board blackPosition = TestBoards.empty();
 		for (final int point : new int[]{4, 5, 6, 7, 9, 10}) {
 			blackPosition.setBlackCount(point, 2);
 		}
@@ -145,7 +146,7 @@ public class FeatureTest {
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
 	public void borneOffCountsThePlayersPiecesOff(final boolean black) {
-		final Board blackPosition = empty();
+		final Board blackPosition = TestBoards.empty();
 		blackPosition.setBlackCount(3, 12);
 		blackPosition.setBlackBore(3);
 
@@ -155,7 +156,7 @@ public class FeatureTest {
 	@ParameterizedTest(name = "black {0}")
 	@ValueSource(booleans = {true, false})
 	public void onceThePlayersHavePassedEachOtherItsARace(final boolean black) {
-		final Board blackPosition = empty();
+		final Board blackPosition = TestBoards.empty();
 		blackPosition.setBlackCount(9, 15);
 		blackPosition.setRedCount(10, 15);
 		assertFalse(Feature.isContact(forColour(blackPosition, black)));
@@ -164,12 +165,6 @@ public class FeatureTest {
 		blackPosition.setRedCount(10, 14);
 		blackPosition.setRedCount(2, 1);
 		assertTrue(Feature.isContact(forColour(blackPosition, black)));
-	}
-
-	private static Board empty() {
-		final Board board = new Board();
-		board.removeAllPieces();
-		return board;
 	}
 
 	private static Board forColour(final Board blackPosition, final boolean black) {

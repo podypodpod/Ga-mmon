@@ -9,6 +9,7 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.test.helpers.BoardMirror;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
+import uk.co.davidlomas.gammon.test.helpers.TestBoards;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -109,8 +110,7 @@ public class ConsoleTurnTest {
 	@Test
 	public void whenNoDieCanBePlayedTheTurnEndsWithoutAsking() {
 		// black is on the bar and red holds every point it could come in on
-		final Board board = new Board();
-		board.removeAllPieces();
+		final Board board = TestBoards.empty();
 		board.setBlackCount(25, 1);
 		board.setBlackCount(6, 14);
 		for (int point = 19; point <= 24; point++) {
@@ -237,8 +237,7 @@ public class ConsoleTurnTest {
 	 * Every black piece is home, one on 3 and two on 6, and red has two on 20
 	 */
 	private static Board homeBoard() {
-		final Board home = new Board();
-		home.removeAllPieces();
+		final Board home = TestBoards.empty();
 		home.setBlackCount(3, 1);
 		home.setBlackCount(6, 2);
 		home.setRedCount(20, 2);

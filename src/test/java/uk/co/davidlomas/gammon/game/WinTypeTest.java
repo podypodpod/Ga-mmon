@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.co.davidlomas.gammon.test.helpers.BoardMirror;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
+import uk.co.davidlomas.gammon.test.helpers.TestBoards;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -81,8 +82,7 @@ public class WinTypeTest {
 	 * An empty board where red has borne off all 15 pieces, for a test to place black's
 	 */
 	private static Board redHasWon() {
-		final Board board = new Board();
-		board.removeAllPieces();
+		final Board board = TestBoards.empty();
 		board.setRedBore(15);
 		return board;
 	}

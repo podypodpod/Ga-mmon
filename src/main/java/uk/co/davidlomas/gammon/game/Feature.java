@@ -245,7 +245,7 @@ public enum Feature {
 	static boolean isContact(final Board board) {
 		// black's furthest back piece, and red's, in the board's numbering: black moves down and red up
 		int blackFurthestBack = -1;
-		int redFurthestBack = 26;
+		int redFurthestBack = Board.POINTS;
 		for (int point = 0; point < Board.POINTS; point++) {
 			if (board.getBlackCount(point) > 0) {
 				blackFurthestBack = point;

@@ -26,6 +26,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.co.davidlomas.gammon.test.helpers.BoardMirror;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
+import uk.co.davidlomas.gammon.test.helpers.TestBoards;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -152,8 +153,7 @@ public class BoardTest {
 
 	@Test
 	public void eachCountIsKeptApartFromTheOtherPlayersAndTheNextPoints() {
-		final Board empty = new Board();
-		empty.removeAllPieces();
+		final Board empty = TestBoards.empty();
 
 		empty.setBlackCount(4, 3);
 		empty.setRedCount(5, 2);
@@ -168,11 +168,9 @@ public class BoardTest {
 
 	@Test
 	public void theSameCountOfTheOtherPlayersPiecesIsADifferentBoard() {
-		final Board black = new Board();
-		black.removeAllPieces();
+		final Board black = TestBoards.empty();
 		black.setBlackCount(4, 2);
-		final Board red = new Board();
-		red.removeAllPieces();
+		final Board red = TestBoards.empty();
 		red.setRedCount(4, 2);
 
 		assertNotEquals(black, red);
@@ -180,8 +178,7 @@ public class BoardTest {
 
 	@Test
 	public void theLastPointsCountsAreKeptApart() {
-		final Board empty = new Board();
-		empty.removeAllPieces();
+		final Board empty = TestBoards.empty();
 
 		empty.setRedCount(25, 2);
 
@@ -191,15 +188,16 @@ public class BoardTest {
 	}
 
 	@Test
-	public void aCountThatWontFitIsRefusedRatherThanWrappingRound() {
+	public void aCountThatCantBeHeldIsRefusedRatherThanWrappingRound() {
 		assertThrows(IllegalArgumentException.class, () -> board.setBlackCount(3, 128));
 		assertThrows(IllegalArgumentException.class, () -> board.setRedCount(3, 128));
+		assertThrows(IllegalArgumentException.class, () -> board.setBlackCount(3, -1));
+		assertThrows(IllegalArgumentException.class, () -> board.setRedCount(3, -1));
 	}
 
 	@Test
 	public void piecesCanBeAddedToAndRemovedFromEitherPlayersCount() {
-		final Board empty = new Board();
-		empty.removeAllPieces();
+		final Board empty = TestBoards.empty();
 
 		empty.addPiece(0, false);
 		empty.addPiece(25, true);
@@ -212,8 +210,7 @@ public class BoardTest {
 
 	@Test
 	public void aPointBelongsToWhoeverHasMorePiecesOnItAndAnEmptyOneCountsAsRed() {
-		final Board empty = new Board();
-		empty.removeAllPieces();
+		final Board empty = TestBoards.empty();
 		empty.setBlackCount(3, 2);
 		empty.setRedCount(4, 5);
 
@@ -253,8 +250,7 @@ public class BoardTest {
 	 * Black has a piece on 1 and three on 6, its home quarter, and red has two on 20
 	 */
 	private static Board endGameBoard() {
-		final Board endGame = new Board();
-		endGame.removeAllPieces();
+		final Board endGame = TestBoards.empty();
 		endGame.setBlackCount(1, 1);
 		endGame.setBlackCount(6, 3);
 		endGame.setRedCount(20, 2);

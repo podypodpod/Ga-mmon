@@ -9,6 +9,7 @@ import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.test.helpers.BoardMirror;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
+import uk.co.davidlomas.gammon.test.helpers.TestBoards;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -52,8 +53,7 @@ public class AiPlayerTest {
 	@ValueSource(booleans = {true, false})
 	public void aPlayerWhoCantComeInOffTheBarKeepsTheSameBoard(final boolean black) {
 		// Black has a piece on the bar and red holds every point in black's way in, so no roll lets it move
-		final Board blackPosition = new Board();
-		blackPosition.removeAllPieces();
+		final Board blackPosition = TestBoards.empty();
 		blackPosition.setBlackCount(25, 1);
 		blackPosition.setBlackCount(6, 14);
 		for (int point = 19; point <= 24; point++) {

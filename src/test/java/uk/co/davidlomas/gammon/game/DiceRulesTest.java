@@ -9,6 +9,7 @@ import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.test.helpers.BoardMirror;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
+import uk.co.davidlomas.gammon.test.helpers.TestBoards;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -50,7 +51,7 @@ public class DiceRulesTest {
 	 * the 6 has nowhere to go, while 10 to 4 and 8 to 7 uses both dice.
 	 */
 	private static Board bothDiceCanBeUsed() {
-		final Board board = emptyBoard();
+		final Board board = TestBoards.empty();
 		board.setBlackCount(10, 1);
 		board.setBlackCount(8, 1);
 		board.setRedCount(3, 2);
@@ -63,7 +64,7 @@ public class DiceRulesTest {
 	 * it, so only one can be, and it has to be the 6: 10 to 4.
 	 */
 	private static Board onlyOneDieCanBeUsed() {
-		final Board board = emptyBoard();
+		final Board board = TestBoards.empty();
 		board.setBlackCount(10, 1);
 		board.setBlackCount(2, 1);
 		board.setRedCount(3, 2);
@@ -76,7 +77,7 @@ public class DiceRulesTest {
 	 * nowhere to go.
 	 */
 	private static Board onlyThreeOfADoubleCanBeUsed() {
-		final Board board = emptyBoard();
+		final Board board = TestBoards.empty();
 		board.setBlackCount(13, 1);
 		board.setRedCount(1, 2);
 		return board;
@@ -222,9 +223,4 @@ public class DiceRulesTest {
 		return black ? blackPosition : BoardMirror.mirror(blackPosition);
 	}
 
-	private static Board emptyBoard() {
-		final Board board = new Board();
-		board.removeAllPieces();
-		return board;
-	}
 }

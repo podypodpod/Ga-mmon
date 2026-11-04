@@ -26,6 +26,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.co.davidlomas.gammon.test.helpers.BoardMirror;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
+import uk.co.davidlomas.gammon.test.helpers.TestBoards;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -326,8 +327,7 @@ public class PlayerTest {
 	 * Every black piece is home, one on 3 and two on 6, and red has two on 20
 	 */
 	private static Board homeBoard() {
-		final Board home = new Board();
-		home.removeAllPieces();
+		final Board home = TestBoards.empty();
 		home.setBlackCount(3, 1);
 		home.setBlackCount(6, 2);
 		home.setRedCount(20, 2);

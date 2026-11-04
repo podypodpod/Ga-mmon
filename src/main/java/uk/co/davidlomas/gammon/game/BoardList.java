@@ -66,7 +66,7 @@ public class BoardList {
 	/**
 	 * A board and its hash. A board is looked up three times as moves are tried, and hashing it means going through
 	 * every point, so the hash is worked out once. The board must not change while it's in the list. Using the boards
-	 * as keys directly made the benchmark's games about 7% slower.
+	 * as keys directly made the benchmark's games about 8% slower.
 	 */
 	private static final class HashedBoard {
 		private final Board board;

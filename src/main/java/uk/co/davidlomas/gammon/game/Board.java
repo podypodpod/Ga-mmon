@@ -97,10 +97,11 @@ public class Board {
 	}
 
 	/**
-	 * @throws IllegalArgumentException if it doesn't fit in a byte, rather than letting it wrap round to another count
+	 * @throws IllegalArgumentException if it's negative or won't fit in a byte, rather than wrapping round to another
+	 *                                  count
 	 */
 	private static byte asCount(final int count) {
-		if (count != (byte) count) {
+		if (count < 0 || count > Byte.MAX_VALUE) {
 			throw new IllegalArgumentException("A point can't hold " + count + " pieces");
 		}
 		return (byte) count;
