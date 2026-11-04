@@ -51,10 +51,10 @@ public class DiceRulesTest {
 	 */
 	private static Board bothDiceCanBeUsed() {
 		final Board board = emptyBoard();
-		board.Points[10].setBlackCount(1);
-		board.Points[8].setBlackCount(1);
-		board.Points[3].setRedCount(2);
-		board.Points[2].setRedCount(2);
+		board.setBlackCount(10, 1);
+		board.setBlackCount(8, 1);
+		board.setRedCount(3, 2);
+		board.setRedCount(2, 2);
 		return board;
 	}
 
@@ -64,10 +64,10 @@ public class DiceRulesTest {
 	 */
 	private static Board onlyOneDieCanBeUsed() {
 		final Board board = emptyBoard();
-		board.Points[10].setBlackCount(1);
-		board.Points[2].setBlackCount(1);
-		board.Points[3].setRedCount(2);
-		board.Points[1].setRedCount(2);
+		board.setBlackCount(10, 1);
+		board.setBlackCount(2, 1);
+		board.setRedCount(3, 2);
+		board.setRedCount(1, 2);
 		return board;
 	}
 
@@ -77,8 +77,8 @@ public class DiceRulesTest {
 	 */
 	private static Board onlyThreeOfADoubleCanBeUsed() {
 		final Board board = emptyBoard();
-		board.Points[13].setBlackCount(1);
-		board.Points[1].setRedCount(2);
+		board.setBlackCount(13, 1);
+		board.setRedCount(1, 2);
 		return board;
 	}
 
@@ -197,7 +197,7 @@ public class DiceRulesTest {
 	private static int pips(final Board board, final boolean black) {
 		int pips = 0;
 		for (int point = 0; point <= 25; point++) {
-			pips += black ? point * board.Points[point].getBlackCount() : (25 - point) * board.Points[point].getRedCount();
+			pips += black ? point * board.getBlackCount(point) : (25 - point) * board.getRedCount(point);
 		}
 		return pips;
 	}
@@ -224,10 +224,7 @@ public class DiceRulesTest {
 
 	private static Board emptyBoard() {
 		final Board board = new Board();
-		for (final Point point : board.Points) {
-			point.setBlackCount(0);
-			point.setRedCount(0);
-		}
+		board.removeAllPieces();
 		return board;
 	}
 }

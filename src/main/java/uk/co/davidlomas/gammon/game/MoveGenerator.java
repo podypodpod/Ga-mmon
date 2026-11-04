@@ -70,7 +70,7 @@ public class MoveGenerator {
 			if (currentMove != 0) {
 
 				// loop all points
-				for (int point = 0; point < cb.Points.length; point++) {
+				for (int point = 0; point < Board.POINTS; point++) {
 
 					// if the player is black
 					if (p.black) {

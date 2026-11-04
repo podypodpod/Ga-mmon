@@ -89,8 +89,8 @@ public class PlayerTest {
 		player1.movePiece(1, 2, board);
 
 		// Then
-		assertEquals(1, board.Points[2].getRedCount());// new piece there
-		assertEquals(1, board.Points[25].getBlackCount());// old piece moved
+		assertEquals(1, board.getRedCount(2));// new piece there
+		assertEquals(1, board.getBlackCount(25));// old piece moved
 	}
 
 	@Test
@@ -103,8 +103,8 @@ public class PlayerTest {
 		player2.movePiece(6, 2, board);
 
 		// Then
-		assertEquals(1, board.Points[2].getBlackCount());// new piece there
-		assertEquals(1, board.Points[0].getRedCount());// old piece moved
+		assertEquals(1, board.getBlackCount(2));// new piece there
+		assertEquals(1, board.getRedCount(0));// old piece moved
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class PlayerTest {
 		player1.movePiece(1, 2, board);
 
 		// Then
-		assertEquals(1, board.Points[2].getRedCount());
+		assertEquals(1, board.getRedCount(2));
 	}
 
 	@Test
@@ -259,7 +259,7 @@ public class PlayerTest {
 		final int from = 1;
 
 		player1.movesLeft.add(2);
-		board.Points[0].addRedPiece();// add zero piece
+		board.addPiece(0, false);// add zero piece
 
 		// then
 		assertFalse(player1.passesBasicChecks(to, from, board));
@@ -272,7 +272,7 @@ public class PlayerTest {
 		final int from = 1;
 
 		player1.movesLeft.add(2);
-		board.Points[25].addBlackPiece();// adding opponent zero
+		board.addPiece(25, true);// adding opponent zero
 
 		// then
 		assertTrue(player1.passesBasicChecks(to, from, board));
@@ -290,7 +290,7 @@ public class PlayerTest {
 	@ValueSource(booleans = {true, false})
 	public void aBiggerRollBearsOffThePieceFurthestFromHome(final boolean black) {
 		final Board blackPosition = homeBoard();
-		blackPosition.Points[6].setBlackCount(0);
+		blackPosition.setBlackCount(6, 0);
 
 		assertTrue(canMove(black, blackPosition, 3, 6));
 	}
@@ -305,7 +305,7 @@ public class PlayerTest {
 	@ValueSource(booleans = {true, false})
 	public void aPieceCantBeBorneOffWhileAnotherIsOutsideHome(final boolean black) {
 		final Board blackPosition = homeBoard();
-		blackPosition.Points[7].setBlackCount(1);
+		blackPosition.setBlackCount(7, 1);
 
 		assertFalse(canMove(black, blackPosition, 3, 3));
 	}
@@ -318,7 +318,7 @@ public class PlayerTest {
 
 		new Player(black).movePiece(from, black ? -2 : 27, start);
 
-		assertEquals(0, black ? start.Points[from].getBlackCount() : start.Points[from].getRedCount());
+		assertEquals(0, black ? start.getBlackCount(from) : start.getRedCount(from));
 		assertEquals(1, start.howManyHasPlayerBore(black));
 	}
 
@@ -327,13 +327,10 @@ public class PlayerTest {
 	 */
 	private static Board homeBoard() {
 		final Board home = new Board();
-		for (final Point point : home.Points) {
-			point.setBlackCount(0);
-			point.setRedCount(0);
-		}
-		home.Points[3].setBlackCount(1);
-		home.Points[6].setBlackCount(2);
-		home.Points[20].setRedCount(2);
+		home.removeAllPieces();
+		home.setBlackCount(3, 1);
+		home.setBlackCount(6, 2);
+		home.setRedCount(20, 2);
 		return home;
 	}
 

@@ -40,8 +40,8 @@ public class AiPlayerTest {
 			final Board after = new AiPlayer(black, new Individual()).AiTurn(start);
 
 			assertNotEquals(start, after, "seed " + seed);
-			for (int point = 0; point < start.Points.length; point++) {
-				assertEquals(countFor(!black, start.Points[point]), countFor(!black, after.Points[point]),
+			for (int point = 0; point < Board.POINTS; point++) {
+				assertEquals(start.getCount(point, !black), after.getCount(point, !black),
 						"opponent's pieces moved on point " + point + ", seed " + seed);
 			}
 			assertEquals(15, piecesOnBoard(after, black), "seed " + seed);
@@ -53,16 +53,13 @@ public class AiPlayerTest {
 	public void aPlayerWhoCantComeInOffTheBarKeepsTheSameBoard(final boolean black) {
 		// Black has a piece on the bar and red holds every point in black's way in, so no roll lets it move
 		final Board blackPosition = new Board();
-		for (final Point point : blackPosition.Points) {
-			point.setBlackCount(0);
-			point.setRedCount(0);
-		}
-		blackPosition.Points[25].setBlackCount(1);
-		blackPosition.Points[6].setBlackCount(14);
+		blackPosition.removeAllPieces();
+		blackPosition.setBlackCount(25, 1);
+		blackPosition.setBlackCount(6, 14);
 		for (int point = 19; point <= 24; point++) {
-			blackPosition.Points[point].setRedCount(2);
+			blackPosition.setRedCount(point, 2);
 		}
-		blackPosition.Points[1].setRedCount(3);
+		blackPosition.setRedCount(1, 3);
 		final Board start = black ? blackPosition : BoardMirror.mirror(blackPosition);
 
 		for (long seed = 0; seed < 10; seed++) {
@@ -72,14 +69,10 @@ public class AiPlayerTest {
 		}
 	}
 
-	private static int countFor(final boolean black, final Point point) {
-		return black ? point.getBlackCount() : point.getRedCount();
-	}
-
 	private static int piecesOnBoard(final Board board, final boolean black) {
 		int total = 0;
-		for (final Point point : board.Points) {
-			total += countFor(black, point);
+		for (int point = 0; point < Board.POINTS; point++) {
+			total += board.getCount(point, black);
 		}
 		return total;
 	}

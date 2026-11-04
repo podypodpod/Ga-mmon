@@ -48,8 +48,8 @@ public class FeatureTest {
 	public void movingAheadGivesAPipLead(final boolean black) {
 		final Board blackPosition = new Board();
 		// 13 to 7, six pips
-		blackPosition.Points[13].setBlackCount(4);
-		blackPosition.Points[7].setBlackCount(1);
+		blackPosition.setBlackCount(13, 4);
+		blackPosition.setBlackCount(7, 1);
 
 		assertEquals(6, Feature.PIP_LEAD.measure(forColour(blackPosition, black), black));
 	}
@@ -59,9 +59,9 @@ public class FeatureTest {
 	public void aBlotWithinSixOfAnOpponentsPieceIsAtRisk(final boolean black) {
 		// red on 3 is 4 short of the blot on 7, but 17 short of the one on 20
 		final Board blackPosition = empty();
-		blackPosition.Points[7].setBlackCount(1);
-		blackPosition.Points[20].setBlackCount(1);
-		blackPosition.Points[3].setRedCount(2);
+		blackPosition.setBlackCount(7, 1);
+		blackPosition.setBlackCount(20, 1);
+		blackPosition.setRedCount(3, 2);
 
 		final Board board = forColour(blackPosition, black);
 		assertEquals(2, Feature.BLOTS.measure(board, black));
@@ -73,8 +73,8 @@ public class FeatureTest {
 	public void aBlotSevenAwayIsNotAtRisk(final boolean black) {
 		// it would need both dice, which isn't counted
 		final Board blackPosition = empty();
-		blackPosition.Points[10].setBlackCount(1);
-		blackPosition.Points[3].setRedCount(2);
+		blackPosition.setBlackCount(10, 1);
+		blackPosition.setRedCount(3, 2);
 
 		assertEquals(0, Feature.PIPS_AT_RISK.measure(forColour(blackPosition, black), black));
 	}
@@ -84,8 +84,8 @@ public class FeatureTest {
 	public void aBlotAnOpponentHasPassedIsNotAtRisk(final boolean black) {
 		// red moves up, away from the blot on 3
 		final Board blackPosition = empty();
-		blackPosition.Points[3].setBlackCount(1);
-		blackPosition.Points[5].setRedCount(2);
+		blackPosition.setBlackCount(3, 1);
+		blackPosition.setRedCount(5, 2);
 
 		assertEquals(0, Feature.PIPS_AT_RISK.measure(forColour(blackPosition, black), black));
 	}
@@ -94,9 +94,9 @@ public class FeatureTest {
 	@ValueSource(booleans = {true, false})
 	public void aPieceOnTheBarPutsBlotsInThePlayersHomeAtRisk(final boolean black) {
 		final Board blackPosition = empty();
-		blackPosition.Points[5].setBlackCount(1);
+		blackPosition.setBlackCount(5, 1);
 		// red's bar: it comes in on 1 to 6
-		blackPosition.Points[0].setRedCount(1);
+		blackPosition.setRedCount(0, 1);
 
 		final Board board = forColour(blackPosition, black);
 		assertEquals(20, Feature.PIPS_AT_RISK.measure(board, black));
@@ -108,10 +108,10 @@ public class FeatureTest {
 	public void pipsAtRiskAddUpWhatTheExposedBlotsWouldLose(final boolean black) {
 		// red on 3 exposes the blots on 7, which would lose 18 pips, and 9, which would lose 16, but not the one on 20
 		final Board blackPosition = empty();
-		blackPosition.Points[7].setBlackCount(1);
-		blackPosition.Points[9].setBlackCount(1);
-		blackPosition.Points[20].setBlackCount(1);
-		blackPosition.Points[3].setRedCount(2);
+		blackPosition.setBlackCount(7, 1);
+		blackPosition.setBlackCount(9, 1);
+		blackPosition.setBlackCount(20, 1);
+		blackPosition.setRedCount(3, 2);
 
 		assertEquals(34, Feature.PIPS_AT_RISK.measure(forColour(blackPosition, black), black));
 	}
@@ -121,11 +121,11 @@ public class FeatureTest {
 	public void aBlotThatHasComeFurtherHasMoreAtRisk(final boolean black) {
 		// red's bar is 0, so it exposes the blot on 2, which has come much further than the one on 22
 		final Board nearHome = empty();
-		nearHome.Points[2].setBlackCount(1);
-		nearHome.Points[0].setRedCount(1);
+		nearHome.setBlackCount(2, 1);
+		nearHome.setRedCount(0, 1);
 		final Board farFromHome = empty();
-		farFromHome.Points[22].setBlackCount(1);
-		farFromHome.Points[20].setRedCount(1);
+		farFromHome.setBlackCount(22, 1);
+		farFromHome.setRedCount(20, 1);
 
 		assertEquals(23, Feature.PIPS_AT_RISK.measure(forColour(nearHome, black), black));
 		assertEquals(3, Feature.PIPS_AT_RISK.measure(forColour(farFromHome, black), black));
@@ -136,7 +136,7 @@ public class FeatureTest {
 	public void thePrimeIsTheLongestRunOfPointsMade(final boolean black) {
 		final Board blackPosition = empty();
 		for (final int point : new int[]{4, 5, 6, 7, 9, 10}) {
-			blackPosition.Points[point].setBlackCount(2);
+			blackPosition.setBlackCount(point, 2);
 		}
 
 		assertEquals(4, Feature.LONGEST_PRIME.measure(forColour(blackPosition, black), black));
@@ -146,7 +146,7 @@ public class FeatureTest {
 	@ValueSource(booleans = {true, false})
 	public void borneOffCountsThePlayersPiecesOff(final boolean black) {
 		final Board blackPosition = empty();
-		blackPosition.Points[3].setBlackCount(12);
+		blackPosition.setBlackCount(3, 12);
 		blackPosition.setBlackBore(3);
 
 		assertEquals(3, Feature.BORNE_OFF.measure(forColour(blackPosition, black), black));
@@ -156,22 +156,19 @@ public class FeatureTest {
 	@ValueSource(booleans = {true, false})
 	public void onceThePlayersHavePassedEachOtherItsARace(final boolean black) {
 		final Board blackPosition = empty();
-		blackPosition.Points[9].setBlackCount(15);
-		blackPosition.Points[10].setRedCount(15);
+		blackPosition.setBlackCount(9, 15);
+		blackPosition.setRedCount(10, 15);
 		assertFalse(Feature.isContact(forColour(blackPosition, black)));
 
 		// one red piece left behind black's makes it contact again
-		blackPosition.Points[10].setRedCount(14);
-		blackPosition.Points[2].setRedCount(1);
+		blackPosition.setRedCount(10, 14);
+		blackPosition.setRedCount(2, 1);
 		assertTrue(Feature.isContact(forColour(blackPosition, black)));
 	}
 
 	private static Board empty() {
 		final Board board = new Board();
-		for (final Point point : board.Points) {
-			point.setBlackCount(0);
-			point.setRedCount(0);
-		}
+		board.removeAllPieces();
 		return board;
 	}
 

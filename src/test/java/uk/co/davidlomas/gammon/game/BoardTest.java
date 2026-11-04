@@ -29,6 +29,7 @@ import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BoardTest {
@@ -63,14 +64,14 @@ public class BoardTest {
 
 	@Test
 	public void testingAddingACounterToABoardsPointsWorks() {
-		assertEquals(0, board.Points[1].getBlackCount(), "point [1] should start with 0");
-		board.Points[1].addBlackPiece();
-		assertEquals(1, board.Points[1].getBlackCount(), "point [1] didnt get added to");
+		assertEquals(0, board.getBlackCount(1), "point [1] should start with 0");
+		board.addPiece(1, true);
+		assertEquals(1, board.getBlackCount(1), "point [1] didnt get added to");
 	}
 
 	@Test
 	public void addingOneToBlack25SlotAndThenCallingIsThereZeroShouldReturnTrue() {
-		board.Points[25].addBlackPiece();
+		board.addPiece(25, true);
 		final Boolean isThereZero = board.isThereZero(true);
 		assertEquals(true, isThereZero);
 	}
@@ -89,7 +90,7 @@ public class BoardTest {
 
 	@Test
 	public void addingOneToRed0SlotAndThenCallingIsThereZeroShouldReturnTrue() {
-		board.Points[0].addRedPiece();
+		board.addPiece(0, false);
 		final Boolean isThereZero = board.isThereZero(false);
 		assertEquals(true, isThereZero);
 	}
@@ -99,30 +100,19 @@ public class BoardTest {
 
 		// Given standard BG start is applied
 
-		// RED
-		final Point x1 = board.Points[1];
-		final Point x12 = board.Points[12];
-		final Point x17 = board.Points[17];
-		final Point x19 = board.Points[19];
-		// BLACK
-		final Point x6 = board.Points[6];
-		final Point x8 = board.Points[8];
-		final Point x13 = board.Points[13];
-		final Point x24 = board.Points[24];
-
 		// Then
 
 		// RED
-		assertEquals(2, x1.getRedCount());
-		assertEquals(5, x12.getRedCount());
-		assertEquals(3, x17.getRedCount());
-		assertEquals(5, x19.getRedCount());
+		assertEquals(2, board.getRedCount(1));
+		assertEquals(5, board.getRedCount(12));
+		assertEquals(3, board.getRedCount(17));
+		assertEquals(5, board.getRedCount(19));
 
 		// BLACK
-		assertEquals(5, x6.getBlackCount());
-		assertEquals(3, x8.getBlackCount());
-		assertEquals(5, x13.getBlackCount());
-		assertEquals(2, x24.getBlackCount());
+		assertEquals(5, board.getBlackCount(6));
+		assertEquals(3, board.getBlackCount(8));
+		assertEquals(5, board.getBlackCount(13));
+		assertEquals(2, board.getBlackCount(24));
 	}
 
 	// The bearing off tests set up black's position, and check red with the mirror image of it
@@ -137,7 +127,7 @@ public class BoardTest {
 	@ValueSource(booleans = {true, false})
 	public void aPlayerWithAPieceJustOutsideHomeCannotBearOff(final boolean black) {
 		final Board blackPosition = endGameBoard();
-		blackPosition.Points[7].setBlackCount(1);
+		blackPosition.setBlackCount(7, 1);
 
 		assertFalse(forColour(blackPosition, black).canPlayerBear(black));
 	}
@@ -146,7 +136,7 @@ public class BoardTest {
 	@ValueSource(booleans = {true, false})
 	public void aPlayerWithAPieceOnTheBarCannotBearOff(final boolean black) {
 		final Board blackPosition = endGameBoard();
-		blackPosition.Points[25].setBlackCount(1);
+		blackPosition.setBlackCount(25, 1);
 
 		assertFalse(forColour(blackPosition, black).canPlayerBear(black));
 	}
@@ -163,22 +153,88 @@ public class BoardTest {
 		assertEquals(11, mirrored.getRedBore());
 	}
 
+	@Test
+	public void eachCountIsKeptApartFromTheOtherPlayersAndTheNextPoints() {
+		final Board empty = new Board();
+		empty.removeAllPieces();
+
+		empty.setBlackCount(4, 3);
+		empty.setRedCount(5, 2);
+
+		assertEquals(3, empty.getBlackCount(4));
+		assertEquals(3, empty.getCount(4, true));
+		assertEquals(0, empty.getRedCount(4));
+		assertEquals(2, empty.getRedCount(5));
+		assertEquals(2, empty.getCount(5, false));
+		assertEquals(0, empty.getBlackCount(5));
+	}
+
+	@Test
+	public void piecesCanBeAddedToAndRemovedFromEitherPlayersCount() {
+		final Board empty = new Board();
+		empty.removeAllPieces();
+
+		empty.addPiece(0, false);
+		empty.addPiece(25, true);
+		empty.addPiece(25, true);
+		empty.removePiece(25, true);
+
+		assertEquals(1, empty.getRedCount(0));
+		assertEquals(1, empty.getBlackCount(25));
+	}
+
+	@Test
+	public void aPointBelongsToWhoeverHasMorePiecesOnItAndAnEmptyOneCountsAsRed() {
+		final Board empty = new Board();
+		empty.removeAllPieces();
+		empty.setBlackCount(3, 2);
+		empty.setRedCount(4, 5);
+
+		assertTrue(empty.getCol(3));
+		assertEquals(2, empty.numEither(3));
+		assertFalse(empty.getCol(4));
+		assertEquals(5, empty.numEither(4));
+		assertFalse(empty.getCol(5));
+		assertEquals(0, empty.numEither(5));
+	}
+
+	@Test
+	public void aCopyDoesNotChangeWithTheBoardItWasCopiedFrom() {
+		final Board original = new Board();
+		final Board copy = new Board(original);
+		assertEquals(original, copy);
+		assertEquals(original.hashCode(), copy.hashCode());
+
+		original.addPiece(6, true);
+
+		assertEquals(5, copy.getBlackCount(6));
+		assertNotEquals(original, copy);
+	}
+
+	@Test
+	public void removingEveryPieceLeavesWhatsBeenBorneOff() {
+		final Board withBorneOff = new Board();
+		withBorneOff.setBlackBore(2);
+
+		withBorneOff.removeAllPieces();
+
+		assertEquals(0, withBorneOff.numEither(6));
+		assertEquals(2, withBorneOff.getBlackBore());
+	}
+
 	/**
 	 * Black has a piece on 1 and three on 6, its home quarter, and red has two on 20
 	 */
 	private static Board endGameBoard() {
 		final Board endGame = new Board();
-		for (final Point point : endGame.Points) {
-			point.setBlackCount(0);
-			point.setRedCount(0);
-		}
-		endGame.Points[1].setBlackCount(1);
-		endGame.Points[6].setBlackCount(3);
-		endGame.Points[20].setRedCount(2);
+		endGame.removeAllPieces();
+		endGame.setBlackCount(1, 1);
+		endGame.setBlackCount(6, 3);
+		endGame.setRedCount(20, 2);
 		return endGame;
 	}
 
 	private static Board forColour(final Board blackPosition, final boolean black) {
 		return black ? blackPosition : BoardMirror.mirror(blackPosition);
 	}
-}
+}

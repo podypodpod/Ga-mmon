@@ -34,16 +34,21 @@ import java.util.Arrays;
 public class Board {
 
 
+	/**
+	 * How many points there are, including the bars: red's on 0 and black's on 25
+	 */
+	public static final int POINTS = 26;
+
 	private int redBore, blackBore;
 
-	public final Point[] Points;
+	/**
+	 * How many pieces are on each point, black's then red's for each. Boards are copied, compared and hashed more than
+	 * anything else in a game, and in one array that's quick and leaves little to collect. Use index to find a count.
+	 */
+	private final byte[] counts;
 
 	public Board() {
-		Points = new Point[26];
-
-		for (int x = 0; x < Points.length; x++) {
-			Points[x] = new Point();
-		}
+		counts = new byte[2 * POINTS];
 
 		setStartPosition();
 
@@ -52,20 +57,80 @@ public class Board {
 	}
 
 	public Board(final Board copy) {
-		// 26 new points
-		Points = new Point[26];
-
-		// copying each one over in a loop
-		for (int i = 0; i < copy.Points.length; i++) {
-			// copy
-			final Point x = new Point(copy.Points[i]);
-			// add
-			Points[i] = x;
-		}
+		counts = copy.counts.clone();
 
 		// copying bored
 		redBore = copy.redBore;
 		blackBore = copy.blackBore;
+	}
+
+	private static int index(final int point, final boolean black) {
+		return 2 * point + (black ? 0 : 1);
+	}
+
+	/**
+	 * How many of a player's pieces are on a point
+	 *
+	 * @param point the point
+	 * @param black the player color
+	 *
+	 * @return how many
+	 */
+	public int getCount(final int point, final boolean black) {
+		return counts[index(point, black)];
+	}
+
+	public int getBlackCount(final int point) {
+		return getCount(point, true);
+	}
+
+	public int getRedCount(final int point) {
+		return getCount(point, false);
+	}
+
+	public void setBlackCount(final int point, final int count) {
+		counts[index(point, true)] = (byte) count;
+	}
+
+	public void setRedCount(final int point, final int count) {
+		counts[index(point, false)] = (byte) count;
+	}
+
+	public void addPiece(final int point, final boolean black) {
+		counts[index(point, black)]++;
+	}
+
+	public void removePiece(final int point, final boolean black) {
+		counts[index(point, black)]--;
+	}
+
+	/**
+	 * Which player a point belongs to
+	 *
+	 * @param point the point
+	 *
+	 * @return true for black, which needs more black pieces on it than red, so an empty point counts as red
+	 */
+	public boolean getCol(final int point) {
+		return getBlackCount(point) > getRedCount(point);
+	}
+
+	/**
+	 * How many pieces the player with the most on a point has there
+	 *
+	 * @param point the point
+	 *
+	 * @return how many
+	 */
+	public int numEither(final int point) {
+		return Math.max(getBlackCount(point), getRedCount(point));
+	}
+
+	/**
+	 * Takes every piece off the points. Pieces already borne off stay borne off.
+	 */
+	public void removeAllPieces() {
+		Arrays.fill(counts, (byte) 0);
 	}
 
 	/**
@@ -88,7 +153,7 @@ public class Board {
 	 * @param black     the player color
 	 */
 	void bearPiece(final int bearPiece, final boolean black) {
-		Points[bearPiece].removePiece(black);
+		removePiece(bearPiece, black);
 		addToBear(black);
 	}
 
@@ -106,7 +171,7 @@ public class Board {
 			// looping all areas apart from the players own quarter, including the bar on 25
 			for (int x = 7; x <= 25; x++) {
 				// if any of them contain a black piece
-				if (Points[x].getBlackCount() > 0) {
+				if (getBlackCount(x) > 0) {
 					return false;
 				}
 			}
@@ -115,7 +180,7 @@ public class Board {
 			// looping all areas apart from the players own quarter (19 to 24), including the bar on 0
 			for (int x = 0; x <= 18; x++) {
 				// if any of them contain a red piece
-				if (Points[x].getRedCount() > 0) {
+				if (getRedCount(x) > 0) {
 					return false;
 				}
 			}
@@ -141,7 +206,7 @@ public class Board {
 			return false;
 		}
 		final Board b = (Board) o;
-		return redBore == b.redBore && blackBore == b.blackBore && Arrays.equals(Points, b.Points);
+		return redBore == b.redBore && blackBore == b.blackBore && Arrays.equals(counts, b.counts);
 	}
 
 	/**
@@ -149,7 +214,7 @@ public class Board {
 	 */
 	@Override
 	public int hashCode() {
-		return 31 * (31 * redBore + blackBore) + Arrays.hashCode(Points);
+		return 31 * (31 * redBore + blackBore) + Arrays.hashCode(counts);
 	}
 
 	public int getBlackBore() {
@@ -189,7 +254,7 @@ public class Board {
 		final int winnersHomeStart = loserBlack ? 19 : 1;
 		for (final int point : new int[]{bar, winnersHomeStart, winnersHomeStart + 1, winnersHomeStart + 2,
 				winnersHomeStart + 3, winnersHomeStart + 4, winnersHomeStart + 5}) {
-			if ((loserBlack ? Points[point].getBlackCount() : Points[point].getRedCount()) > 0) {
+			if (getCount(point, loserBlack) > 0) {
 				return WinType.BACKGAMMON;
 			}
 		}
@@ -213,9 +278,9 @@ public class Board {
 
 	public boolean isThereZero(final boolean black) {
 		if (black) {
-			return Points[25].getBlackCount() > 0;
+			return getBlackCount(25) > 0;
 		} else {
-			return Points[0].getRedCount() > 0;
+			return getRedCount(0) > 0;
 		}
 	}
 
@@ -231,13 +296,13 @@ public class Board {
 	public void printBoard(final PrintStream out) {
 		final String line = "|---------------------------------------|";
 		out.println(line);
-		out.println(String.format("| Black's bar (25): %-2d  Borne off: %-2d   |", Points[25].numEither(), blackBore));
+		out.println(String.format("| Black's bar (25): %-2d  Borne off: %-2d   |", numEither(25), blackBore));
 		out.println(line);
 		printRow(out, 1, 12);
 		out.println(line);
 		printRow(out, 13, 24);
 		out.println(line);
-		out.println(String.format("| Red's bar (0):    %-2d  Borne off: %-2d   |", Points[0].numEither(), redBore));
+		out.println(String.format("| Red's bar (0):    %-2d  Borne off: %-2d   |", numEither(0), redBore));
 		out.println(line);
 	}
 
@@ -250,8 +315,8 @@ public class Board {
 		final StringBuilder black = new StringBuilder("|BLK");
 		for (int x = first; x <= last; x++) {
 			numbers.append(String.format("|%2d", x));
-			red.append(String.format("|%2d", Points[x].getRedCount()));
-			black.append(String.format("|%2d", Points[x].getBlackCount()));
+			red.append(String.format("|%2d", getRedCount(x)));
+			black.append(String.format("|%2d", getBlackCount(x)));
 		}
 		out.println(numbers.append('|'));
 		out.println(red.append('|'));
@@ -260,7 +325,7 @@ public class Board {
 
 	void printBoardGUI() {
 		if (GameSettings.getDisplayGUI()) {
-			GameManager.boardContainerFrame.bp.printCheckers(Points, redBore, blackBore);
+			GameManager.boardContainerFrame.bp.printCheckers(this);
 		}
 	}
 
@@ -275,21 +340,18 @@ public class Board {
 
 	public void setStartPosition() {
 		// Resetting all to 0
-		for (final Point point : Points) {
-			point.setBlackCount(0);
-			point.setRedCount(0);
-		}
+		removeAllPieces();
 		// completing the starting position of the checkers, the rest left at 0
 		// Red Checkers
-		Points[1].setRedCount(2);
-		Points[12].setRedCount(5);
-		Points[17].setRedCount(3);
-		Points[19].setRedCount(5);
+		setRedCount(1, 2);
+		setRedCount(12, 5);
+		setRedCount(17, 3);
+		setRedCount(19, 5);
 		// Black Checkers
-		Points[6].setBlackCount(5);
-		Points[8].setBlackCount(3);
-		Points[13].setBlackCount(5);
-		Points[24].setBlackCount(2);
+		setBlackCount(6, 5);
+		setBlackCount(8, 3);
+		setBlackCount(13, 5);
+		setBlackCount(24, 2);
 	}
 
 }

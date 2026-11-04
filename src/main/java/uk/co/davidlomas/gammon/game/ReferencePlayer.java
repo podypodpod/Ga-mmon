@@ -52,9 +52,9 @@ public final class ReferencePlayer extends Individual {
 		final int[] mine = new int[26];
 		final int[] theirs = new int[26];
 		for (int point = 0; point <= 25; point++) {
-			final Point onBoard = board.Points[black ? point : 25 - point];
-			mine[point] = black ? onBoard.getBlackCount() : onBoard.getRedCount();
-			theirs[point] = black ? onBoard.getRedCount() : onBoard.getBlackCount();
+			final int onBoard = black ? point : 25 - point;
+			mine[point] = board.getCount(onBoard, black);
+			theirs[point] = board.getCount(onBoard, !black);
 		}
 
 		int myPips = 0;

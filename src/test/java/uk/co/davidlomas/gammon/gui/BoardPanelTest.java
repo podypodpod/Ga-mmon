@@ -47,7 +47,7 @@ public class BoardPanelTest {
 	@Test
 	public void eachPlayersCheckersAreDrawnOnTheirPoints() {
 		final BoardPanel panel = new BoardPanel();
-		panel.printCheckers(new Board().Points, 0, 0);
+		panel.printCheckers(new Board());
 
 		final BufferedImage drawn = draw(panel);
 
@@ -61,10 +61,10 @@ public class BoardPanelTest {
 	public void itDrawsTheBoardAsItWasHandedOverNotAsTheGameChangesIt() {
 		final Board board = new Board();
 		final BoardPanel panel = new BoardPanel();
-		panel.printCheckers(board.Points, 0, 0);
+		panel.printCheckers(board);
 
 		// the game carries on and empties point 6 before the panel gets round to drawing
-		board.Points[6].setBlackCount(0);
+		board.setBlackCount(6, 0);
 
 		assertEquals(Color.BLACK.getRGB(), colourAt(draw(panel), POINT_SIX));
 	}
@@ -78,7 +78,9 @@ public class BoardPanelTest {
 	@Test
 	public void piecesBorneOffAreDrawnOnlyOnceThereAreSome() {
 		final BoardPanel panel = new BoardPanel();
-		panel.printCheckers(new Board().Points, 0, 3);
+		final Board board = new Board();
+		board.setBlackBore(3);
+		panel.printCheckers(board);
 
 		final BufferedImage drawn = draw(panel);
 

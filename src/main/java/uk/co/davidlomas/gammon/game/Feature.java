@@ -215,9 +215,9 @@ public enum Feature {
 
 		Side(final Board board, final boolean black) {
 			for (int point = 0; point <= 25; point++) {
-				final Point onBoard = board.Points[black ? point : 25 - point];
-				mine[point] = black ? onBoard.getBlackCount() : onBoard.getRedCount();
-				theirs[point] = black ? onBoard.getRedCount() : onBoard.getBlackCount();
+				final int onBoard = black ? point : 25 - point;
+				mine[point] = board.getCount(onBoard, black);
+				theirs[point] = board.getCount(onBoard, !black);
 			}
 			borneOff = board.howManyHasPlayerBore(black);
 		}
@@ -246,10 +246,10 @@ public enum Feature {
 		int blackFurthestBack = -1;
 		int redFurthestBack = 26;
 		for (int point = 0; point <= 25; point++) {
-			if (board.Points[point].getBlackCount() > 0) {
+			if (board.getBlackCount(point) > 0) {
 				blackFurthestBack = point;
 			}
-			if (board.Points[25 - point].getRedCount() > 0) {
+			if (board.getRedCount(25 - point) > 0) {
 				redFurthestBack = 25 - point;
 			}
 		}

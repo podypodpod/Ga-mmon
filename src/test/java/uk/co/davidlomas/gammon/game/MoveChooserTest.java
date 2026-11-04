@@ -95,9 +95,9 @@ public class MoveChooserTest {
 		// black has three on 6 and one on 9, red is all past, and a 3 either stacks the 6 point or moves 6 to 3.
 		// The contact weights say avoid stacking and the race weights say stack, so it stacks
 		final Board blackPosition = empty();
-		blackPosition.Points[6].setBlackCount(3);
-		blackPosition.Points[9].setBlackCount(1);
-		blackPosition.Points[20].setRedCount(15);
+		blackPosition.setBlackCount(6, 3);
+		blackPosition.setBlackCount(9, 1);
+		blackPosition.setRedCount(20, 15);
 		blackPosition.setBlackBore(11);
 		final Individual stacker = weighted(50);
 		stacker.getAttribute(MoveChooser.contactGene(Feature.STACKING)).setValue(0);
@@ -113,9 +113,9 @@ public class MoveChooserTest {
 	public void aWinningMoveIsAlwaysPlayed(final boolean black) {
 		// black's last piece is on 1, and this player's genes say bearing off is bad
 		final Board blackPosition = empty();
-		blackPosition.Points[1].setBlackCount(1);
+		blackPosition.setBlackCount(1, 1);
 		blackPosition.setBlackBore(14);
-		blackPosition.Points[20].setRedCount(15);
+		blackPosition.setRedCount(20, 15);
 		final Individual reluctant = weighted(50);
 		reluctant.getAttribute(MoveChooser.raceGene(Feature.BORNE_OFF)).setValue(0);
 
@@ -146,8 +146,8 @@ public class MoveChooserTest {
 
 	private static Board blotToHit(final boolean black) {
 		final Board blackPosition = new Board();
-		blackPosition.Points[19].setRedCount(4);
-		blackPosition.Points[22].setRedCount(1);
+		blackPosition.setRedCount(19, 4);
+		blackPosition.setRedCount(22, 1);
 		return forColour(blackPosition, black);
 	}
 
@@ -164,10 +164,7 @@ public class MoveChooserTest {
 
 	private static Board empty() {
 		final Board board = new Board();
-		for (final Point point : board.Points) {
-			point.setBlackCount(0);
-			point.setRedCount(0);
-		}
+		board.removeAllPieces();
 		return board;
 	}
 
