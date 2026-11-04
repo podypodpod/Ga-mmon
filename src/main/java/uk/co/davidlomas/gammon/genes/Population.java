@@ -28,6 +28,7 @@ package uk.co.davidlomas.gammon.genes;
 public class Population {
 
 	public Individual[] individuals;
+	private GameTally gameTally = new GameTally();
 
 	/**
 	 * Instantiates a new population.
@@ -54,6 +55,17 @@ public class Population {
 	 */
 	public void calculateFitness() {
 		FitnessCalculator.calculateFitnessOfPopulation(this);
+	}
+
+	/**
+	 * @return what happened in the games played when fitness was last worked out
+	 */
+	GameTally getGameTally() {
+		return gameTally;
+	}
+
+	void setGameTally(final GameTally gameTally) {
+		this.gameTally = gameTally;
 	}
 
 	/**

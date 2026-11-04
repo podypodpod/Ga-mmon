@@ -84,13 +84,17 @@ class FitnessCalculator {
 		}
 
 		logger.trace("Round robin started: {} meetings", plan.size());
-		final List<double[]> scores = play(pop, plan);
+		final List<MeetingGames> played = play(pop, plan);
 
 		final double[] totals = new double[size];
+		final GameTally tally = new GameTally();
 		for (int i = 0; i < plan.size(); i++) {
-			totals[plan.get(i).first()] += scores.get(i)[0];
-			totals[plan.get(i).second()] += scores.get(i)[1];
+			totals[plan.get(i).first()] += played.get(i).firstScore();
+			totals[plan.get(i).second()] += played.get(i).secondScore();
+			tally.add(played.get(i).firstAsPlayerOne());
+			tally.add(played.get(i).secondAsPlayerOne());
 		}
+		pop.setGameTally(tally);
 
 		// each player plays two games a meeting against each of the others
 		final int gamesEach = 2 * meetings * (size - 1);
@@ -100,11 +104,31 @@ class FitnessCalculator {
 	}
 
 	/**
-	 * Plays every meeting in the plan, on as many threads as the settings allow, and gives back each one's scores
+	 * The player's average points a game against the opponent, a meeting for each seed. It's played on threads of its
+	 * own, like the fitness games, so the caller's random numbers aren't touched
+	 */
+	static double averagePoints(final Individual player, final Individual opponent, final long[] meetingSeeds) {
+		final Population pair = new Population(2, false);
+		pair.saveIndividual(0, player);
+		pair.saveIndividual(1, opponent);
+
+		final List<Meeting> plan = new ArrayList<>();
+		for (final long seed : meetingSeeds) {
+			plan.add(new Meeting(0, 1, seed));
+		}
+		double total = 0;
+		for (final MeetingGames games : play(pair, plan)) {
+			total += games.firstScore();
+		}
+		return total / (2.0 * meetingSeeds.length);
+	}
+
+	/**
+	 * Plays every meeting in the plan, on as many threads as the settings allow, and gives back each one's games
 	 * in the plan's order. Even with one thread they're played on a thread of their own, so the caller's random
 	 * numbers aren't touched either way
 	 */
-	private static List<double[]> play(final Population pop, final List<Meeting> plan) {
+	private static List<MeetingGames> play(final Population pop, final List<Meeting> plan) {
 		// the settings are read now, before any game, so the threads don't each read them from the file
 		GameSettings.loadAll();
 		final boolean parallel = GameSettings.getMultiThreading() && !GameSettings.getDisplayGUI();
@@ -115,17 +139,17 @@ class FitnessCalculator {
 		final int threads = Math.max(1, Math.min(wanted, plan.size()));
 		final ExecutorService pool = Executors.newFixedThreadPool(threads);
 		try {
-			final List<Future<double[]>> playing = new ArrayList<>();
+			final List<Future<MeetingGames>> playing = new ArrayList<>();
 			for (final Meeting meeting : plan) {
 				final Individual first = pop.individuals[meeting.first()];
 				final Individual second = pop.individuals[meeting.second()];
-				playing.add(pool.submit(() -> meet(new GameManager(), first, second, meeting.seed())));
+				playing.add(pool.submit(() -> playMeeting(new GameManager(), first, second, meeting.seed())));
 			}
-			final List<double[]> scores = new ArrayList<>();
-			for (final Future<double[]> meeting : playing) {
-				scores.add(meeting.get());
+			final List<MeetingGames> played = new ArrayList<>();
+			for (final Future<MeetingGames> meeting : playing) {
+				played.add(meeting.get());
 			}
-			return scores;
+			return played;
 		} catch (final InterruptedException e) {
 			Thread.currentThread().interrupt();
 			throw new IllegalStateException("Interrupted while the games were played", e);
@@ -145,6 +169,20 @@ class FitnessCalculator {
 	}
 
 	/**
+	 * The two games of a meeting
+	 */
+	private record MeetingGames(GameStats firstAsPlayerOne, GameStats secondAsPlayerOne) {
+
+		double firstScore() {
+			return firstAsPlayerOne.getPlayerOneScore() + secondAsPlayerOne.getPlayerTwoScore();
+		}
+
+		double secondScore() {
+			return firstAsPlayerOne.getPlayerTwoScore() + secondAsPlayerOne.getPlayerOneScore();
+		}
+	}
+
+	/**
 	 * One meeting: two games with the same dice, one with each player as player one. The seed sets the players'
 	 * choices and the dice, so a meeting plays the same whichever thread plays it
 	 *
@@ -152,6 +190,12 @@ class FitnessCalculator {
 	 */
 	static double[] meet(final GameManager gameManager, final Individual first, final Individual second,
 						 final long seed) {
+		final MeetingGames games = playMeeting(gameManager, first, second, seed);
+		return new double[]{games.firstScore(), games.secondScore()};
+	}
+
+	private static MeetingGames playMeeting(final GameManager gameManager, final Individual first,
+											final Individual second, final long seed) {
 		RandomSource.setSeed(seed);
 		final long diceSeed = RandomSource.nextLong();
 
@@ -161,7 +205,6 @@ class FitnessCalculator {
 		RandomSource.setDiceSeed(diceSeed);
 		final GameStats secondAsPlayerOne = gameManager.playIndividualsVsEachOther(second, first);
 
-		return new double[]{firstAsPlayerOne.getPlayerOneScore() + secondAsPlayerOne.getPlayerTwoScore(),
-				firstAsPlayerOne.getPlayerTwoScore() + secondAsPlayerOne.getPlayerOneScore()};
+		return new MeetingGames(firstAsPlayerOne, secondAsPlayerOne);
 	}
 }

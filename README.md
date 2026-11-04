@@ -77,6 +77,7 @@ Each run is a new attempt, numbered by `attemptCount` in the settings, which goe
 
 - `FittestFromInitialPopulation`, the fittest of the first population;
 - `PlayerFromGen0`, `PlayerFromGen1` and so on, the fittest of each generation.
+- `runStats.csv`, a row of stats for each generation, written as the run goes.
 
 Each is a properties file with the player's genes, its fitness and each weight by name, and can be loaded with `Individual.loadFromFile`.
 
@@ -87,6 +88,20 @@ The GA's code is in `uk.co.davidlomas.gammon.genes`: `StartGa` runs it, `Genetic
 With a population of 40, two meetings per pair and a mutation rate of 0.02, players improve quickly over the first 25 or so generations and then level off. In one such run, generation 25 beat generation 0 by about 0.8 points a game, winning nearly three games in four, and later generations were no better than generation 25. A 200-generation run took about three minutes on a 12-core machine, with the games played on every core (see `multiThreading`).
 
 Better features, which let a player tell good moves from bad more finely, are what would take it further.
+
+### Reading a run's stats
+
+A run's `runStats.csv` shows what's happening beyond the fitness scores, which only compare players with others in their own generation:
+
+| Column | What it shows |
+|---|---|
+| `generation` | `initial`, then the generation, matching the saved players' names |
+| `bestFitness` | The fittest player's fitness. It can't show improvement, as it depends on how good the rest of the generation is |
+| `geneSpread` | How much the population still differs: the standard deviation of each gene's value across the population, averaged over the genes. Random genes give about 29, and it falls as the population converges. If it's near 0, there's nothing left for crossover to work with |
+| `turnsPerGame` | The average turns in the generation's fitness games, the two players' added together |
+| `drawRate` | The share of those games cut short at 300 turns. If it rises, players are failing to finish games |
+| `singleRate`, `gammonRate`, `backgammonRate` | The share of those games won each way |
+| `pointsAgainstReference` | The fittest player's average points a game against `ReferencePlayer`, over the same 200 meetings each time, which does show real improvement. It's measured at the start, every 10 generations and at the end, and blank otherwise |
 
 ### Benchmarking a change
 

@@ -101,15 +101,17 @@ class Game implements Runnable {
 		// loser who saves a gammon is a point better off. A person playing as player 2 can concede, which hands
 		// player 1 the game, scored as the board stands
 		// A game cut short is a draw, with no victor and nothing to either player
+		// the check that cuts a game short counts a turn that's never played
+		final int turns = Math.min(turnsPlayed, maxTurns);
 		if (cutShort) {
-			return new GameStats(null, WinType.DRAW, 0, 0);
+			return new GameStats(null, WinType.DRAW, 0, 0, turns);
 		}
 		final boolean playerOneWon = liveBoard.hasPlayerWon(aiPlayer1.black) || aiPlayer2.hasConceded();
 		final WinType winType = liveBoard.winTypeAgainst(playerOneWon ? aiPlayer2.black : aiPlayer1.black);
 		final int points = winType.getPoints();
 		return playerOneWon
-				? new GameStats(individual1, winType, points, -points)
-				: new GameStats(individual2, winType, -points, points);
+				? new GameStats(individual1, winType, points, -points, turns)
+				: new GameStats(individual2, winType, -points, points, turns);
 	}
 
 	/**
