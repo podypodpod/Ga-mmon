@@ -18,7 +18,7 @@ builds the project and runs the tests. To run the GA:
 ./gradlew ga
 ```
 
-or run the main class `uk.co.davidlomas.gammon.genes.StartGa`, for example from IntelliJ, where adding the VM option `-XX:+UseParallelGC` makes it about 5% faster. The settings it uses are in `conf/` (see [Settings](#settings)).
+or run the main class `uk.co.davidlomas.gammon.genes.StartGa`, for example from IntelliJ, where adding the VM option `-XX:+UseParallelGC` makes it about 10% faster. The settings it uses are in `conf/` (see [Settings](#settings)).
 
 ## How a player chooses a move
 

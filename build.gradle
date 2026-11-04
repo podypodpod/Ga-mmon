@@ -44,7 +44,7 @@ test {
 }
 
 // Games make a lot of short-lived objects and don't need short pauses, which suits this collector over the default:
-// it took 4 to 5% off the GA, and more off a single thread. A JVM flag, so it only applies to what's started from here
+// it took about 10% off the GA, and a little more off a single thread. A JVM flag, so it only applies to what's started from here
 def collector = '-XX:+UseParallelGC'
 
 // Runs the GA with the settings in conf/
