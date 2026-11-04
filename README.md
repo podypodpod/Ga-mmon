@@ -24,8 +24,7 @@ The features are measured from the side of the player choosing:
 |---|---|
 | Pip lead | How many pips the opponent needs to bear off, less how many the player needs |
 | Blots | The player's points with a single piece on, which can be hit |
-| Exposed blots | The player's blots that an opponent's piece, or one on their bar, could hit with a single die |
-| Pips at risk | How many pips the player's exposed blots would lose if they were all hit, as a blot that has come further has more to lose |
+| Pips at risk | How many pips the player would lose if all their blots that an opponent's piece, or one on their bar, could hit with a single die were hit, as a blot that has come further has more to lose |
 | Points made | Points with two or more of the player's pieces, which the opponent can't land on |
 | Home points | Points made in the player's home quarter |
 | Longest prime | The longest run of points made next to each other, which blocks the opponent's pieces behind it |
@@ -37,7 +36,7 @@ The features are measured from the side of the player choosing:
 
 Backgammon plays very differently once the two sides have passed each other and can't hit each other any more, so a player has two sets of weights: one for while the players are in contact, with all the features, and one for the race after, with only the features that can still change in a race (pip lead, home points, pieces back, borne off and stacking).
 
-That's 17 weights. Each is a gene holding a number from 0 to 100, stored as 7 bits, which gives a weight from -1 to 1. A weight can be negative, so a player can learn that something is bad for it, such as leaving blots to be hit, as well as good.
+That's 16 weights. Each is a gene holding a number from 0 to 100, stored as 7 bits, which gives a weight from -1 to 1. A weight can be negative, so a player can learn that something is bad for it, such as leaving blots to be hit, as well as good.
 
 The code for this is in `MoveChooser` and `Feature`, in `uk.co.davidlomas.gammon.game`.
 
@@ -113,7 +112,7 @@ A run's `runStats.csv` shows what's happening beyond the fitness scores, which o
 measures how strong the GA's players are and how fast games are, and adds a row to `benchmarks.csv`, so a change to the players or the GA can be compared with the row before it. It takes about four minutes on 12 cores. Run it on a commit without other changes, or the row's commit is marked `-dirty`, and commit the new row with the change.
 
 - **Strength** (`pointsPerGame`, `standardError`, `perSeed`): the GA is run for 60 generations from 3 fixed seeds, always with a population of 40 and two meetings per pair, whatever `conf/` says. Each run's fittest player then plays 1,000 meetings against `ReferencePlayer`, a hand-written player that never changes, so every commit is measured against the same opponent. The result is their average points a game against it, with the standard error between the three seeds. A difference of less than about two standard errors could be luck.
-- **Speed** (`gamesPerSecond`): the same 2,000 seeded games each time, on one thread. Expect it to vary by a few percent from run to run.
+- **Speed** (`gamesPerSecond`): the same 2,000 seeded games each time, on one thread. Expect it to vary by a few percent from run to run. Only compare rows with the same fingerprint: a different fingerprint means the games themselves were different, which can move this by far more than any change in speed.
 - **Fingerprint**: a hash of those games' results. It stays the same while a change doesn't change how games are played, such as a speed-up, and changes when it does.
 - `gaSeconds` and `cores` give the time the GA runs took, which depends on the machine.
 

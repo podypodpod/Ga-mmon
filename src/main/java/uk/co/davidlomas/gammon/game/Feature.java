@@ -45,25 +45,9 @@ public enum Feature {
 	},
 
 	/**
-	 * The player's blots that an opponent's piece, or one on their bar, could hit with a single die: within six
-	 * points in front of it
-	 */
-	EXPOSED_BLOTS("exposedBlots", 5, false) {
-		@Override
-		int measure(final Side side) {
-			int exposed = 0;
-			for (int blot = 1; blot <= 24; blot++) {
-				if (side.mine(blot) == 1 && opponentWithinSix(side, blot)) {
-					exposed++;
-				}
-			}
-			return exposed;
-		}
-	},
-
-	/**
-	 * How many pips the player's exposed blots would lose if they were all hit: the further a blot has come, the more
-	 * it has to lose, as a hit piece goes back to the bar at 25
+	 * How many pips the player would lose if all their exposed blots were hit: those that an opponent's piece, or one
+	 * on their bar, could hit with a single die, within six points in front of it. The further a blot has come, the
+	 * more it has to lose, as a hit piece goes back to the bar at 25
 	 */
 	PIPS_AT_RISK("pipsAtRisk", 40, false) {
 		@Override
