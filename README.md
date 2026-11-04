@@ -12,7 +12,13 @@ You need Java to run Gradle. If you don't have the version the project is built 
 ./gradlew build
 ```
 
-builds the project and runs the tests. To run the GA, run the main class `uk.co.davidlomas.gammon.genes.StartGa`, for example from IntelliJ. The settings it uses are in `conf/` (see [Settings](#settings)).
+builds the project and runs the tests. To run the GA:
+
+```bash
+./gradlew ga
+```
+
+or run the main class `uk.co.davidlomas.gammon.genes.StartGa`, for example from IntelliJ, where adding the VM option `-XX:+UseParallelGC` makes it about 5% faster. The settings it uses are in `conf/` (see [Settings](#settings)).
 
 ## How a player chooses a move
 
@@ -112,7 +118,7 @@ A run's `runStats.csv` shows what's happening beyond the fitness scores, which o
 measures how strong the GA's players are and how fast games are, and adds a row to `benchmarks.csv`, so a change to the players or the GA can be compared with the row before it. It takes about four minutes on 12 cores. Run it on a commit without other changes, or the row's commit is marked `-dirty`, and commit the new row with the change.
 
 - **Strength** (`pointsPerGame`, `standardError`, `perSeed`): the GA is run for 60 generations from 3 fixed seeds, always with a population of 40 and two meetings per pair, whatever `conf/` says. Each run's fittest player then plays 1,000 meetings against `ReferencePlayer`, a hand-written player that never changes, so every commit is measured against the same opponent. The result is their average points a game against it, with the standard error between the three seeds. A difference of less than about two standard errors could be luck.
-- **Speed** (`gamesPerSecond`): the same 2,000 seeded games each time, on one thread, played before the GA and timed five times with the fastest kept. Repeat runs of the same code come out within a few percent. Rows up to e179ee1 measured it after the GA, which was much less steady, so don't compare speeds across that point. Only compare rows with the same fingerprint: a different fingerprint means the games themselves were different, which can move this by far more than any change in speed.
+- **Speed** (`gamesPerSecond`): the same 2,000 seeded games each time, on one thread, played before the GA and timed five times with the fastest kept. Repeat runs of the same code come out within a few percent. Rows up to e179ee1 measured it after the GA, which was much less steady, so don't compare speeds across that point. Rows up to 8d6f7b3 also used the default garbage collector rather than ParallelGC, which makes them slower for that reason alone. Only compare rows with the same fingerprint: a different fingerprint means the games themselves were different, which can move this by far more than any change in speed.
 - **Fingerprint**: a hash of those games' results. It stays the same while a change doesn't change how games are played, such as a speed-up, and changes when it does.
 - `gaSeconds` and `cores` give the time the GA runs took, which depends on the machine.
 
