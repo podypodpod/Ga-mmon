@@ -22,7 +22,7 @@ public class BenchmarkTest {
 
 	@Test
 	public void aShortRunGivesARowWithEveryColumn() throws Exception {
-		final String[] row = Benchmark.run(1, 2, 2).split(",", -1);
+		final String[] row = Benchmark.run(1, 2, 2, 2).split(",", -1);
 		final String[] header = Benchmark.HEADER.split(",");
 
 		assertEquals(header.length, row.length);

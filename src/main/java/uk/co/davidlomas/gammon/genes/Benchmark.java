@@ -27,8 +27,11 @@ import java.util.Locale;
  * plays the hand-written ReferencePlayer, which never changes. It's their average points a game against it, with the
  * standard error between the seeds' players.
  * <p>
- * Speed: a fixed set of seeded games between two seeded players, on one thread, in games a second. Their results also
- * give a fingerprint, which stays the same while a change doesn't change how games are played.
+ * Speed: a fixed set of seeded games between two seeded players, on one thread, in games a second. They're played
+ * first, as how much of the GA has run changes how the JVM has optimised the code, which moved the speed by far more
+ * than anything else. They're timed several times and the fastest kept, as anything else the machine is doing can only
+ * slow a pass down. Their results also give a fingerprint, which stays the same while a change doesn't change how games
+ * are played.
  * <p>
  * Arguments, all optional: generations (60), seeds (3), meetings with the reference player for each seed (1000), and
  * the csv file to add the row to (benchmarks.csv).
@@ -37,6 +40,7 @@ public final class Benchmark {
 
 	private static final int POPULATION = 40;
 	private static final int SPEED_MEETINGS = 1000;
+	private static final int SPEED_PASSES = 5;
 	static final String HEADER = "date,commit,generations,seeds,pointsPerGame,standardError,perSeed,gamesPerSecond,"
 			+ "gaSeconds,cores,fingerprint";
 
@@ -50,7 +54,7 @@ public final class Benchmark {
 		final int meetings = args.length > 2 ? Integer.parseInt(args[2]) : 1000;
 		final Path csv = Path.of(args.length > 3 ? args[3] : "benchmarks.csv");
 
-		final String row = run(generations, seeds, meetings);
+		final String row = run(generations, seeds, meetings, SPEED_PASSES);
 		final String previous = lastRow(csv);
 		append(csv, row);
 
@@ -66,7 +70,8 @@ public final class Benchmark {
 	 *
 	 * @return its row for the csv file
 	 */
-	static String run(final int generations, final int seeds, final int meetings) throws Exception {
+	static String run(final int generations, final int seeds, final int meetings, final int speedPasses)
+			throws Exception {
 		// read now, as files edited while it runs aren't what it measured
 		final String commit = commit();
 
@@ -83,6 +88,9 @@ public final class Benchmark {
 		GameSettings.setTimeDelayCache(0);
 		GameSettings.setMultiThreadingCache(true);
 		GameSettings.setThreadsCache(0);
+
+		final long[] fingerprint = new long[1];
+		final double gamesPerSecond = speed(fingerprint, speedPasses);
 
 		final long gaStart = System.nanoTime();
 		final double[] perSeed = new double[seeds];
@@ -103,9 +111,6 @@ public final class Benchmark {
 			squares += (points - mean) * (points - mean);
 		}
 		final double standardError = seeds > 1 ? Math.sqrt(squares / (seeds - 1) / seeds) : 0;
-
-		final long[] fingerprint = new long[1];
-		final double gamesPerSecond = speed(fingerprint);
 
 		final StringBuilder seedColumn = new StringBuilder();
 		for (final double points : perSeed) {
@@ -142,13 +147,16 @@ public final class Benchmark {
 	}
 
 	/**
-	 * Plays the speed games on this thread, after a few to warm up
+	 * Plays the speed games on this thread several times, after a few to warm up
 	 *
 	 * @param fingerprint set to a hash of their results
 	 *
-	 * @return games a second
+	 * @param passes      how many times to play them
+	 *
+	 * @return games a second in the fastest pass
+	 * @throws IllegalStateException if the passes' results differ, as the same seeds have to play the same games
 	 */
-	private static double speed(final long[] fingerprint) {
+	private static double speed(final long[] fingerprint, final int passes) {
 		RandomSource.setSeed(7);
 		final Individual first = new Individual();
 		final Individual second = new Individual();
@@ -156,15 +164,23 @@ public final class Benchmark {
 		for (int meeting = 0; meeting < SPEED_MEETINGS / 10; meeting++) {
 			FitnessCalculator.meet(gameManager, first, second, -meeting);
 		}
-		long hash = 17;
-		final long start = System.nanoTime();
-		for (int meeting = 0; meeting < SPEED_MEETINGS; meeting++) {
-			final double[] scores = FitnessCalculator.meet(gameManager, first, second, meeting);
-			hash = 31 * hash + Double.hashCode(scores[0]);
+		double fastest = 0;
+		for (int pass = 0; pass < passes; pass++) {
+			long hash = 17;
+			final long start = System.nanoTime();
+			for (int meeting = 0; meeting < SPEED_MEETINGS; meeting++) {
+				final double[] scores = FitnessCalculator.meet(gameManager, first, second, meeting);
+				hash = 31 * hash + Double.hashCode(scores[0]);
+			}
+			final double gamesPerSecond = 2 * SPEED_MEETINGS / ((System.nanoTime() - start) / 1e9);
+			System.out.printf(Locale.ROOT, "speed pass %d: %.0f games a second%n", pass, gamesPerSecond);
+			fastest = Math.max(fastest, gamesPerSecond);
+			if (pass > 0 && hash != fingerprint[0]) {
+				throw new IllegalStateException("The same seeds played different games in pass " + pass);
+			}
+			fingerprint[0] = hash;
 		}
-		final double seconds = (System.nanoTime() - start) / 1e9;
-		fingerprint[0] = hash;
-		return 2 * SPEED_MEETINGS / seconds;
+		return fastest;
 	}
 
 	/**
