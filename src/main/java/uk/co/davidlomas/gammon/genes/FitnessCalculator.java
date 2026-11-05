@@ -131,9 +131,7 @@ class FitnessCalculator {
 	private static List<MeetingGames> play(final Population pop, final List<Meeting> plan) {
 		// the settings are read now, before any game, so the threads don't each read them from the file
 		GameSettings.loadAll();
-		final boolean parallel = GameSettings.getMultiThreading() && !GameSettings.getDisplayGUI();
-
-		final int wanted = !parallel ? 1
+		final int wanted = !playsInParallel() ? 1
 				: GameSettings.getThreads() == 0 ? Runtime.getRuntime().availableProcessors() : GameSettings.getThreads();
 		// no more threads than meetings, as any more would have nothing to play
 		final int threads = Math.max(1, Math.min(wanted, plan.size()));
@@ -160,6 +158,14 @@ class FitnessCalculator {
 			// the turn, so after a failure the others don't carry on in the background
 			pool.shutdownNow();
 		}
+	}
+
+	/**
+	 * Whether games can be played at the same time. They can't when they're shown in the one window, or when a person
+	 * is playing them on the one console. The settings have to have been read
+	 */
+	static boolean playsInParallel() {
+		return GameSettings.getMultiThreading() && !GameSettings.getDisplayGUI() && GameSettings.getAreBothAI();
 	}
 
 	/**

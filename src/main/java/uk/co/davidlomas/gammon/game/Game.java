@@ -145,6 +145,20 @@ class Game implements Runnable {
 		return player.dice.RollTwoDice();
 	}
 
+	/**
+	 * Slows the game down so it can be watched, needed if both are AI. If the thread is interrupted while waiting, it
+	 * stays marked as interrupted, so the game loop sees that and stops
+	 */
+	private void pauseToShowTheBoard() {
+		if (GameSettings.getDisplayGUI()) {
+			try {
+				Thread.sleep(timeDelay);
+			} catch (final InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
+	}
+
 	private boolean isGameActive() {
 		return gameActive;
 	}
@@ -242,15 +256,7 @@ class Game implements Runnable {
 					// if they haven't won then continue
 				} else {
 
-					if (GameSettings.getDisplayGUI()) {
-						// just to slow the visual process down, needed if both
-						// are AI
-						try {
-							Thread.sleep(timeDelay);
-						} catch (final InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
+					pauseToShowTheBoard();
 
 					// if the player has not won the game, change boolean to
 					// allow the other player to take his turn
@@ -281,15 +287,7 @@ class Game implements Runnable {
 						// if not, let the game loop continue
 					} else {
 
-						if (GameSettings.getDisplayGUI()) {
-							// just to slow the visual process down, needed if
-							// both are AI
-							try {
-								Thread.sleep(timeDelay);
-							} catch (final InterruptedException e) {
-								e.printStackTrace();
-							}
-						}
+						pauseToShowTheBoard();
 
 						// if the player has not won the game, change boolean to
 						// allow the other player to take his turn

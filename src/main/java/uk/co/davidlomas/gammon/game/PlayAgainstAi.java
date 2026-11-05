@@ -6,6 +6,7 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
 import java.io.File;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.io.UncheckedIOException;
 
 /**
  * Plays one game on the console against an AI player: you're player 2, it's player 1.
@@ -35,7 +36,7 @@ public final class PlayAgainstAi {
 			}
 			try {
 				ai.loadFromFile(saved.getPath());
-			} catch (final IllegalArgumentException e) {
+			} catch (final IllegalArgumentException | UncheckedIOException e) {
 				out.println("That player can't be played: " + e.getMessage() + ".");
 				return;
 			}

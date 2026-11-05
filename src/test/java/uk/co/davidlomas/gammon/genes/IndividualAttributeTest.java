@@ -9,6 +9,7 @@ import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test class for IndividualAttribute
@@ -86,4 +87,20 @@ public class IndividualAttributeTest {
 		assertFalse(attribute2.toString().isEmpty(), "ToString is empty");
 	}
 
+
+	@Test
+	public void aValueOutsideWhatAGeneCanHoldIsRefused() {
+		for (final int value : new int[]{-1, 101, 128}) {
+			assertThrows(IllegalArgumentException.class, () -> attribute1.setValue(value));
+			assertThrows(IllegalArgumentException.class, () -> new IndividualAttribute(NAME1, value));
+		}
+	}
+
+	@Test
+	public void aValueAtEitherEndIsAllowed() {
+		attribute1.setValue(0);
+		assertEquals(0, attribute1.getValue());
+		attribute1.setValue(100);
+		assertEquals(100, attribute1.getValue());
+	}
 }

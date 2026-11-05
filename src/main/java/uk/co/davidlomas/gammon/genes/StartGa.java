@@ -43,7 +43,7 @@ public class StartGa {
 	 */
 	public static void main(final String args[]) {
 
-		GenAlgSettings.setAttemptCount(GenAlgSettings.getAttemptCount() + 1);
+		GenAlgSettings.setAttemptCount(Individual.lastAttempt() + 1);
 
 		logger.info("Program running!");
 
@@ -51,8 +51,7 @@ public class StartGa {
 		saveInitialFittestToFile(pop);
 		final RunStats stats = new RunStats(pop.getFittest().getFilePathForPlayers() + "/runStats.csv");
 		stats.record("initial", pop, true);
-		pop = initialEvolution(pop, stats);
-		pop = restOfEvolutions(pop, stats);
+		pop = evolve(pop, stats);
 
 		logger.info("------------Finished Evolving-------");
 		logger.info("Solution:");
@@ -66,31 +65,18 @@ public class StartGa {
 		return new Population(GenAlgSettings.getPopulationSize(), true);
 	}
 
-	private static Population restOfEvolutions(Population pop, final RunStats stats) {
-		Individual fittest;
-		for (int generation = 0; generation < GenAlgSettings.getGenerations() - 1; generation++) {
+	private static Population evolve(Population pop, final RunStats stats) {
+		final int generations = GenAlgSettings.getGenerations();
+		for (int generation = 0; generation < generations; generation++) {
 			logger.info("-------------------------");
 			logger.info("Started evolving population");
 			pop = GeneticAlgorithm.evolvePopulation(pop);
-			logger.trace("Calculating fitness");
-			fittest = pop.getFittest();
-			fittest.saveToFile(fittest.getFilePathForPlayers() + "/PlayerFromGen" + (generation + 1));
-			stats.record(String.valueOf(generation + 1), pop, (generation + 1) % RunStats.REFERENCE_EVERY == 0
-					|| generation == GenAlgSettings.getGenerations() - 2);
-			logger.info("Finished evolving population, evolution {}", generation + 1);
+			final Individual fittest = pop.getFittest();
+			fittest.saveToFile(fittest.getFilePathForPlayers() + "/PlayerFromGen" + generation);
+			stats.record(String.valueOf(generation), pop,
+					generation % RunStats.REFERENCE_EVERY == 0 || generation == generations - 1);
+			logger.info("Finished evolving population, evolution {}", generation);
 		}
-		return pop;
-	}
-
-	private static Population initialEvolution(Population pop, final RunStats stats) {
-		final Individual fittest;
-		logger.info("-------------------------");
-		logger.info("Started evolving population");
-		pop = GeneticAlgorithm.evolvePopulation(pop);
-		fittest = pop.getFittest();
-		fittest.saveToFile(fittest.getFilePathForPlayers() + "/PlayerFromGen" + 0);
-		stats.record("0", pop, true);
-		logger.info("Finished evolving population, evolution 0");
 		return pop;
 	}
 

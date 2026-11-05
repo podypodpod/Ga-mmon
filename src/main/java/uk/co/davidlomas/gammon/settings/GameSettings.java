@@ -115,59 +115,85 @@ public class GameSettings {
 
 	public static boolean getAreBothAI() {
 		if (areBothAIsCache == null) {
-			areBothAIsCache = Boolean.valueOf(getPropertyFromFile("areBothAIs"));
+			areBothAIsCache = booleanFrom("areBothAIs", getPropertyFromFile("areBothAIs"));
 		}
 		return areBothAIsCache;
 	}
 
 	public static boolean getDisplayGUI() {
 		if (displayGUICache == null) {
-			displayGUICache = Boolean.valueOf(getPropertyFromFile("displayGUI"));
+			displayGUICache = booleanFrom("displayGUI", getPropertyFromFile("displayGUI"));
 		}
 		return displayGUICache;
 	}
 
 	public static boolean getMultiThreading() {
 		if (multiThreadingCache == null) {
-			multiThreadingCache = Boolean.valueOf(getPropertyFromFile("multiThreading"));
+			multiThreadingCache = booleanFrom("multiThreading", getPropertyFromFile("multiThreading"));
 		}
 		return multiThreadingCache;
 	}
 
+	/**
+	 * A true or false setting. Anything else is refused rather than read as false, as that would quietly change how the
+	 * program runs: a mistyped areBothAIs would have it waiting for a person to play
+	 *
+	 * @param name  the setting's name, for the error
+	 * @param value its value, null if it's missing
+	 *
+	 * @return the setting
+	 * @throws IllegalArgumentException if it isn't true or false
+	 */
+	public static boolean booleanFrom(final String name, final String value) {
+		if (value != null && value.trim().equalsIgnoreCase("true")) {
+			return true;
+		}
+		if (value != null && value.trim().equalsIgnoreCase("false")) {
+			return false;
+		}
+		throw new IllegalArgumentException(name + " has to be true or false, but it's "
+				+ (value == null ? "missing" : "'" + value + "'"));
+	}
+
+	/**
+	 * The time delay from the file's value
+	 *
+	 * @throws IllegalArgumentException if it's missing or not a whole number
+	 */
+	static int timeDelayFrom(final String value) {
+		try {
+			return Integer.parseInt(String.valueOf(value).trim());
+		} catch (final NumberFormatException e) {
+			throw new IllegalArgumentException("timeDelay has to be a whole number, but it's "
+					+ (value == null ? "missing" : "'" + value + "'"), e);
+		}
+	}
+
+	/**
+	 * @return the setting's value, null if the file doesn't have it
+	 * @throws IllegalStateException if the file can't be read
+	 */
 	public static String getPropertyFromFile(final String propVar) {
 		final Properties properties = new Properties();
-		InputStream input = null;
-
-		try {
-			input = new FileInputStream(FILE_PATH);
+		try (InputStream input = new FileInputStream(FILE_PATH)) {
 			properties.load(input);
 			return properties.getProperty(propVar);
-
-		} catch (final IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (final IOException e) {
-					e.printStackTrace();
-				}
-			}
+		} catch (final IOException e) {
+			throw new IllegalStateException("Couldn't read the settings in " + FILE_PATH, e);
 		}
-		return null;
 	}
 
 	// GETTERS
 	public static int getTimeDelay() {
 		if (timeDelayCache == -1) {
-			timeDelayCache = Integer.valueOf(getPropertyFromFile("timeDelay"));
+			timeDelayCache = timeDelayFrom(getPropertyFromFile("timeDelay"));
 		}
 		return timeDelayCache;
 	}
 
 	public static boolean isP1Black() {
 		if (isP1BlackCache == null) {
-			isP1BlackCache = Boolean.valueOf(getPropertyFromFile("isP1Black"));
+			isP1BlackCache = booleanFrom("isP1Black", getPropertyFromFile("isP1Black"));
 		}
 		return isP1BlackCache;
 	}

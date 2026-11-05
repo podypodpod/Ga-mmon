@@ -25,6 +25,8 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The Class Individual.
@@ -41,7 +43,9 @@ public class Individual {
 	 * The saved players folder can be moved with -Dgammon.playersDir, the tests use this to keep out of savedPlayers/
 	 */
 	public static final String PLAYERS_DIR_PROPERTY = "gammon.playersDir";
-	private static final String PLAYERS_FILE_PATH = System.getProperty(PLAYERS_DIR_PROPERTY, "savedPlayers") + "/Attempt - ";
+	private static final String PLAYERS_DIR = System.getProperty(PLAYERS_DIR_PROPERTY, "savedPlayers");
+	private static final String PLAYERS_FILE_PATH = PLAYERS_DIR + "/Attempt - ";
+	private static final Pattern ATTEMPT_FOLDER = Pattern.compile("Attempt - (\\d{1,9})");
 	private final static String[] AVAILABLE_ATTRIBUTES = MoveChooser.geneNames();
 
 
@@ -80,6 +84,25 @@ public class Individual {
 	 */
 	public char[] getChromosome() {
 		return chromosome;
+	}
+
+	/**
+	 * The highest numbered attempt in the saved players folder
+	 *
+	 * @return its number, 0 if there are none
+	 */
+	public static int lastAttempt() {
+		final File[] folders = new File(PLAYERS_DIR).listFiles(File::isDirectory);
+		int last = 0;
+		if (folders != null) {
+			for (final File folder : folders) {
+				final Matcher attempt = ATTEMPT_FOLDER.matcher(folder.getName());
+				if (attempt.matches()) {
+					last = Math.max(last, Integer.parseInt(attempt.group(1)));
+				}
+			}
+		}
+		return last;
 	}
 
 	/**
@@ -125,6 +148,9 @@ public class Individual {
 	 * Load from file.
 	 *
 	 * @param fullFilePath the file name
+	 *
+	 * @throws UncheckedIOException if it can't be read, rather than leaving this player with the genes it had, which
+	 *                              would look like the saved player but not play like it
 	 */
 	public void loadFromFile(final String fullFilePath) {
 		logger.trace("Loading player from file: " + fullFilePath);
@@ -146,8 +172,8 @@ public class Individual {
 			// update to the rest of the AVAILABLE_ATTRIBUTES
 			updateFromBinary();
 
-		} catch (final IOException ex) {
-			logger.error("Failed trying to load from file", ex);
+		} catch (final IOException e) {
+			throw new UncheckedIOException("Couldn't read " + fullFilePath, e);
 		}
 	}
 
@@ -155,6 +181,9 @@ public class Individual {
 	 * Save to file.
 	 *
 	 * @param fullFilePath the file name
+	 *
+	 * @throws UncheckedIOException if it can't be written, so a run stops rather than carrying on with nothing to show
+	 *                              for it
 	 */
 	public void saveToFile(final String fullFilePath) {
 		logger.trace("Saving player to file: " + fullFilePath);
@@ -175,8 +204,8 @@ public class Individual {
 			// save the file to the savedPlayers folder
 			properties.store(output, null);
 
-		} catch (final IOException io) {
-			logger.error("Failed trying to Save to file", io);
+		} catch (final IOException e) {
+			throw new UncheckedIOException("Couldn't save " + fullFilePath, e);
 		}
 	}
 

@@ -20,8 +20,8 @@
 package uk.co.davidlomas.gammon.settings;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class GenAlgSettings {
@@ -31,7 +31,6 @@ public class GenAlgSettings {
 	private static final String TOURNAMENT_SIZE = "tournamentSize";
 	private static final String POPULATION_SIZE = "populationSize";
 	private static final String MUTATION_RATE = "mutationRate";
-	private static final String ATTEMPT_COUNT = "attemptCount";
 	private static final String GENERATIONS = "generations";
 	private static final String GAMES_PER_PAIRING = "gamesPerPairing";
 	// the settings folder can be moved with -Dgammon.confDir, the tests use this to work on a copy
@@ -41,7 +40,7 @@ public class GenAlgSettings {
 
 	private static int generations = -1;
 	private static int populationSize = -1;
-	private static int attemptCount = -1;
+	private static int attemptCount = 0;
 	private static int tournamentSize = -1;
 	private static double uniformRate = -1;
 	private static double mutationRate = -1;
@@ -63,30 +62,31 @@ public class GenAlgSettings {
 		GenAlgSettings.tournamentSize = tournamentSize;
 	}
 
+	/**
+	 * The number of this run, which picks the folder players are saved in. StartGa sets it from the folders already
+	 * there, rather than it being kept in the settings file, so a run doesn't change a file that's in git
+	 */
 	public static int getAttemptCount() {
-		if (attemptCount == -1) {
-			attemptCount = Integer.valueOf(getPropertyFromFile(ATTEMPT_COUNT));
-		}
 		return attemptCount;
 	}
 
 	public static int getGenerations() {
 		if (generations == -1) {
-			generations = Integer.valueOf(getPropertyFromFile(GENERATIONS));
+			generations = intFromFile(GENERATIONS);
 		}
 		return generations;
 	}
 
 	public static double getMutationRate() {
 		if (mutationRate == -1) {
-			mutationRate = Double.valueOf(getPropertyFromFile(MUTATION_RATE));
+			mutationRate = doubleFromFile(MUTATION_RATE);
 		}
 		return mutationRate;
 	}
 
 	public static int getPopulationSize() {
 		if (populationSize == -1) {
-			populationSize = Integer.valueOf(getPropertyFromFile(POPULATION_SIZE));
+			populationSize = intFromFile(POPULATION_SIZE);
 		}
 		return populationSize;
 	}
@@ -135,70 +135,69 @@ public class GenAlgSettings {
 
 	public static int getTournamentSize() {
 		if (tournamentSize == -1) {
-			tournamentSize = Integer.valueOf(getPropertyFromFile(TOURNAMENT_SIZE));
+			tournamentSize = intFromFile(TOURNAMENT_SIZE);
 		}
 		return tournamentSize;
 	}
 
 	public static double getUniformRate() {
 		if (uniformRate == -1) {
-			uniformRate = Double.valueOf(getPropertyFromFile(UNIFORM_RATE));
+			uniformRate = doubleFromFile(UNIFORM_RATE);
 		}
 		return uniformRate;
 	}
 
 	public static boolean isElitism() {
 		if (elitism == null) {
-			elitism = Boolean.valueOf(getPropertyFromFile(ELITISM));
+			elitism = GameSettings.booleanFrom(ELITISM, getPropertyFromFile(ELITISM));
 		}
 		return elitism;
 	}
 
 	public static void setAttemptCount(final int attemptCount) {
 		GenAlgSettings.attemptCount = attemptCount;
-		updateToFile(ATTEMPT_COUNT, GenAlgSettings.attemptCount + "");
 	}
 
-	public static void updateToFile(final String propertyName, final String value) {
-		try {
-			final Properties properties = getProperties();
-			assert properties != null;
-
-			if (properties.containsKey(propertyName)) {
-				final FileOutputStream out = new FileOutputStream(FILE_PATH);
-				properties.setProperty(propertyName, value);
-				properties.store(out, null);
-				out.close();
-			} else {
-				throw new NoSuchFieldError();
-			}
-		} catch (final IOException e) {
-			e.printStackTrace();
-		}
-	}
-
+	/**
+	 * @throws IllegalStateException if the file can't be read
+	 */
 	private static Properties getProperties() {
-		final FileInputStream in;
-		try {
-			in = new FileInputStream(FILE_PATH);
+		try (InputStream in = new FileInputStream(FILE_PATH)) {
 			final Properties props = new Properties();
 			props.load(in);
-			in.close();
 			return props;
 		} catch (final IOException e) {
-			e.printStackTrace();
+			throw new IllegalStateException("Couldn't read the settings in " + FILE_PATH, e);
 		}
-		return null;
 	}
 
+	/**
+	 * @return the setting's value, without any spaces around it
+	 * @throws IllegalStateException if the file can't be read or doesn't have it
+	 */
 	public static String getPropertyFromFile(final String propVar) {
-
-		final Properties properties = getProperties();
-		assert properties != null;
-		final String result = properties.getProperty(propVar);
-		if (result != null) {
-			return result;
+		final String result = getProperties().getProperty(propVar);
+		if (result == null) {
+			throw new IllegalStateException(propVar + " is missing from " + FILE_PATH);
 		}
-		throw new NoSuchFieldError();
+		return result.trim();
+	}
+
+	private static int intFromFile(final String name) {
+		final String value = getPropertyFromFile(name);
+		try {
+			return Integer.parseInt(value);
+		} catch (final NumberFormatException e) {
+			throw new IllegalArgumentException(name + " has to be a whole number, but it's '" + value + "'", e);
+		}
+	}
+
+	private static double doubleFromFile(final String name) {
+		final String value = getPropertyFromFile(name);
+		try {
+			return Double.parseDouble(value);
+		} catch (final NumberFormatException e) {
+			throw new IllegalArgumentException(name + " has to be a number, but it's '" + value + "'", e);
+		}
 	}
 }

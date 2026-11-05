@@ -40,7 +40,6 @@ public class StartGaTest {
 		GenAlgSettings.setElitism(true);
 		GenAlgSettings.setGenerations(2);
 		GenAlgSettings.setPopulationSize(3);
-		GenAlgSettings.setAttemptCount(10000);
 		GenAlgSettings.setTournamentSize(2);
 		GenAlgSettings.setUniformRate(0.5);
 		GenAlgSettings.setMutationRate(0.1);
@@ -54,12 +53,13 @@ public class StartGaTest {
 	@Test
 	public void aRunSavesTheFittestPlayerFromTheStartAndFromEachGeneration() throws IOException {
 		RandomSource.setSeed(1);
+		final int before = Individual.lastAttempt();
 
 		StartGa.main(null);
 
 		// each run is a new attempt, with its own folder
-		assertEquals(10001, GenAlgSettings.getAttemptCount());
-		final File attempt = new File(SettingsUtil.getPlayersDir() + "/Attempt - 10001");
+		assertEquals(before + 1, GenAlgSettings.getAttemptCount());
+		final File attempt = new File(SettingsUtil.getPlayersDir() + "/Attempt - " + (before + 1));
 		for (final String saved : new String[]{"FittestFromInitialPopulation", "PlayerFromGen0", "PlayerFromGen1"}) {
 			assertIsAPlayer(new File(attempt, saved));
 		}
@@ -75,6 +75,18 @@ public class StartGaTest {
 		for (final String row : stats.subList(1, stats.size())) {
 			assertFalse(row.endsWith(","), row + " wasn't measured against the reference player");
 		}
+	}
+
+	@Test
+	public void noGenerationsMeansNoneAreMade() {
+		GenAlgSettings.setGenerations(0);
+		RandomSource.setSeed(1);
+
+		StartGa.main(null);
+
+		final File attempt = new File(SettingsUtil.getPlayersDir() + "/Attempt - " + GenAlgSettings.getAttemptCount());
+		assertTrue(new File(attempt, "FittestFromInitialPopulation").isFile());
+		assertFalse(new File(attempt, "PlayerFromGen0").exists());
 	}
 
 	/**
