@@ -52,7 +52,7 @@ public class GameTest {
 	@Test
 	public void testingGameStatsComesBackWithWinner() {
 		// players with random genes can keep hitting each other and never finish, which has no winner to check. These
-		// only care about getting home, so they always do, whatever the features and weights are changed to
+		// only race home and avoid hitting, so they finish, whichever other features there are
 		individual1 = racer();
 		individual2 = racer();
 		RandomSource.setSeed(42);
@@ -69,13 +69,15 @@ public class GameTest {
 	}
 
 	/**
-	 * A player whose only interest is its pip lead: every other gene is 50, a weight of 0
+	 * A player who wants the pip lead and doesn't want to hit: every other gene is 50, a weight of 0
 	 */
 	private static Individual racer() {
 		final Individual racer = new Individual();
 		for (int gene = 0; gene < racer.getNumOfAttributes(); gene++) {
 			racer.getAttribute(gene).setValue(50);
 		}
+		// a higher pip lead also comes from hitting, so two of these would keep sending each other back: it has to be told not to
+		racer.getAttribute(MoveChooser.contactGene(Feature.OPPONENT_ON_BAR)).setValue(0);
 		racer.getAttribute(MoveChooser.contactGene(Feature.PIP_LEAD)).setValue(100);
 		racer.getAttribute(MoveChooser.raceGene(Feature.PIP_LEAD)).setValue(100);
 		return racer;
