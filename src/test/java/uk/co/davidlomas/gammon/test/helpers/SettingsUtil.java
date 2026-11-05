@@ -28,7 +28,7 @@ public class SettingsUtil {
 		GenAlgSettings.setPopulationSize(2);
 		GenAlgSettings.setAttemptCount(9999);
 		GenAlgSettings.setTournamentSize(2);
-		GenAlgSettings.setUniformRate(632.0);
+		GenAlgSettings.setUniformRate(1.0);
 		GenAlgSettings.setMutationRate(0.1);
 		GenAlgSettings.setGamesPerPairing(1);
 	}

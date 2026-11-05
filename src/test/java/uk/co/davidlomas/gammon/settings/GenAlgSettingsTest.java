@@ -198,6 +198,38 @@ public class GenAlgSettingsTest {
 		return Math.abs(first - second) == 0;
 	}
 
+	private static void assertCheckRefuses(final String setting) {
+		final IllegalArgumentException refused = assertThrows(IllegalArgumentException.class, GenAlgSettings::check);
+		assertTrue(refused.getMessage().contains(setting), refused.getMessage());
+		SettingsUtil.resetSettings();
+	}
+
+	@Test
+	public void settingsThatMakeSensePassTheCheck() {
+		SettingsUtil.resetSettings();
+		GenAlgSettings.check();
+	}
+
+	@Test
+	public void theCheckRefusesSettingsThatDontMakeSense() {
+		SettingsUtil.resetSettings();
+		GenAlgSettings.setPopulationSize(0);
+		assertCheckRefuses("populationSize");
+
+		GenAlgSettings.setTournamentSize(0);
+		assertCheckRefuses("tournamentSize");
+
+		// -1 means it has not been read yet
+		GenAlgSettings.setGenerations(-2);
+		assertCheckRefuses("generations");
+
+		GenAlgSettings.setMutationRate(2);
+		assertCheckRefuses("mutationRate");
+
+		GenAlgSettings.setUniformRate(-0.5);
+		assertCheckRefuses("uniformRate");
+	}
+
 	@Test
 	public void gamesPerPairingIsOneWhenTheSettingsFileDoesntSay() {
 		// as in a settings file from before it was added
