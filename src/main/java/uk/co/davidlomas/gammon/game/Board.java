@@ -158,17 +158,6 @@ public class Board {
 	}
 
 	/**
-	 * Bear piece.
-	 *
-	 * @param bearPiece the position to bear
-	 * @param black     the player color
-	 */
-	void bearPiece(final int bearPiece, final boolean black) {
-		removePiece(bearPiece, black);
-		addToBear(black);
-	}
-
-	/**
 	 * Can player bear.
 	 * <p>
 	 * checks the board positions etc to check if the player can legally bear
@@ -293,10 +282,6 @@ public class Board {
 		} else {
 			return getRedCount(0) > 0;
 		}
-	}
-
-	public void printBoard() {
-		printBoard(System.out);
 	}
 
 	/**
