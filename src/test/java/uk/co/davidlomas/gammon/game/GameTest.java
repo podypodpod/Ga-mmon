@@ -51,21 +51,34 @@ public class GameTest {
 	 */
 	@Test
 	public void testingGameStatsComesBackWithWinner() {
-		// players with random genes sometimes never finish, which is a draw with no winner to check, so try until a
-		// game does finish
-		GameStats gameStats = null;
-		for (int seed = 42; seed < 142 && (gameStats == null || gameStats.isDraw()); seed++) {
-			RandomSource.setSeed(seed);
-			gameStats = gameManager.playIndividualsVsEachOther(individual1, individual2);
-		}
+		// players with random genes can keep hitting each other and never finish, which has no winner to check. These
+		// only care about getting home, so they always do, whatever the features and weights are changed to
+		individual1 = racer();
+		individual2 = racer();
+		RandomSource.setSeed(42);
 
-		assertFalse(gameStats.isDraw(), "none of the seeded games finished, so there's no winner to check");
+		final GameStats gameStats = gameManager.playIndividualsVsEachOther(individual1, individual2);
+
+		assertFalse(gameStats.isDraw(), "two players racing home should finish");
 		if (gameStats.getVictor().equals(individual1)) {
 			assertTrue(gameStats.getPlayerOneScore() > gameStats.getPlayerTwoScore());
 		} else {
 			assertEquals(individual2, gameStats.getVictor());
 			assertTrue(gameStats.getPlayerTwoScore() > gameStats.getPlayerOneScore());
 		}
+	}
+
+	/**
+	 * A player whose only interest is its pip lead: every other gene is 50, a weight of 0
+	 */
+	private static Individual racer() {
+		final Individual racer = new Individual();
+		for (int gene = 0; gene < racer.getNumOfAttributes(); gene++) {
+			racer.getAttribute(gene).setValue(50);
+		}
+		racer.getAttribute(MoveChooser.contactGene(Feature.PIP_LEAD)).setValue(100);
+		racer.getAttribute(MoveChooser.raceGene(Feature.PIP_LEAD)).setValue(100);
+		return racer;
 	}
 
 	/**
