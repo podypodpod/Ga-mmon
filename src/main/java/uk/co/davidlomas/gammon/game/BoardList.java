@@ -252,7 +252,6 @@ public class BoardList {
 	 * <p>
 	 * Empties the list.
 	 */
-
 	void clearList() {
 		boardList.clear();
 		keys.clear();
