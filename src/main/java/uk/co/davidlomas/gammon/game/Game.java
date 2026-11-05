@@ -159,10 +159,6 @@ class Game implements Runnable {
 		}
 	}
 
-	private boolean isGameActive() {
-		return gameActive;
-	}
-
 	/**
 	 * Run method
 	 * <p>
@@ -194,135 +190,78 @@ class Game implements Runnable {
 					+ (p1Roll > p2Roll ? "Player 1 moves" : "You move") + " first, using those two dice.");
 		}
 
-		// if player 1 has won
-		boolean playerOnesTurn = false;
-		if (p1Roll > p2Roll) {
-			logger.trace("Player 1(Black={}) Has won the roll", aiPlayer1.black);
-			playerOnesTurn = true;
-			// if player 2 has won
-		} else {
-			logger.trace("Player 2(Black={}) Has won the roll", aiPlayer2.black);
-			playerOnesTurn = false;
+		boolean playerOnesTurn = p1Roll > p2Roll;
+		logger.trace("Player {} has won the roll", playerOnesTurn ? 1 : 2);
+
+		while (gameActive) {
+			if (areBothAIs && shouldStop()) {
+				cutShort = true;
+				gameActive = false;
+			} else if (playerOnesTurn) {
+				aiTurn(aiPlayer1);
+			} else if (areBothAIs) {
+				aiTurn(aiPlayer2);
+			} else {
+				personTurn();
+			}
+			playerOnesTurn = !playerOnesTurn;
 		}
+	}
 
-		// The Game Loop, while boolean gameActive is true, keep going
-		while (isGameActive()) {
+	/**
+	 * Whether a game between two AIs should end without a winner: it's gone on too long, or the GA has given up on it
+	 * and interrupted it, such as after another game failed
+	 */
+	private boolean shouldStop() {
+		if (turnsPlayed++ >= maxTurns) {
+			logger.debug("Game cut short after {} turns", maxTurns);
+			return true;
+		}
+		if (Thread.currentThread().isInterrupted()) {
+			logger.debug("Game stopped as its thread was interrupted");
+			return true;
+		}
+		return false;
+	}
 
-			if (areBothAIs && turnsPlayed++ >= maxTurns) {
-				logger.debug("Game cut short after {} turns", maxTurns);
-				cutShort = true;
-				gameActive = false;
-				break;
+	/**
+	 * An AI's turn. If a person is playing, the AI is player 1: they're told its roll here, and their own turn starts by
+	 * showing the board it left
+	 */
+	private void aiTurn(final AiPlayer player) {
+		final Board before = liveBoard;
+		liveBoard = new Board(player.AiTurn(liveBoard, nextRoll(player)));
+		if (!areBothAIs) {
+			aiPlayer2.tell("Player 1, " + player.getColourString() + ", rolled " + player.movesLeft.moves
+					+ (liveBoard.equals(before) ? " and couldn't move." : "."));
+		}
+		liveBoard.printBoardGUI();
+
+		if (liveBoard.hasPlayerWon(player.black)) {
+			gameActive = false;
+			logger.trace("{} has won", player.getColourString());
+			if (!areBothAIs) {
+				aiPlayer2.tell("You lost, player 1 has won " + getGameStats().getWinType().describe() + ".");
+				aiPlayer2.showBoard(liveBoard);
 			}
-			// the GA interrupts the games it's still playing when it gives up, such as after another game failed
-			if (areBothAIs && Thread.currentThread().isInterrupted()) {
-				logger.debug("Game stopped as its thread was interrupted");
-				cutShort = true;
-				gameActive = false;
-				break;
-			}
+		} else {
+			pauseToShowTheBoard();
+		}
+	}
 
-			// Player1's Turn if the game is still active and it is now their
-			// turn
-			if (playerOnesTurn && isGameActive()) {
+	/**
+	 * A person's turn as player 2, waiting for them to choose their moves
+	 */
+	private void personTurn() {
+		aiPlayer2.turn(liveBoard, nextRoll(aiPlayer2));
+		liveBoard.printBoardGUI();
 
-				// creating the new board with the chosen moves etc
-				final Board before = liveBoard;
-				liveBoard = new Board(aiPlayer1.AiTurn(liveBoard, nextRoll(aiPlayer1)));
-
-				// a person playing sees the AI's roll, and their own turn starts by showing the board it left
-				if (!areBothAIs) {
-					aiPlayer2.tell("Player 1, " + aiPlayer1.getColourString() + ", rolled " + aiPlayer1.movesLeft.moves
-							+ (liveBoard.equals(before) ? " and couldn't move." : "."));
-				}
-
-				// displaying new board
-				if (GameSettings.getDisplayGUI()) {
-					liveBoard.printBoardGUI();
-				}
-
-				// checking if the player has won yet
-				// if they have won, then set the gameActive to false and
-				// display the message
-				if (liveBoard.hasPlayerWon(aiPlayer1.black)) {
-					gameActive = false;
-
-					logger.trace("Player 1 has won! (Black={})", aiPlayer1.black);
-					if (!areBothAIs) {
-						aiPlayer2.tell("You lost, player 1 has won " + getGameStats().getWinType().describe() + ".");
-						aiPlayer2.showBoard(liveBoard);
-					}
-
-					// if they haven't won then continue
-				} else {
-
-					pauseToShowTheBoard();
-
-					// if the player has not won the game, change boolean to
-					// allow the other player to take his turn
-					playerOnesTurn = false;
-				}
-
-				// Player2's Turn (could also be an AI)
-			} else if (!playerOnesTurn && isGameActive()) {
-
-				// if you have selected them both to be AI's
-				if (areBothAIs) {
-
-					// get the new board with the selected moves in
-					liveBoard = new Board(aiPlayer2.AiTurn(liveBoard, nextRoll(aiPlayer2)));
-
-					// displaying new board
-					if (GameSettings.getDisplayGUI()) {
-						liveBoard.printBoardGUI();
-					}
-
-					// checking if the player has now won, if they have then
-					// gaveActive is now false and they are told they have won
-					if (liveBoard.hasPlayerWon(aiPlayer2.black)) {
-
-						logger.trace("Player 2 has won! (Black={})", aiPlayer2.black);
-						gameActive = false;
-
-						// if not, let the game loop continue
-					} else {
-
-						pauseToShowTheBoard();
-
-						// if the player has not won the game, change boolean to
-						// allow the other player to take his turn
-						playerOnesTurn = true;
-					}
-
-					// Option for the human player
-				} else {
-
-					// Running the turn method, waits for user input on selected
-					// move
-					aiPlayer2.turn(liveBoard, nextRoll(aiPlayer2));
-
-					// displaying new board
-					if (GameSettings.getDisplayGUI()) {
-						liveBoard.printBoardGUI();
-					}
-
-					// checking if the player has now won, or given up
-					// gameActive is false if so, and they are informed
-					if (aiPlayer2.hasConceded()) {
-
-						gameActive = false;
-						aiPlayer2.tell("Player 1 wins " + getGameStats().getWinType().describe() + ".");
-
-					} else if (liveBoard.hasPlayerWon(aiPlayer2.black)) {
-
-						gameActive = false;
-						aiPlayer2.tell("You've won " + getGameStats().getWinType().describe() + "!");
-
-					} else {
-						playerOnesTurn = true;
-					}
-				}
-			}
+		if (aiPlayer2.hasConceded()) {
+			gameActive = false;
+			aiPlayer2.tell("Player 1 wins " + getGameStats().getWinType().describe() + ".");
+		} else if (liveBoard.hasPlayerWon(aiPlayer2.black)) {
+			gameActive = false;
+			aiPlayer2.tell("You've won " + getGameStats().getWinType().describe() + "!");
 		}
 	}
 
