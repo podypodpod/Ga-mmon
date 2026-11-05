@@ -65,38 +65,13 @@ public class MoveGenerator {
 				continue;
 			}
 
-			// check the current move doesn't = 0, this would mean it has been
-			// removed and a new board has been created
-			if (currentMove != 0) {
+			for (int point = 0; point < Board.POINTS; point++) {
+				final int to = p.black ? point - currentMove : point + currentMove;
 
-				// loop all points
-				for (int point = 0; point < Board.POINTS; point++) {
-
-					// if the player is black
-					if (p.black) {
-
-						// if the current point can move the current move,
-						// create new board of it
-						if (p.isMovePossible(point, point - currentMove, cb)) {
-
-							// adding the new board to the list
-							boardList.addBoardWithNextMove(new Board(cb), point - currentMove, point, new AiPlayer(p), this);
-
-						}
-						// if the player is red
-					} else if (!p.black) {
-
-						// if the current point can move the current move,
-						// create new board of it
-						if (p.isMovePossible(point, point + currentMove, cb)) {
-
-							// adding the new board to the list
-							boardList.addBoardWithNextMove(new Board(cb), point + currentMove, point, new AiPlayer(p), this);
-						}
-					}
+				// if the current point can move the current move, add the board it leads to
+				if (p.isMovePossible(point, to, cb)) {
+					boardList.addBoardWithNextMove(new Board(cb), to, point, new AiPlayer(p), this);
 				}
-			} else {
-				break;
 			}
 		}
 	}
