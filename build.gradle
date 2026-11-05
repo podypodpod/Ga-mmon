@@ -87,9 +87,6 @@ dependencies {
     // reload4j is the maintained, drop-in replacement for log4j 1.2, so log4j.properties still works
     implementation 'org.slf4j:slf4j-reload4j:2.0.20'
     implementation 'ch.qos.reload4j:reload4j:1.2.27'
-    implementation 'commons-io:commons-io:2.22.0'
-    compileOnly 'org.projectlombok:lombok:1.18.48'
-    annotationProcessor 'org.projectlombok:lombok:1.18.48'
 
     // TEST
     testImplementation platform('org.junit:junit-bom:6.1.3')
@@ -97,6 +94,8 @@ dependencies {
     // also needed to compile TestConfListener, which keeps the tests off the real conf/ folder
     testImplementation 'org.junit.platform:junit-platform-launcher'
     testImplementation 'org.assertj:assertj-core:3.27.7'
+    // copies conf/ for TestConfListener
+    testImplementation 'commons-io:commons-io:2.22.0'
 
 }
 
