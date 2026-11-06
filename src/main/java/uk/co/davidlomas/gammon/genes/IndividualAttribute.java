@@ -22,10 +22,8 @@ import uk.co.davidlomas.gammon.util.RandomSource;
 /**
  * IndividualAttribute
  * <p>
- * attribute for the individual, each will have a number of these e.g. bear a
- * piece
- * <p>
- * Controls the particular chance of doing a certain strategy
+ * One of an individual's genes: the name of a feature of the board, and a value from 0 to 100 that gives the weight
+ * the player puts on it. See MoveChooser
  *
  * @author David Lomas
  */

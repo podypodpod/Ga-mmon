@@ -1,19 +1,19 @@
 /*
-  GNU General public static License
+  GNU General Public License
 
   This file is part of GA-mmon.
 
   GA-mmon is free software: you can redistribute it and/or modify it under the
-  terms of the GNU General public static License as published by the Free
+  terms of the GNU General Public License as published by the Free
   Software Foundation, either version 3 of the License, or (at your option) any
   later version.
 
   GA-mmon is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-  A PARTICULAR PURPOSE. See the GNU General public static License for more
+  A PARTICULAR PURPOSE. See the GNU General Public License for more
   details.
 
-  You should have received a copy of the GNU General public static License
+  You should have received a copy of the GNU General Public License
   along with GA-mmon. If not, see <http://www.gnu.org/licenses/>.
  */
 
@@ -156,6 +156,32 @@ public class GenAlgSettings {
 
 	public static void setAttemptCount(final int attemptCount) {
 		GenAlgSettings.attemptCount = attemptCount;
+	}
+
+	/**
+	 * Checks the settings make sense before a run starts, as otherwise they fail part way through with an error that
+	 * doesn't say why, such as an empty tournament, or quietly do something else, such as a mutation rate of 2
+	 *
+	 * @throws IllegalArgumentException naming the first setting that doesn't
+	 */
+	public static void check() {
+		checkAtLeast(POPULATION_SIZE, getPopulationSize(), 1);
+		checkAtLeast(TOURNAMENT_SIZE, getTournamentSize(), 1);
+		checkAtLeast(GENERATIONS, getGenerations(), 0);
+		checkIsAChance(MUTATION_RATE, getMutationRate());
+		checkIsAChance(UNIFORM_RATE, getUniformRate());
+	}
+
+	private static void checkAtLeast(final String name, final int value, final int least) {
+		if (value < least) {
+			throw new IllegalArgumentException(name + " has to be at least " + least + ", but it's " + value);
+		}
+	}
+
+	private static void checkIsAChance(final String name, final double value) {
+		if (value < 0 || value > 1) {
+			throw new IllegalArgumentException(name + " has to be from 0 to 1, but it's " + value);
+		}
 	}
 
 	/**

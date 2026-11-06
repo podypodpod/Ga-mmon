@@ -42,10 +42,7 @@ public class MovesList {
 	 * Instantiates a new moves left.
 	 */
 	public MovesList(final MovesList movesListCopy) {
-		moves = new ArrayList<>();
-		for (final int move : movesListCopy.moves) {
-			moves.add(move);
-		}
+		moves = new ArrayList<>(movesListCopy.moves);
 	}
 
 	/**

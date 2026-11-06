@@ -28,7 +28,7 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
  * The main class to run for the genetic algorithm to run
  * <p>
  * will run for the size and generations set in
- * backgammon.settings/GenAlgSettings
+ * conf/GenAlgSettings.properties
  *
  * @author David Lomas
  */
@@ -43,6 +43,7 @@ public class StartGa {
 	 */
 	public static void main(final String args[]) {
 
+		GenAlgSettings.check();
 		GenAlgSettings.setAttemptCount(Individual.lastAttempt() + 1);
 
 		logger.info("Program running!");

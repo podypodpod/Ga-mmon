@@ -26,10 +26,6 @@ import java.awt.*;
  * <p>
  * contains the other frames
  * <p>
- * This is not currently needed, I could have put this in to the board panel
- * class but Its here for future changes if I add buttons to the GUI it will go
- * in to another class
- * <p>
  * Run it on the Swing thread, with SwingUtilities.invokeAndWait, so bp is ready when it returns
  *
  * @author David Lomas

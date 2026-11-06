@@ -18,15 +18,13 @@
 
 package uk.co.davidlomas.gammon.game;
 
-import java.lang.reflect.MalformedParametersException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Predicate;
 
 /**
  * The Class BoardList.
@@ -38,27 +36,14 @@ import java.util.function.Predicate;
 public class BoardList {
 
 	/**
-	 * The all possible moves.
+	 * The boards, in the order they were found, so checking for a duplicate is a quick lookup, with the dice each one
+	 * used to get there. A board can be reached part way through a turn, after only some of the dice, and
+	 * keepOnlyLegalMoves uses these to drop those.
 	 */
-	private final List<Board> boardList;
-
-	/**
-	 * The same boards as boardList, in the same order, each with its hash worked out once
-	 */
-	private final List<HashedBoard> keys = new ArrayList<>();
-
-	/**
-	 * The same boards again, so checking for a duplicate is a quick lookup instead of a scan of the list, with the
-	 * dice each one used to get there. A board can be reached part way through a turn, after only some of the dice,
-	 * and keepOnlyLegalMoves uses these to drop those.
-	 */
-	private final Map<HashedBoard, List<Integer>> boardsInList;
+	private final Map<HashedBoard, List<Integer>> boardsInList = new LinkedHashMap<>();
 
 	// how many dice the boards use, once keepOnlyLegalMoves has run
 	private int mostDiceUsed;
-
-	// the boards as a set, made the first time it's asked for after the list changes
-	private Set<Board> boardSet;
 
 	// the boards, with the dice left, that the moves on from them have already been worked out for
 	private final Set<Position> triedFrom = new HashSet<>();
@@ -98,7 +83,6 @@ public class BoardList {
 		Position(final HashedBoard board, final List<Integer> diceLeft) {
 			this.board = board;
 			this.diceLeft = new ArrayList<>(diceLeft);
-			this.diceLeft.removeIf(die -> die == 0);
 			Collections.sort(this.diceLeft);
 		}
 
@@ -115,30 +99,13 @@ public class BoardList {
 	}
 
 	/**
-	 * BoardList
-	 * <p>
-	 * Instantiates a new board list.
-	 */
-	public BoardList() {
-		boardList = new ArrayList<>();
-		boardsInList = new HashMap<>();
-	}
-
-	/**
 	 * addBoardWithNextMove Adds the board passed in, for tests that build the list by hand. It isn't known which dice
 	 * reached it, so it's treated as using none, and keepOnlyLegalMoves would drop it next to generated boards.
 	 *
 	 * @param b the board
 	 */
 	void addBoardWithNextMove(final Board b) {
-		addBoard(new HashedBoard(b), Collections.emptyList());
-	}
-
-	private void addBoard(final HashedBoard key, final List<Integer> diceUsed) {
-		boardList.add(key.board);
-		keys.add(key);
-		boardsInList.put(key, diceUsed);
-		boardSet = null;
+		boardsInList.put(new HashedBoard(b), Collections.emptyList());
 	}
 
 	/**
@@ -153,38 +120,28 @@ public class BoardList {
 	 */
 	public void addBoardWithNextMove(final Board board, final int to, final int from, final AiPlayer player, final MoveGenerator moveGenerator) {
 
-		if (player.movesLeft.moves.size() < 1) {
-			throw new MalformedParametersException("Player has no moves left");
+		if (player.movesLeft.size() == 0) {
+			throw new IllegalStateException("Player has no moves left");
+		}
 
-		} else {
-			// move the piece on this new board
-			player.movePiece(from, to, board);
-			player.diceUsed.add(player.distanceBetween(from, to));
+		// move the piece on this new board
+		player.movePiece(from, to, board);
+		final int die = player.distanceBetween(from, to);
+		player.diceUsed.add(die);
+		player.movesLeft.remove(die);
 
-			if (player.movesLeft.size() > 1) {
-				player.movesLeft.moves.remove(Integer.valueOf(player.distanceBetween(from, to)));
-			} else {
-				player.movesLeft.moves.remove(0);
-				player.movesLeft.moves.add(0);
-			}
+		// check if any further moves can be made. The same board with the same dice left leads on to the same
+		// boards as the last time it was reached, often in a different order of moves, so it's only tried once
+		final HashedBoard key = new HashedBoard(board);
+		if (player.movesLeft.size() > 0 && triedFrom.add(new Position(key, player.movesLeft.moves))) {
+			moveGenerator.generateMoves(board, player);
+		}
 
-			// check if any further moves can be made. The same board with the same dice left leads on to the same
-			// boards as the last time it was reached, often in a different order of moves, so it's only tried once
-			final HashedBoard key = new HashedBoard(board);
-			if (!(player.movesLeft.size() == 1 && player.movesLeft.getNext() == 0 || player.movesLeft.size() == 0)
-					&& triedFrom.add(new Position(key, player.movesLeft.moves))) {
-				moveGenerator.generateMoves(board, player);
-			}
-
-			// add the board to the list if there is not a duplicate. If there is, keep whichever way of reaching it
-			// used more dice. The dice are only copied when they're kept, as many boards reached are duplicates
-			final List<Integer> diceBefore = boardsInList.get(key);
-			if (diceBefore == null) {
-				addBoard(key, new ArrayList<>(player.diceUsed));
-			} else if (diceBefore.size() < player.diceUsed.size()) {
-				boardsInList.put(key, new ArrayList<>(player.diceUsed));
-			}
-
+		// add the board to the list if there is not a duplicate. If there is, keep whichever way of reaching it
+		// used more dice. The dice are only copied when they're kept, as many boards reached are duplicates
+		final List<Integer> diceBefore = boardsInList.get(key);
+		if (diceBefore == null || diceBefore.size() < player.diceUsed.size()) {
+			boardsInList.put(key, new ArrayList<>(player.diceUsed));
 		}
 	}
 
@@ -203,14 +160,14 @@ public class BoardList {
 			most = Math.max(most, diceUsed.size());
 		}
 		mostDiceUsed = most;
-		removeBoardsWhere(diceUsed -> diceUsed.size() < mostDiceUsed);
+		boardsInList.values().removeIf(diceUsed -> diceUsed.size() < mostDiceUsed);
 
 		if (mostDiceUsed == 1 && roll.size() == 2 && !roll.get(0).equals(roll.get(1))) {
 			final int larger = Math.max(roll.get(0), roll.get(1));
 			final boolean largerCanBePlayed =
 					boardsInList.values().stream().anyMatch(diceUsed -> diceUsed.get(0) == larger);
 			if (largerCanBePlayed) {
-				removeBoardsWhere(diceUsed -> diceUsed.get(0) != larger);
+				boardsInList.values().removeIf(diceUsed -> diceUsed.get(0) != larger);
 			}
 		}
 	}
@@ -223,28 +180,10 @@ public class BoardList {
 	}
 
 	/**
-	 * @return the boards, for quick lookups, read only
+	 * @return the boards, for quick lookups
 	 */
 	Set<Board> boardSet() {
-		if (boardSet == null) {
-			boardSet = Collections.unmodifiableSet(new HashSet<>(boardList));
-		}
-		return boardSet;
-	}
-
-	/**
-	 * Drops the boards whose dice used are unwanted, keeping the rest in order
-	 */
-	private void removeBoardsWhere(final Predicate<List<Integer>> unwanted) {
-		for (int i = keys.size() - 1; i >= 0; i--) {
-			final HashedBoard key = keys.get(i);
-			if (unwanted.test(boardsInList.get(key))) {
-				boardsInList.remove(key);
-				keys.remove(i);
-				boardList.remove(i);
-				boardSet = null;
-			}
-		}
+		return new HashSet<>(getBoards());
 	}
 
 	/**
@@ -252,11 +191,7 @@ public class BoardList {
 	 * <p>
 	 * Empties the list.
 	 */
-
 	void clearList() {
-		boardList.clear();
-		keys.clear();
-		boardSet = null;
 		boardsInList.clear();
 		triedFrom.clear();
 		mostDiceUsed = 0;
@@ -268,7 +203,7 @@ public class BoardList {
 	 * @return true, if successful
 	 */
 	public boolean hasContents() {
-		return boardList.size() > 0;
+		return !boardsInList.isEmpty();
 	}
 
 	/**
@@ -277,9 +212,13 @@ public class BoardList {
 	 * The boards themselves mustn't be changed: the list keeps the hash each one had when it was added, so a changed
 	 * board would be looked up in the wrong place. Copy one to play on from it, as Game does with the board chosen.
 	 *
-	 * @return the boards, read only
+	 * @return the boards, in the order they were found, read only
 	 */
 	List<Board> getBoards() {
-		return Collections.unmodifiableList(boardList);
+		final List<Board> boards = new ArrayList<>(boardsInList.size());
+		for (final HashedBoard key : boardsInList.keySet()) {
+			boards.add(key.board);
+		}
+		return Collections.unmodifiableList(boards);
 	}
 }
