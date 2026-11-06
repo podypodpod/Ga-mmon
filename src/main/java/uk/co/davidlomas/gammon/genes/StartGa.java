@@ -43,6 +43,7 @@ public class StartGa {
 	 */
 	public static void main(final String args[]) {
 
+		GenAlgSettings.check();
 		GenAlgSettings.setAttemptCount(Individual.lastAttempt() + 1);
 
 		logger.info("Program running!");

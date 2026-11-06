@@ -159,6 +159,32 @@ public class GenAlgSettings {
 	}
 
 	/**
+	 * Checks the settings make sense before a run starts, as otherwise they fail part way through with an error that
+	 * doesn't say why, such as an empty tournament, or quietly do something else, such as a mutation rate of 2
+	 *
+	 * @throws IllegalArgumentException naming the first setting that doesn't
+	 */
+	public static void check() {
+		checkAtLeast(POPULATION_SIZE, getPopulationSize(), 1);
+		checkAtLeast(TOURNAMENT_SIZE, getTournamentSize(), 1);
+		checkAtLeast(GENERATIONS, getGenerations(), 0);
+		checkIsAChance(MUTATION_RATE, getMutationRate());
+		checkIsAChance(UNIFORM_RATE, getUniformRate());
+	}
+
+	private static void checkAtLeast(final String name, final int value, final int least) {
+		if (value < least) {
+			throw new IllegalArgumentException(name + " has to be at least " + least + ", but it's " + value);
+		}
+	}
+
+	private static void checkIsAChance(final String name, final double value) {
+		if (value < 0 || value > 1) {
+			throw new IllegalArgumentException(name + " has to be from 0 to 1, but it's " + value);
+		}
+	}
+
+	/**
 	 * @throws IllegalStateException if the file can't be read
 	 */
 	private static Properties getProperties() {
