@@ -15,6 +15,20 @@ public class MainMenuPanel extends JPanel {
 
 	private final static Logger logger = LoggerFactory.getLogger(MainMenuPanel.class);
 
+	static final Color FELT = new Color(0x1F4D3A);
+	static final Color CREAM = new Color(0xF4EAD5);
+	static final Color MUTED = new Color(0x9DB5A6);
+	static final Color ACCENT = new Color(0xB5533C);
+
+	/** The points of a backgammon board, along the top and bottom of the menu */
+	private static final int POINTS_ALONG_AN_EDGE = 12;
+	private static final int POINT_HEIGHT = 64;
+
+	private static final String NOT_SEARCHING = " ";
+	private static final String SEARCHING = "Searching: progress is in the terminal";
+
+	private final JLabel status = label(NOT_SEARCHING, Font.PLAIN, 14, MUTED);
+
 	public MainMenuPanel() {
 		this(MainMenuPanel::startSearch);
 	}
@@ -24,24 +38,76 @@ public class MainMenuPanel extends JPanel {
 	 *                    see the button pressed without running the GA
 	 */
 	MainMenuPanel(final Consumer<Runnable> startSearch) {
-		setLayout(new GridLayout());
+		setLayout(new GridBagLayout());
+		setBackground(FELT);
 
-		final JButton startSearchButton = new JButton("Start Search");
+		add(label("GA-mmon", Font.BOLD, 44, CREAM), row(0, 0));
+		add(label("Backgammon players, bred by a genetic algorithm", Font.PLAIN, 14, MUTED), row(1, 4));
+
+		final JButton startSearchButton = new MenuButton("Start Search");
 
 		// one search at a time: they share the settings and the attempt count, so two would save over each other
 		startSearchButton.addActionListener(e -> {
 			startSearchButton.setEnabled(false);
-			startSearch.accept(() -> startSearchButton.setEnabled(true));
+			status.setText(SEARCHING);
+			startSearch.accept(() -> {
+				startSearchButton.setEnabled(true);
+				status.setText(NOT_SEARCHING);
+			});
 		});
 
-		this.add(startSearchButton);
+		add(startSearchButton, row(2, 28));
+		add(notBuiltYet("Play Best Two"), row(3, 12));
+		add(notBuiltYet("Change Settings"), row(4, 12));
+		add(status, row(5, 18));
+	}
 
-		final JButton playBestTwo = new JButton("Play Best Two");
-		this.add(playBestTwo);
+	private static JLabel label(final String text, final int style, final int size, final Color colour) {
+		final JLabel label = new JLabel(text);
+		label.setFont(new Font(Font.SANS_SERIF, style, size));
+		label.setForeground(colour);
+		return label;
+	}
 
-		final JButton changeSettings = new JButton("Change Settings");
-		this.add(changeSettings);
+	private static JButton notBuiltYet(final String text) {
+		final JButton button = new MenuButton(text);
+		button.setEnabled(false);
+		button.setToolTipText("Not built yet");
+		return button;
+	}
 
+	private static GridBagConstraints row(final int row, final int gapAbove) {
+		final GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = 0;
+		constraints.gridy = row;
+		constraints.insets = new Insets(gapAbove, 0, 0, 0);
+		return constraints;
+	}
+
+	/**
+	 * @return what the menu is saying about the search
+	 */
+	String status() {
+		return status.getText();
+	}
+
+	@Override
+	protected void paintComponent(final Graphics graphics) {
+		super.paintComponent(graphics);
+		final Graphics2D g = (Graphics2D) graphics.create();
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		for (int point = 0; point < POINTS_ALONG_AN_EDGE; point++) {
+			final int left = getWidth() * point / POINTS_ALONG_AN_EDGE;
+			final int right = getWidth() * (point + 1) / POINTS_ALONG_AN_EDGE;
+			final int middle = (left + right) / 2;
+			g.setColor(point % 2 == 0 ? ACCENT : CREAM);
+			g.fillPolygon(new int[]{left, right, middle}, new int[]{0, 0, POINT_HEIGHT}, 3);
+			// the other way round along the bottom, as on a board
+			g.setColor(point % 2 == 0 ? CREAM : ACCENT);
+			g.fillPolygon(new int[]{left, right, middle},
+					new int[]{getHeight(), getHeight(), getHeight() - POINT_HEIGHT}, 3);
+		}
+		g.dispose();
 	}
 
 	/**
