@@ -47,6 +47,31 @@ public class BoardTest {
 	}
 
 	@Test
+	public void pipCountsGoByHowFarEachColourHasToGo() {
+		final Board position = new Board();
+		position.removeAllPieces();
+		assertEquals(0, position.pipCount(true));
+		assertEquals(0, position.pipCount(false));
+
+		position.addPiece(3, true);
+		position.addPiece(25, true);
+		position.addPiece(20, false);
+		position.addPiece(0, false);
+
+		assertEquals(3 + 25, position.pipCount(true));
+		assertEquals(5 + 25, position.pipCount(false));
+	}
+
+	@Test
+	public void bothColoursStartWith167Pips() {
+		final Board start = new Board();
+		start.setStartPosition();
+
+		assertEquals(167, start.pipCount(true));
+		assertEquals(167, start.pipCount(false));
+	}
+
+	@Test
 	public void testingAddingACounterToABoardsPointsWorks() {
 		assertEquals(0, board.getBlackCount(1), "point [1] should start with 0");
 		board.addPiece(1, true);

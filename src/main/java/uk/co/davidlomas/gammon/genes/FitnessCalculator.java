@@ -47,22 +47,11 @@ class FitnessCalculator {
 	}
 
 	/**
-	 * As calculateFitnessOfPopulation, keeping progress up to date as the games are played
+	 * As calculateFitnessOfPopulation, with the seed for each meeting taken from meetingSeeds, so tests can choose
+	 * them, and keeping progress up to date as the games are played
 	 *
 	 * @param progress null if nothing is watching
 	 */
-	static void calculateFitnessOfPopulation(final Population pop, final SearchProgress progress) {
-		calculateFitnessOfPopulation(pop, RandomSource::nextLong, progress);
-	}
-
-	/**
-	 * As calculateFitnessOfPopulation, with the seed for each meeting taken from meetingSeeds, so tests can choose
-	 * them
-	 */
-	static void calculateFitnessOfPopulation(final Population pop, final LongSupplier meetingSeeds) {
-		calculateFitnessOfPopulation(pop, meetingSeeds, null);
-	}
-
 	static void calculateFitnessOfPopulation(final Population pop, final LongSupplier meetingSeeds,
 											 final SearchProgress progress) {
 
@@ -104,15 +93,8 @@ class FitnessCalculator {
 	/**
 	 * The player's average points a game against the opponent, a meeting for each seed. It's played on threads of its
 	 * own, like the fitness games, so the caller's random numbers aren't touched
-	 */
-	static double averagePoints(final Individual player, final Individual opponent, final long[] meetingSeeds) {
-		return averagePoints(player, opponent, meetingSeeds, null);
-	}
-
-	/**
-	 * As averagePoints, keeping progress up to date as the games are played
 	 *
-	 * @param progress null if nothing is watching
+	 * @param progress kept up to date as the games are played, null if nothing is watching
 	 */
 	static double averagePoints(final Individual player, final Individual opponent, final long[] meetingSeeds,
 								final SearchProgress progress) {

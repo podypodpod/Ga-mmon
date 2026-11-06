@@ -11,6 +11,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -60,6 +61,8 @@ public class SearchProgressFrame extends JFrame {
 		content.add(summary(), BorderLayout.NORTH);
 		content.add(tables(), BorderLayout.CENTER);
 		add(content);
+		getRootPane().registerKeyboardAction(e -> back(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 		// tall enough to show a game for each of 12 cores without scrolling, if the screen is
 		setSize(fitted(new Dimension(1000, 890),
@@ -107,6 +110,8 @@ public class SearchProgressFrame extends JFrame {
 	private JPanel header() {
 		final MenuButton back = new MenuButton("Back to Menu");
 		back.setPreferredSize(new Dimension(160, 36));
+		// it's the only thing that could take the focus, and then the space bar would press it. Escape does it instead
+		back.setFocusable(false);
 		back.addActionListener(e -> back());
 
 		final JPanel header = new JPanel(new BorderLayout(12, 0));
@@ -176,7 +181,7 @@ public class SearchProgressFrame extends JFrame {
 	private JPanel tables() {
 		final JPanel tables = new JPanel(new GridLayout(2, 1, 0, 14));
 		tables.setOpaque(false);
-		tables.add(titled("Games being played", table(liveGames, 2)));
+		tables.add(titled("Games being played (players are numbered afresh each generation)", table(liveGames, 2)));
 		tables.add(titled("Generations, newest first", table(generations, 1)));
 		return tables;
 	}
@@ -270,9 +275,16 @@ public class SearchProgressFrame extends JFrame {
 		};
 	}
 
-	private static String roundText(final SearchProgress progress) {
+	/**
+	 * @return how far through its round the search is, blank between rounds
+	 */
+	static String roundText(final SearchProgress progress) {
+		final int planned = progress.getGamesPlannedThisRound();
+		if (planned == 0) {
+			return " ";
+		}
 		return String.format(Locale.ROOT, "%s: game %,d of %,d", capitalised(progress.getRound().describe()),
-				progress.getGamesThisRound(), progress.getGamesPlannedThisRound());
+				progress.getGamesThisRound(), planned);
 	}
 
 	private static String capitalised(final String text) {

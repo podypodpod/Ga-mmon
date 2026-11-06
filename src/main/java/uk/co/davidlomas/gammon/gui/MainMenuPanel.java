@@ -9,6 +9,7 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
 import javax.swing.*;
 import java.awt.*;
 import java.util.function.BiConsumer;
+import java.util.function.ObjIntConsumer;
 
 public class MainMenuPanel extends JPanel {
 
@@ -127,10 +128,30 @@ public class MainMenuPanel extends JPanel {
 	 */
 	private void startSearch(final Runnable whenDone) {
 		final SearchProgress progress = new SearchProgress();
+		showSearch(progress);
+		searchThread(progress, whenDone).start();
+	}
+
+	/**
+	 * Swaps the menu for a window showing how this search is going, and offers a way back to it until the search ends
+	 */
+	void showSearch(final SearchProgress progress) {
 		progressWindow = new SearchProgressFrame(progress, this::showMenu);
 		backToSearch.setVisible(true);
 		showProgressWindow();
-		searchThread(progress, whenDone).start();
+	}
+
+	/**
+	 * Swaps the menu for the window of the search that's running, if one is
+	 *
+	 * @return whether one was running
+	 */
+	boolean showRunningSearch() {
+		if (!backToSearch.isVisible()) {
+			return false;
+		}
+		showProgressWindow();
+		return true;
 	}
 
 	/**
@@ -176,11 +197,20 @@ public class MainMenuPanel extends JPanel {
 	 * @return the thread, not started
 	 */
 	static Thread searchThread(final SearchProgress progress, final Runnable whenDone) {
+		return searchThread(progress, whenDone, MainMenuPanel::showMessage);
+	}
+
+	/**
+	 * @param tell shows a message, and a JOptionPane type saying what sort it is
+	 */
+	static Thread searchThread(final SearchProgress progress, final Runnable whenDone,
+							   final ObjIntConsumer<String> tell) {
 		return new Thread(() -> {
 			try {
-				markingFailure(progress, () -> {
+				// the check for a person counts as well: a mistake in the settings can come to light there
+				progress.follow(() -> {
 					if (waitsForAPerson()) {
-						showMessage("areBothAIs is off in conf/GameSettings.properties, so this search will wait for you "
+						tell.accept("areBothAIs is off in conf/GameSettings.properties, so this search will wait for you "
 								+ "to play player 2 in the terminal.", JOptionPane.INFORMATION_MESSAGE);
 					}
 					StartGa.run(progress);
@@ -188,7 +218,7 @@ public class MainMenuPanel extends JPanel {
 			} catch (final Throwable e) {
 				// any failure is reported, including Errors such as a settings class failing to load
 				logger.error("The search failed", e);
-				showMessage("The search failed: " + e, JOptionPane.ERROR_MESSAGE);
+				tell.accept("The search failed: " + e, JOptionPane.ERROR_MESSAGE);
 				if (e instanceof Error) {
 					throw (Error) e;
 				}
@@ -196,20 +226,6 @@ public class MainMenuPanel extends JPanel {
 				SwingUtilities.invokeLater(whenDone);
 			}
 		}, "GA search");
-	}
-
-	/**
-	 * Runs search, marking progress as failed if it does, even if that's before the search itself has started, such as
-	 * a settings file with a mistake in it. Otherwise the window would never know the search had ended, and it would
-	 * stay open with nothing to end it
-	 */
-	static void markingFailure(final SearchProgress progress, final Runnable search) {
-		try {
-			search.run();
-		} catch (final RuntimeException | Error e) {
-			progress.failed();
-			throw e;
-		}
 	}
 
 	/**

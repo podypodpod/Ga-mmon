@@ -8,11 +8,16 @@ import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.genes.SearchProgress;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
+import javax.swing.JButton;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -66,6 +71,50 @@ public class SearchProgressFrameTest {
 		} finally {
 			SwingUtilities.invokeAndWait(frame[0]::dispose);
 		}
+	}
+
+	@Test
+	public void escapeGoesBackAndTheSpaceBarCantPressTheButton() throws Exception {
+		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
+		final AtomicInteger menuShown = new AtomicInteger();
+		final SearchProgressFrame[] frame = new SearchProgressFrame[1];
+		SwingUtilities.invokeAndWait(() -> frame[0] = new SearchProgressFrame(new SearchProgress(), menuShown::incrementAndGet));
+		try {
+			SwingUtilities.invokeAndWait(() -> {
+				assertFalse(backButton(frame[0].getContentPane()).isFocusable());
+				frame[0].getRootPane().getActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0)).actionPerformed(null);
+			});
+			assertEquals(1, menuShown.get());
+		} finally {
+			SwingUtilities.invokeAndWait(frame[0]::dispose);
+		}
+	}
+
+	private static JButton backButton(final Container container) {
+		for (final Component component : container.getComponents()) {
+			if (component instanceof JButton) {
+				return (JButton) component;
+			}
+			if (component instanceof Container) {
+				final JButton inside = backButton((Container) component);
+				if (inside != null) {
+					return inside;
+				}
+			}
+		}
+		return null;
+	}
+
+	@Test
+	public void itOnlyGivesARoundsProgressDuringARound() {
+		final SearchProgress progress = new SearchProgress();
+		assertEquals(" ", SearchProgressFrame.roundText(progress));
+
+		progress.roundStarted(SearchProgress.Round.FITNESS, 4, 1);
+		assertEquals("Working out fitness: game 0 of 4", SearchProgressFrame.roundText(progress));
+
+		progress.generationFinished(new SearchProgress.GenerationResult("initial", 0, 0, 0, 0, 0, 0, 0, null));
+		assertEquals(" ", SearchProgressFrame.roundText(progress));
 	}
 
 	@Test

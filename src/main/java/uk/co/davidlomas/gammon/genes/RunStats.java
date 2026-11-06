@@ -34,10 +34,6 @@ final class RunStats {
 	// the same meetings every time, so a change from one measure to the next is down to the player, not the dice
 	private final long[] meetingSeeds = new long[REFERENCE_MEETINGS];
 
-	RunStats(final String file) {
-		this(file, null);
-	}
-
 	/**
 	 * @param progress told about each generation as well, null if nothing is watching
 	 */

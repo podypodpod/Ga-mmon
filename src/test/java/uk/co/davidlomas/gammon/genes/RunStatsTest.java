@@ -102,7 +102,7 @@ public class RunStatsTest {
 		final Population population = new Population(3, true);
 		population.calculateFitness();
 
-		final RunStats stats = new RunStats(file.toString());
+		final RunStats stats = new RunStats(file.toString(), null);
 		stats.record("initial", population, true);
 		stats.record("0", population, false);
 
@@ -127,7 +127,7 @@ public class RunStatsTest {
 		RandomSource.setSeed(4);
 		final Population population = new Population(3, true);
 		population.calculateFitness();
-		final RunStats stats = new RunStats(dir.resolve("runStats.csv").toString());
+		final RunStats stats = new RunStats(dir.resolve("runStats.csv").toString(), null);
 
 		RandomSource.setSeed(8);
 		final long expected = new java.util.Random(8).nextLong();

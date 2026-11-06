@@ -21,31 +21,20 @@ public class StartGa {
 	private final static Logger logger = LoggerFactory.getLogger(StartGa.class);
 
 	/**
-	 * Runs the genetic algorithm as main does, keeping progress up to date as it goes
-	 */
-	public static void run(final SearchProgress progress) {
-		try {
-			search(progress);
-			progress.finished();
-		} catch (final RuntimeException | Error e) {
-			progress.failed();
-			throw e;
-		}
-	}
-
-	/**
 	 * The main for starting the genetic algorithm
 	 *
 	 * @param args command line arguments
 	 */
 	public static void main(final String args[]) {
-		search(null);
+		run(null);
 	}
 
 	/**
-	 * @param progress null if nothing is watching
+	 * Runs the genetic algorithm
+	 *
+	 * @param progress kept up to date as it goes, null if nothing is watching
 	 */
-	private static void search(final SearchProgress progress) {
+	public static void run(final SearchProgress progress) {
 
 		GenAlgSettings.check();
 		GenAlgSettings.setAttemptCount(Individual.lastAttempt() + 1);

@@ -10,12 +10,15 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,7 +27,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
@@ -115,18 +117,96 @@ public class MainMenuPanelTest {
 	}
 
 	@Test
-	public void aFailureBeforeTheSearchStartsCountsAsTheSearchFailing() {
-		final SearchProgress progress = new SearchProgress();
+	public void aSearchThatFailsIsReportedAndEnds() throws Exception {
+		try {
+			GenAlgSettings.setPopulationSize(0);
+			GameSettings.setAreBothAIsCache(false);
+			final List<String> messages = new CopyOnWriteArrayList<>();
+			final CountDownLatch done = new CountDownLatch(1);
+			final SearchProgress progress = new SearchProgress();
 
-		assertThrows(IllegalStateException.class, () -> MainMenuPanel.markingFailure(progress, () -> {
-			throw new IllegalStateException("a mistake in the settings");
-		}));
+			final Thread search = MainMenuPanel.searchThread(progress, done::countDown,
+					(message, type) -> messages.add(type + " " + message));
+			search.setDaemon(true);
+			search.start();
 
-		assertEquals(SearchProgress.State.FAILED, progress.getState());
+			assertTrue(done.await(120, TimeUnit.SECONDS), "the search didn't end");
+			assertEquals(SearchProgress.State.FAILED, progress.getState());
+			assertEquals(2, messages.size(), messages.toString());
+			assertTrue(messages.get(0).startsWith(JOptionPane.INFORMATION_MESSAGE + " areBothAIs"), messages.get(0));
+			assertTrue(messages.get(1).startsWith(JOptionPane.ERROR_MESSAGE + " The search failed"), messages.get(1));
+		} finally {
+			SettingsUtil.resetSettings();
+		}
 	}
 
 	@Test
-	public void leavingTheSearchsWindowHiddenUntilItEndsStillLetsTheProgramEnd() throws Exception {
+	public void aWindowLeftHiddenUntilTheSearchEndsGoesWithIt() throws Exception {
+		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
+		// a search that only ends when this test says, so the window is certain to still be hidden when it does
+		final SearchProgress progress = new SearchProgress();
+		final AtomicReference<Runnable> whenDone = new AtomicReference<>();
+		final MainMenuPanel[] panel = new MainMenuPanel[1];
+		SwingUtilities.invokeAndWait(() -> {
+			panel[0] = new MainMenuPanel((menu, done) -> {
+				menu.showSearch(progress);
+				whenDone.set(done);
+			});
+			button(panel[0], "Start Search").doClick();
+		});
+		final SearchProgressFrame window = panel[0].progressWindow();
+		try {
+			SwingUtilities.invokeAndWait(window::back);
+			assertFalse(window.isVisible());
+			assertTrue(window.isDisplayable());
+
+			progress.finished();
+			SwingUtilities.invokeAndWait(whenDone.get());
+
+			assertFalse(window.isDisplayable(), "left hidden, it would stop the program ending");
+			assertFalse(button(panel[0], "Back to Search").isVisible());
+		} finally {
+			SwingUtilities.invokeAndWait(window::dispose);
+		}
+	}
+
+	@Test
+	public void closingTheMenuDuringASearchBringsBackItsWindow() throws Exception {
+		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
+		final MainMenuContainerFrame menu = openMenuForASmallSearch();
+		final JButton startSearch = button(menu.mmp, "Start Search");
+		try {
+			// all in one go on the Swing thread, so the search can't be reported as over part way through
+			SwingUtilities.invokeAndWait(() -> {
+				startSearch.doClick();
+				final SearchProgressFrame window = menu.mmp.progressWindow();
+				window.back();
+
+				closeTheWayItsXDoes(menu);
+
+				assertFalse(menu.isVisible());
+				assertTrue(menu.isDisplayable(), "it should still be there to go back to");
+				assertTrue(window.isVisible(), "something should show that the search is still going");
+			});
+
+			awaitTheSearchEnding(startSearch);
+			SwingUtilities.invokeAndWait(menu.mmp.progressWindow()::back);
+			assertTrue(menu.isVisible());
+
+			// with no search running, closing it really does close it
+			SwingUtilities.invokeAndWait(() -> closeTheWayItsXDoes(menu));
+			assertFalse(menu.isDisplayable());
+		} finally {
+			close(menu);
+		}
+	}
+
+	private static void closeTheWayItsXDoes(final MainMenuContainerFrame menu) {
+		menu.dispatchEvent(new WindowEvent(menu, WindowEvent.WINDOW_CLOSING));
+	}
+
+	@Test
+	public void theMenuAndTheSearchsWindowSwapPlaces() throws Exception {
 		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
 		final MainMenuContainerFrame menu = openMenuForASmallSearch();
 		final JButton startSearch = button(menu.mmp, "Start Search");

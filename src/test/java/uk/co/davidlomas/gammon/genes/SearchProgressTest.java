@@ -11,6 +11,8 @@ import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -37,7 +39,7 @@ public class SearchProgressTest {
 		GenAlgSettings.setGamesPerPairing(1);
 		final SearchProgress progress = new SearchProgress();
 
-		StartGa.run(progress);
+		progress.follow(() -> StartGa.run(progress));
 
 		assertEquals(SearchProgress.State.FINISHED, progress.getState());
 		assertEquals(1.0, progress.getShareDone());
@@ -56,7 +58,7 @@ public class SearchProgressTest {
 		GenAlgSettings.setPopulationSize(0);
 		final SearchProgress progress = new SearchProgress();
 
-		assertThrows(IllegalArgumentException.class, () -> StartGa.run(progress));
+		assertThrows(IllegalArgumentException.class, () -> progress.follow(() -> StartGa.run(progress)));
 
 		assertEquals(SearchProgress.State.FAILED, progress.getState());
 	}
@@ -81,6 +83,44 @@ public class SearchProgressTest {
 
 		progress.generationFinished(new SearchProgress.GenerationResult("initial", 0, 0, 0, 0, 0, 0, 0, null));
 		assertEquals(0.5, progress.getShareDone());
+	}
+
+	@Test
+	public void theShareDoneNeverDipsWhileTheRoundsChange() throws Exception {
+		final int generations = 20_000;
+		final Individual first = new Individual();
+		final GameStats game = new GameStats(first, WinType.SINGLE, 1, -1);
+		final SearchProgress.GenerationResult result = new SearchProgress.GenerationResult("0", 0, 0, 0, 0, 0, 0, 0, null);
+		final SearchProgress progress = new SearchProgress();
+		progress.searchStarted(generations);
+		final AtomicBoolean done = new AtomicBoolean();
+		final AtomicReference<String> dip = new AtomicReference<>();
+
+		final Thread reader = new Thread(() -> {
+			double last = 0;
+			while (!done.get()) {
+				final double share = progress.getShareDone();
+				if (share < last) {
+					dip.set(last + " then " + share);
+				}
+				last = share;
+			}
+		});
+		reader.setDaemon(true);
+		reader.start();
+
+		for (int generation = 0; generation < generations; generation++) {
+			progress.roundStarted(SearchProgress.Round.FITNESS, 1, 1);
+			try (SearchProgress.MeetingWatch watch = progress.watchMeeting(first, "Player 1", "Player 2")) {
+				watch.gameFinished(game);
+			}
+			progress.roundStarted(SearchProgress.Round.REFERENCE, 1, 1);
+			progress.generationFinished(result);
+		}
+		done.set(true);
+		reader.join();
+
+		assertNull(dip.get());
 	}
 
 	@Test

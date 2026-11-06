@@ -93,10 +93,28 @@ public final class SearchProgress {
 	}
 
 	/**
+	 * Runs search, and marks this as finished or failed by how that goes. Failing counts even before the search itself
+	 * has started, such as a settings file with a mistake in it, as otherwise whatever is showing this would never know
+	 * the search had ended
+	 */
+	public void follow(final Runnable search) {
+		try {
+			search.run();
+			finished();
+		} catch (final RuntimeException | Error e) {
+			failed();
+			throw e;
+		}
+	}
+
+	/**
+	 * Locked with getShareDone, so it isn't seen part way through and the bar doesn't dip. Turns and games don't take
+	 * the lock, so nothing showing this can hold them up
+	 *
 	 * @param games how many games this round is
 	 * @param slots how many games can be playing at the same time
 	 */
-	public void roundStarted(final Round round, final int games, final int slots) {
+	public synchronized void roundStarted(final Round round, final int games, final int slots) {
 		final Queue<Integer> free = new ConcurrentLinkedQueue<>();
 		for (int slot = 0; slot < slots; slot++) {
 			free.add(slot);
@@ -115,7 +133,7 @@ public final class SearchProgress {
 		savedIn = folder;
 	}
 
-	public void generationFinished(final GenerationResult result) {
+	public synchronized void generationFinished(final GenerationResult result) {
 		// the round's over, so the games it played mustn't count towards the next stage as well as this result
 		round = Round.FITNESS;
 		gamesPlannedThisRound = 0;
@@ -190,7 +208,7 @@ public final class SearchProgress {
 	 * @return the share of the search that's done, 0 to 1, by how many generations have finished and how far through
 	 * its fitness games the current one is
 	 */
-	public double getShareDone() {
+	public synchronized double getShareDone() {
 		if (state == State.FINISHED) {
 			return 1;
 		}
