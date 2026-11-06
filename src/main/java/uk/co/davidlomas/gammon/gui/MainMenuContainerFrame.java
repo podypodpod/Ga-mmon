@@ -8,6 +8,11 @@ public class MainMenuContainerFrame extends JFrame implements Runnable {
 
 	public MainMenuPanel mmp;
 
+	public static void main(final String[] args) {
+		// all of it on the Swing thread, the frame being made as well as shown
+		SwingUtilities.invokeLater(() -> new MainMenuContainerFrame().run());
+	}
+
 	public void createGUI() {
 
 		// Setting up this frame and its panel

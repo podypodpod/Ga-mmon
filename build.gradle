@@ -48,14 +48,27 @@ test {
 // started from here
 def collector = '-XX:+UseParallelGC'
 
+// What every task that runs part of the program needs, so they can't drift apart
+tasks.withType(JavaExec).configureEach {
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs collector
+}
+
 // Runs the GA with the settings in conf/
 tasks.register('ga', JavaExec) {
     group = 'application'
     description = 'Runs the GA'
-    classpath = sourceSets.main.runtimeClasspath
     mainClass = 'uk.co.davidlomas.gammon.genes.StartGa'
-    jvmArgs collector
     // with areBothAIs off, a person plays player 2 from here
+    standardInput = System.in
+}
+
+// Opens the main menu, whose Start Search button runs the same GA as the task above
+tasks.register('menu', JavaExec) {
+    group = 'application'
+    description = 'Opens the main menu'
+    mainClass = 'uk.co.davidlomas.gammon.gui.MainMenuContainerFrame'
+    // with areBothAIs off, a person plays player 2 from the console
     standardInput = System.in
 }
 
@@ -64,11 +77,9 @@ tasks.register('ga', JavaExec) {
 tasks.register('benchmark', JavaExec) {
     group = 'verification'
     description = 'Measures player strength and game speed, and adds a row to benchmarks.csv'
-    classpath = sourceSets.main.runtimeClasspath
     mainClass = 'uk.co.davidlomas.gammon.genes.Benchmark'
     args = [project.findProperty('generations') ?: '60', project.findProperty('seeds') ?: '3',
             project.findProperty('meetings') ?: '1000', 'benchmarks.csv']
-    jvmArgs collector
     // the players it evolves aren't saved, but keep anything that is out of savedPlayers/
     systemProperty 'gammon.playersDir', layout.buildDirectory.dir('benchmark-players').get().asFile.absolutePath
 }
