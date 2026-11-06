@@ -291,9 +291,6 @@ public class Individual {
 	}
 
 	/**
-	 * Update from binary to values.
-	 */
-	/**
 	 * Sets the genes from the chromosome, after its bits have been changed directly, as mutation does. 7 bits can
 	 * hold up to 127 but a gene only goes to 100, so the chromosome is then rebuilt from the genes to match them
 	 */
