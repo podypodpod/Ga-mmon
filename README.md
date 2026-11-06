@@ -26,7 +26,7 @@ To open the main menu instead:
 ./gradlew menu
 ```
 
-Its Start Search button runs the same GA, and its progress appears in the terminal. Closing the window doesn't stop a search: press Ctrl+C in the terminal for that. Settings are read once, so reopen the menu after changing the files in `conf/`. With `areBothAIs` off, a message tells you the search will wait for you to play in the terminal. The Play Best Two and Change Settings buttons are greyed out, as they don't do anything yet.
+Its Start Search button runs the same GA and opens a window showing how far through it is, the stats so far, every game being played, and how each generation came out. The games are shown as they stand a few times a second, as there are thousands a second. Closing the windows doesn't stop a search: press Ctrl+C in the terminal for that. Settings are read once, so reopen the menu after changing the files in `conf/`. With `areBothAIs` off, a message tells you the search will wait for you to play in the terminal. The Play Best Two and Change Settings buttons are greyed out, as they don't do anything yet.
 
 ## How a player chooses a move
 

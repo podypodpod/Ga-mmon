@@ -26,7 +26,7 @@ final class RunStats {
 			+ "gammonRate,backgammonRate,pointsAgainstReference";
 
 	private static final Logger logger = LoggerFactory.getLogger(RunStats.class);
-	private static final int REFERENCE_MEETINGS = 200;
+	static final int REFERENCE_MEETINGS = 200;
 
 	private final Path file;
 	private final ReferencePlayer reference = new ReferencePlayer();
@@ -49,10 +49,12 @@ final class RunStats {
 	 * @param checkReference whether to play the fittest against the reference player, which takes a few more games
 	 */
 	void record(final String generation, final Population pop, final boolean checkReference) {
-		final String row = row(generation, pop, checkReference
-				? FitnessCalculator.averagePoints(pop.getFittest(), reference, meetingSeeds) : null);
+		final Double points = checkReference
+				? FitnessCalculator.averagePoints(pop.getFittest(), reference, meetingSeeds) : null;
+		final String row = row(generation, pop, points);
 		logger.info("Stats: {}", row);
 		write(row, StandardOpenOption.APPEND);
+		SearchProgress.ifWatching(progress -> progress.generationFinished(result(generation, pop, points)));
 	}
 
 	private void write(final String line, final StandardOpenOption... options) {
@@ -61,6 +63,14 @@ final class RunStats {
 		} catch (final IOException e) {
 			logger.error("Failed writing to {}", file, e);
 		}
+	}
+
+	private static SearchProgress.GenerationResult result(final String generation, final Population pop,
+														  final Double pointsAgainstReference) {
+		final GameTally games = pop.getGameTally();
+		return new SearchProgress.GenerationResult(generation, pop.getFittest().getFitness(), geneSpread(pop),
+				games.turnsPerGame(), games.rate(WinType.DRAW), games.rate(WinType.SINGLE), games.rate(WinType.GAMMON),
+				games.rate(WinType.BACKGAMMON), pointsAgainstReference);
 	}
 
 	static String row(final String generation, final Population pop, final Double pointsAgainstReference) {

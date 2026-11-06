@@ -10,10 +10,12 @@ import uk.co.davidlomas.gammon.util.RandomSource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.IntFunction;
 import java.util.function.LongSupplier;
 
 /**
@@ -66,7 +68,7 @@ class FitnessCalculator {
 		}
 
 		logger.trace("Round robin started: {} meetings", plan.size());
-		final List<MeetingGames> played = play(pop, plan);
+		final List<MeetingGames> played = play(pop, plan, SearchProgress.Round.FITNESS, i -> "Player " + (i + 1));
 
 		final double[] totals = new double[size];
 		final GameTally tally = new GameTally();
@@ -99,7 +101,8 @@ class FitnessCalculator {
 			plan.add(new Meeting(0, 1, seed));
 		}
 		double total = 0;
-		for (final MeetingGames games : play(pair, plan)) {
+		for (final MeetingGames games : play(pair, plan, SearchProgress.Round.REFERENCE,
+				i -> i == 0 ? "The best" : "Reference")) {
 			total += games.firstScore();
 		}
 		return total / (2.0 * meetingSeeds.length);
@@ -109,21 +112,39 @@ class FitnessCalculator {
 	 * Plays every meeting in the plan, on as many threads as the settings allow, and gives back each one's games
 	 * in the plan's order. Even with one thread they're played on a thread of their own, so the caller's random
 	 * numbers aren't touched either way
+	 *
+	 * @param round what the meetings are for, for anything watching the search
+	 * @param names what to call a player, by their place in the population, for anything watching the search
 	 */
-	private static List<MeetingGames> play(final Population pop, final List<Meeting> plan) {
+	private static List<MeetingGames> play(final Population pop, final List<Meeting> plan,
+										   final SearchProgress.Round round, final IntFunction<String> names) {
 		// the settings are read now, before any game, so the threads don't each read them from the file
 		GameSettings.loadAll();
 		final int wanted = !playsInParallel() ? 1
 				: GameSettings.getThreads() == 0 ? Runtime.getRuntime().availableProcessors() : GameSettings.getThreads();
 		// no more threads than meetings, as any more would have nothing to play
 		final int threads = Math.max(1, Math.min(wanted, plan.size()));
+		final SearchProgress progress = SearchProgress.watching();
+		if (progress != null) {
+			progress.roundStarted(round, 2 * plan.size(), threads);
+		}
 		final ExecutorService pool = Executors.newFixedThreadPool(threads);
 		try {
 			final List<Future<MeetingGames>> playing = new ArrayList<>();
 			for (final Meeting meeting : plan) {
 				final Individual first = pop.individuals[meeting.first()];
 				final Individual second = pop.individuals[meeting.second()];
-				playing.add(pool.submit(() -> playMeeting(new GameManager(), first, second, meeting.seed())));
+				final Callable<MeetingGames> game = progress == null
+						? () -> playMeeting(new GameManager(), first, second, meeting.seed())
+						: () -> {
+							try (SearchProgress.MeetingWatch watch = progress.watchMeeting(first,
+									names.apply(meeting.first()), names.apply(meeting.second()))) {
+								final GameManager gameManager = new GameManager();
+								gameManager.setObserver(watch);
+								return playMeeting(gameManager, first, second, meeting.seed());
+							}
+						};
+				playing.add(pool.submit(game));
 			}
 			final List<MeetingGames> played = new ArrayList<>();
 			for (final Future<MeetingGames> meeting : playing) {

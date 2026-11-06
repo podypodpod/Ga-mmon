@@ -199,6 +199,17 @@ public class Board {
 		return 31 * (31 * redBore + blackBore) + Arrays.hashCode(counts);
 	}
 
+	/**
+	 * @return how many pips the player needs to bear off all their pieces
+	 */
+	public int pipCount(final boolean black) {
+		int pips = 0;
+		for (int point = 0; point < POINTS; point++) {
+			pips += (black ? point : 25 - point) * getCount(point, black);
+		}
+		return pips;
+	}
+
 	public int getBlackBore() {
 		return blackBore;
 	}

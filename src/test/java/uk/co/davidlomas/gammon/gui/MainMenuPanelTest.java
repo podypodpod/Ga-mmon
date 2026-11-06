@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.genes.Individual;
+import uk.co.davidlomas.gammon.genes.SearchProgress;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
@@ -64,7 +65,7 @@ public class MainMenuPanelTest {
 		startSearch.doClick();
 		assertEquals(1, searches.get());
 		assertFalse(startSearch.isEnabled());
-		assertTrue(panel.status().contains("terminal"), "it should say where the progress is");
+		assertTrue(panel.status().contains("window"), "it should say where the progress is");
 
 		// once that search ends, it can be pressed again
 		whenDone.get().run();
@@ -82,7 +83,8 @@ public class MainMenuPanelTest {
 		final int attempt = Individual.lastAttempt() + 1;
 		final CountDownLatch done = new CountDownLatch(1);
 
-		final Thread search = MainMenuPanel.searchThread(done::countDown);
+		final SearchProgress progress = new SearchProgress();
+		final Thread search = MainMenuPanel.searchThread(progress, done::countDown);
 		// StartGa can't be stopped part way, so a run that's still going after this carries on in the background.
 		// As a daemon it can't keep the test run open
 		search.setDaemon(true);
@@ -91,6 +93,7 @@ public class MainMenuPanelTest {
 		assertNotSame(Thread.currentThread(), search);
 		assertTrue(done.await(120, TimeUnit.SECONDS), "the search didn't finish");
 		assertEquals(attempt, GenAlgSettings.getAttemptCount());
+		assertEquals(SearchProgress.State.FINISHED, progress.getState());
 		assertTrue(new File(SettingsUtil.getPlayersDir() + "/Attempt - " + attempt + "/PlayerFromGen0").isFile());
 	}
 

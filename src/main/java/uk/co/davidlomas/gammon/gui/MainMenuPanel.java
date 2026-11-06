@@ -2,6 +2,7 @@ package uk.co.davidlomas.gammon.gui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.co.davidlomas.gammon.genes.SearchProgress;
 import uk.co.davidlomas.gammon.genes.StartGa;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 
@@ -25,7 +26,7 @@ public class MainMenuPanel extends JPanel {
 	private static final int POINT_HEIGHT = 64;
 
 	private static final String NOT_SEARCHING = " ";
-	private static final String SEARCHING = "Searching: progress is in the terminal";
+	private static final String SEARCHING = "Searching: the other window shows how it's going";
 
 	private final JLabel status = label(NOT_SEARCHING, Font.PLAIN, 14, MUTED);
 
@@ -111,15 +112,18 @@ public class MainMenuPanel extends JPanel {
 	}
 
 	/**
-	 * Runs the genetic algorithm on its own thread, so the window keeps responding while it searches. If the search
-	 * fails, the error is shown in a message box rather than only in the log
+	 * Runs the genetic algorithm on its own thread, so the window keeps responding while it searches, and opens a
+	 * window showing how it's going. If the search fails, the error is shown in a message box rather than only in the
+	 * log
 	 *
 	 * @param whenDone run on the Swing thread once the search has finished or failed
 	 *
 	 * @return the thread it's running on
 	 */
 	static Thread startSearch(final Runnable whenDone) {
-		final Thread search = searchThread(whenDone);
+		final SearchProgress progress = new SearchProgress();
+		new SearchProgressFrame(progress).open();
+		final Thread search = searchThread(progress, whenDone);
 		search.start();
 		return search;
 	}
@@ -128,18 +132,19 @@ public class MainMenuPanel extends JPanel {
 	 * The thread a search runs on, not yet started, so tests can make it a daemon before starting it. The real one
 	 * isn't a daemon, so the program waits for a search to finish rather than cutting it off mid-save
 	 *
+	 * @param progress kept up to date as the search goes
 	 * @param whenDone run on the Swing thread once the search has finished or failed
 	 *
 	 * @return the thread, not started
 	 */
-	static Thread searchThread(final Runnable whenDone) {
+	static Thread searchThread(final SearchProgress progress, final Runnable whenDone) {
 		return new Thread(() -> {
 			try {
 				if (waitsForAPerson()) {
 					showMessage("areBothAIs is off in conf/GameSettings.properties, so this search will wait for you to "
 							+ "play player 2 in the terminal.", JOptionPane.INFORMATION_MESSAGE);
 				}
-				StartGa.main(new String[0]);
+				StartGa.run(progress);
 			} catch (final Throwable e) {
 				// any failure is reported, including Errors such as a settings class failing to load
 				logger.error("The search failed", e);

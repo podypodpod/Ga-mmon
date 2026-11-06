@@ -102,6 +102,36 @@ public class FitnessCalculatorTest {
 	}
 
 	@Test
+	public void watchingTheGamesDoesNotChangeHowTheyPlayOut() {
+		RandomSource.setSeed(11);
+		final Population pop = new Population(4, true);
+		final double[] unwatched = fitnessesFromFixedSeeds(pop);
+
+		final SearchProgress progress = new SearchProgress();
+		SearchProgress.watch(progress);
+		final double[] watched;
+		try {
+			watched = fitnessesFromFixedSeeds(pop);
+		} finally {
+			SearchProgress.watch(null);
+		}
+
+		assertArrayEquals(unwatched, watched, 1e-12);
+		// 6 pairs, a meeting each, and two games a meeting
+		assertEquals(12, progress.getGames());
+	}
+
+	private static double[] fitnessesFromFixedSeeds(final Population pop) {
+		final long[] nextSeed = {100};
+		FitnessCalculator.calculateFitnessOfPopulation(pop, () -> nextSeed[0]++);
+		final double[] fitnesses = new double[pop.size()];
+		for (int i = 0; i < pop.size(); i++) {
+			fitnesses[i] = pop.getIndividual(i).getFitness();
+		}
+		return fitnesses;
+	}
+
+	@Test
 	public void workingOutFitnessDoesNotChangeTheCallersRandomNumbers() {
 		// the GA goes on to pick parents and mutate from the same random numbers, so the games mustn't use them up
 		final Population population = new Population(3, true);
