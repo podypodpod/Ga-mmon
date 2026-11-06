@@ -2,14 +2,18 @@ package uk.co.davidlomas.gammon.gui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.co.davidlomas.gammon.genes.SavedPlayers;
+import uk.co.davidlomas.gammon.genes.SavedPlayers.SavedPlayer;
 import uk.co.davidlomas.gammon.genes.SearchProgress;
 import uk.co.davidlomas.gammon.genes.StartGa;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.ObjIntConsumer;
+import java.util.function.Supplier;
 
 public class MainMenuPanel extends JPanel {
 
@@ -28,10 +32,13 @@ public class MainMenuPanel extends JPanel {
 
 	private static final String NOT_SEARCHING = " ";
 	private static final String SEARCHING = "A search is running";
+	private static final String NOT_ENOUGH_PLAYERS = "There aren't two saved players to watch yet: Create Good Players first";
 
 	private final JLabel status = label(NOT_SEARCHING, Font.PLAIN, 14, MUTED);
 	private final JButton backToSearch = new MenuButton("Back to Search");
+	private final transient Supplier<List<SavedPlayer>> bestTwo;
 	private SearchProgressFrame progressWindow;
+	private WatchGameFrame watchWindow;
 
 	public MainMenuPanel() {
 		this(MainMenuPanel::startSearch);
@@ -42,20 +49,34 @@ public class MainMenuPanel extends JPanel {
 	 *                    so they can see the button pressed without running the GA
 	 */
 	MainMenuPanel(final BiConsumer<MainMenuPanel, Runnable> startSearch) {
+		this(startSearch, () -> SavedPlayers.best(2));
+	}
+
+	/**
+	 * @param bestTwo finds the players to watch. Tests pass their own, so they don't depend on what's been saved
+	 */
+	MainMenuPanel(final BiConsumer<MainMenuPanel, Runnable> startSearch, final Supplier<List<SavedPlayer>> bestTwo) {
+		this.bestTwo = bestTwo;
 		setLayout(new GridBagLayout());
 		setBackground(FELT);
 
 		add(label("GA-mmon", Font.BOLD, 44, CREAM), row(0, 0));
 		add(label("Backgammon players, bred by a genetic algorithm", Font.PLAIN, 14, MUTED), row(1, 4));
 
-		final JButton startSearchButton = new MenuButton("Start Search");
+		final JButton startSearchButton = new MenuButton("Create Good Players");
+		final JButton playBestTwo = new MenuButton("Play Best Two");
 
 		// one search at a time: they share the settings and the attempt count, so two would save over each other
 		startSearchButton.addActionListener(e -> {
 			startSearchButton.setEnabled(false);
+			// one thing at a time: a game to watch would only take time from the search
+			playBestTwo.setEnabled(false);
+			playBestTwo.setToolTipText("Not while a search is running");
 			status.setText(SEARCHING);
 			startSearch.accept(this, () -> {
 				startSearchButton.setEnabled(true);
+				playBestTwo.setEnabled(true);
+				playBestTwo.setToolTipText(null);
 				status.setText(NOT_SEARCHING);
 				searchEnded();
 			});
@@ -65,11 +86,12 @@ public class MainMenuPanel extends JPanel {
 		backToSearch.setVisible(false);
 		backToSearch.addActionListener(e -> showProgressWindow());
 
+		playBestTwo.addActionListener(e -> watchBestTwo());
+
 		add(startSearchButton, row(2, 28));
 		add(backToSearch, row(3, 12));
-		add(notBuiltYet("Play Best Two"), row(4, 12));
-		add(notBuiltYet("Change Settings"), row(5, 12));
-		add(status, row(6, 18));
+		add(playBestTwo, row(4, 12));
+		add(status, row(5, 18));
 	}
 
 	static JLabel label(final String text, final int style, final int size, final Color colour) {
@@ -77,13 +99,6 @@ public class MainMenuPanel extends JPanel {
 		label.setFont(new Font(Font.SANS_SERIF, style, size));
 		label.setForeground(colour);
 		return label;
-	}
-
-	private static JButton notBuiltYet(final String text) {
-		final JButton button = new MenuButton(text);
-		button.setEnabled(false);
-		button.setToolTipText("Not built yet");
-		return button;
 	}
 
 	private static GridBagConstraints row(final int row, final int gapAbove) {
@@ -152,6 +167,28 @@ public class MainMenuPanel extends JPanel {
 		}
 		showProgressWindow();
 		return true;
+	}
+
+	/**
+	 * Swaps the menu for a live game between the two best saved players, if there are two
+	 */
+	private void watchBestTwo() {
+		final List<SavedPlayer> best = bestTwo.get();
+		if (best.size() < 2) {
+			status.setText(NOT_ENOUGH_PLAYERS);
+			return;
+		}
+		status.setText(NOT_SEARCHING);
+		watchWindow = new WatchGameFrame(best.get(0), best.get(1), this::showMenu);
+		watchWindow.start();
+		setMenuVisible(false);
+	}
+
+	/**
+	 * @return the window for the latest game watched, null if there hasn't been one
+	 */
+	WatchGameFrame watchWindow() {
+		return watchWindow;
 	}
 
 	/**

@@ -24,6 +24,29 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 public class GameManagerTest {
 
+	@Test
+	public void aGameToWatchIsPlayedByTheAIsWhateverTheSettingsSay() {
+		try {
+			GameSettings.setAreBothAIsCache(false);
+			GameSettings.setDisplayGUICache(true);
+			final int[] turns = new int[1];
+			final GameManager manager = new GameManager();
+			manager.setObserver(new GameObserver() {
+				@Override
+				public void turnPlayed(final Board board) {
+					turns[0]++;
+				}
+			});
+
+			final GameStats stats = manager.playToWatch(new Individual(), new Individual());
+
+			assertTrue(turns[0] > 0);
+			assertEquals(turns[0], stats.getTurns());
+		} finally {
+			SettingsUtil.resetSettings();
+		}
+	}
+
 	private Individual individual1;
 	private Individual individual2;
 	private GameStats gameStats;

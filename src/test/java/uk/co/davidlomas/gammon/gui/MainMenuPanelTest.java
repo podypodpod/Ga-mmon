@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.genes.Individual;
+import uk.co.davidlomas.gammon.genes.SavedPlayers.SavedPlayer;
 import uk.co.davidlomas.gammon.genes.SearchProgress;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
@@ -27,10 +28,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 public class MainMenuPanelTest {
+
+	private static final String START = "Create Good Players";
 
 	@BeforeAll
 	public static void beforeClass() {
@@ -43,17 +47,69 @@ public class MainMenuPanelTest {
 	}
 
 	@Test
-	public void theMenuHasItsThreeButtons() {
-		assertEquals(List.of("Start Search", "Play Best Two", "Change Settings"), buttonNames(new MainMenuPanel()));
+	public void theMenuHasItsTwoButtons() {
+		final MainMenuPanel panel = new MainMenuPanel();
+
+		assertEquals(List.of(START, "Play Best Two"), buttonNames(panel));
+		assertTrue(button(panel, START).isEnabled());
+		assertTrue(button(panel, "Play Best Two").isEnabled());
 	}
 
 	@Test
-	public void buttonsThatDontDoAnythingYetAreGreyedOut() {
-		final MainMenuPanel panel = new MainMenuPanel();
+	public void bestTwoCantBePlayedDuringASearch() {
+		final AtomicReference<Runnable> whenDone = new AtomicReference<>();
+		final MainMenuPanel panel = new MainMenuPanel((menu, done) -> whenDone.set(done));
 
-		assertTrue(button(panel, "Start Search").isEnabled());
+		button(panel, START).doClick();
 		assertFalse(button(panel, "Play Best Two").isEnabled());
-		assertFalse(button(panel, "Change Settings").isEnabled());
+
+		whenDone.get().run();
+		assertTrue(button(panel, "Play Best Two").isEnabled());
+	}
+
+	@Test
+	public void withoutTwoSavedPlayersItSaysSoAndStaysOnTheMenu() {
+		final SavedPlayer one = new SavedPlayer("One", new Individual(), 0);
+		final MainMenuPanel panel = new MainMenuPanel((menu, done) -> {
+		}, () -> List.of(one));
+
+		button(panel, "Play Best Two").doClick();
+
+		assertTrue(panel.status().contains(START), panel.status());
+		assertNull(panel.watchWindow());
+	}
+
+	@Test
+	public void playBestTwoSwapsTheMenuForTheGameAndBack() throws Exception {
+		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
+		final MainMenuContainerFrame menu = new MainMenuContainerFrame();
+		final SavedPlayer one = new SavedPlayer("One", new Individual(), 0);
+		final SavedPlayer two = new SavedPlayer("Two", new Individual(), 0);
+		final MainMenuPanel panel = new MainMenuPanel((m, done) -> {
+		}, () -> List.of(one, two));
+		SwingUtilities.invokeAndWait(() -> {
+			menu.run();
+			menu.getContentPane().remove(menu.mmp);
+			menu.add(panel);
+		});
+		try {
+			SwingUtilities.invokeAndWait(button(panel, "Play Best Two")::doClick);
+			final WatchGameFrame window = panel.watchWindow();
+			assertTrue(window.isVisible());
+			assertFalse(menu.isVisible());
+
+			SwingUtilities.invokeAndWait(window::back);
+
+			assertFalse(window.isDisplayable());
+			assertTrue(menu.isVisible());
+			window.gameThread().join(120_000);
+			assertFalse(window.gameThread().isAlive(), "the game should have stopped");
+		} finally {
+			SwingUtilities.invokeAndWait(() -> {
+				panel.watchWindow().dispose();
+				menu.dispose();
+			});
+		}
 	}
 
 	@Test
@@ -64,7 +120,7 @@ public class MainMenuPanelTest {
 			searches.incrementAndGet();
 			whenDone.set(done);
 		});
-		final JButton startSearch = button(panel, "Start Search");
+		final JButton startSearch = button(panel, START);
 
 		// pressing it twice while the first search is running starts only one
 		startSearch.doClick();
@@ -152,7 +208,7 @@ public class MainMenuPanelTest {
 				menu.showSearch(progress);
 				whenDone.set(done);
 			});
-			button(panel[0], "Start Search").doClick();
+			button(panel[0], START).doClick();
 		});
 		final SearchProgressFrame window = panel[0].progressWindow();
 		try {
@@ -174,7 +230,7 @@ public class MainMenuPanelTest {
 	public void closingTheMenuDuringASearchBringsBackItsWindow() throws Exception {
 		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
 		final MainMenuContainerFrame menu = openMenuForASmallSearch();
-		final JButton startSearch = button(menu.mmp, "Start Search");
+		final JButton startSearch = button(menu.mmp, START);
 		try {
 			// all in one go on the Swing thread, so the search can't be reported as over part way through
 			SwingUtilities.invokeAndWait(() -> {
@@ -209,7 +265,7 @@ public class MainMenuPanelTest {
 	public void theMenuAndTheSearchsWindowSwapPlaces() throws Exception {
 		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
 		final MainMenuContainerFrame menu = openMenuForASmallSearch();
-		final JButton startSearch = button(menu.mmp, "Start Search");
+		final JButton startSearch = button(menu.mmp, START);
 		final JButton backToSearch = button(menu.mmp, "Back to Search");
 		assertFalse(backToSearch.isVisible());
 		try {
@@ -246,7 +302,7 @@ public class MainMenuPanelTest {
 	public void theSearchsWindowStaysUntilLeftAfterTheSearchEnds() throws Exception {
 		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
 		final MainMenuContainerFrame menu = openMenuForASmallSearch();
-		final JButton startSearch = button(menu.mmp, "Start Search");
+		final JButton startSearch = button(menu.mmp, START);
 		try {
 			SwingUtilities.invokeAndWait(startSearch::doClick);
 

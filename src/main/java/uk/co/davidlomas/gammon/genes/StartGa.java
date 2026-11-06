@@ -76,7 +76,7 @@ public class StartGa {
 			tell(progress, watcher -> watcher.stageStarted(stage));
 			pop = GeneticAlgorithm.evolvePopulation(pop, progress);
 			final Individual fittest = pop.getFittest();
-			fittest.saveToFile(fittest.getFilePathForPlayers() + "/PlayerFromGen" + generation);
+			fittest.saveToFile(fittest.getFilePathForPlayers() + "/" + SavedPlayers.fileName(String.valueOf(generation)));
 			stats.record(String.valueOf(generation), pop,
 					generation % RunStats.REFERENCE_EVERY == 0 || generation == generations - 1);
 			logger.info("Finished evolving population, evolution {}", generation);
@@ -91,6 +91,6 @@ public class StartGa {
 		pop.calculateFitness(progress);
 		final Individual fittest = pop.getFittest();
 		tell(progress, watcher -> watcher.savingIn(fittest.getFilePathForPlayers()));
-		fittest.saveToFile(fittest.getFilePathForPlayers() + "/FittestFromInitialPopulation");
+		fittest.saveToFile(fittest.getFilePathForPlayers() + "/" + SavedPlayers.fileName("initial"));
 	}
 }

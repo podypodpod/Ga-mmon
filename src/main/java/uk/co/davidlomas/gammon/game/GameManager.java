@@ -76,7 +76,7 @@ public class GameManager {
 		if (GameSettings.getDisplayGUI()) {
 			if (SwingUtilities.isEventDispatchThread()) {
 				logger.warn("A game is being played on the Swing thread, so the board window can't update until it ends."
-						+ " Start games on another thread, as the Start Search button does");
+						+ " Start games on another thread, as the menu's buttons do");
 			}
 			startGui();
 		}
@@ -84,6 +84,21 @@ public class GameManager {
 		// The Game Thread
 		final Game currentGame = new Game(individual1, individual2);
 		setUp.accept(currentGame);
+		return run(currentGame, individual1, individual2);
+	}
+
+	/**
+	 * Plays a game between two AIs for this manager's observer to show, however the settings have games shown and
+	 * played. So there's no board window of its own, nobody is asked for moves, and its pace is up to the observer.
+	 * Start it on a thread of its own. Interrupting that ends the game as a draw
+	 *
+	 * @return GameStats result of game (winner, values)
+	 */
+	public GameStats playToWatch(final Individual individual1, final Individual individual2) {
+		return run(new Game(individual1, individual2, Game.MAX_TURNS, true, false), individual1, individual2);
+	}
+
+	private GameStats run(final Game currentGame, final Individual individual1, final Individual individual2) {
 		observer.gameStarted(individual1, individual2, GameSettings.isP1Black());
 		currentGame.setObserver(observer);
 		currentGame.run();

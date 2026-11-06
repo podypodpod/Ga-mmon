@@ -61,8 +61,6 @@ public class SearchProgressFrame extends JFrame {
 		content.add(summary(), BorderLayout.NORTH);
 		content.add(tables(), BorderLayout.CENTER);
 		add(content);
-		getRootPane().registerKeyboardAction(e -> back(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-				JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 		// tall enough to show a game for each of 12 cores without scrolling, if the screen is
 		setSize(fitted(new Dimension(1000, 890),
@@ -107,12 +105,23 @@ public class SearchProgressFrame extends JFrame {
 		showMenu.run();
 	}
 
-	private JPanel header() {
-		final MenuButton back = new MenuButton("Back to Menu");
-		back.setPreferredSize(new Dimension(160, 36));
+	/**
+	 * @param window the window it's for, where Escape will do the same as pressing it
+	 * @param back   what going back does
+	 */
+	static JButton backToMenuButton(final JFrame window, final Runnable back) {
+		final MenuButton button = new MenuButton("Back to Menu");
+		button.setPreferredSize(new Dimension(160, 36));
 		// it's the only thing that could take the focus, and then the space bar would press it. Escape does it instead
-		back.setFocusable(false);
-		back.addActionListener(e -> back());
+		button.setFocusable(false);
+		button.addActionListener(e -> back.run());
+		window.getRootPane().registerKeyboardAction(e -> back.run(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
+		return button;
+	}
+
+	private JPanel header() {
+		final JButton back = backToMenuButton(this, this::back);
 
 		final JPanel header = new JPanel(new BorderLayout(12, 0));
 		header.setOpaque(false);
