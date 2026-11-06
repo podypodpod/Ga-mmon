@@ -80,10 +80,6 @@ public class MoveGenerator {
 		return boardList;
 	}
 
-	public Individual getIndividual() {
-		return individual;
-	}
-
 	/**
 	 * Gets the next move board.
 	 *

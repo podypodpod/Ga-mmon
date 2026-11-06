@@ -153,8 +153,6 @@ The settings are read from the files in `conf/`. To use a different folder, run 
 | `multiThreading` | Whether the GA plays its fitness games at the same time, one per core. It gives the same results either way, just faster, and is off while the board is shown or a person is playing |
 | `threads` | How many threads to play them on when `multiThreading` is on: 0, or missing, for one per core, or fewer to leave some cores free |
 
-`displayConsole` is in the files but isn't used at present.
-
 ## Playing against the AI
 
 Run the main class `uk.co.davidlomas.gammon.game.PlayAgainstAi` to play one game on the console. Give it a saved player's file, such as `savedPlayers/Attempt - 3/PlayerFromGen49`, to play that player, or nothing to play one with random genes. The AI is player 1 and you're player 2.

@@ -37,7 +37,6 @@ public class AiPlayer extends Player {
 
 	private final static Logger logger = LoggerFactory.getLogger(AiPlayer.class);
 	private final MoveGenerator moveGenerator;
-	private Individual individual;
 	// while the move generator tries out a turn, the dice this copy of the player has used so far, in order
 	final List<Integer> diceUsed = new ArrayList<>();
 
@@ -54,7 +53,6 @@ public class AiPlayer extends Player {
 
 	public AiPlayer(final boolean black, final Individual individual) {
 		super(black);
-		this.individual = individual;
 		moveGenerator = new MoveGenerator(individual);
 	}
 
@@ -86,9 +84,5 @@ public class AiPlayer extends Player {
 			newBoard = currentBoard;
 		}
 		return newBoard;
-	}
-
-	public Individual getIndividual() {
-		return individual;
 	}
 }
