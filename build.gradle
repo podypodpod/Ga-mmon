@@ -59,6 +59,17 @@ tasks.register('ga', JavaExec) {
     standardInput = System.in
 }
 
+// Opens the main menu, whose Start Search button runs the same GA as the task above
+tasks.register('menu', JavaExec) {
+    group = 'application'
+    description = 'Opens the main menu'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'uk.co.davidlomas.gammon.gui.MainMenuContainerFrame'
+    jvmArgs collector
+    // with areBothAIs off, a person plays player 2 from the console
+    standardInput = System.in
+}
+
 // Measures the GA's players against a fixed reference player, and how fast games are, and adds a row to
 // benchmarks.csv. About two minutes on 12 cores. -Pgenerations, -Pseeds and -Pmeetings change how much it plays
 tasks.register('benchmark', JavaExec) {

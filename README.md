@@ -20,6 +20,14 @@ builds the project and runs the tests. To run the GA:
 
 or run the main class `uk.co.davidlomas.gammon.genes.StartGa`, for example from IntelliJ, where adding the VM option `-XX:+UseParallelGC` makes it about 10% faster. The settings it uses are in `conf/` (see [Settings](#settings)).
 
+To open the main menu instead:
+
+```bash
+./gradlew menu
+```
+
+Its Start Search button runs the same GA, using the same settings, and keeps going until it finishes even if you close the window. The Play Best Two and Change Settings buttons don't do anything yet.
+
 ## How a player chooses a move
 
 On its turn a player rolls the dice, and the game works out every move it's allowed to make. The player then scores the board each of those moves would leave, by adding up features of that board, each multiplied by the weight its genes give that feature, and plays the highest scoring move. A move that wins the game is always played, and equal scores are settled at random.
