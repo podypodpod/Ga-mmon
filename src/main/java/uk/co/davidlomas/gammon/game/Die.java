@@ -18,7 +18,6 @@
 
 package uk.co.davidlomas.gammon.game;
 
-import lombok.Data;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
 /**
@@ -26,10 +25,17 @@ import uk.co.davidlomas.gammon.util.RandomSource;
  *
  * @author David Lomas
  */
-@Data
 public class Die {
 
 	private int value;
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(final int value) {
+		this.value = value;
+	}
 
 	public int RollDie() {
 		value = RandomSource.rollDie();

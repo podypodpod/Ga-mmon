@@ -1,8 +1,14 @@
 name: Build
 
+# a pull request's commits are built by its pull_request run, so only develop needs one for pushes
 on:
   push:
+    branches: [develop]
   pull_request:
+
+# it only reads the code
+permissions:
+  contents: read
 
 jobs:
   build:
