@@ -8,7 +8,7 @@ import uk.co.davidlomas.gammon.settings.GameSettings;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public class MainMenuPanel extends JPanel {
 
@@ -26,19 +26,21 @@ public class MainMenuPanel extends JPanel {
 	private static final int POINT_HEIGHT = 64;
 
 	private static final String NOT_SEARCHING = " ";
-	private static final String SEARCHING = "Searching: the other window shows how it's going";
+	private static final String SEARCHING = "A search is running";
 
 	private final JLabel status = label(NOT_SEARCHING, Font.PLAIN, 14, MUTED);
+	private final JButton backToSearch = new MenuButton("Back to Search");
+	private SearchProgressFrame progressWindow;
 
 	public MainMenuPanel() {
 		this(MainMenuPanel::startSearch);
 	}
 
 	/**
-	 * @param startSearch starts a search, and is given what to run when it ends. Tests pass their own, so they can
-	 *                    see the button pressed without running the GA
+	 * @param startSearch starts a search from this menu, and is given what to run when it ends. Tests pass their own,
+	 *                    so they can see the button pressed without running the GA
 	 */
-	MainMenuPanel(final Consumer<Runnable> startSearch) {
+	MainMenuPanel(final BiConsumer<MainMenuPanel, Runnable> startSearch) {
 		setLayout(new GridBagLayout());
 		setBackground(FELT);
 
@@ -51,16 +53,22 @@ public class MainMenuPanel extends JPanel {
 		startSearchButton.addActionListener(e -> {
 			startSearchButton.setEnabled(false);
 			status.setText(SEARCHING);
-			startSearch.accept(() -> {
+			startSearch.accept(this, () -> {
 				startSearchButton.setEnabled(true);
 				status.setText(NOT_SEARCHING);
+				searchEnded();
 			});
 		});
 
+		// only there while a search is running, for getting back to its window
+		backToSearch.setVisible(false);
+		backToSearch.addActionListener(e -> showProgressWindow());
+
 		add(startSearchButton, row(2, 28));
-		add(notBuiltYet("Play Best Two"), row(3, 12));
-		add(notBuiltYet("Change Settings"), row(4, 12));
-		add(status, row(5, 18));
+		add(backToSearch, row(3, 12));
+		add(notBuiltYet("Play Best Two"), row(4, 12));
+		add(notBuiltYet("Change Settings"), row(5, 12));
+		add(status, row(6, 18));
 	}
 
 	private static JLabel label(final String text, final int style, final int size, final Color colour) {
@@ -112,20 +120,43 @@ public class MainMenuPanel extends JPanel {
 	}
 
 	/**
-	 * Runs the genetic algorithm on its own thread, so the window keeps responding while it searches, and opens a
-	 * window showing how it's going. If the search fails, the error is shown in a message box rather than only in the
-	 * log
+	 * Runs the genetic algorithm on its own thread, and swaps the menu for a window showing how it's going. If the
+	 * search fails, the error is shown in a message box rather than only in the log
 	 *
 	 * @param whenDone run on the Swing thread once the search has finished or failed
-	 *
-	 * @return the thread it's running on
 	 */
-	static Thread startSearch(final Runnable whenDone) {
+	private void startSearch(final Runnable whenDone) {
 		final SearchProgress progress = new SearchProgress();
-		new SearchProgressFrame(progress).open();
-		final Thread search = searchThread(progress, whenDone);
-		search.start();
-		return search;
+		progressWindow = new SearchProgressFrame(progress, this::showMenu);
+		backToSearch.setVisible(true);
+		showProgressWindow();
+		searchThread(progress, whenDone).start();
+	}
+
+	private void showProgressWindow() {
+		progressWindow.open();
+		setMenuVisible(false);
+	}
+
+	private void showMenu() {
+		setMenuVisible(true);
+	}
+
+	private void setMenuVisible(final boolean visible) {
+		final Window menu = SwingUtilities.getWindowAncestor(this);
+		if (menu != null) {
+			menu.setVisible(visible);
+		}
+	}
+
+	/**
+	 * There's no search to get back to now. A window that's been left hidden has to go, or the program would never end
+	 */
+	private void searchEnded() {
+		backToSearch.setVisible(false);
+		if (progressWindow != null && !progressWindow.isVisible()) {
+			progressWindow.dispose();
+		}
 	}
 
 	/**

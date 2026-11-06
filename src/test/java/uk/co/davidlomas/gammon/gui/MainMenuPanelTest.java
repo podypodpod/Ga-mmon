@@ -54,7 +54,7 @@ public class MainMenuPanelTest {
 	public void startSearchRunsOneSearchAtATime() {
 		final AtomicInteger searches = new AtomicInteger();
 		final AtomicReference<Runnable> whenDone = new AtomicReference<>();
-		final MainMenuPanel panel = new MainMenuPanel(done -> {
+		final MainMenuPanel panel = new MainMenuPanel((menu, done) -> {
 			searches.incrementAndGet();
 			whenDone.set(done);
 		});
@@ -65,7 +65,7 @@ public class MainMenuPanelTest {
 		startSearch.doClick();
 		assertEquals(1, searches.get());
 		assertFalse(startSearch.isEnabled());
-		assertTrue(panel.status().contains("window"), "it should say where the progress is");
+		assertFalse(panel.status().isBlank(), "it should say a search is running");
 
 		// once that search ends, it can be pressed again
 		whenDone.get().run();
@@ -113,7 +113,7 @@ public class MainMenuPanelTest {
 	private static List<String> buttonNames(final MainMenuPanel panel) {
 		final List<String> names = new ArrayList<>();
 		for (final Component component : panel.getComponents()) {
-			if (component instanceof JButton) {
+			if (component instanceof JButton && component.isVisible()) {
 				names.add(((JButton) component).getText());
 			}
 		}

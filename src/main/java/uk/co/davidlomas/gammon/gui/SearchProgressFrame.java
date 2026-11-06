@@ -22,7 +22,7 @@ import java.util.Locale;
  * generation came out. It looks at the search's progress a few times a second, so it shows the games as they are at
  * that moment rather than every turn, and it can't slow them down by falling behind.
  * <p>
- * Closing it doesn't stop the search.
+ * Going back to the menu, by its button or by closing it, doesn't stop the search.
  */
 public class SearchProgressFrame extends JFrame {
 
@@ -32,6 +32,7 @@ public class SearchProgressFrame extends JFrame {
 	private static final Color GRID = new Color(0x2F6650);
 
 	private final transient SearchProgress progress;
+	private final transient Runnable showMenu;
 	private final JLabel status = label("Starting", Font.BOLD, 18, MainMenuPanel.CREAM);
 	private final JProgressBar bar = new JProgressBar(0, 1000);
 	private final JLabel games = tileValue();
@@ -45,8 +46,12 @@ public class SearchProgressFrame extends JFrame {
 	private final GenerationsModel generations = new GenerationsModel();
 	private final Timer timer = new Timer(REFRESH_MILLIS, e -> refresh());
 
-	public SearchProgressFrame(final SearchProgress progress) {
+	/**
+	 * @param showMenu run on the Swing thread when going back to the menu
+	 */
+	public SearchProgressFrame(final SearchProgress progress, final Runnable showMenu) {
 		this.progress = progress;
+		this.showMenu = showMenu;
 		setTitle("GA-mmon: search progress");
 
 		final JPanel content = new JPanel(new BorderLayout(0, 14));
@@ -57,12 +62,17 @@ public class SearchProgressFrame extends JFrame {
 		add(content);
 
 		// tall enough to show a game for each of 12 cores without scrolling
-		setSize(1000, 860);
+		setSize(1000, 890);
 		setMinimumSize(new Dimension(760, 560));
-		setLocationByPlatform(true);
-		// only closes this window: the search carries on
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setLocationRelativeTo(null);
+		// the menu is hidden behind this window, so closing it has to bring that back, or nothing would be showing
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(final WindowEvent e) {
+				back();
+			}
+
 			@Override
 			public void windowClosed(final WindowEvent e) {
 				timer.stop();
@@ -74,9 +84,35 @@ public class SearchProgressFrame extends JFrame {
 	 * Shows the window, and keeps it up to date until the search ends. Call it on the Swing thread
 	 */
 	public void open() {
-		refresh();
 		timer.start();
+		refresh();
 		setVisible(true);
+	}
+
+	/**
+	 * Goes back to the menu, leaving the search running. It can come back to this window while the search runs, but
+	 * once that's over there's nothing to come back for
+	 */
+	final void back() {
+		timer.stop();
+		if (progress.getState() == SearchProgress.State.RUNNING) {
+			setVisible(false);
+		} else {
+			dispose();
+		}
+		showMenu.run();
+	}
+
+	private JPanel header() {
+		final MenuButton back = new MenuButton("Back to Menu");
+		back.setPreferredSize(new Dimension(160, 36));
+		back.addActionListener(e -> back());
+
+		final JPanel header = new JPanel(new BorderLayout(12, 0));
+		header.setOpaque(false);
+		header.add(status, BorderLayout.CENTER);
+		header.add(back, BorderLayout.EAST);
+		return header;
 	}
 
 	private JPanel summary() {
@@ -112,13 +148,14 @@ public class SearchProgressFrame extends JFrame {
 		tiles.add(tile(draws, "Cut short as draws"));
 		tiles.add(tile(gammons, "Gammons or better"));
 
-		for (final JComponent part : List.of(status, bar, thisRound, tiles)) {
+		final JPanel header = header();
+		header.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
+		for (final JComponent part : List.of(header, bar, thisRound, tiles)) {
 			part.setAlignmentX(LEFT_ALIGNMENT);
 		}
-		// as wide as they like, so their text isn't cut off when it grows between layouts
-		status.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+		// as wide as it likes, so its text isn't cut off when it grows between layouts
 		thisRound.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
-		summary.add(status);
+		summary.add(header);
 		summary.add(Box.createVerticalStrut(10));
 		summary.add(bar);
 		summary.add(Box.createVerticalStrut(6));

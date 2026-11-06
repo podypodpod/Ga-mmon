@@ -13,8 +13,10 @@ import javax.swing.WindowConstants;
 import java.awt.GraphicsEnvironment;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
@@ -31,21 +33,34 @@ public class SearchProgressFrameTest {
 	}
 
 	@Test
-	public void itOpensAndShowsTheSearchUntilItEnds() throws Exception {
+	public void goingBackLeavesItToReturnToWhileTheSearchRuns() throws Exception {
 		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
 		final SearchProgress progress = new SearchProgress();
+		final AtomicInteger menuShown = new AtomicInteger();
 		final SearchProgressFrame[] frame = new SearchProgressFrame[1];
 		SwingUtilities.invokeAndWait(() -> {
-			frame[0] = new SearchProgressFrame(progress);
+			frame[0] = new SearchProgressFrame(progress, menuShown::incrementAndGet);
 			frame[0].open();
 		});
 		try {
 			assertTrue(frame[0].isShowing());
-			// closing it mustn't end the program, as a search may still be running
-			assertEquals(WindowConstants.DISPOSE_ON_CLOSE, frame[0].getDefaultCloseOperation());
+			// closing it has to bring the menu back rather than leave nothing showing
+			assertEquals(WindowConstants.DO_NOTHING_ON_CLOSE, frame[0].getDefaultCloseOperation());
 
+			SwingUtilities.invokeAndWait(frame[0]::back);
+			assertEquals(1, menuShown.get());
+			assertFalse(frame[0].isVisible());
+			assertTrue(frame[0].isDisplayable(), "it should still be there to come back to");
+
+			SwingUtilities.invokeAndWait(frame[0]::open);
+			assertTrue(frame[0].isShowing());
+
+			// with the search over, there's nothing to come back to
 			progress.finished();
 			SwingUtilities.invokeAndWait(frame[0]::refresh);
+			SwingUtilities.invokeAndWait(frame[0]::back);
+			assertEquals(2, menuShown.get());
+			assertFalse(frame[0].isDisplayable(), "it should have gone, or the program would never end");
 		} finally {
 			SwingUtilities.invokeAndWait(frame[0]::dispose);
 		}
