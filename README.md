@@ -26,7 +26,7 @@ To open the main menu instead:
 ./gradlew menu
 ```
 
-Its Start Search button runs the same GA, using the same settings, and keeps going until it finishes even if you close the window. The Play Best Two and Change Settings buttons don't do anything yet.
+Its Start Search button runs the same GA, and its progress appears in the terminal. Closing the window doesn't stop a search: press Ctrl+C in the terminal for that. Settings are read once, so reopen the menu after changing the files in `conf/`. With `areBothAIs` off, a message tells you the search will wait for you to play in the terminal. The Play Best Two and Change Settings buttons don't do anything yet.
 
 ## How a player chooses a move
 

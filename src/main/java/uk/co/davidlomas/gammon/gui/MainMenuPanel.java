@@ -3,6 +3,7 @@ package uk.co.davidlomas.gammon.gui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.davidlomas.gammon.genes.StartGa;
+import uk.co.davidlomas.gammon.settings.GameSettings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -68,14 +69,15 @@ public class MainMenuPanel extends JPanel {
 	static Thread searchThread(final Runnable whenDone) {
 		return new Thread(() -> {
 			try {
+				if (waitsForAPerson()) {
+					showMessage("areBothAIs is off in conf/GameSettings.properties, so this search will wait for you to "
+							+ "play player 2 in the terminal.", JOptionPane.INFORMATION_MESSAGE);
+				}
 				StartGa.main(new String[0]);
 			} catch (final Throwable e) {
 				// any failure is reported, including Errors such as a settings class failing to load
 				logger.error("The search failed", e);
-				if (!GraphicsEnvironment.isHeadless()) {
-					SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null,
-							"The search failed: " + e, "GA-mmon", JOptionPane.ERROR_MESSAGE));
-				}
+				showMessage("The search failed: " + e, JOptionPane.ERROR_MESSAGE);
 				if (e instanceof Error) {
 					throw (Error) e;
 				}
@@ -83,5 +85,18 @@ public class MainMenuPanel extends JPanel {
 				SwingUtilities.invokeLater(whenDone);
 			}
 		}, "GA search");
+	}
+
+	/**
+	 * @return whether a search would stop to ask for moves on the console, which the window doesn't show
+	 */
+	static boolean waitsForAPerson() {
+		return !GameSettings.getAreBothAI();
+	}
+
+	private static void showMessage(final String message, final int type) {
+		if (!GraphicsEnvironment.isHeadless()) {
+			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, message, "GA-mmon", type));
+		}
 	}
 }

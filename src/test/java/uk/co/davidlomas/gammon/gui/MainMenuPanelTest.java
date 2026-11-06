@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.genes.Individual;
+import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
@@ -80,6 +81,19 @@ public class MainMenuPanelTest {
 		assertTrue(done.await(120, TimeUnit.SECONDS), "the search didn't finish");
 		assertEquals(attempt, GenAlgSettings.getAttemptCount());
 		assertTrue(new File(SettingsUtil.getPlayersDir() + "/Attempt - " + attempt + "/PlayerFromGen0").isFile());
+	}
+
+	@Test
+	public void aSearchWaitsForAPersonOnlyWhenTheyPlayPlayerTwo() {
+		try {
+			GameSettings.setAreBothAIsCache(true);
+			assertFalse(MainMenuPanel.waitsForAPerson());
+
+			GameSettings.setAreBothAIsCache(false);
+			assertTrue(MainMenuPanel.waitsForAPerson());
+		} finally {
+			SettingsUtil.resetSettings();
+		}
 	}
 
 	private static List<String> buttonNames(final MainMenuPanel panel) {

@@ -7,6 +7,7 @@ import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,5 +42,24 @@ public class MainMenuContainerFrameTest {
 		} finally {
 			SwingUtilities.invokeAndWait(frame::dispose);
 		}
+	}
+
+	@Test
+	public void mainOpensTheMenu() throws Exception {
+		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
+
+		MainMenuContainerFrame.main(new String[0]);
+		// main only queues the window to be opened, so this waits for that to have happened
+		SwingUtilities.invokeAndWait(() -> {
+		});
+
+		boolean opened = false;
+		for (final Frame frame : Frame.getFrames()) {
+			if (frame instanceof MainMenuContainerFrame && frame.isShowing()) {
+				opened = true;
+				SwingUtilities.invokeAndWait(frame::dispose);
+			}
+		}
+		assertTrue(opened, "main should have opened the menu");
 	}
 }
