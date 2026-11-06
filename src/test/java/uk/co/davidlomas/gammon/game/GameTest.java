@@ -51,21 +51,36 @@ public class GameTest {
 	 */
 	@Test
 	public void testingGameStatsComesBackWithWinner() {
-		// players with random genes sometimes never finish, which is a draw with no winner to check, so try until a
-		// game does finish
-		GameStats gameStats = null;
-		for (int seed = 42; seed < 142 && (gameStats == null || gameStats.isDraw()); seed++) {
-			RandomSource.setSeed(seed);
-			gameStats = gameManager.playIndividualsVsEachOther(individual1, individual2);
-		}
+		// players with random genes can keep hitting each other and never finish, which has no winner to check. These
+		// only race home and avoid hitting, so they finish, whichever other features there are
+		individual1 = racer();
+		individual2 = racer();
+		RandomSource.setSeed(42);
 
-		assertFalse(gameStats.isDraw(), "none of the seeded games finished, so there's no winner to check");
+		final GameStats gameStats = gameManager.playIndividualsVsEachOther(individual1, individual2);
+
+		assertFalse(gameStats.isDraw(), "two players racing home should finish");
 		if (gameStats.getVictor().equals(individual1)) {
 			assertTrue(gameStats.getPlayerOneScore() > gameStats.getPlayerTwoScore());
 		} else {
 			assertEquals(individual2, gameStats.getVictor());
 			assertTrue(gameStats.getPlayerTwoScore() > gameStats.getPlayerOneScore());
 		}
+	}
+
+	/**
+	 * A player who wants the pip lead and doesn't want to hit: every other gene is 50, a weight of 0
+	 */
+	private static Individual racer() {
+		final Individual racer = new Individual();
+		for (int gene = 0; gene < racer.getNumOfAttributes(); gene++) {
+			racer.getAttribute(gene).setValue(50);
+		}
+		// a higher pip lead also comes from hitting, so two of these would keep sending each other back: it has to be told not to
+		racer.getAttribute(MoveChooser.contactGene(Feature.OPPONENT_ON_BAR)).setValue(0);
+		racer.getAttribute(MoveChooser.contactGene(Feature.PIP_LEAD)).setValue(100);
+		racer.getAttribute(MoveChooser.raceGene(Feature.PIP_LEAD)).setValue(100);
+		return racer;
 	}
 
 	/**
