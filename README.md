@@ -158,3 +158,7 @@ The settings are read from the files in `conf/`. To use a different folder, run 
 Run the main class `uk.co.davidlomas.gammon.game.PlayAgainstAi` to play one game on the console. Give it a saved player's file, such as `savedPlayers/Attempt - 3/PlayerFromGen49`, to play that player, or nothing to play one with random genes. The AI is player 1 and you're player 2.
 
 On your turn the board and your dice are shown, and you're asked which piece to move and with which die. Bearing off is a move past the end of the board. You're told why if a move isn't allowed, and you can concede the game.
+
+## Licence
+
+GA-mmon is under the MIT licence: see [LICENSE](LICENSE). Versions from before the licence changed were released under the GPL, version 3 or later, and those copies stay under it.
