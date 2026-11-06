@@ -34,9 +34,9 @@ public class Individual {
 	 * The saved players folder can be moved with -Dgammon.playersDir, the tests use this to keep out of savedPlayers/
 	 */
 	public static final String PLAYERS_DIR_PROPERTY = "gammon.playersDir";
-	private static final String PLAYERS_DIR = System.getProperty(PLAYERS_DIR_PROPERTY, "savedPlayers");
+	static final String PLAYERS_DIR = System.getProperty(PLAYERS_DIR_PROPERTY, "savedPlayers");
 	private static final String PLAYERS_FILE_PATH = PLAYERS_DIR + "/Attempt - ";
-	private static final Pattern ATTEMPT_FOLDER = Pattern.compile("Attempt - (\\d{1,9})");
+	static final Pattern ATTEMPT_FOLDER = Pattern.compile("Attempt - (\\d{1,9})");
 	private final static String[] AVAILABLE_ATTRIBUTES = MoveChooser.geneNames();
 
 

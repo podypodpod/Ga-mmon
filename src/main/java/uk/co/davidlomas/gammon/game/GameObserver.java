@@ -3,8 +3,9 @@ package uk.co.davidlomas.gammon.game;
 import uk.co.davidlomas.gammon.genes.Individual;
 
 /**
- * Told how a game is going, so it can be watched. It's called on the thread playing the game, once a turn, so it has to
- * be quick, and it mustn't use the game's random numbers, as that would change how the game plays out
+ * Told how a game is going, so it can be watched. It's called on the thread playing the game, once a turn, so the game
+ * waits for it: it has to be quick, unless it means to slow the game down. It mustn't use the game's random numbers, as
+ * that would change how the game plays out
  */
 public interface GameObserver {
 

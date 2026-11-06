@@ -36,7 +36,8 @@ class Game implements Runnable {
 	private Board liveBoard;
 	private boolean gameActive;
 	private final boolean isP1Black = GameSettings.isP1Black();
-	private final boolean areBothAIs = GameSettings.getAreBothAI();
+	private final boolean areBothAIs;
+	private final boolean showsOnBoardWindow;
 	private final int timeDelay = GameSettings.getTimeDelay();
 	private int p1Roll = 0, p2Roll = 0;
 	private final int maxTurns;
@@ -58,10 +59,21 @@ class Game implements Runnable {
 	 * A game cut short after maxTurns, if both players are AIs, so tests can use a short limit
 	 */
 	Game(final Individual individual1, final Individual individual2, final int maxTurns) {
+		this(individual1, individual2, maxTurns, GameSettings.getAreBothAI(), GameSettings.getDisplayGUI());
+	}
+
+	/**
+	 * @param areBothAIs         false if a person plays player 2
+	 * @param showsOnBoardWindow whether to draw on the window GameManager shares between games, and pause to show it
+	 */
+	Game(final Individual individual1, final Individual individual2, final int maxTurns, final boolean areBothAIs,
+		 final boolean showsOnBoardWindow) {
 		this.maxTurns = maxTurns;
+		this.areBothAIs = areBothAIs;
+		this.showsOnBoardWindow = showsOnBoardWindow;
 
 		liveBoard = new Board();
-		liveBoard.printBoardGUI();
+		showBoard();
 
 		gameActive = true;
 		this.individual1 = individual1;
@@ -136,7 +148,7 @@ class Game implements Runnable {
 	 * stays marked as interrupted, so the game loop sees that and stops
 	 */
 	private void pauseToShowTheBoard() {
-		if (GameSettings.getDisplayGUI()) {
+		if (showsOnBoardWindow) {
 			try {
 				Thread.sleep(timeDelay);
 			} catch (final InterruptedException e) {
@@ -210,6 +222,12 @@ class Game implements Runnable {
 		return false;
 	}
 
+	private void showBoard() {
+		if (showsOnBoardWindow) {
+			liveBoard.printBoardGUI();
+		}
+	}
+
 	/**
 	 * An AI's turn. If a person is playing, the AI is player 1: they're told its roll here, and their own turn starts by
 	 * showing the board it left
@@ -221,7 +239,7 @@ class Game implements Runnable {
 			aiPlayer2.tell("Player 1, " + player.getColourString() + ", rolled " + player.movesLeft.moves
 					+ (liveBoard.equals(before) ? " and couldn't move." : "."));
 		}
-		liveBoard.printBoardGUI();
+		showBoard();
 		observer.turnPlayed(liveBoard);
 
 		if (liveBoard.hasPlayerWon(player.black)) {
@@ -241,7 +259,7 @@ class Game implements Runnable {
 	 */
 	private void personTurn() {
 		aiPlayer2.turn(liveBoard, nextRoll(aiPlayer2));
-		liveBoard.printBoardGUI();
+		showBoard();
 		observer.turnPlayed(liveBoard);
 
 		if (aiPlayer2.hasConceded()) {
