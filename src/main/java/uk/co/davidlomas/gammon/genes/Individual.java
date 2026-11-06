@@ -22,7 +22,15 @@ import org.slf4j.LoggerFactory;
 import uk.co.davidlomas.gammon.game.MoveChooser;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -178,7 +186,8 @@ public class Individual {
 	}
 
 	/**
-	 * Save to file.
+	 * Save to file. It's written to a temporary file first and moved into place once it's complete, so if the program
+	 * stops part way through, such as by closing the board window, there's never half a player in the file.
 	 *
 	 * @param fullFilePath the file name
 	 *
@@ -191,19 +200,22 @@ public class Individual {
 		updateToBinary();
 		final Properties properties = new Properties();
 
-		try (OutputStream output = new FileOutputStream(fullFilePath)) {
+		// set the properties value
+		properties.setProperty("chromosome", String.valueOf(chromosome));
+		properties.setProperty("fitness", getFitness() + "");
 
-			// set the properties value
-			properties.setProperty("chromosome", String.valueOf(chromosome));
-			properties.setProperty("fitness", getFitness() + "");
+		for (final IndividualAttribute individualAttribute : attributes) {
+			properties.setProperty(individualAttribute.getName(), individualAttribute.getValue() + "");
+		}
 
-			for (final IndividualAttribute individualAttribute : attributes) {
-				properties.setProperty(individualAttribute.getName(), individualAttribute.getValue() + "");
+		final Path file = Path.of(fullFilePath);
+		final Path partial = Path.of(fullFilePath + ".partial");
+		try {
+			try (OutputStream output = Files.newOutputStream(partial)) {
+				// save the file to the savedPlayers folder
+				properties.store(output, null);
 			}
-
-			// save the file to the savedPlayers folder
-			properties.store(output, null);
-
+			Files.move(partial, file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
 		} catch (final IOException e) {
 			throw new UncheckedIOException("Couldn't save " + fullFilePath, e);
 		}
@@ -278,9 +290,6 @@ public class Individual {
 		return result;
 	}
 
-	/**
-	 * Update from binary to values.
-	 */
 	/**
 	 * Sets the genes from the chromosome, after its bits have been changed directly, as mutation does. 7 bits can
 	 * hold up to 127 but a gene only goes to 100, so the chromosome is then rebuilt from the genes to match them

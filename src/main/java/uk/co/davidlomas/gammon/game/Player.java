@@ -59,8 +59,15 @@ public class Player {
 	 * A player using these dice, for copies of a player made while trying out moves, which don't need their own
 	 */
 	Player(final boolean black, final DiceList dice) {
+		this(black, dice, new MovesList());
+	}
+
+	/**
+	 * A player using these dice with these moves left
+	 */
+	Player(final boolean black, final DiceList dice, final MovesList movesLeft) {
 		this.black = black;
-		movesLeft = new MovesList();
+		this.movesLeft = movesLeft;
 		this.dice = dice;
 	}
 
@@ -119,23 +126,14 @@ public class Player {
 	}
 
 	private boolean isValidLength(final int from, final int to) {
-		for (final int move : movesLeft.moves) {
-			if (move == distanceBetween(from, to)) {
-				return true;
-			}
-		}
-		return false;
+		return movesLeft.contains(distanceBetween(from, to));
 	}
 
 	/**
 	 * returns the distance between the two points
 	 */
 	public int distanceBetween(final int a, final int b) {
-		if (a > b) {
-			return a - b;
-		} else {
-			return b - a;
-		}
+		return Math.abs(a - b);
 	}
 
 	/**
@@ -219,7 +217,6 @@ public class Player {
 		return true;
 	}
 
-	/**
 	/**
 	 * A person's turn, played on the console: rolls the dice, then asks what to do with them
 	 */

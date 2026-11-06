@@ -46,9 +46,7 @@ public class AiPlayer extends Player {
 	 * @param playerToClone the player
 	 */
 	AiPlayer(final AiPlayer playerToClone) {
-		super(playerToClone.black, playerToClone.dice);
-		movesLeft = new MovesList(playerToClone.movesLeft);
-		black = playerToClone.black;
+		super(playerToClone.black, playerToClone.dice, new MovesList(playerToClone.movesLeft));
 		moveGenerator = playerToClone.moveGenerator;
 		diceUsed.addAll(playerToClone.diceUsed);
 	}
@@ -77,7 +75,7 @@ public class AiPlayer extends Player {
 		movesLeft = new MovesList();
 		movesLeft.setTo(roll);
 
-		logger.trace("Player has {}", movesLeft.toString());
+		logger.trace("Player has {}", movesLeft);
 
 		Board newBoard = moveGenerator.getNextMoveBoard(currentBoard, this);
 
