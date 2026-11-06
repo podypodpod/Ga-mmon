@@ -8,13 +8,21 @@ import uk.co.davidlomas.gammon.genes.Individual;
  */
 public interface GameObserver {
 
-	void gameStarted(Individual playerOne, Individual playerTwo, boolean playerOneIsBlack);
+	/**
+	 * For a game nothing is watching
+	 */
+	GameObserver NONE = new GameObserver() {
+	};
+
+	default void gameStarted(final Individual playerOne, final Individual playerTwo, final boolean playerOneIsBlack) {
+	}
 
 	/**
-	 * @param board the board after the turn, which won't change after this
-	 * @param turns how many turns have been played so far
+	 * @param board the board after the turn. A person's turn changes it in place, so read what's needed from it now
 	 */
-	void turnPlayed(Board board, int turns);
+	default void turnPlayed(final Board board) {
+	}
 
-	void gameFinished(GameStats stats);
+	default void gameFinished(final GameStats stats) {
+	}
 }

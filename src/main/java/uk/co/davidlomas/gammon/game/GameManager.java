@@ -35,7 +35,7 @@ public class GameManager {
 	// what closing the board window does. Tests make it only close the window, rather than end the program
 	static int windowCloseOperation = WindowConstants.EXIT_ON_CLOSE;
 
-	private GameObserver observer;
+	private GameObserver observer = GameObserver.NONE;
 
 	/**
 	 * @param observer told how this manager's games are going
@@ -84,10 +84,6 @@ public class GameManager {
 		// The Game Thread
 		final Game currentGame = new Game(individual1, individual2);
 		setUp.accept(currentGame);
-		if (observer == null) {
-			currentGame.run();
-			return currentGame.getGameStats();
-		}
 		observer.gameStarted(individual1, individual2, GameSettings.isP1Black());
 		currentGame.setObserver(observer);
 		currentGame.run();

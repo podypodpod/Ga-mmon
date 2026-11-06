@@ -13,7 +13,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.concurrent.atomic.LongAdder;
-import java.util.function.Consumer;
 
 /**
  * How a search is going, for showing while it runs. The search's threads write to this as they go, and whatever is
@@ -59,8 +58,6 @@ public final class SearchProgress {
 								   Double pointsAgainstReference) {
 	}
 
-	private static volatile SearchProgress watching;
-
 	private final long startNanos = System.nanoTime();
 	private final LongAdder games = new LongAdder();
 	private final LongAdder turns = new LongAdder();
@@ -72,6 +69,7 @@ public final class SearchProgress {
 	private volatile long endNanos;
 	private volatile int generations;
 	private volatile String stage = "Starting";
+	private volatile String savedIn;
 	private volatile Round round = Round.FITNESS;
 	private volatile int gamesPlannedThisRound;
 	private volatile AtomicReferenceArray<LiveGame> liveGames = new AtomicReferenceArray<>(0);
@@ -83,33 +81,12 @@ public final class SearchProgress {
 		}
 	}
 
-	/**
-	 * @return what's watching the search running now, or null if nothing is
-	 */
-	static SearchProgress watching() {
-		return watching;
-	}
-
-	static void watch(final SearchProgress progress) {
-		watching = progress;
-	}
-
-	/**
-	 * Tells what's watching the search, if anything is
-	 */
-	static void ifWatching(final Consumer<SearchProgress> tell) {
-		final SearchProgress progress = watching;
-		if (progress != null) {
-			tell.accept(progress);
-		}
-	}
-
 	public void searchStarted(final int generations) {
 		this.generations = generations;
 	}
 
 	/**
-	 * @param stage what the search has moved on to, such as "Generation 3 of 50"
+	 * @param stage what the search has moved on to, such as "The initial population"
 	 */
 	public void stageStarted(final String stage) {
 		this.stage = stage;
@@ -124,14 +101,24 @@ public final class SearchProgress {
 		for (int slot = 0; slot < slots; slot++) {
 			free.add(slot);
 		}
+		gamesThisRound.set(0);
 		this.round = round;
 		gamesPlannedThisRound = games;
-		gamesThisRound.set(0);
 		liveGames = new AtomicReferenceArray<>(slots);
 		freeSlots = free;
 	}
 
+	/**
+	 * @param folder where the search is saving its players
+	 */
+	public void savingIn(final String folder) {
+		savedIn = folder;
+	}
+
 	public void generationFinished(final GenerationResult result) {
+		// the round's over, so the games it played mustn't count towards the next stage as well as this result
+		round = Round.FITNESS;
+		gamesPlannedThisRound = 0;
 		results.add(result);
 	}
 
@@ -162,6 +149,13 @@ public final class SearchProgress {
 
 	public State getState() {
 		return state;
+	}
+
+	/**
+	 * @return where the search is saving its players, null if it hasn't got that far
+	 */
+	public String getSavedIn() {
+		return savedIn;
 	}
 
 	public String getStage() {
@@ -255,6 +249,7 @@ public final class SearchProgress {
 		private final Integer slot = free.poll();
 		private String black;
 		private String red;
+		private int turn;
 
 		private MeetingWatch(final Individual first, final String firstName, final String secondName) {
 			if (slot == null) {
@@ -271,19 +266,26 @@ public final class SearchProgress {
 			final String playerTwoName = playerOne == first ? secondName : firstName;
 			black = playerOneIsBlack ? playerOneName : playerTwoName;
 			red = playerOneIsBlack ? playerTwoName : playerOneName;
-			turnPlayed(new Board(), 0);
+			turn = 0;
+			show(new Board());
 		}
 
 		@Override
-		public void turnPlayed(final Board board, final int turns) {
-			live.set(slot, new LiveGame(black, red, turns, board.pipCount(true), board.pipCount(false),
+		public void turnPlayed(final Board board) {
+			turn++;
+			show(board);
+		}
+
+		private void show(final Board board) {
+			live.set(slot, new LiveGame(black, red, turn, board.pipCount(true), board.pipCount(false),
 					board.getBlackBore(), board.getRedBore()));
 		}
 
 		@Override
 		public void gameFinished(final GameStats stats) {
 			games.increment();
-			turns.add(stats.getTurns());
+			// counted here, as a game only counts its own turns when both players are AIs
+			turns.add(turn);
 			endings[stats.getWinType().ordinal()].increment();
 			gamesThisRound.incrementAndGet();
 		}

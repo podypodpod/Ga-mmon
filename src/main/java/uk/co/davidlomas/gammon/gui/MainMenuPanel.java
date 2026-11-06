@@ -71,7 +71,7 @@ public class MainMenuPanel extends JPanel {
 		add(status, row(6, 18));
 	}
 
-	private static JLabel label(final String text, final int style, final int size, final Color colour) {
+	static JLabel label(final String text, final int style, final int size, final Color colour) {
 		final JLabel label = new JLabel(text);
 		label.setFont(new Font(Font.SANS_SERIF, style, size));
 		label.setForeground(colour);
@@ -133,6 +133,13 @@ public class MainMenuPanel extends JPanel {
 		searchThread(progress, whenDone).start();
 	}
 
+	/**
+	 * @return the window for the latest search, null if there hasn't been one
+	 */
+	SearchProgressFrame progressWindow() {
+		return progressWindow;
+	}
+
 	private void showProgressWindow() {
 		progressWindow.open();
 		setMenuVisible(false);
@@ -171,11 +178,13 @@ public class MainMenuPanel extends JPanel {
 	static Thread searchThread(final SearchProgress progress, final Runnable whenDone) {
 		return new Thread(() -> {
 			try {
-				if (waitsForAPerson()) {
-					showMessage("areBothAIs is off in conf/GameSettings.properties, so this search will wait for you to "
-							+ "play player 2 in the terminal.", JOptionPane.INFORMATION_MESSAGE);
-				}
-				StartGa.run(progress);
+				markingFailure(progress, () -> {
+					if (waitsForAPerson()) {
+						showMessage("areBothAIs is off in conf/GameSettings.properties, so this search will wait for you "
+								+ "to play player 2 in the terminal.", JOptionPane.INFORMATION_MESSAGE);
+					}
+					StartGa.run(progress);
+				});
 			} catch (final Throwable e) {
 				// any failure is reported, including Errors such as a settings class failing to load
 				logger.error("The search failed", e);
@@ -187,6 +196,20 @@ public class MainMenuPanel extends JPanel {
 				SwingUtilities.invokeLater(whenDone);
 			}
 		}, "GA search");
+	}
+
+	/**
+	 * Runs search, marking progress as failed if it does, even if that's before the search itself has started, such as
+	 * a settings file with a mistake in it. Otherwise the window would never know the search had ended, and it would
+	 * stay open with nothing to end it
+	 */
+	static void markingFailure(final SearchProgress progress, final Runnable search) {
+		try {
+			search.run();
+		} catch (final RuntimeException | Error e) {
+			progress.failed();
+			throw e;
+		}
 	}
 
 	/**

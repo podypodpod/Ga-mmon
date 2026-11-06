@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 
+import java.util.function.Consumer;
+
 /**
  * Main
  * <p>
@@ -22,15 +24,12 @@ public class StartGa {
 	 * Runs the genetic algorithm as main does, keeping progress up to date as it goes
 	 */
 	public static void run(final SearchProgress progress) {
-		SearchProgress.watch(progress);
 		try {
-			main(new String[0]);
+			search(progress);
 			progress.finished();
 		} catch (final RuntimeException | Error e) {
 			progress.failed();
 			throw e;
-		} finally {
-			SearchProgress.watch(null);
 		}
 	}
 
@@ -40,22 +39,35 @@ public class StartGa {
 	 * @param args command line arguments
 	 */
 	public static void main(final String args[]) {
+		search(null);
+	}
+
+	/**
+	 * @param progress null if nothing is watching
+	 */
+	private static void search(final SearchProgress progress) {
 
 		GenAlgSettings.check();
 		GenAlgSettings.setAttemptCount(Individual.lastAttempt() + 1);
 
 		logger.info("Program running!");
-		SearchProgress.ifWatching(progress -> progress.searchStarted(GenAlgSettings.getGenerations()));
+		tell(progress, watcher -> watcher.searchStarted(GenAlgSettings.getGenerations()));
 
 		Population pop = createInitialPopulation();
-		saveInitialFittestToFile(pop);
-		final RunStats stats = new RunStats(pop.getFittest().getFilePathForPlayers() + "/runStats.csv");
+		saveInitialFittestToFile(pop, progress);
+		final RunStats stats = new RunStats(pop.getFittest().getFilePathForPlayers() + "/runStats.csv", progress);
 		stats.record("initial", pop, true);
-		pop = evolve(pop, stats);
+		pop = evolve(pop, stats, progress);
 
 		logger.info("------------Finished Evolving-------");
 		logger.info("Solution:");
 		logger.info(pop.getFittest().toString());
+	}
+
+	private static void tell(final SearchProgress progress, final Consumer<SearchProgress> message) {
+		if (progress != null) {
+			message.accept(progress);
+		}
 	}
 
 	private static Population createInitialPopulation() {
@@ -65,14 +77,15 @@ public class StartGa {
 		return new Population(GenAlgSettings.getPopulationSize(), true);
 	}
 
-	private static Population evolve(Population pop, final RunStats stats) {
+	private static Population evolve(Population pop, final RunStats stats, final SearchProgress progress) {
 		final int generations = GenAlgSettings.getGenerations();
 		for (int generation = 0; generation < generations; generation++) {
 			logger.info("-------------------------");
 			logger.info("Started evolving population");
-			final String stage = "Generation " + (generation + 1) + " of " + generations;
-			SearchProgress.ifWatching(progress -> progress.stageStarted(stage));
-			pop = GeneticAlgorithm.evolvePopulation(pop);
+			// numbered from 0, as they are in the stats and the saved players' names
+			final String stage = "Generation " + generation + " (" + (generation + 1) + " of " + generations + ")";
+			tell(progress, watcher -> watcher.stageStarted(stage));
+			pop = GeneticAlgorithm.evolvePopulation(pop, progress);
 			final Individual fittest = pop.getFittest();
 			fittest.saveToFile(fittest.getFilePathForPlayers() + "/PlayerFromGen" + generation);
 			stats.record(String.valueOf(generation), pop,
@@ -82,12 +95,13 @@ public class StartGa {
 		return pop;
 	}
 
-	private static void saveInitialFittestToFile(final Population pop) {
+	private static void saveInitialFittestToFile(final Population pop, final SearchProgress progress) {
 		// save initial fittest
 		logger.info("Calculating fittest of initial pop");
-		SearchProgress.ifWatching(progress -> progress.stageStarted("The initial population"));
-		pop.calculateFitness();
+		tell(progress, watcher -> watcher.stageStarted("The initial population"));
+		pop.calculateFitness(progress);
 		final Individual fittest = pop.getFittest();
+		tell(progress, watcher -> watcher.savingIn(fittest.getFilePathForPlayers()));
 		fittest.saveToFile(fittest.getFilePathForPlayers() + "/FittestFromInitialPopulation");
 	}
 }

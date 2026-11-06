@@ -10,7 +10,9 @@ import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -73,11 +75,21 @@ public class SearchProgressFrameTest {
 		assertEquals("Generation 3 of 50", SearchProgressFrame.statusText(progress));
 
 		progress.finished();
-		assertTrue(SearchProgressFrame.statusText(progress).startsWith("Finished"));
+		assertEquals("Finished", SearchProgressFrame.statusText(progress));
+		progress.savingIn("somewhere/Attempt - 3");
+		assertEquals("Finished: the players are saved in somewhere/Attempt - 3", SearchProgressFrame.statusText(progress));
 
 		final SearchProgress failing = new SearchProgress();
 		failing.failed();
 		assertTrue(SearchProgressFrame.statusText(failing).contains("error"));
+	}
+
+	@Test
+	public void theWindowIsCutDownToFitTheScreen() {
+		assertEquals(new Dimension(1000, 890),
+				SearchProgressFrame.fitted(new Dimension(1000, 890), new Rectangle(0, 0, 1920, 1040)));
+		assertEquals(new Dimension(1000, 728),
+				SearchProgressFrame.fitted(new Dimension(1000, 890), new Rectangle(0, 0, 1366, 728)));
 	}
 
 	@Test
@@ -97,14 +109,14 @@ public class SearchProgressFrameTest {
 
 		try (SearchProgress.MeetingWatch watch = progress.watchMeeting(first, "Player 1", "Player 2")) {
 			watch.gameStarted(first, second, true);
-			watch.turnPlayed(new Board(), 7);
+			watch.turnPlayed(new Board());
 			model.show(progress.getLiveGames());
 		}
 
 		assertEquals(2, model.getRowCount());
 		assertEquals("Player 1", model.getValueAt(0, 0));
 		assertEquals("Player 2", model.getValueAt(0, 1));
-		assertEquals(7, model.getValueAt(0, 2));
+		assertEquals(1, model.getValueAt(0, 2));
 		assertEquals(167, model.getValueAt(0, 3));
 		assertEquals("Between games", model.getValueAt(1, 0));
 		assertEquals("", model.getValueAt(1, 2));

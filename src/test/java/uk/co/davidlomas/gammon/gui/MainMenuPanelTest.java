@@ -10,7 +10,9 @@ import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
 import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 import java.awt.Component;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 public class MainMenuPanelTest {
 
@@ -108,6 +112,105 @@ public class MainMenuPanelTest {
 		} finally {
 			SettingsUtil.resetSettings();
 		}
+	}
+
+	@Test
+	public void aFailureBeforeTheSearchStartsCountsAsTheSearchFailing() {
+		final SearchProgress progress = new SearchProgress();
+
+		assertThrows(IllegalStateException.class, () -> MainMenuPanel.markingFailure(progress, () -> {
+			throw new IllegalStateException("a mistake in the settings");
+		}));
+
+		assertEquals(SearchProgress.State.FAILED, progress.getState());
+	}
+
+	@Test
+	public void leavingTheSearchsWindowHiddenUntilItEndsStillLetsTheProgramEnd() throws Exception {
+		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
+		final MainMenuContainerFrame menu = openMenuForASmallSearch();
+		final JButton startSearch = button(menu.mmp, "Start Search");
+		final JButton backToSearch = button(menu.mmp, "Back to Search");
+		assertFalse(backToSearch.isVisible());
+		try {
+			// all in one go on the Swing thread, so the search can't be reported as over part way through
+			SwingUtilities.invokeAndWait(() -> {
+				startSearch.doClick();
+				final SearchProgressFrame window = menu.mmp.progressWindow();
+				assertFalse(menu.isVisible(), "the window should replace the menu");
+				assertTrue(window.isVisible());
+				assertTrue(backToSearch.isVisible());
+
+				window.back();
+				assertTrue(menu.isVisible());
+				assertFalse(window.isVisible());
+
+				backToSearch.doClick();
+				assertFalse(menu.isVisible());
+				assertTrue(window.isVisible());
+
+				window.back();
+			});
+
+			awaitTheSearchEnding(startSearch);
+
+			assertFalse(backToSearch.isVisible());
+			assertTrue(menu.isVisible());
+			assertFalse(menu.mmp.progressWindow().isDisplayable(), "left hidden, it would stop the program ending");
+		} finally {
+			close(menu);
+		}
+	}
+
+	@Test
+	public void theSearchsWindowStaysUntilLeftAfterTheSearchEnds() throws Exception {
+		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
+		final MainMenuContainerFrame menu = openMenuForASmallSearch();
+		final JButton startSearch = button(menu.mmp, "Start Search");
+		try {
+			SwingUtilities.invokeAndWait(startSearch::doClick);
+
+			awaitTheSearchEnding(startSearch);
+
+			final SearchProgressFrame window = menu.mmp.progressWindow();
+			assertTrue(window.isVisible());
+			assertFalse(menu.isVisible());
+
+			SwingUtilities.invokeAndWait(window::back);
+
+			assertTrue(menu.isVisible());
+			assertFalse(window.isDisplayable());
+		} finally {
+			close(menu);
+		}
+	}
+
+	private static MainMenuContainerFrame openMenuForASmallSearch() throws Exception {
+		GenAlgSettings.setPopulationSize(2);
+		GenAlgSettings.setGenerations(1);
+		final MainMenuContainerFrame menu = new MainMenuContainerFrame();
+		SwingUtilities.invokeAndWait(menu::run);
+		return menu;
+	}
+
+	private static void awaitTheSearchEnding(final JButton startSearch) throws Exception {
+		final long giveUp = System.nanoTime() + TimeUnit.SECONDS.toNanos(120);
+		while (!startSearch.isEnabled()) {
+			assertTrue(System.nanoTime() < giveUp, "the search didn't finish");
+			Thread.sleep(50);
+		}
+		// what ends a search happens in one go on the Swing thread, so this is after all of it
+		SwingUtilities.invokeAndWait(() -> {
+		});
+	}
+
+	private static void close(final MainMenuContainerFrame menu) throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			if (menu.mmp.progressWindow() != null) {
+				menu.mmp.progressWindow().dispose();
+			}
+			menu.dispose();
+		});
 	}
 
 	private static List<String> buttonNames(final MainMenuPanel panel) {

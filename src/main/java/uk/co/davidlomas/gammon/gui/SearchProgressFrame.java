@@ -33,7 +33,7 @@ public class SearchProgressFrame extends JFrame {
 
 	private final transient SearchProgress progress;
 	private final transient Runnable showMenu;
-	private final JLabel status = label("Starting", Font.BOLD, 18, MainMenuPanel.CREAM);
+	private final JLabel status = MainMenuPanel.label("Starting", Font.BOLD, 18, MainMenuPanel.CREAM);
 	private final JProgressBar bar = new JProgressBar(0, 1000);
 	private final JLabel games = tileValue();
 	private final JLabel gamesPerSecond = tileValue();
@@ -41,7 +41,7 @@ public class SearchProgressFrame extends JFrame {
 	private final JLabel turnsPerGame = tileValue();
 	private final JLabel draws = tileValue();
 	private final JLabel gammons = tileValue();
-	private final JLabel thisRound = label(" ", Font.PLAIN, 13, MainMenuPanel.MUTED);
+	private final JLabel thisRound = MainMenuPanel.label(" ", Font.PLAIN, 13, MainMenuPanel.MUTED);
 	private final LiveGamesModel liveGames = new LiveGamesModel();
 	private final GenerationsModel generations = new GenerationsModel();
 	private final Timer timer = new Timer(REFRESH_MILLIS, e -> refresh());
@@ -61,8 +61,9 @@ public class SearchProgressFrame extends JFrame {
 		content.add(tables(), BorderLayout.CENTER);
 		add(content);
 
-		// tall enough to show a game for each of 12 cores without scrolling
-		setSize(1000, 890);
+		// tall enough to show a game for each of 12 cores without scrolling, if the screen is
+		setSize(fitted(new Dimension(1000, 890),
+				GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()));
 		setMinimumSize(new Dimension(760, 560));
 		setLocationRelativeTo(null);
 		// the menu is hidden behind this window, so closing it has to bring that back, or nothing would be showing
@@ -113,6 +114,13 @@ public class SearchProgressFrame extends JFrame {
 		header.add(status, BorderLayout.CENTER);
 		header.add(back, BorderLayout.EAST);
 		return header;
+	}
+
+	/**
+	 * @return the size wanted, cut down to fit on the screen
+	 */
+	static Dimension fitted(final Dimension wanted, final Rectangle screen) {
+		return new Dimension(Math.min(wanted.width, screen.width), Math.min(wanted.height, screen.height));
 	}
 
 	private JPanel summary() {
@@ -180,7 +188,7 @@ public class SearchProgressFrame extends JFrame {
 
 		final JPanel panel = new JPanel(new BorderLayout(0, 6));
 		panel.setOpaque(false);
-		panel.add(label(title, Font.BOLD, 14, MainMenuPanel.CREAM), BorderLayout.NORTH);
+		panel.add(MainMenuPanel.label(title, Font.BOLD, 14, MainMenuPanel.CREAM), BorderLayout.NORTH);
 		panel.add(scroll, BorderLayout.CENTER);
 		return panel;
 	}
@@ -217,19 +225,12 @@ public class SearchProgressFrame extends JFrame {
 		final JPanel tile = new JPanel(new BorderLayout(0, 2));
 		tile.setOpaque(false);
 		tile.add(value, BorderLayout.NORTH);
-		tile.add(label(caption, Font.PLAIN, 12, MainMenuPanel.MUTED), BorderLayout.SOUTH);
+		tile.add(MainMenuPanel.label(caption, Font.PLAIN, 12, MainMenuPanel.MUTED), BorderLayout.SOUTH);
 		return tile;
 	}
 
 	private static JLabel tileValue() {
-		return label("0", Font.BOLD, 22, MainMenuPanel.CREAM);
-	}
-
-	private static JLabel label(final String text, final int style, final int size, final Color colour) {
-		final JLabel label = new JLabel(text);
-		label.setFont(new Font(Font.SANS_SERIF, style, size));
-		label.setForeground(colour);
-		return label;
+		return MainMenuPanel.label("0", Font.BOLD, 22, MainMenuPanel.CREAM);
 	}
 
 	/**
@@ -263,7 +264,8 @@ public class SearchProgressFrame extends JFrame {
 	static String statusText(final SearchProgress progress) {
 		return switch (progress.getState()) {
 			case RUNNING -> progress.getStage();
-			case FINISHED -> "Finished: the players are saved in savedPlayers";
+			case FINISHED -> progress.getSavedIn() == null ? "Finished"
+					: "Finished: the players are saved in " + progress.getSavedIn();
 			case FAILED -> "The search stopped because of an error: see the terminal for why";
 		};
 	}

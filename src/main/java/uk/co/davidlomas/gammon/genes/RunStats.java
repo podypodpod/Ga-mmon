@@ -29,12 +29,21 @@ final class RunStats {
 	static final int REFERENCE_MEETINGS = 200;
 
 	private final Path file;
+	private final SearchProgress progress;
 	private final ReferencePlayer reference = new ReferencePlayer();
 	// the same meetings every time, so a change from one measure to the next is down to the player, not the dice
 	private final long[] meetingSeeds = new long[REFERENCE_MEETINGS];
 
 	RunStats(final String file) {
+		this(file, null);
+	}
+
+	/**
+	 * @param progress told about each generation as well, null if nothing is watching
+	 */
+	RunStats(final String file, final SearchProgress progress) {
 		this.file = Path.of(file);
+		this.progress = progress;
 		for (int meeting = 0; meeting < REFERENCE_MEETINGS; meeting++) {
 			meetingSeeds[meeting] = meeting;
 		}
@@ -50,11 +59,14 @@ final class RunStats {
 	 */
 	void record(final String generation, final Population pop, final boolean checkReference) {
 		final Double points = checkReference
-				? FitnessCalculator.averagePoints(pop.getFittest(), reference, meetingSeeds) : null;
-		final String row = row(generation, pop, points);
+				? FitnessCalculator.averagePoints(pop.getFittest(), reference, meetingSeeds, progress) : null;
+		final SearchProgress.GenerationResult result = result(generation, pop, points);
+		final String row = row(result);
 		logger.info("Stats: {}", row);
 		write(row, StandardOpenOption.APPEND);
-		SearchProgress.ifWatching(progress -> progress.generationFinished(result(generation, pop, points)));
+		if (progress != null) {
+			progress.generationFinished(result);
+		}
 	}
 
 	private void write(final String line, final StandardOpenOption... options) {
@@ -74,12 +86,14 @@ final class RunStats {
 	}
 
 	static String row(final String generation, final Population pop, final Double pointsAgainstReference) {
-		final GameTally games = pop.getGameTally();
-		return String.format(Locale.ROOT, "%s,%.4f,%.2f,%.1f,%.4f,%.4f,%.4f,%.4f,%s", generation,
-				pop.getFittest().getFitness(), geneSpread(pop), games.turnsPerGame(),
-				games.rate(WinType.DRAW), games.rate(WinType.SINGLE), games.rate(WinType.GAMMON),
-				games.rate(WinType.BACKGAMMON), pointsAgainstReference == null ? ""
-						: String.format(Locale.ROOT, "%.3f", pointsAgainstReference));
+		return row(result(generation, pop, pointsAgainstReference));
+	}
+
+	private static String row(final SearchProgress.GenerationResult result) {
+		return String.format(Locale.ROOT, "%s,%.4f,%.2f,%.1f,%.4f,%.4f,%.4f,%.4f,%s", result.generation(),
+				result.bestFitness(), result.geneSpread(), result.turnsPerGame(), result.drawRate(), result.singleRate(),
+				result.gammonRate(), result.backgammonRate(), result.pointsAgainstReference() == null ? ""
+						: String.format(Locale.ROOT, "%.3f", result.pointsAgainstReference()));
 	}
 
 	/**

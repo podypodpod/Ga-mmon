@@ -4,6 +4,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.game.Board;
+import uk.co.davidlomas.gammon.game.GameStats;
+import uk.co.davidlomas.gammon.game.WinType;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 
@@ -46,7 +48,7 @@ public class SearchProgressTest {
 		assertEquals(List.of("initial", "0"), results.stream().map(SearchProgress.GenerationResult::generation).toList());
 		assertNotNull(results.get(1).pointsAgainstReference());
 		assertTrue(progress.getLiveGames().stream().allMatch(game -> game == null), "no games should still be showing");
-		assertNull(SearchProgress.watching(), "the next search shouldn't report to this one");
+		assertTrue(progress.getSavedIn().contains("Attempt"), progress.getSavedIn());
 	}
 
 	@Test
@@ -57,7 +59,45 @@ public class SearchProgressTest {
 		assertThrows(IllegalArgumentException.class, () -> StartGa.run(progress));
 
 		assertEquals(SearchProgress.State.FAILED, progress.getState());
-		assertNull(SearchProgress.watching());
+	}
+
+	@Test
+	public void aFinishedRoundOnlyCountsOnceTowardsTheShareDone() {
+		final Individual first = new Individual();
+		final Individual second = new Individual();
+		final SearchProgress progress = new SearchProgress();
+		// the initial population and one generation, so two stages
+		progress.searchStarted(1);
+		progress.roundStarted(SearchProgress.Round.FITNESS, 2, 1);
+		assertEquals(0.0, progress.getShareDone());
+
+		try (SearchProgress.MeetingWatch watch = progress.watchMeeting(first, "Player 1", "Player 2")) {
+			final GameStats game = new GameStats(first, WinType.SINGLE, 1, -1);
+			watch.gameFinished(game);
+			assertEquals(0.25, progress.getShareDone());
+			watch.gameFinished(game);
+			assertEquals(0.5, progress.getShareDone());
+		}
+
+		progress.generationFinished(new SearchProgress.GenerationResult("initial", 0, 0, 0, 0, 0, 0, 0, null));
+		assertEquals(0.5, progress.getShareDone());
+	}
+
+	@Test
+	public void turnsAreCountedEvenWhenTheGameDoesntCountThem() {
+		final Individual first = new Individual();
+		final SearchProgress progress = new SearchProgress();
+		progress.roundStarted(SearchProgress.Round.FITNESS, 1, 1);
+
+		try (SearchProgress.MeetingWatch watch = progress.watchMeeting(first, "Player 1", "Player 2")) {
+			watch.gameStarted(first, new Individual(), true);
+			watch.turnPlayed(new Board());
+			watch.turnPlayed(new Board());
+			// as a game with a person reports it, with no turns of its own
+			watch.gameFinished(new GameStats(first, WinType.SINGLE, 1, -1));
+		}
+
+		assertEquals(2.0, progress.getTurnsPerGame());
 	}
 
 	@Test
@@ -69,12 +109,13 @@ public class SearchProgressTest {
 
 		try (SearchProgress.MeetingWatch watch = progress.watchMeeting(first, "Player 1", "Player 2")) {
 			watch.gameStarted(second, first, true);
-			watch.turnPlayed(new Board(), 5);
+			watch.turnPlayed(new Board());
+			watch.turnPlayed(new Board());
 
 			final SearchProgress.LiveGame game = progress.getLiveGames().get(0);
 			assertEquals("Player 2", game.black());
 			assertEquals("Player 1", game.red());
-			assertEquals(5, game.turns());
+			assertEquals(2, game.turns());
 			assertEquals(167, game.blackPips());
 			assertEquals(167, game.redPips());
 			assertNull(progress.getLiveGames().get(1));

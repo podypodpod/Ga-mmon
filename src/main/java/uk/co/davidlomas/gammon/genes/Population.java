@@ -40,6 +40,15 @@ public class Population {
 	}
 
 	/**
+	 * As calculateFitness, keeping progress up to date as the games are played
+	 *
+	 * @param progress null if nothing is watching
+	 */
+	void calculateFitness(final SearchProgress progress) {
+		FitnessCalculator.calculateFitnessOfPopulation(this, progress);
+	}
+
+	/**
 	 * @return what happened in the games played when fitness was last worked out
 	 */
 	GameTally getGameTally() {
