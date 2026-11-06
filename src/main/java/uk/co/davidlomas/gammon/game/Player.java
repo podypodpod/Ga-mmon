@@ -218,7 +218,6 @@ public class Player {
 	}
 
 	/**
-	/**
 	 * A person's turn, played on the console: rolls the dice, then asks what to do with them
 	 */
 	void turn(final Board liveBoard) {
