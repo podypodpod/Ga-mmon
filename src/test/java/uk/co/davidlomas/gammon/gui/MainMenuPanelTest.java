@@ -41,6 +41,15 @@ public class MainMenuPanelTest {
 	}
 
 	@Test
+	public void buttonsThatDontDoAnythingYetAreGreyedOut() {
+		final MainMenuPanel panel = new MainMenuPanel();
+
+		assertTrue(button(panel, "Start Search").isEnabled());
+		assertFalse(button(panel, "Play Best Two").isEnabled());
+		assertFalse(button(panel, "Change Settings").isEnabled());
+	}
+
+	@Test
 	public void startSearchRunsOneSearchAtATime() {
 		final AtomicInteger searches = new AtomicInteger();
 		final AtomicReference<Runnable> whenDone = new AtomicReference<>();
@@ -55,10 +64,12 @@ public class MainMenuPanelTest {
 		startSearch.doClick();
 		assertEquals(1, searches.get());
 		assertFalse(startSearch.isEnabled());
+		assertTrue(panel.status().contains("terminal"), "it should say where the progress is");
 
 		// once that search ends, it can be pressed again
 		whenDone.get().run();
 		assertTrue(startSearch.isEnabled());
+		assertTrue(panel.status().isBlank());
 		startSearch.doClick();
 		assertEquals(2, searches.get());
 	}
