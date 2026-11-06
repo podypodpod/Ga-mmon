@@ -9,7 +9,6 @@ import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.util.RandomSource;
 
-import java.lang.reflect.MalformedParametersException;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -77,7 +76,7 @@ public class BoardListTest {
 	public void testingAddingABoardWithNextMoveToTheBoardListWithNoMovesLeft() {
 		assertFalse(classUnderTest.hasContents());
 
-		assertThrows(MalformedParametersException.class,
+		assertThrows(IllegalStateException.class,
 				() -> classUnderTest.addBoardWithNextMove(board, 0, 0, player, new MoveGenerator(individual)));
 	}
 }

@@ -30,11 +30,10 @@ import java.util.List;
  * <p>
  * Contains the game loop and creates a new board, players etc
  * <p>
- * This class just needs two Individuals passed in to it to play a game, if null
- * the player will pick random moves
+ * This class just needs two Individuals passed in to it to play a game
  * <p>
- * To get a human player, in the backgammon.settings package change the
- * gameSettings class, areBothAIs = false
+ * To get a human player as player 2, set areBothAIs to false in
+ * conf/GameSettings.properties, or use PlayAgainstAi
  *
  * @author David Lomas
  */
