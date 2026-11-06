@@ -15,6 +15,7 @@ import java.util.Properties;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -101,6 +102,18 @@ public class IndividualTest {
 		assertTrue(new File(SettingsUtil.getPlayersDir() + "/Attempts").mkdirs() || new File(SettingsUtil.getPlayersDir() + "/Attempts").isDirectory());
 
 		assertEquals(highest, Individual.lastAttempt());
+	}
+
+	@Test
+	public void savingLeavesOnlyTheFinishedFileAndReplacesAnOldOne() {
+		individual1.saveToFile(filePath);
+		individual2.saveToFile(filePath);
+
+		final Individual loaded = new Individual();
+		loaded.loadFromFile(filePath);
+
+		assertEquals(String.valueOf(individual2.getChromosome()), String.valueOf(loaded.getChromosome()));
+		assertFalse(new File(filePath + ".partial").exists());
 	}
 
 	@Test
