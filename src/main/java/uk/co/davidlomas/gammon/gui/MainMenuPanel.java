@@ -2,12 +2,14 @@ package uk.co.davidlomas.gammon.gui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.co.davidlomas.gammon.genes.SearchProgress;
 import uk.co.davidlomas.gammon.genes.StartGa;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
+import java.util.function.ObjIntConsumer;
 
 public class MainMenuPanel extends JPanel {
 
@@ -25,19 +27,21 @@ public class MainMenuPanel extends JPanel {
 	private static final int POINT_HEIGHT = 64;
 
 	private static final String NOT_SEARCHING = " ";
-	private static final String SEARCHING = "Searching: progress is in the terminal";
+	private static final String SEARCHING = "A search is running";
 
 	private final JLabel status = label(NOT_SEARCHING, Font.PLAIN, 14, MUTED);
+	private final JButton backToSearch = new MenuButton("Back to Search");
+	private SearchProgressFrame progressWindow;
 
 	public MainMenuPanel() {
 		this(MainMenuPanel::startSearch);
 	}
 
 	/**
-	 * @param startSearch starts a search, and is given what to run when it ends. Tests pass their own, so they can
-	 *                    see the button pressed without running the GA
+	 * @param startSearch starts a search from this menu, and is given what to run when it ends. Tests pass their own,
+	 *                    so they can see the button pressed without running the GA
 	 */
-	MainMenuPanel(final Consumer<Runnable> startSearch) {
+	MainMenuPanel(final BiConsumer<MainMenuPanel, Runnable> startSearch) {
 		setLayout(new GridBagLayout());
 		setBackground(FELT);
 
@@ -50,19 +54,25 @@ public class MainMenuPanel extends JPanel {
 		startSearchButton.addActionListener(e -> {
 			startSearchButton.setEnabled(false);
 			status.setText(SEARCHING);
-			startSearch.accept(() -> {
+			startSearch.accept(this, () -> {
 				startSearchButton.setEnabled(true);
 				status.setText(NOT_SEARCHING);
+				searchEnded();
 			});
 		});
 
+		// only there while a search is running, for getting back to its window
+		backToSearch.setVisible(false);
+		backToSearch.addActionListener(e -> showProgressWindow());
+
 		add(startSearchButton, row(2, 28));
-		add(notBuiltYet("Play Best Two"), row(3, 12));
-		add(notBuiltYet("Change Settings"), row(4, 12));
-		add(status, row(5, 18));
+		add(backToSearch, row(3, 12));
+		add(notBuiltYet("Play Best Two"), row(4, 12));
+		add(notBuiltYet("Change Settings"), row(5, 12));
+		add(status, row(6, 18));
 	}
 
-	private static JLabel label(final String text, final int style, final int size, final Color colour) {
+	static JLabel label(final String text, final int style, final int size, final Color colour) {
 		final JLabel label = new JLabel(text);
 		label.setFont(new Font(Font.SANS_SERIF, style, size));
 		label.setForeground(colour);
@@ -111,39 +121,104 @@ public class MainMenuPanel extends JPanel {
 	}
 
 	/**
-	 * Runs the genetic algorithm on its own thread, so the window keeps responding while it searches. If the search
-	 * fails, the error is shown in a message box rather than only in the log
+	 * Runs the genetic algorithm on its own thread, and swaps the menu for a window showing how it's going. If the
+	 * search fails, the error is shown in a message box rather than only in the log
 	 *
 	 * @param whenDone run on the Swing thread once the search has finished or failed
-	 *
-	 * @return the thread it's running on
 	 */
-	static Thread startSearch(final Runnable whenDone) {
-		final Thread search = searchThread(whenDone);
-		search.start();
-		return search;
+	private void startSearch(final Runnable whenDone) {
+		final SearchProgress progress = new SearchProgress();
+		showSearch(progress);
+		searchThread(progress, whenDone).start();
+	}
+
+	/**
+	 * Swaps the menu for a window showing how this search is going, and offers a way back to it until the search ends
+	 */
+	void showSearch(final SearchProgress progress) {
+		progressWindow = new SearchProgressFrame(progress, this::showMenu);
+		backToSearch.setVisible(true);
+		showProgressWindow();
+	}
+
+	/**
+	 * Swaps the menu for the window of the search that's running, if one is
+	 *
+	 * @return whether one was running
+	 */
+	boolean showRunningSearch() {
+		if (!backToSearch.isVisible()) {
+			return false;
+		}
+		showProgressWindow();
+		return true;
+	}
+
+	/**
+	 * @return the window for the latest search, null if there hasn't been one
+	 */
+	SearchProgressFrame progressWindow() {
+		return progressWindow;
+	}
+
+	private void showProgressWindow() {
+		progressWindow.open();
+		setMenuVisible(false);
+	}
+
+	private void showMenu() {
+		setMenuVisible(true);
+	}
+
+	private void setMenuVisible(final boolean visible) {
+		final Window menu = SwingUtilities.getWindowAncestor(this);
+		if (menu != null) {
+			menu.setVisible(visible);
+		}
+	}
+
+	/**
+	 * There's no search to get back to now. A window that's been left hidden has to go, or the program would never end
+	 */
+	private void searchEnded() {
+		backToSearch.setVisible(false);
+		if (progressWindow != null && !progressWindow.isVisible()) {
+			progressWindow.dispose();
+		}
 	}
 
 	/**
 	 * The thread a search runs on, not yet started, so tests can make it a daemon before starting it. The real one
 	 * isn't a daemon, so the program waits for a search to finish rather than cutting it off mid-save
 	 *
+	 * @param progress kept up to date as the search goes
 	 * @param whenDone run on the Swing thread once the search has finished or failed
 	 *
 	 * @return the thread, not started
 	 */
-	static Thread searchThread(final Runnable whenDone) {
+	static Thread searchThread(final SearchProgress progress, final Runnable whenDone) {
+		return searchThread(progress, whenDone, MainMenuPanel::showMessage);
+	}
+
+	/**
+	 * @param tell shows a message, and a JOptionPane type saying what sort it is
+	 */
+	static Thread searchThread(final SearchProgress progress, final Runnable whenDone,
+							   final ObjIntConsumer<String> tell) {
 		return new Thread(() -> {
 			try {
-				if (waitsForAPerson()) {
-					showMessage("areBothAIs is off in conf/GameSettings.properties, so this search will wait for you to "
-							+ "play player 2 in the terminal.", JOptionPane.INFORMATION_MESSAGE);
-				}
-				StartGa.main(new String[0]);
+				// the check for a person counts as well: a mistake in the settings can come to light there
+				progress.follow(() -> {
+					if (waitsForAPerson()) {
+						tell.accept("areBothAIs is off in conf/GameSettings.properties, so this search will wait for you "
+								+ "to play player 2 in the terminal.", JOptionPane.INFORMATION_MESSAGE);
+					}
+					StartGa.run(progress);
+				});
 			} catch (final Throwable e) {
 				// any failure is reported, including Errors such as a settings class failing to load
 				logger.error("The search failed", e);
-				showMessage("The search failed: " + e, JOptionPane.ERROR_MESSAGE);
+				tell.accept("The search failed: " + e, JOptionPane.ERROR_MESSAGE);
 				if (e instanceof Error) {
 					throw (Error) e;
 				}

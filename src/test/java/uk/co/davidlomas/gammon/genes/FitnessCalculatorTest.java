@@ -67,7 +67,7 @@ public class FitnessCalculatorTest {
 		final PrimitiveIterator.OfLong meetingSeeds = LongStream.of(7, 9).iterator();
 
 		// When their fitness is worked out
-		FitnessCalculator.calculateFitnessOfPopulation(population, meetingSeeds::nextLong);
+		FitnessCalculator.calculateFitnessOfPopulation(population, meetingSeeds::nextLong, null);
 
 		// Then it's their scores from both meetings, four games each, averaged
 		final GameManager gameManager = new GameManager();
@@ -102,12 +102,36 @@ public class FitnessCalculatorTest {
 	}
 
 	@Test
+	public void watchingTheGamesDoesNotChangeHowTheyPlayOut() {
+		RandomSource.setSeed(11);
+		final Population pop = new Population(4, true);
+		final double[] unwatched = fitnessesFromFixedSeeds(pop, null);
+
+		final SearchProgress progress = new SearchProgress();
+		final double[] watched = fitnessesFromFixedSeeds(pop, progress);
+
+		assertArrayEquals(unwatched, watched, 1e-12);
+		// 6 pairs, a meeting each, and two games a meeting
+		assertEquals(12, progress.getGames());
+	}
+
+	private static double[] fitnessesFromFixedSeeds(final Population pop, final SearchProgress progress) {
+		final long[] nextSeed = {100};
+		FitnessCalculator.calculateFitnessOfPopulation(pop, () -> nextSeed[0]++, progress);
+		final double[] fitnesses = new double[pop.size()];
+		for (int i = 0; i < pop.size(); i++) {
+			fitnesses[i] = pop.getIndividual(i).getFitness();
+		}
+		return fitnesses;
+	}
+
+	@Test
 	public void workingOutFitnessDoesNotChangeTheCallersRandomNumbers() {
 		// the GA goes on to pick parents and mutate from the same random numbers, so the games mustn't use them up
 		final Population population = new Population(3, true);
 		RandomSource.setSeed(8);
 
-		FitnessCalculator.calculateFitnessOfPopulation(population, () -> 1L);
+		FitnessCalculator.calculateFitnessOfPopulation(population, () -> 1L, null);
 
 		// the next number is the first one seed 8 gives, as if no games had been played
 		assertEquals(new java.util.Random(8).nextLong(), RandomSource.nextLong());

@@ -61,13 +61,22 @@ public class GeneticAlgorithm {
 	 * @return the new population evolved
 	 */
 	public static Population evolvePopulation(final Population currentPopulation) {
+		return evolvePopulation(currentPopulation, null);
+	}
+
+	/**
+	 * As evolvePopulation, keeping progress up to date as the games are played
+	 *
+	 * @param progress null if nothing is watching
+	 */
+	static Population evolvePopulation(final Population currentPopulation, final SearchProgress progress) {
 		logger.info("------EVOLVE POPULATION-------------------");
 
 		final Population newPopulation = new Population(currentPopulation.size(), false);
 		carryOverBestPlayer(currentPopulation, newPopulation);
 		final int elitismOffset = crossoverPopulation(currentPopulation, newPopulation);
 		mutatePopulation(newPopulation, elitismOffset);
-		newPopulation.calculateFitness();
+		newPopulation.calculateFitness(progress);
 
 		return newPopulation;
 	}

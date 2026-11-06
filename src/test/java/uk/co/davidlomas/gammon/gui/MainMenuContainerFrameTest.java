@@ -37,8 +37,8 @@ public class MainMenuContainerFrameTest {
 			assertTrue(frame.isShowing(), "the frame itself should be the window that opens");
 			assertEquals("GA-mmon", frame.getTitle());
 			assertSame(frame, SwingUtilities.getWindowAncestor(frame.mmp));
-			// exiting wouldn't wait for a search that's still running
-			assertEquals(WindowConstants.DISPOSE_ON_CLOSE, frame.getDefaultCloseOperation());
+			// exiting wouldn't wait for a search that's still running, and it's up to the menu whether closing it can go ahead
+			assertEquals(WindowConstants.DO_NOTHING_ON_CLOSE, frame.getDefaultCloseOperation());
 		} finally {
 			SwingUtilities.invokeAndWait(frame::dispose);
 		}

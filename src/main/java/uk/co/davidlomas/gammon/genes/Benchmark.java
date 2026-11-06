@@ -143,7 +143,7 @@ public final class Benchmark {
 		for (int meeting = 0; meeting < meetings; meeting++) {
 			meetingSeeds[meeting] = RandomSource.nextLong();
 		}
-		return FitnessCalculator.averagePoints(player, reference, meetingSeeds);
+		return FitnessCalculator.averagePoints(player, reference, meetingSeeds, null);
 	}
 
 	/**

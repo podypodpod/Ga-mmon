@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.IntFunction;
 import java.util.function.LongSupplier;
 
 /**
@@ -42,14 +43,17 @@ class FitnessCalculator {
 	 * @param pop - population we are measuring
 	 */
 	static void calculateFitnessOfPopulation(final Population pop) {
-		calculateFitnessOfPopulation(pop, RandomSource::nextLong);
+		calculateFitnessOfPopulation(pop, RandomSource::nextLong, null);
 	}
 
 	/**
 	 * As calculateFitnessOfPopulation, with the seed for each meeting taken from meetingSeeds, so tests can choose
-	 * them
+	 * them, and keeping progress up to date as the games are played
+	 *
+	 * @param progress null if nothing is watching
 	 */
-	static void calculateFitnessOfPopulation(final Population pop, final LongSupplier meetingSeeds) {
+	static void calculateFitnessOfPopulation(final Population pop, final LongSupplier meetingSeeds,
+											 final SearchProgress progress) {
 
 		final int size = pop.individuals.length;
 		final int meetings = GenAlgSettings.getGamesPerPairing();
@@ -66,7 +70,8 @@ class FitnessCalculator {
 		}
 
 		logger.trace("Round robin started: {} meetings", plan.size());
-		final List<MeetingGames> played = play(pop, plan);
+		final List<MeetingGames> played = play(pop, plan, SearchProgress.Round.FITNESS, i -> "Player " + (i + 1),
+				progress);
 
 		final double[] totals = new double[size];
 		final GameTally tally = new GameTally();
@@ -88,8 +93,11 @@ class FitnessCalculator {
 	/**
 	 * The player's average points a game against the opponent, a meeting for each seed. It's played on threads of its
 	 * own, like the fitness games, so the caller's random numbers aren't touched
+	 *
+	 * @param progress kept up to date as the games are played, null if nothing is watching
 	 */
-	static double averagePoints(final Individual player, final Individual opponent, final long[] meetingSeeds) {
+	static double averagePoints(final Individual player, final Individual opponent, final long[] meetingSeeds,
+								final SearchProgress progress) {
 		final Population pair = new Population(2, false);
 		pair.saveIndividual(0, player);
 		pair.saveIndividual(1, opponent);
@@ -99,7 +107,8 @@ class FitnessCalculator {
 			plan.add(new Meeting(0, 1, seed));
 		}
 		double total = 0;
-		for (final MeetingGames games : play(pair, plan)) {
+		for (final MeetingGames games : play(pair, plan, SearchProgress.Round.REFERENCE,
+				i -> i == 0 ? "The best" : "Reference", progress)) {
 			total += games.firstScore();
 		}
 		return total / (2.0 * meetingSeeds.length);
@@ -109,21 +118,40 @@ class FitnessCalculator {
 	 * Plays every meeting in the plan, on as many threads as the settings allow, and gives back each one's games
 	 * in the plan's order. Even with one thread they're played on a thread of their own, so the caller's random
 	 * numbers aren't touched either way
+	 *
+	 * @param round what the meetings are for, for anything watching the search
+	 * @param names what to call a player, by their place in the population, for anything watching the search
+	 * @param progress null if nothing is watching
 	 */
-	private static List<MeetingGames> play(final Population pop, final List<Meeting> plan) {
+	private static List<MeetingGames> play(final Population pop, final List<Meeting> plan,
+										   final SearchProgress.Round round, final IntFunction<String> names,
+										   final SearchProgress progress) {
 		// the settings are read now, before any game, so the threads don't each read them from the file
 		GameSettings.loadAll();
 		final int wanted = !playsInParallel() ? 1
 				: GameSettings.getThreads() == 0 ? Runtime.getRuntime().availableProcessors() : GameSettings.getThreads();
 		// no more threads than meetings, as any more would have nothing to play
 		final int threads = Math.max(1, Math.min(wanted, plan.size()));
+		if (progress != null) {
+			progress.roundStarted(round, 2 * plan.size(), threads);
+		}
 		final ExecutorService pool = Executors.newFixedThreadPool(threads);
 		try {
 			final List<Future<MeetingGames>> playing = new ArrayList<>();
 			for (final Meeting meeting : plan) {
 				final Individual first = pop.individuals[meeting.first()];
 				final Individual second = pop.individuals[meeting.second()];
-				playing.add(pool.submit(() -> playMeeting(new GameManager(), first, second, meeting.seed())));
+				playing.add(pool.submit(() -> {
+					if (progress == null) {
+						return playMeeting(new GameManager(), first, second, meeting.seed());
+					}
+					try (SearchProgress.MeetingWatch watch = progress.watchMeeting(first,
+							names.apply(meeting.first()), names.apply(meeting.second()))) {
+						final GameManager gameManager = new GameManager();
+						gameManager.setObserver(watch);
+						return playMeeting(gameManager, first, second, meeting.seed());
+					}
+				}));
 			}
 			final List<MeetingGames> played = new ArrayList<>();
 			for (final Future<MeetingGames> meeting : playing) {

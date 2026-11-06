@@ -1,5 +1,7 @@
 package uk.co.davidlomas.gammon.genes;
 
+import uk.co.davidlomas.gammon.util.RandomSource;
+
 /**
  * The Class Population.
  * <p>
@@ -37,6 +39,15 @@ public class Population {
 	 */
 	public void calculateFitness() {
 		FitnessCalculator.calculateFitnessOfPopulation(this);
+	}
+
+	/**
+	 * As calculateFitness, keeping progress up to date as the games are played
+	 *
+	 * @param progress null if nothing is watching
+	 */
+	void calculateFitness(final SearchProgress progress) {
+		FitnessCalculator.calculateFitnessOfPopulation(this, RandomSource::nextLong, progress);
 	}
 
 	/**

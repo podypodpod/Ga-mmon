@@ -42,6 +42,7 @@ class Game implements Runnable {
 	private final int maxTurns;
 	private int turnsPlayed = 0;
 	private boolean cutShort = false;
+	private GameObserver observer = GameObserver.NONE;
 
 	// the opening move is played with the two dice from the opening roll, rather than a new roll. Null once it's used
 	private List<Integer> openingDice;
@@ -68,6 +69,10 @@ class Game implements Runnable {
 
 		aiPlayer1 = new AiPlayer(isP1Black, individual1);
 		aiPlayer2 = new AiPlayer(!isP1Black, individual2);
+	}
+
+	void setObserver(final GameObserver observer) {
+		this.observer = observer;
 	}
 
 	/**
@@ -217,6 +222,7 @@ class Game implements Runnable {
 					+ (liveBoard.equals(before) ? " and couldn't move." : "."));
 		}
 		liveBoard.printBoardGUI();
+		observer.turnPlayed(liveBoard);
 
 		if (liveBoard.hasPlayerWon(player.black)) {
 			gameActive = false;
@@ -236,6 +242,7 @@ class Game implements Runnable {
 	private void personTurn() {
 		aiPlayer2.turn(liveBoard, nextRoll(aiPlayer2));
 		liveBoard.printBoardGUI();
+		observer.turnPlayed(liveBoard);
 
 		if (aiPlayer2.hasConceded()) {
 			gameActive = false;
