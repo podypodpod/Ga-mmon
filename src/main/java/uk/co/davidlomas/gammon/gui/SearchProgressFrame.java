@@ -195,7 +195,7 @@ public class SearchProgressFrame extends JFrame {
 		return tables;
 	}
 
-	private static JPanel titled(final String title, final JTable table) {
+	static JPanel titled(final String title, final JTable table) {
 		final JScrollPane scroll = new JScrollPane(table);
 		scroll.getViewport().setBackground(MainMenuPanel.FELT);
 		scroll.setBorder(BorderFactory.createLineBorder(GRID));
@@ -210,7 +210,7 @@ public class SearchProgressFrame extends JFrame {
 	/**
 	 * @param firstNumberColumn the columns from here on hold numbers, so they're lined up on the right
 	 */
-	private static JTable table(final AbstractTableModel model, final int firstNumberColumn) {
+	static JTable table(final AbstractTableModel model, final int firstNumberColumn) {
 		final JTable table = new JTable(model);
 		table.setBackground(MainMenuPanel.FELT);
 		table.setForeground(MainMenuPanel.CREAM);
