@@ -30,7 +30,7 @@ public class SearchProgressFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private static final int REFRESH_MILLIS = 200;
-	private static final Color GRID = new Color(0x2F6650);
+	static final Color GRID = new Color(0x2F6650);
 
 	private final transient SearchProgress progress;
 	private final transient Runnable showMenu;
@@ -195,14 +195,21 @@ public class SearchProgressFrame extends JFrame {
 		return tables;
 	}
 
-	private static JPanel titled(final String title, final JTable table) {
+	static JPanel titled(final String title, final JTable table) {
+		return titled(MainMenuPanel.label(title, Font.BOLD, 14, MainMenuPanel.CREAM), table);
+	}
+
+	/**
+	 * @param title above the table, which can be changed later to say what's in it
+	 */
+	static JPanel titled(final JLabel title, final JTable table) {
 		final JScrollPane scroll = new JScrollPane(table);
 		scroll.getViewport().setBackground(MainMenuPanel.FELT);
 		scroll.setBorder(BorderFactory.createLineBorder(GRID));
 
 		final JPanel panel = new JPanel(new BorderLayout(0, 6));
 		panel.setOpaque(false);
-		panel.add(MainMenuPanel.label(title, Font.BOLD, 14, MainMenuPanel.CREAM), BorderLayout.NORTH);
+		panel.add(title, BorderLayout.NORTH);
 		panel.add(scroll, BorderLayout.CENTER);
 		return panel;
 	}
@@ -210,7 +217,7 @@ public class SearchProgressFrame extends JFrame {
 	/**
 	 * @param firstNumberColumn the columns from here on hold numbers, so they're lined up on the right
 	 */
-	private static JTable table(final AbstractTableModel model, final int firstNumberColumn) {
+	static JTable table(final AbstractTableModel model, final int firstNumberColumn) {
 		final JTable table = new JTable(model);
 		table.setBackground(MainMenuPanel.FELT);
 		table.setForeground(MainMenuPanel.CREAM);
@@ -371,9 +378,23 @@ public class SearchProgressFrame extends JFrame {
 		void show(final List<GenerationResult> results) {
 			// the same list means nothing has changed, and redrawing would only make it flicker
 			if (results.size() != rows.size()) {
-				rows = results;
-				fireTableDataChanged();
+				showNow(results);
 			}
+		}
+
+		/**
+		 * Shows these, even if there are as many as before, such as another search's
+		 */
+		void showNow(final List<GenerationResult> results) {
+			rows = results;
+			fireTableDataChanged();
+		}
+
+		/**
+		 * @return the generation in that row
+		 */
+		GenerationResult resultAt(final int row) {
+			return rows.get(rows.size() - 1 - row);
 		}
 
 		@Override
@@ -393,7 +414,7 @@ public class SearchProgressFrame extends JFrame {
 
 		@Override
 		public Object getValueAt(final int row, final int column) {
-			final GenerationResult result = rows.get(rows.size() - 1 - row);
+			final GenerationResult result = resultAt(row);
 			return switch (column) {
 				case 0 -> result.generation();
 				case 1 -> String.format(Locale.ROOT, "%+.3f", result.bestFitness());

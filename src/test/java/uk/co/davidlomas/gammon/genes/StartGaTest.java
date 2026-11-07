@@ -78,6 +78,21 @@ public class StartGaTest {
 	}
 
 	@Test
+	public void aRunSavesTheSettingsItRanWith() {
+		RandomSource.setSeed(1);
+
+		StartGa.main(null);
+
+		final File attempt = new File(SettingsUtil.getPlayersDir() + "/Attempt - " + GenAlgSettings.getAttemptCount());
+		final SavedAttempts.Attempt saved = SavedAttempts.all(new File(SettingsUtil.getPlayersDir())).stream()
+				.filter(a -> a.folder().equals(attempt)).findFirst().orElseThrow();
+		assertEquals(java.util.Map.of("populationSize", "3", "generations", "2", "gamesPerPairing",
+				String.valueOf(GenAlgSettings.getGamesPerPairing()), "tournamentSize", "2", "uniformRate", "0.5",
+				"mutationRate", "0.1", "elitism", "true"), saved.settings());
+		assertEquals(3, saved.generations().size());
+	}
+
+	@Test
 	public void noGenerationsMeansNoneAreMade() {
 		GenAlgSettings.setGenerations(0);
 		RandomSource.setSeed(1);
