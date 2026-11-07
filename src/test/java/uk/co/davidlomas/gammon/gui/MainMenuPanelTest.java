@@ -113,6 +113,19 @@ public class MainMenuPanelTest {
 	}
 
 	@Test
+	public void cancellingTheSettingsStartsNoSearch() {
+		final AtomicInteger searches = new AtomicInteger();
+		final MainMenuPanel panel = new MainMenuPanel((menu, done) -> searches.incrementAndGet());
+		panel.setSettingsChooser(() -> false);
+
+		button(panel, START).doClick();
+
+		assertEquals(0, searches.get());
+		assertTrue(button(panel, START).isEnabled());
+		assertTrue(button(panel, "Play Best Two").isEnabled());
+	}
+
+	@Test
 	public void startSearchRunsOneSearchAtATime() {
 		final AtomicInteger searches = new AtomicInteger();
 		final AtomicReference<Runnable> whenDone = new AtomicReference<>();
@@ -326,6 +339,8 @@ public class MainMenuPanelTest {
 		GenAlgSettings.setGenerations(1);
 		final MainMenuContainerFrame menu = new MainMenuContainerFrame();
 		SwingUtilities.invokeAndWait(menu::run);
+		// the settings set above, rather than asking for them
+		menu.mmp.setSettingsChooser(() -> true);
 		return menu;
 	}
 

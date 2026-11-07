@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.BooleanSupplier;
 import java.util.function.ObjIntConsumer;
 import java.util.function.Supplier;
 
@@ -39,9 +40,12 @@ public class MainMenuPanel extends JPanel {
 	private final transient Supplier<List<SavedPlayer>> bestTwo;
 	private SearchProgressFrame progressWindow;
 	private WatchGameFrame watchWindow;
+	// whether to go ahead with a search. Tests that only press the button don't ask
+	private transient BooleanSupplier chooseSettings = () -> true;
 
 	public MainMenuPanel() {
 		this(MainMenuPanel::startSearch);
+		chooseSettings = this::askForSettings;
 	}
 
 	/**
@@ -68,6 +72,9 @@ public class MainMenuPanel extends JPanel {
 
 		// one search at a time: they share the settings and the attempt count, so two would save over each other
 		startSearchButton.addActionListener(e -> {
+			if (!startSearchButton.isEnabled() || !chooseSettings.getAsBoolean()) {
+				return;
+			}
 			startSearchButton.setEnabled(false);
 			// one thing at a time: a game to watch would only take time from the search
 			playBestTwo.setEnabled(false);
@@ -92,6 +99,28 @@ public class MainMenuPanel extends JPanel {
 		add(backToSearch, row(3, 12));
 		add(playBestTwo, row(4, 12));
 		add(status, row(5, 18));
+	}
+
+	/**
+	 * @param chooser asks for the search's settings, and says whether to go ahead with it
+	 */
+	void setSettingsChooser(final BooleanSupplier chooser) {
+		chooseSettings = chooser;
+	}
+
+	/**
+	 * Asks for the settings for a search
+	 *
+	 * @return whether they were chosen, rather than cancelled or not readable
+	 */
+	private boolean askForSettings() {
+		try {
+			return SearchSettingsDialog.ask(this) != null;
+		} catch (final RuntimeException e) {
+			logger.error("Couldn't read the settings", e);
+			status.setText("The settings in conf/ can't be read: " + e.getMessage());
+			return false;
+		}
 	}
 
 	static JLabel label(final String text, final int style, final int size, final Color colour) {
