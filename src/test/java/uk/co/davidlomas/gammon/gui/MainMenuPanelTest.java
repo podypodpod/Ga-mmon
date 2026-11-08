@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import uk.co.davidlomas.gammon.genes.Individual;
+import uk.co.davidlomas.gammon.genes.SavedAttempts.Attempt;
 import uk.co.davidlomas.gammon.genes.SavedPlayers.SavedPlayer;
 import uk.co.davidlomas.gammon.genes.SearchProgress;
 import uk.co.davidlomas.gammon.settings.GameSettings;
@@ -19,6 +20,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -47,10 +49,10 @@ public class MainMenuPanelTest {
 	}
 
 	@Test
-	public void theMenuHasItsTwoButtons() {
+	public void theMenuHasItsThreeButtons() {
 		final MainMenuPanel panel = new MainMenuPanel();
 
-		assertEquals(List.of(START, "Play Best Two"), buttonNames(panel));
+		assertEquals(List.of(START, "Play Best Two", "View Players"), buttonNames(panel));
 		assertTrue(button(panel, START).isEnabled());
 		assertTrue(button(panel, "Play Best Two").isEnabled());
 	}
@@ -77,6 +79,64 @@ public class MainMenuPanelTest {
 
 		assertTrue(panel.status().contains(START), panel.status());
 		assertNull(panel.watchWindow());
+	}
+
+	@Test
+	public void withNoSavedPlayersViewPlayersSaysSoAndStaysOnTheMenu() {
+		final MainMenuPanel panel = new MainMenuPanel((menu, done) -> {
+		}, List::of, List::of);
+
+		button(panel, "View Players").doClick();
+
+		assertTrue(panel.status().contains(START), panel.status());
+		assertNull(panel.playersWindow());
+	}
+
+	@Test
+	public void thePlayersCanBeViewedDuringASearch() {
+		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
+		final Attempt attempt = new Attempt(1, new File("not there"), Map.of(), null, List.of());
+		final MainMenuPanel panel = new MainMenuPanel((menu, done) -> {
+		}, List::of, () -> List.of(attempt));
+
+		button(panel, START).doClick();
+		button(panel, "View Players").doClick();
+		try {
+			assertTrue(panel.playersWindow().isVisible());
+			assertEquals("A search is running", panel.status());
+		} finally {
+			panel.playersWindow().dispose();
+		}
+	}
+
+	@Test
+	public void viewPlayersSwapsTheMenuForThePlayersAndBack() throws Exception {
+		assumeFalse(GraphicsEnvironment.isHeadless(), "needs a screen");
+		final MainMenuContainerFrame menu = new MainMenuContainerFrame();
+		final Attempt attempt = new Attempt(1, new File("not there"), Map.of(), null, List.of());
+		final MainMenuPanel panel = new MainMenuPanel((m, done) -> {
+		}, List::of, () -> List.of(attempt));
+		SwingUtilities.invokeAndWait(() -> {
+			menu.run();
+			menu.getContentPane().remove(menu.mmp);
+			menu.add(panel);
+		});
+		try {
+			SwingUtilities.invokeAndWait(button(panel, "View Players")::doClick);
+			final PlayersFrame window = panel.playersWindow();
+			assertTrue(window.isVisible());
+			assertFalse(menu.isVisible());
+
+			SwingUtilities.invokeAndWait(window::back);
+
+			assertFalse(window.isDisplayable());
+			assertTrue(menu.isVisible());
+		} finally {
+			SwingUtilities.invokeAndWait(() -> {
+				panel.playersWindow().dispose();
+				menu.dispose();
+			});
+		}
 	}
 
 	@Test

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
 
+import java.time.Instant;
 import java.util.function.Consumer;
 
 /**
@@ -43,6 +44,8 @@ public class StartGa {
 		tell(progress, watcher -> watcher.searchStarted(GenAlgSettings.getGenerations()));
 
 		Population pop = createInitialPopulation();
+		// before anything else is saved, so every attempt with players says what it ran with
+		SavedAttempts.saveSettings(pop.getFittest().getFilePathForPlayers(), Instant.now());
 		saveInitialFittestToFile(pop, progress);
 		final RunStats stats = new RunStats(pop.getFittest().getFilePathForPlayers() + "/runStats.csv", progress);
 		stats.record("initial", pop, true);
@@ -76,7 +79,7 @@ public class StartGa {
 			tell(progress, watcher -> watcher.stageStarted(stage));
 			pop = GeneticAlgorithm.evolvePopulation(pop, progress);
 			final Individual fittest = pop.getFittest();
-			fittest.saveToFile(fittest.getFilePathForPlayers() + "/" + SavedPlayers.fileName(String.valueOf(generation)));
+			fittest.saveToFile(fittest.getFilePathForPlayers() + "/" + SavedAttempts.fileName(String.valueOf(generation)));
 			stats.record(String.valueOf(generation), pop,
 					generation % RunStats.REFERENCE_EVERY == 0 || generation == generations - 1);
 			logger.info("Finished evolving population, evolution {}", generation);
@@ -91,6 +94,6 @@ public class StartGa {
 		pop.calculateFitness(progress);
 		final Individual fittest = pop.getFittest();
 		tell(progress, watcher -> watcher.savingIn(fittest.getFilePathForPlayers()));
-		fittest.saveToFile(fittest.getFilePathForPlayers() + "/" + SavedPlayers.fileName("initial"));
+		fittest.saveToFile(fittest.getFilePathForPlayers() + "/" + SavedAttempts.fileName("initial"));
 	}
 }

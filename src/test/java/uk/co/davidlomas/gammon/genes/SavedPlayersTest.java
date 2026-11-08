@@ -62,7 +62,7 @@ public class SavedPlayersTest {
 	public void playersThatCantBeUsedAreLeftOut() throws IOException {
 		attempt(1, "10,0.900", "20,0.800", "30,0.700");
 		// generation 10's file is missing
-		Files.writeString(new File(folder, "Attempt - 1/" + SavedPlayers.fileName("20")).toPath(), "chromosome=101\n");
+		Files.writeString(new File(folder, "Attempt - 1/" + SavedAttempts.fileName("20")).toPath(), "chromosome=101\n");
 		save(1, "30", 1);
 		// not stats at all, and stats with a mistake in
 		Files.createDirectories(new File(folder, "Attempt - 2").toPath());
@@ -96,7 +96,7 @@ public class SavedPlayersTest {
 			player.getAttribute(gene).setValue(50);
 		}
 		player.getAttribute(0).setValue(firstGene);
-		player.saveToFile(new File(folder, "Attempt - " + attempt + "/" + SavedPlayers.fileName(generation)).getPath());
+		player.saveToFile(new File(folder, "Attempt - " + attempt + "/" + SavedAttempts.fileName(generation)).getPath());
 	}
 
 	private static List<String> names(final List<SavedPlayer> players) {
