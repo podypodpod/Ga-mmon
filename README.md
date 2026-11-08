@@ -147,6 +147,8 @@ measures how strong the GA's players are and how fast games are, and adds a row 
 - **Fingerprint**: a hash of those games' results. It stays the same while a change doesn't change how games are played, such as a speed-up, and changes when it does.
 - `gaSeconds` and `cores` give the time the GA runs took, which depends on the machine.
 
+- **Against pubeval** (`pubevalPointsPerGame`, `pubevalStandardError`): the same players also play 1,000 meetings each against pubeval, Gerry Tesauro's benchmark player from 1993, which backgammon programs have long been measured against. It's much stronger than `ReferencePlayer`, which loses to it by about 0.6 points a game, and stronger than the evolved players, which lose to it by about 0.1 to 0.2. So it can show progress that `ReferencePlayer` no longer can, and the numbers can be compared with published ones. Rows before 8 November 2026 don't have these columns. Its weights are in `src/main/resources/pubeval`, with where they came from.
+
 `-Pgenerations=`, `-Pseeds=` and `-Pmeetings=` change how much it plays, for a quicker look or a closer one. Rows with different settings can't be compared.
 
 If evolved players come to beat the reference player by a wide margin, it stops telling changes apart, and a stronger reference player is needed. That starts a new series of rows. For a change to the players' features, it's also worth evolving players with and without the change and playing them against each other directly.
