@@ -30,6 +30,8 @@ Its Create Good Players button first asks for the GA settings: generations, popu
 
 Its Play Best Two button plays a live game, a turn a second, between the two best players in `savedPlayers/`. Best means the most points against the reference player, as that can compare players from different searches, while fitness only says how a player did against its own population. It's measured every 10 generations, and on the last one, so only those players can be picked. Players with the same genes only count once. Back to Menu or Escape ends the game. The button is greyed out while a search runs, and the game ignores `areBothAIs`, `displayGUI` and `timeDelay`.
 
+Its View Players button shows every attempt in `savedPlayers/`, newest first: when it started, the GA settings it ran with, its stats for each generation, and the genes of each generation's best player. Pick an attempt, then a generation, to see that player's genes. Only attempts made from now on have their settings saved, so older ones say so. It works during a search too, showing what had been saved when it opened. Back to Menu or Escape returns to the menu.
+
 ## How a player chooses a move
 
 On its turn a player rolls the dice, and the game works out every move it's allowed to make. The player then scores the board each of those moves would leave, by adding up features of that board, each multiplied by the weight its genes give that feature, and plays the highest scoring move. A move that wins the game is always played, and equal scores are settled at random.
@@ -92,8 +94,9 @@ Some sets of weights value hitting more than getting home, and two such players 
 Each run is a new attempt, numbered one above the highest attempt already in `savedPlayers/`. The players are saved in `savedPlayers/Attempt - N/`:
 
 - `FittestFromInitialPopulation`, the fittest of the first population;
-- `PlayerFromGen0`, `PlayerFromGen1` and so on, the fittest of each generation.
-- `runStats.csv`, a row of stats for each generation, written as the run goes.
+- `PlayerFromGen0`, `PlayerFromGen1` and so on, the fittest of each generation;
+- `runStats.csv`, a row of stats for each generation, written as the run goes;
+- `gaSettings.properties`, the GA settings the run used, and when it started.
 
 Each is a properties file with the player's genes, its fitness and each weight by name, and can be loaded with `Individual.loadFromFile`.
 

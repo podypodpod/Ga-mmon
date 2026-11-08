@@ -20,8 +20,8 @@ public class MainMenuContainerFrame extends JFrame implements Runnable {
 		setTitle("GA-mmon");
 		mmp = new MainMenuPanel();
 		add(mmp);
-		setSize(620, 640);
-		setMinimumSize(new Dimension(420, 600));
+		setSize(620, 700);
+		setMinimumSize(new Dimension(420, 660));
 		setLocationRelativeTo(null);
 		// not exiting, which wouldn't wait for a search still running: the program ends once that has finished. It has
 		// to leave a window showing until then, or there'd be nothing to show a search was still going

@@ -2,6 +2,8 @@ package uk.co.davidlomas.gammon.gui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.co.davidlomas.gammon.genes.SavedAttempts;
+import uk.co.davidlomas.gammon.genes.SavedAttempts.Attempt;
 import uk.co.davidlomas.gammon.genes.SavedPlayers;
 import uk.co.davidlomas.gammon.genes.SavedPlayers.SavedPlayer;
 import uk.co.davidlomas.gammon.genes.SearchProgress;
@@ -34,14 +36,17 @@ public class MainMenuPanel extends JPanel {
 	private static final String NOT_SEARCHING = " ";
 	private static final String SEARCHING = "A search is running";
 	private static final String NOT_ENOUGH_PLAYERS = "There aren't two saved players to watch yet: Create Good Players first";
+	private static final String NO_PLAYERS = "There are no saved players yet: Create Good Players first";
 
 	private final JLabel status = label(NOT_SEARCHING, Font.PLAIN, 14, MUTED);
 	private final JButton backToSearch = new MenuButton("Back to Search");
 	private final transient Supplier<List<SavedPlayer>> bestTwo;
+	private final transient Supplier<List<Attempt>> savedAttempts;
 	private SearchProgressFrame progressWindow;
 	private WatchGameFrame watchWindow;
 	// whether to go ahead with a search. Tests that only press the button don't ask
 	private transient BooleanSupplier chooseSettings = () -> true;
+	private PlayersFrame playersWindow;
 
 	public MainMenuPanel() {
 		this(MainMenuPanel::startSearch);
@@ -60,7 +65,16 @@ public class MainMenuPanel extends JPanel {
 	 * @param bestTwo finds the players to watch. Tests pass their own, so they don't depend on what's been saved
 	 */
 	MainMenuPanel(final BiConsumer<MainMenuPanel, Runnable> startSearch, final Supplier<List<SavedPlayer>> bestTwo) {
+		this(startSearch, bestTwo, SavedAttempts::all);
+	}
+
+	/**
+	 * @param savedAttempts finds the attempts to show, newest first. Tests pass their own, as for bestTwo
+	 */
+	MainMenuPanel(final BiConsumer<MainMenuPanel, Runnable> startSearch, final Supplier<List<SavedPlayer>> bestTwo,
+				  final Supplier<List<Attempt>> savedAttempts) {
 		this.bestTwo = bestTwo;
+		this.savedAttempts = savedAttempts;
 		setLayout(new GridBagLayout());
 		setBackground(FELT);
 
@@ -69,6 +83,7 @@ public class MainMenuPanel extends JPanel {
 
 		final JButton startSearchButton = new MenuButton("Create Good Players");
 		final JButton playBestTwo = new MenuButton("Play Best Two");
+		final JButton viewPlayers = new MenuButton("View Players");
 
 		// one search at a time: they share the settings and the attempt count, so two would save over each other
 		startSearchButton.addActionListener(e -> {
@@ -94,11 +109,14 @@ public class MainMenuPanel extends JPanel {
 		backToSearch.addActionListener(e -> showProgressWindow());
 
 		playBestTwo.addActionListener(e -> watchBestTwo());
+		// fine during a search: it only reads what's been saved so far
+		viewPlayers.addActionListener(e -> viewPlayers());
 
 		add(startSearchButton, row(2, 28));
 		add(backToSearch, row(3, 12));
 		add(playBestTwo, row(4, 12));
-		add(status, row(5, 18));
+		add(viewPlayers, row(5, 12));
+		add(status, row(6, 18));
 	}
 
 	/**
@@ -211,6 +229,30 @@ public class MainMenuPanel extends JPanel {
 		watchWindow = new WatchGameFrame(best.get(0), best.get(1), this::showMenu);
 		watchWindow.start();
 		setMenuVisible(false);
+	}
+
+	/**
+	 * Swaps the menu for a window showing every attempt saved, if there are any
+	 */
+	private void viewPlayers() {
+		final List<Attempt> attempts = savedAttempts.get();
+		if (attempts.isEmpty()) {
+			status.setText(NO_PLAYERS);
+			return;
+		}
+		if (status.getText().equals(NO_PLAYERS) || status.getText().equals(NOT_ENOUGH_PLAYERS)) {
+			status.setText(NOT_SEARCHING);
+		}
+		playersWindow = new PlayersFrame(attempts, this::showMenu);
+		playersWindow.setVisible(true);
+		setMenuVisible(false);
+	}
+
+	/**
+	 * @return the window for the latest look at the saved players, null if there hasn't been one
+	 */
+	PlayersFrame playersWindow() {
+		return playersWindow;
 	}
 
 	/**
