@@ -1,19 +1,14 @@
 package uk.co.davidlomas.gammon.genes;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import uk.co.davidlomas.gammon.genes.SavedAttempts.Attempt;
+import uk.co.davidlomas.gammon.genes.SearchProgress.GenerationResult;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
 
 /**
  * The players earlier searches have saved. Fitness only says how a player did against its own population, so it can't
@@ -23,9 +18,10 @@ import java.util.regex.Matcher;
  */
 public final class SavedPlayers {
 
-	private static final Logger logger = LoggerFactory.getLogger(SavedPlayers.class);
-	private static final String INITIAL = "initial";
-	private static final String POINTS_COLUMN = "pointsAgainstReference";
+	/**
+	 * What the initial population is called in the stats
+	 */
+	public static final String INITIAL = "initial";
 
 	/**
 	 * A player from file
@@ -36,7 +32,7 @@ public final class SavedPlayers {
 	public record SavedPlayer(String name, Individual player, double pointsAgainstReference) {
 	}
 
-	private record Measured(int attempt, String generation, double points) {
+	private record Measured(Attempt attempt, String generation, double points) {
 	}
 
 	private SavedPlayers() {
@@ -52,17 +48,16 @@ public final class SavedPlayers {
 
 	static List<SavedPlayer> best(final File folder, final int count) {
 		final List<Measured> measured = new ArrayList<>();
-		final File[] attempts = folder.listFiles(File::isDirectory);
-		if (attempts != null) {
-			for (final File attempt : attempts) {
-				final Matcher name = Individual.ATTEMPT_FOLDER.matcher(attempt.getName());
-				if (name.matches()) {
-					measured.addAll(measuredIn(attempt, Integer.parseInt(name.group(1))));
+		for (final Attempt attempt : SavedAttempts.all(folder)) {
+			for (final GenerationResult generation : attempt.generations()) {
+				if (generation.pointsAgainstReference() != null) {
+					measured.add(new Measured(attempt, generation.generation(), generation.pointsAgainstReference()));
 				}
 			}
 		}
 		// by attempt and then file order within the same points, so the same files always give the same answer
-		measured.sort(Comparator.comparingDouble(Measured::points).reversed().thenComparingInt(Measured::attempt));
+		measured.sort(Comparator.comparingDouble(Measured::points).reversed()
+				.thenComparingInt(m -> m.attempt().number()));
 
 		final List<SavedPlayer> best = new ArrayList<>();
 		final Set<String> genes = new HashSet<>();
@@ -70,66 +65,26 @@ public final class SavedPlayers {
 			if (best.size() == count) {
 				break;
 			}
-			final Individual player = load(new File(folder, "Attempt - " + candidate.attempt()), candidate.generation());
+			final Individual player = candidate.attempt().player(candidate.generation());
 			if (player != null && genes.add(String.valueOf(player.getChromosome()))) {
-				best.add(new SavedPlayer(name(candidate), player, candidate.points()));
+				best.add(new SavedPlayer(name(candidate.attempt().number(), candidate.generation()), player,
+						candidate.points()));
 			}
 		}
 		return best;
 	}
 
 	/**
-	 * @return the file a generation's best player is saved in, within its attempt's folder
+	 * @return where a player came from, such as "Attempt 3, generation 40"
 	 */
-	static String fileName(final String generation) {
-		return INITIAL.equals(generation) ? "FittestFromInitialPopulation" : "PlayerFromGen" + generation;
-	}
-
-	private static String name(final Measured player) {
-		return "Attempt " + player.attempt() + ", "
-				+ (INITIAL.equals(player.generation()) ? "initial population" : "generation " + player.generation());
+	public static String name(final int attempt, final String generation) {
+		return "Attempt " + attempt + ", " + generationName(generation);
 	}
 
 	/**
-	 * @return the generations measured against the reference player. An attempt whose stats can't be read has none, as
-	 * one bad file shouldn't stop the others being used
+	 * @return a generation as said in words, such as "generation 40" or "initial population"
 	 */
-	private static List<Measured> measuredIn(final File attempt, final int number) {
-		final Path stats = attempt.toPath().resolve("runStats.csv");
-		final List<Measured> measured = new ArrayList<>();
-		if (!Files.isRegularFile(stats)) {
-			return measured;
-		}
-		try {
-			final List<String> lines = Files.readAllLines(stats);
-			final int column = lines.isEmpty() ? -1 : Arrays.asList(lines.get(0).split(",")).indexOf(POINTS_COLUMN);
-			if (column < 0) {
-				return measured;
-			}
-			for (final String line : lines.subList(1, lines.size())) {
-				final String[] cells = line.split(",", -1);
-				if (cells.length > column && !cells[column].isBlank()) {
-					measured.add(new Measured(number, cells[0], Double.parseDouble(cells[column])));
-				}
-			}
-		} catch (final IOException | NumberFormatException e) {
-			logger.warn("Couldn't read {}", stats, e);
-		}
-		return measured;
-	}
-
-	/**
-	 * @return the player, null if it can't be read, such as one saved with different genes by an older version
-	 */
-	private static Individual load(final File attempt, final String generation) {
-		final File file = new File(attempt, fileName(generation));
-		try {
-			final Individual player = new Individual();
-			player.loadFromFile(file.getPath());
-			return player;
-		} catch (final RuntimeException e) {
-			logger.warn("Couldn't use {}: {}", file, e.getMessage());
-			return null;
-		}
+	public static String generationName(final String generation) {
+		return INITIAL.equals(generation) ? "initial population" : "generation " + generation;
 	}
 }
