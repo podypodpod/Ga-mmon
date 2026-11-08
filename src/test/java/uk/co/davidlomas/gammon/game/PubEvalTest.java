@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.co.davidlomas.gammon.genes.Individual;
+import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.test.helpers.BoardMirror;
 import uk.co.davidlomas.gammon.test.helpers.SettingsUtil;
 import uk.co.davidlomas.gammon.test.helpers.TestBoards;
@@ -22,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The scores here were worked out by a separate transliteration of Tesauro's pubeval.c into Python, with his weight
- * files and float arithmetic at every step as in the C, so they check this one follows it exactly
+ * files and the C's rounding: each weight times input exact, and the running total rounded to a float
  */
 public class PubEvalTest {
 
@@ -117,61 +118,70 @@ public class PubEvalTest {
 		assertSame(better, PubEval.choose(List.of(start, better), true, false));
 	}
 
-	@Test
-	public void inAGameItChoosesByTheWeightsForThePositionBeforeTheMove() {
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void inAGameItChoosesByTheWeightsForThePositionBeforeTheMove(final boolean black) {
 		// contact before the move, as red's piece on 3 hasn't passed black's on 4, but a 2-3 can leave a race. It came
 		// up in a game, and the two sets of weights choose differently in it
-		final Board before = TestBoards.empty();
-		before.setBlackCount(1, 2);
-		before.setBlackCount(2, 2);
-		before.setBlackCount(4, 2);
-		before.setBlackBore(9);
-		before.setRedCount(3, 1);
-		before.setRedCount(8, 2);
-		before.setRedCount(22, 2);
-		before.setRedCount(23, 5);
-		before.setRedCount(24, 5);
+		final Board blackPosition = TestBoards.empty();
+		blackPosition.setBlackCount(1, 2);
+		blackPosition.setBlackCount(2, 2);
+		blackPosition.setBlackCount(4, 2);
+		blackPosition.setBlackBore(9);
+		blackPosition.setRedCount(3, 1);
+		blackPosition.setRedCount(8, 2);
+		blackPosition.setRedCount(22, 2);
+		blackPosition.setRedCount(23, 5);
+		blackPosition.setRedCount(24, 5);
+		final Board before = forColour(blackPosition, black);
 		assertTrue(Feature.isContact(before));
 		final List<Integer> roll = List.of(2, 3);
-		final List<Board> moves = MoveGenerator.legalMoves(before, true, roll).getBoards();
-		final Board byContact = PubEval.choose(moves, true, false);
-		final Board byRace = PubEval.choose(moves, true, true);
+		final List<Board> moves = MoveGenerator.legalMoves(before, black, roll).getBoards();
+		final Board byContact = PubEval.choose(moves, black, false);
+		final Board byRace = PubEval.choose(moves, black, true);
 		// so the test can tell which weights were used
 		assertNotEquals(byContact, byRace);
 
 		final PubEval pubEval = new PubEval();
-		final AiPlayer player = new AiPlayer(true, pubEval);
+		final AiPlayer player = new AiPlayer(black, pubEval);
 		player.movesLeft.setTo(roll);
 		final Board played = new MoveGenerator(pubEval).getNextMoveBoard(before, player);
 
 		assertEquals(byContact, played);
 	}
 
-	@Test
-	public void itPlaysWholeGamesByItsOwnRules() {
+	@ParameterizedTest(name = "black {0}")
+	@ValueSource(booleans = {true, false})
+	public void itPlaysWholeGamesByItsOwnRules(final boolean pubEvalIsBlack) {
 		final List<Board> notTheBest = new ArrayList<>();
 		final GameManager manager = new GameManager();
 		manager.setObserver(new GameObserver() {
 			@Override
 			public void turnPlayed(final Board before, final Board board, final boolean black,
 								   final List<Integer> dice) {
-				// pubeval is player one, black, in this game. Its scores are compared rather than its choice, as
-				// choosing between equal boards takes the game's random numbers
-				if (black) {
+				// pubeval is player one. Its scores are compared rather than its choice, as choosing between equal
+				// boards takes the game's random numbers
+				if (black == pubEvalIsBlack) {
 					final boolean race = !Feature.isContact(before);
 					float best = Float.NEGATIVE_INFINITY;
-					for (final Board move : MoveGenerator.legalMoves(before, true, dice).getBoards()) {
-						best = Math.max(best, PubEval.score(move, true, race));
+					for (final Board move : MoveGenerator.legalMoves(before, black, dice).getBoards()) {
+						best = Math.max(best, PubEval.score(move, black, race));
 					}
-					if (best != Float.NEGATIVE_INFINITY && PubEval.score(board, true, race) != best) {
+					if (best != Float.NEGATIVE_INFINITY && PubEval.score(board, black, race) != best) {
 						notTheBest.add(board);
 					}
 				}
 			}
 		});
 		RandomSource.setSeed(1);
+		GameSettings.setIsP1BlackCache(pubEvalIsBlack);
 
-		final GameStats stats = manager.playToWatch(new PubEval(), new Individual());
+		final GameStats stats;
+		try {
+			stats = manager.playToWatch(new PubEval(), new Individual());
+		} finally {
+			SettingsUtil.resetSettings();
+		}
 
 		assertTrue(stats.getTurns() > 10, "it should have been a whole game");
 		assertTrue(notTheBest.isEmpty(), "every move should score highest by pubeval: " + notTheBest.size() + " didn't");

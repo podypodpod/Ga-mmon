@@ -11,7 +11,8 @@ import java.util.List;
 /**
  * Gerry Tesauro's pubeval, the benchmark player backgammon programs have been measured against since he posted it in
  * 1993: a weighted sum over a raw encoding of the board, with one set of weights for contact and one for a race. It's
- * a stronger yardstick than ReferencePlayer, and results against it can be compared with published ones.
+ * a stronger yardstick than ReferencePlayer. Published results against it were played other ways, such as without a
+ * turn limit, so they're only a rough guide to how this project's players compare.
  * <p>
  * This follows his pubeval.c line for line, with his weights, in src/main/resources/pubeval. Its genes aren't used.
  * Don't change how it plays, or results against it stop being comparable.
@@ -46,8 +47,9 @@ public final class PubEval extends Individual implements ChoosesOwnMoves {
 	}
 
 	/**
-	 * pubeval(race, pos): the board's score for the player who has just moved. It's worked out in float, as in
-	 * pubeval.c, so boards that score almost the same are ordered as they are there
+	 * pubeval(race, pos): the board's score for the player who has just moved. pubeval.c keeps it in a float. It's
+	 * pre-ANSI C, where floats are worked with as doubles, so each weight times input is exact and only the running
+	 * total is rounded to a float, as here, and boards that score almost the same are ordered as they are there
 	 */
 	static float score(final Board board, final boolean black, final boolean race) {
 		final int[] pos = position(board, black);
@@ -59,7 +61,7 @@ public final class PubEval extends Individual implements ChoosesOwnMoves {
 		final float[] w = race ? RACE : CONTACT;
 		float score = 0.0f;
 		for (int i = 0; i < INPUTS; i++) {
-			score += w[i] * x[i];
+			score = (float) ((double) score + (double) w[i] * x[i]);
 		}
 		return score;
 	}

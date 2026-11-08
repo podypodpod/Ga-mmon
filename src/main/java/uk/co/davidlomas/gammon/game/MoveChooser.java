@@ -69,8 +69,27 @@ public final class MoveChooser {
 	 * @return the board to play, or null if there are no moves
 	 */
 	static Board choose(final List<Board> boards, final boolean black, final Individual individual) {
-		final Board winning = winning(boards, black);
-		return winning != null ? winning : highestScoring(boards, board -> score(board, black, individual));
+		// its own loop rather than highestScoring's, as every evolved player's every move comes through here, and
+		// calling a scorer for each board could slow the GA
+		final List<Board> best = new ArrayList<>();
+		double bestScore = Double.NEGATIVE_INFINITY;
+		for (final Board board : boards) {
+			if (board.hasPlayerWon(black)) {
+				return board;
+			}
+			final double score = score(board, black, individual);
+			if (score > bestScore) {
+				best.clear();
+				bestScore = score;
+			}
+			if (score == bestScore) {
+				best.add(board);
+			}
+		}
+		if (best.isEmpty()) {
+			return null;
+		}
+		return best.size() == 1 ? best.get(0) : best.get(RandomSource.nextInt(best.size()));
 	}
 
 	/**
@@ -86,7 +105,8 @@ public final class MoveChooser {
 	}
 
 	/**
-	 * @return the highest scoring board, with ties broken at random, or null if there are none
+	 * @return the highest scoring board, with ties broken at random, or null if there are none. The same as choose
+	 * does, for the fixed opponents, who score boards their own way
 	 */
 	static Board highestScoring(final List<Board> boards, final ToDoubleFunction<Board> scorer) {
 		final List<Board> best = new ArrayList<>();
