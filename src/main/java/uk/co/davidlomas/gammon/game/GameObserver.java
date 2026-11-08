@@ -2,6 +2,8 @@ package uk.co.davidlomas.gammon.game;
 
 import uk.co.davidlomas.gammon.genes.Individual;
 
+import java.util.List;
+
 /**
  * Told how a game is going, so it can be watched. It's called on the thread playing the game, once a turn, so the game
  * waits for it: it has to be quick, unless it means to slow the game down. It mustn't use the game's random numbers, as
@@ -22,6 +24,18 @@ public interface GameObserver {
 	 * @param board the board after the turn. A person's turn changes it in place, so read what's needed from it now
 	 */
 	default void turnPlayed(final Board board) {
+	}
+
+	/**
+	 * The same, with what's needed to tell which moves were made, which turnPlayed(board) is told by default
+	 *
+	 * @param before the board at the start of the turn, not changed by the game afterwards
+	 * @param board  the board after the turn, as for turnPlayed(board)
+	 * @param black  whether black played the turn
+	 * @param dice   the dice rolled for it, four of them for a double
+	 */
+	default void turnPlayed(final Board before, final Board board, final boolean black, final List<Integer> dice) {
+		turnPlayed(board);
 	}
 
 	default void gameFinished(final GameStats stats) {
