@@ -6,13 +6,17 @@ import uk.co.davidlomas.gammon.game.Board;
 import uk.co.davidlomas.gammon.game.GameManager;
 import uk.co.davidlomas.gammon.game.GameObserver;
 import uk.co.davidlomas.gammon.game.GameStats;
+import uk.co.davidlomas.gammon.game.MoveNotation;
 import uk.co.davidlomas.gammon.genes.Individual;
 import uk.co.davidlomas.gammon.genes.SavedPlayers.SavedPlayer;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -35,6 +39,9 @@ public class WatchGameFrame extends JFrame {
 	private final JLabel blackLine = MainMenuPanel.label(" ", Font.PLAIN, 14, MainMenuPanel.CREAM);
 	private final JLabel redLine = MainMenuPanel.label(" ", Font.PLAIN, 14, MainMenuPanel.CREAM);
 	private final BoardPanel board = new BoardPanel();
+	private final MovesModel moves = new MovesModel();
+	// none of its columns lined up as numbers: the moves read left to right
+	private final JTable movesTable = SearchProgressFrame.table(moves, MovesModel.COLUMNS.length);
 
 	/**
 	 * @param showMenu run on the Swing thread when going back to the menu
@@ -73,9 +80,21 @@ public class WatchGameFrame extends JFrame {
 
 		// the board is drawn at a fixed size, so it stays that size in the middle of whatever room there is
 		board.setPreferredSize(new Dimension(1153, 600));
-		final JPanel middle = new JPanel(new GridBagLayout());
+		final JPanel boardArea = new JPanel(new GridBagLayout());
+		boardArea.setOpaque(false);
+		boardArea.add(board);
+
+		final int[] widths = {40, 50, 45, 175};
+		for (int column = 0; column < widths.length; column++) {
+			movesTable.getColumnModel().getColumn(column).setPreferredWidth(widths[column]);
+		}
+		final JPanel movesPanel = SearchProgressFrame.titled("Moves, by the board's numbers", movesTable);
+		movesPanel.setPreferredSize(new Dimension(330, 0));
+
+		final JPanel middle = new JPanel(new BorderLayout(14, 0));
 		middle.setOpaque(false);
-		middle.add(board);
+		middle.add(boardArea, BorderLayout.CENTER);
+		middle.add(movesPanel, BorderLayout.EAST);
 
 		final JPanel content = new JPanel(new BorderLayout(0, 12));
 		content.setBackground(MainMenuPanel.FELT);
@@ -84,7 +103,7 @@ public class WatchGameFrame extends JFrame {
 		content.add(middle, BorderLayout.CENTER);
 		add(content);
 
-		setSize(SearchProgressFrame.fitted(new Dimension(1210, 790),
+		setSize(SearchProgressFrame.fitted(new Dimension(1560, 790),
 				GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()));
 		setLocationRelativeTo(null);
 		// the menu is hidden behind this window, so closing it has to bring that back, or nothing would be showing
@@ -123,6 +142,13 @@ public class WatchGameFrame extends JFrame {
 
 	Thread gameThread() {
 		return game;
+	}
+
+	/**
+	 * @return the moves shown so far, a row each turn
+	 */
+	MovesModel moves() {
+		return moves;
 	}
 
 	private void play() {
@@ -167,9 +193,16 @@ public class WatchGameFrame extends JFrame {
 		}
 
 		@Override
-		public void turnPlayed(final Board now) {
+		public void turnPlayed(final Board before, final Board now, final boolean black, final List<Integer> dice) {
 			turn++;
+			final Move move = new Move(turn, black ? "Black" : "Red", dice.get(0) + "-" + dice.get(1),
+					MoveNotation.describe(before, now, black, dice));
 			show(now);
+			SwingUtilities.invokeLater(() -> {
+				moves.add(move);
+				// the latest turn, at the bottom, is kept in sight
+				movesTable.scrollRectToVisible(movesTable.getCellRect(moves.getRowCount() - 1, 0, true));
+			});
 			pause();
 		}
 
@@ -198,6 +231,58 @@ public class WatchGameFrame extends JFrame {
 				// left marked as interrupted, so the game sees that and stops
 				Thread.currentThread().interrupt();
 			}
+		}
+	}
+
+	/**
+	 * One turn: who played it, what they rolled, and the checkers they moved
+	 */
+	record Move(int turn, String player, String roll, String moves) {
+	}
+
+	/**
+	 * A row for each turn, oldest first
+	 */
+	static final class MovesModel extends AbstractTableModel {
+
+		private static final long serialVersionUID = 1L;
+		private static final String[] COLUMNS = {"Turn", "Player", "Roll", "Moves"};
+
+		private final transient List<Move> rows = new ArrayList<>();
+
+		void add(final Move move) {
+			rows.add(move);
+			fireTableRowsInserted(rows.size() - 1, rows.size() - 1);
+		}
+
+		Move moveAt(final int row) {
+			return rows.get(row);
+		}
+
+		@Override
+		public int getRowCount() {
+			return rows.size();
+		}
+
+		@Override
+		public int getColumnCount() {
+			return COLUMNS.length;
+		}
+
+		@Override
+		public String getColumnName(final int column) {
+			return COLUMNS[column];
+		}
+
+		@Override
+		public Object getValueAt(final int row, final int column) {
+			final Move move = rows.get(row);
+			return switch (column) {
+				case 0 -> move.turn();
+				case 1 -> move.player();
+				case 2 -> move.roll();
+				default -> move.moves();
+			};
 		}
 	}
 }

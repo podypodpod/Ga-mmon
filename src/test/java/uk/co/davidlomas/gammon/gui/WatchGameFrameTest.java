@@ -52,6 +52,14 @@ public class WatchGameFrameTest {
 			});
 
 			assertTrue(frame[0].status().matches("(First|Second) won .*|A draw.*"), frame[0].status());
+			final WatchGameFrame.MovesModel moves = frame[0].moves();
+			assertTrue(moves.getRowCount() > 0, "each turn's moves should be listed");
+			for (int row = 0; row < moves.getRowCount(); row++) {
+				assertEquals(row + 1, moves.moveAt(row).turn());
+				assertFalse(moves.moveAt(row).moves().contains("?"), moves.moveAt(row).toString());
+			}
+			// black and red take turns
+			assertFalse(moves.moveAt(0).player().equals(moves.moveAt(1).player()));
 			assertTrue(frame[0].isShowing(), "it should stay until it's left, to show the result");
 		} finally {
 			SwingUtilities.invokeAndWait(frame[0]::dispose);

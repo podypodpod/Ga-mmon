@@ -234,13 +234,14 @@ class Game implements Runnable {
 	 */
 	private void aiTurn(final AiPlayer player) {
 		final Board before = liveBoard;
-		liveBoard = new Board(player.AiTurn(liveBoard, nextRoll(player)));
+		final List<Integer> roll = nextRoll(player);
+		liveBoard = new Board(player.AiTurn(liveBoard, roll));
 		if (!areBothAIs) {
 			aiPlayer2.tell("Player 1, " + player.getColourString() + ", rolled " + player.movesLeft.moves
 					+ (liveBoard.equals(before) ? " and couldn't move." : "."));
 		}
 		showBoard();
-		observer.turnPlayed(liveBoard);
+		observer.turnPlayed(before, liveBoard, player.black, roll);
 
 		if (liveBoard.hasPlayerWon(player.black)) {
 			gameActive = false;
@@ -258,9 +259,12 @@ class Game implements Runnable {
 	 * A person's turn as player 2, waiting for them to choose their moves
 	 */
 	private void personTurn() {
-		aiPlayer2.turn(liveBoard, nextRoll(aiPlayer2));
+		// the turn changes the board in place
+		final Board before = new Board(liveBoard);
+		final List<Integer> roll = nextRoll(aiPlayer2);
+		aiPlayer2.turn(liveBoard, roll);
 		showBoard();
-		observer.turnPlayed(liveBoard);
+		observer.turnPlayed(before, liveBoard, aiPlayer2.black, roll);
 
 		if (aiPlayer2.hasConceded()) {
 			gameActive = false;
