@@ -169,8 +169,8 @@ public final class Benchmark {
 	 * @param opponent made after the seed is set, as making a player takes random numbers, so the meetings' seeds are
 	 *                 the same as they've always been
 	 */
-	private static double against(final Individual player, final Supplier<Individual> opponent, final int meetings,
-								  final long seed) {
+	static double against(final Individual player, final Supplier<Individual> opponent, final int meetings,
+						  final long seed) {
 		RandomSource.setSeed(seed);
 		final Individual made = opponent.get();
 		final long[] meetingSeeds = new long[meetings];

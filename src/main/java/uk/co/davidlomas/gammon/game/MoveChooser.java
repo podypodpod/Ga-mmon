@@ -6,6 +6,7 @@ import uk.co.davidlomas.gammon.util.RandomSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.ToDoubleFunction;
 
 /**
  * How an AI player chooses its move: it scores the board each legal move leads to by its features, each multiplied by
@@ -68,13 +69,30 @@ public final class MoveChooser {
 	 * @return the board to play, or null if there are no moves
 	 */
 	static Board choose(final List<Board> boards, final boolean black, final Individual individual) {
-		final List<Board> best = new ArrayList<>();
-		double bestScore = Double.NEGATIVE_INFINITY;
+		final Board winning = winning(boards, black);
+		return winning != null ? winning : highestScoring(boards, board -> score(board, black, individual));
+	}
+
+	/**
+	 * @return the first of the boards on which the player has won, null if there isn't one
+	 */
+	static Board winning(final List<Board> boards, final boolean black) {
 		for (final Board board : boards) {
 			if (board.hasPlayerWon(black)) {
 				return board;
 			}
-			final double score = score(board, black, individual);
+		}
+		return null;
+	}
+
+	/**
+	 * @return the highest scoring board, with ties broken at random, or null if there are none
+	 */
+	static Board highestScoring(final List<Board> boards, final ToDoubleFunction<Board> scorer) {
+		final List<Board> best = new ArrayList<>();
+		double bestScore = Double.NEGATIVE_INFINITY;
+		for (final Board board : boards) {
+			final double score = scorer.applyAsDouble(board);
 			if (score > bestScore) {
 				best.clear();
 				bestScore = score;

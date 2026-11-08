@@ -75,13 +75,9 @@ public class MoveGenerator {
 		generateLegalMoves(cb, p);
 
 		// the player's genes pick the best board, if no possible next moves it
-		// will return null and carry on using the same board. The reference player and pubeval have rules of their own
-		if (individual instanceof ReferencePlayer) {
-			return ReferencePlayer.choose(boardList.getBoards(), p.black);
-		}
-		if (individual instanceof PubEval) {
-			// pubeval picks its weights by the position before the move
-			return PubEval.choose(boardList.getBoards(), p.black, !Feature.isContact(cb));
+		// will return null and carry on using the same board. The fixed opponents, such as pubeval, have rules of their own
+		if (individual instanceof ChoosesOwnMoves own) {
+			return own.chooseMove(boardList.getBoards(), p.black, cb);
 		}
 		return MoveChooser.choose(boardList.getBoards(), p.black, individual);
 	}
