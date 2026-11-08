@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Supplier;
 
 /**
  * Measures how strong the GA's players are and how fast games are, so a change can be compared with the commit before
@@ -99,7 +100,7 @@ public final class Benchmark {
 		final Individual[] fittest = new Individual[seeds];
 		for (int seed = 0; seed < seeds; seed++) {
 			fittest[seed] = evolve(1000 + seed, generations);
-			perSeed[seed] = against(fittest[seed], new ReferencePlayer(), meetings, 2000 + seed);
+			perSeed[seed] = against(fittest[seed], ReferencePlayer::new, meetings, 2000 + seed);
 			System.out.printf(Locale.ROOT, "seed %d: %+.3f points a game against the reference player%n", seed,
 					perSeed[seed]);
 		}
@@ -108,7 +109,7 @@ public final class Benchmark {
 		// after the GA's time is taken, so adding it didn't change that column
 		final double[] perSeedPubEval = new double[seeds];
 		for (int seed = 0; seed < seeds; seed++) {
-			perSeedPubEval[seed] = against(fittest[seed], new PubEval(), meetings, 3000 + seed);
+			perSeedPubEval[seed] = against(fittest[seed], PubEval::new, meetings, 3000 + seed);
 			System.out.printf(Locale.ROOT, "seed %d: %+.3f points a game against pubeval%n", seed,
 					perSeedPubEval[seed]);
 		}
@@ -164,15 +165,19 @@ public final class Benchmark {
 
 	/**
 	 * The player's average points a game against a fixed opponent, over paired meetings on every core
+	 *
+	 * @param opponent made after the seed is set, as making a player takes random numbers, so the meetings' seeds are
+	 *                 the same as they've always been
 	 */
-	private static double against(final Individual player, final Individual opponent, final int meetings,
+	private static double against(final Individual player, final Supplier<Individual> opponent, final int meetings,
 								  final long seed) {
 		RandomSource.setSeed(seed);
+		final Individual made = opponent.get();
 		final long[] meetingSeeds = new long[meetings];
 		for (int meeting = 0; meeting < meetings; meeting++) {
 			meetingSeeds[meeting] = RandomSource.nextLong();
 		}
-		return FitnessCalculator.averagePoints(player, opponent, meetingSeeds, null);
+		return FitnessCalculator.averagePoints(player, made, meetingSeeds, null);
 	}
 
 	/**
