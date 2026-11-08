@@ -106,7 +106,19 @@ The GA's code is in `uk.co.davidlomas.gammon.genes`: `StartGa` runs it, `Genetic
 
 With a population of 40, two meetings per pair and a mutation rate of 0.02, players improve quickly over the first 25 or so generations and then level off. In one such run, generation 25 beat generation 0 by about 0.8 points a game, winning nearly three games in four, and later generations were no better than generation 25. A 200-generation run takes about a minute and a half on a 12-core machine, with the games played on every core (see `multiThreading`).
 
-Better features, which let a player tell good moves from bad more finely, are what would take it further.
+A test on 8 November 2026 ran 4 seeds of each of these settings for 200 generations, and measured the fittest player against `ReferencePlayer` over 1,000 meetings:
+
+| Settings | Gen 10 | Gen 25 | Gen 50 | Gen 100 | Gen 200 |
+|---|---|---|---|---|---|
+| Population 10, tournament 8 | +0.12 | +0.39 | +0.46 | +0.49 | +0.37 |
+| Population 10, tournament 3 | +0.31 | +0.45 | +0.54 | +0.52 | +0.57 |
+| Population 10, 6 meetings a pair | +0.37 | +0.50 | +0.49 | +0.47 | +0.54 |
+| Population 40, tournament 8 | +0.67 | +0.65 | +0.64 | +0.61 | +0.69 |
+| Population 40, tournament 3 | +0.57 | +0.58 | +0.64 | +0.64 | +0.60 |
+
+Every setting levels off at about +0.6 to +0.7. Generation 200 was no better than the earlier players in games against them, either: +0.00 against generation 10 with a population of 40. So running longer doesn't help. A population of 40 gets there in about 10 generations, which is about as many games as 200 generations of 10 players. That's why the defaults are a population of 40 and 30 generations.
+
+That ceiling is what the players' genes can express: weights for a handful of features, looking one move ahead. Better features, which let a player tell good moves from bad more finely, or looking further ahead, are what would take it further.
 
 ### Reading a run's stats
 
