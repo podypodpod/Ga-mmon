@@ -3,6 +3,7 @@ package uk.co.davidlomas.gammon.genes;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import uk.co.davidlomas.gammon.game.GameManager;
+import uk.co.davidlomas.gammon.game.PubEval;
 import uk.co.davidlomas.gammon.game.ReferencePlayer;
 import uk.co.davidlomas.gammon.settings.GameSettings;
 import uk.co.davidlomas.gammon.settings.GenAlgSettings;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Supplier;
 
 /**
  * Measures how strong the GA's players are and how fast games are, so a change can be compared with the commit before
@@ -25,7 +27,8 @@ import java.util.Locale;
  * <p>
  * Strength: the GA is run from a few fixed seeds, with the same settings each time, and each run's fittest player
  * plays the hand-written ReferencePlayer, which never changes. It's their average points a game against it, with the
- * standard error between the seeds' players.
+ * standard error between the seeds' players. They also play Tesauro's pubeval, the benchmark player backgammon
+ * programs have long been measured against, which is stronger than ReferencePlayer, in the same way.
  * <p>
  * Speed: a fixed set of seeded games between two seeded players, on one thread, in games a second. They're played
  * first, as how much of the GA has run changes how the JVM has optimised the code, which moved the speed by far more
@@ -42,7 +45,7 @@ public final class Benchmark {
 	private static final int SPEED_MEETINGS = 1000;
 	private static final int SPEED_PASSES = 5;
 	static final String HEADER = "date,commit,generations,seeds,pointsPerGame,standardError,perSeed,gamesPerSecond,"
-			+ "gaSeconds,cores,fingerprint";
+			+ "gaSeconds,cores,fingerprint,pubevalPointsPerGame,pubevalStandardError";
 
 	private Benchmark() {
 	}
@@ -94,23 +97,25 @@ public final class Benchmark {
 
 		final long gaStart = System.nanoTime();
 		final double[] perSeed = new double[seeds];
+		final Individual[] fittest = new Individual[seeds];
 		for (int seed = 0; seed < seeds; seed++) {
-			final Individual fittest = evolve(1000 + seed, generations);
-			perSeed[seed] = againstReference(fittest, meetings, 2000 + seed);
+			fittest[seed] = evolve(1000 + seed, generations);
+			perSeed[seed] = against(fittest[seed], ReferencePlayer::new, meetings, 2000 + seed);
 			System.out.printf(Locale.ROOT, "seed %d: %+.3f points a game against the reference player%n", seed,
 					perSeed[seed]);
 		}
 		final double gaSeconds = (System.nanoTime() - gaStart) / 1e9;
 
-		double mean = 0;
-		for (final double points : perSeed) {
-			mean += points / seeds;
+		// after the GA's time is taken, so adding it didn't change that column
+		final double[] perSeedPubEval = new double[seeds];
+		for (int seed = 0; seed < seeds; seed++) {
+			perSeedPubEval[seed] = against(fittest[seed], PubEval::new, meetings, 3000 + seed);
+			System.out.printf(Locale.ROOT, "seed %d: %+.3f points a game against pubeval%n", seed,
+					perSeedPubEval[seed]);
 		}
-		double squares = 0;
-		for (final double points : perSeed) {
-			squares += (points - mean) * (points - mean);
-		}
-		final double standardError = seeds > 1 ? Math.sqrt(squares / (seeds - 1) / seeds) : 0;
+
+		final double mean = mean(perSeed);
+		final double standardError = standardError(perSeed);
 
 		final StringBuilder seedColumn = new StringBuilder();
 		for (final double points : perSeed) {
@@ -120,7 +125,32 @@ public final class Benchmark {
 				String.valueOf(seeds), String.format(Locale.ROOT, "%+.3f", mean),
 				String.format(Locale.ROOT, "%.3f", standardError), seedColumn.toString(),
 				String.format(Locale.ROOT, "%.0f", gamesPerSecond), String.format(Locale.ROOT, "%.0f", gaSeconds),
-				String.valueOf(Runtime.getRuntime().availableProcessors()), Long.toHexString(fingerprint[0]));
+				String.valueOf(Runtime.getRuntime().availableProcessors()), Long.toHexString(fingerprint[0]),
+				String.format(Locale.ROOT, "%+.3f", mean(perSeedPubEval)),
+				String.format(Locale.ROOT, "%.3f", standardError(perSeedPubEval)));
+	}
+
+	private static double mean(final double[] values) {
+		double mean = 0;
+		for (final double value : values) {
+			mean += value / values.length;
+		}
+		return mean;
+	}
+
+	/**
+	 * @return the standard error of the mean, 0 for a single value
+	 */
+	private static double standardError(final double[] values) {
+		if (values.length < 2) {
+			return 0;
+		}
+		final double mean = mean(values);
+		double squares = 0;
+		for (final double value : values) {
+			squares += (value - mean) * (value - mean);
+		}
+		return Math.sqrt(squares / (values.length - 1) / values.length);
 	}
 
 	private static Individual evolve(final long seed, final int generations) {
@@ -134,16 +164,20 @@ public final class Benchmark {
 	}
 
 	/**
-	 * The player's average points a game against the reference player, over paired meetings on every core
+	 * The player's average points a game against a fixed opponent, over paired meetings on every core
+	 *
+	 * @param opponent made after the seed is set, as making a player takes random numbers, so the meetings' seeds are
+	 *                 the same as they've always been
 	 */
-	private static double againstReference(final Individual player, final int meetings, final long seed) {
+	static double against(final Individual player, final Supplier<Individual> opponent, final int meetings,
+						  final long seed) {
 		RandomSource.setSeed(seed);
-		final ReferencePlayer reference = new ReferencePlayer();
+		final Individual made = opponent.get();
 		final long[] meetingSeeds = new long[meetings];
 		for (int meeting = 0; meeting < meetings; meeting++) {
 			meetingSeeds[meeting] = RandomSource.nextLong();
 		}
-		return FitnessCalculator.averagePoints(player, reference, meetingSeeds, null);
+		return FitnessCalculator.averagePoints(player, made, meetingSeeds, null);
 	}
 
 	/**

@@ -6,6 +6,7 @@ import uk.co.davidlomas.gammon.util.RandomSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.ToDoubleFunction;
 
 /**
  * How an AI player chooses its move: it scores the board each legal move leads to by its features, each multiplied by
@@ -68,6 +69,8 @@ public final class MoveChooser {
 	 * @return the board to play, or null if there are no moves
 	 */
 	static Board choose(final List<Board> boards, final boolean black, final Individual individual) {
+		// its own loop rather than highestScoring's, as every evolved player's every move comes through here, and
+		// calling a scorer for each board could slow the GA
 		final List<Board> best = new ArrayList<>();
 		double bestScore = Double.NEGATIVE_INFINITY;
 		for (final Board board : boards) {
@@ -75,6 +78,41 @@ public final class MoveChooser {
 				return board;
 			}
 			final double score = score(board, black, individual);
+			if (score > bestScore) {
+				best.clear();
+				bestScore = score;
+			}
+			if (score == bestScore) {
+				best.add(board);
+			}
+		}
+		if (best.isEmpty()) {
+			return null;
+		}
+		return best.size() == 1 ? best.get(0) : best.get(RandomSource.nextInt(best.size()));
+	}
+
+	/**
+	 * @return the first of the boards on which the player has won, null if there isn't one
+	 */
+	static Board winning(final List<Board> boards, final boolean black) {
+		for (final Board board : boards) {
+			if (board.hasPlayerWon(black)) {
+				return board;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @return the highest scoring board, with ties broken at random, or null if there are none. The same as choose
+	 * does, for the fixed opponents, who score boards their own way
+	 */
+	static Board highestScoring(final List<Board> boards, final ToDoubleFunction<Board> scorer) {
+		final List<Board> best = new ArrayList<>();
+		double bestScore = Double.NEGATIVE_INFINITY;
+		for (final Board board : boards) {
+			final double score = scorer.applyAsDouble(board);
 			if (score > bestScore) {
 				best.clear();
 				bestScore = score;

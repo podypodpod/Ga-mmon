@@ -1,9 +1,7 @@
 package uk.co.davidlomas.gammon.game;
 
 import uk.co.davidlomas.gammon.genes.Individual;
-import uk.co.davidlomas.gammon.util.RandomSource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +12,7 @@ import java.util.List;
  * it. Don't change how it plays: the benchmark's strength results are only comparable from one commit to the next
  * while it stays the same.
  */
-public final class ReferencePlayer extends Individual {
+public final class ReferencePlayer extends Individual implements ChoosesOwnMoves {
 
 	/**
 	 * Picks the move to play: one that wins the game if there is one, otherwise the highest scoring, with ties broken
@@ -23,25 +21,13 @@ public final class ReferencePlayer extends Individual {
 	 * @return the board to play, or null if there are no moves
 	 */
 	static Board choose(final List<Board> boards, final boolean black) {
-		final List<Board> best = new ArrayList<>();
-		double bestScore = Double.NEGATIVE_INFINITY;
-		for (final Board board : boards) {
-			if (board.hasPlayerWon(black)) {
-				return board;
-			}
-			final double score = score(board, black);
-			if (score > bestScore) {
-				best.clear();
-				bestScore = score;
-			}
-			if (score == bestScore) {
-				best.add(board);
-			}
-		}
-		if (best.isEmpty()) {
-			return null;
-		}
-		return best.size() == 1 ? best.get(0) : best.get(RandomSource.nextInt(best.size()));
+		final Board winning = MoveChooser.winning(boards, black);
+		return winning != null ? winning : MoveChooser.highestScoring(boards, board -> score(board, black));
+	}
+
+	@Override
+	public Board chooseMove(final List<Board> boards, final boolean black, final Board before) {
+		return choose(boards, black);
 	}
 
 	/**
