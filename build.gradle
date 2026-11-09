@@ -84,6 +84,27 @@ tasks.register('benchmark', JavaExec) {
     systemProperty 'gammon.playersDir', layout.buildDirectory.dir('benchmark-players').get().asFile.absolutePath
 }
 
+// Experiments with other ways of evolving players, kept for reference: see src/experiments/README.md. They're built
+// with everything else, so they keep compiling, but aren't part of the program
+sourceSets {
+    experiments {
+        java.srcDir 'src/experiments/java'
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
+    }
+}
+
+// Runs one of the experiments: -Pmain= names its class in uk.co.davidlomas.gammon.genes, and -Pargs= its arguments
+tasks.register('experiment', JavaExec) {
+    group = 'experiments'
+    description = 'Runs an experiment from src/experiments'
+    mainClass = 'uk.co.davidlomas.gammon.genes.' + (project.findProperty('main') ?: 'NetExperiment')
+    classpath = sourceSets.experiments.runtimeClasspath
+    args = (project.findProperty('args') ?: '').tokenize()
+    // keep anything an experiment saves out of savedPlayers/
+    systemProperty 'gammon.playersDir', layout.buildDirectory.dir('experiment-players').get().asFile.absolutePath
+}
+
 jar {
     manifest {
         attributes 'Implementation-Title': 'Ga-mmon',
